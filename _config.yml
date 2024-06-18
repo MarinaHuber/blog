@@ -1,20 +1,19 @@
 url: https://marinahuber.github.io
-title: Blog Engineering
-subtitle: Discover iOS engineering.
+title: iOS Engineering
+subtitle: Discover mobile recipes.
+google_analytics_tracking_id: UA-12450662-3
 permalink: /blog/:year/:month/:day/:title/
-baseurl: "/blog"
-twitter_username: x
+baseurl: "/blog" # the subpath of your site, e.g. /blog/
 github_username: MarinaHuber
 
 subscribe_rss: /feed.xml
 
-disqus_short_name: blog
+disqus_short_name: artsy
 disqus_show_comment_count: false
 
 exclude: ["vendor", "LICENSE", "_posts/LICENSE"]
 
-plugins: ["jekyll-redirect-from", "jekyll-paginate", "jekyll-feed", "jekyll-seo-tag", "jekyll-redirect-from", "jekyll-coffeescript", "jekyll-commonmark-ghpages", "jekyll-github-metadata", "jekyll-optional-front-matter", "jekyll-readme-index", "jekyll-default-layout", "jekyll-titles-from-headings"]
-theme: jekyll-theme-primer
+plugins: ["jekyll-redirect-from", "jekyll-paginate"]
 
 markdown: kramdown
 highlighter: rouge

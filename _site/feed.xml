@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Blog Engineering</title>
+    <title>iOS Engineering</title>
     <description></description>
-    <link>http://localhost:4000/</link>
-    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 18 Jun 2024 16:50:47 +0200</pubDate>
-    <lastBuildDate>Tue, 18 Jun 2024 16:50:47 +0200</lastBuildDate>
+    <link>http://localhost:4000/blog/</link>
+    <atom:link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Tue, 18 Jun 2024 20:32:29 +0200</pubDate>
+    <lastBuildDate>Tue, 18 Jun 2024 20:32:29 +0200</lastBuildDate>
     <generator>Jekyll v3.9.5</generator>
     
       <item>
@@ -351,8 +351,8 @@ Next, but sometimes that’s just not enough to avoid hitting pause, and looking
 at the bigger picture. Inclusivity should always win.&lt;/p&gt;
 </description>
         <pubDate>Thu, 07 Mar 2024 00:00:00 +0100</pubDate>
-        <link>http://localhost:4000/blog/2024/03/07/nextjs-at-artsy-retrospective/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/2024/03/07/nextjs-at-artsy-retrospective/</guid>
+        <link>http://localhost:4000/blog/blog/2024/03/07/nextjs-at-artsy-retrospective/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/blog/2024/03/07/nextjs-at-artsy-retrospective/</guid>
         
         
         <category>Next.js</category>
@@ -413,8 +413,8 @@ incidents along the way.&lt;/p&gt;
 include? Let me know in the comments!&lt;/p&gt;
 </description>
         <pubDate>Wed, 13 Sep 2023 00:00:00 +0200</pubDate>
-        <link>http://localhost:4000/blog/2023/09/13/deploying-a-scary-change/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/2023/09/13/deploying-a-scary-change/</guid>
+        <link>http://localhost:4000/blog/blog/2023/09/13/deploying-a-scary-change/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/blog/2023/09/13/deploying-a-scary-change/</guid>
         
         
         <category>Ruby on Rails</category>
@@ -582,8 +582,8 @@ exactly what we wanted, for the best DX we can get.&lt;/p&gt;
 &lt;a href=&quot;https://www.typescriptlang.org/play?#code/MYewdgzgLgBA7gUwDYAcBcMBEALZSSYwA+WcIATkgCaEnTkCWYA5jALxa5L6YBQvUAJ4oEMAMIh85ACIBlAGoBDJAFdRHTACMki4AGsAjAAYjtLNt16AHKeLnVCY7ZKZyCKgYCstgPQ+7CFDAAsKiAEKKVBJSAPJQuOSyUIws7DD0TMz8QiIwEVGSFGnRFHJKDnb5JeRxCUkpWbygkLCakdUYVYXkaTiKEDBgIDCKKlAgoAC2KEiBCHz8zdDwIHAYABQ4eAR2mGSUNACUdusZqQBkMADeAL7HGlw82aEwAOIgIAWx8QiJyZlpM6sS63Z65d6farFbplZRqOwQr4UWq-eqZRbgZbMD5I8gYRFQh79EZjCYgaazKAIAB0MGSgjpw2A2EULFE8QYAyBMAS7OGFn0TgAhHwgA&quot;&gt;link&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Wed, 01 Mar 2023 00:00:00 +0100</pubDate>
-        <link>http://localhost:4000/blog/2023/03/01/typescript-magic/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/2023/03/01/typescript-magic/</guid>
+        <link>http://localhost:4000/blog/blog/2023/03/01/typescript-magic/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/blog/2023/03/01/typescript-magic/</guid>
         
         
         <category>TypeScript</category>
@@ -889,8 +889,8 @@ right choice when devising your own radius queries with MongoDB or other
 geospatial engines.&lt;/p&gt;
 </description>
         <pubDate>Fri, 10 Feb 2023 00:00:00 +0100</pubDate>
-        <link>http://localhost:4000/blog/2023/02/10/mongo-geospatial-queries/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/2023/02/10/mongo-geospatial-queries/</guid>
+        <link>http://localhost:4000/blog/blog/2023/02/10/mongo-geospatial-queries/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/blog/2023/02/10/mongo-geospatial-queries/</guid>
         
         
         <category>MongoDB</category>
@@ -1037,8 +1037,8 @@ tests in parallel.&lt;/p&gt;
 
 </description>
         <pubDate>Wed, 07 Sep 2022 00:00:00 +0200</pubDate>
-        <link>http://localhost:4000/blog/2022/09/07/quick-tips-to-speed-up-ci/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/2022/09/07/quick-tips-to-speed-up-ci/</guid>
+        <link>http://localhost:4000/blog/blog/2022/09/07/quick-tips-to-speed-up-ci/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/blog/2022/09/07/quick-tips-to-speed-up-ci/</guid>
         
         
         <category>CircleCI</category>
@@ -1143,8 +1143,8 @@ days, when Safari would otherwise erase the cookie, it will see that it’s now
 
 </description>
         <pubDate>Tue, 23 Aug 2022 00:00:00 +0200</pubDate>
-        <link>http://localhost:4000/blog/2022/08/23/getting-around-7-day-cookie/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/2022/08/23/getting-around-7-day-cookie/</guid>
+        <link>http://localhost:4000/blog/blog/2022/08/23/getting-around-7-day-cookie/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/blog/2022/08/23/getting-around-7-day-cookie/</guid>
         
         
         <category>Privacy</category>
@@ -1405,8 +1405,8 @@ application to maintain and to have made it easier for future Artsy engineers to
 collections infrastructure.&lt;/p&gt;
 </description>
         <pubDate>Mon, 09 May 2022 00:00:00 +0200</pubDate>
-        <link>http://localhost:4000/blog/2022/05/09/deprecating-kaws/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/2022/05/09/deprecating-kaws/</guid>
+        <link>http://localhost:4000/blog/blog/2022/05/09/deprecating-kaws/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/blog/2022/05/09/deprecating-kaws/</guid>
         
         
         <category>KAWS refactoring gravity</category>
@@ -1588,8 +1588,8 @@ really so scary.&lt;/p&gt;
 that you don’t know” as a snail would do to find her way forward very slowly and retreat from something unpleasant.&lt;/p&gt;
 </description>
         <pubDate>Wed, 13 Apr 2022 00:00:00 +0200</pubDate>
-        <link>http://localhost:4000/blog/2022/04/13/stepping-out-of-the-knowledge-zone/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/2022/04/13/stepping-out-of-the-knowledge-zone/</guid>
+        <link>http://localhost:4000/blog/blog/2022/04/13/stepping-out-of-the-knowledge-zone/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/blog/2022/04/13/stepping-out-of-the-knowledge-zone/</guid>
         
         
         <category>teams</category>
@@ -1760,8 +1760,8 @@ we next take this project. We’re excited to have buy-in from our product team 
 elevate the user experience while allowing us to use that opportunity to improve the developer experience as well.&lt;/p&gt;
 </description>
         <pubDate>Tue, 01 Feb 2022 00:00:00 +0100</pubDate>
-        <link>http://localhost:4000/blog/2022/02/01/using-context-to-simplify-a-react-form/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/2022/02/01/using-context-to-simplify-a-react-form/</guid>
+        <link>http://localhost:4000/blog/blog/2022/02/01/using-context-to-simplify-a-react-form/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/blog/2022/02/01/using-context-to-simplify-a-react-form/</guid>
         
         
         <category>refactoring</category>
@@ -1817,8 +1817,8 @@ accomplishments. As we say goodbye to 2021 and hello to 2022, here are some Arts
 
 </description>
         <pubDate>Thu, 06 Jan 2022 00:00:00 +0100</pubDate>
-        <link>http://localhost:4000/blog/2022/01/06/a-year-in-review-2021/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/2022/01/06/a-year-in-review-2021/</guid>
+        <link>http://localhost:4000/blog/blog/2022/01/06/a-year-in-review-2021/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/blog/2022/01/06/a-year-in-review-2021/</guid>
         
         
         <category>team</category>

@@ -1,0 +1,424 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Artsy's Culture Stack, 2017 - iOS Engineering</title>
+  <meta name="author" content="">
+
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://webfonts.artsy.net/all-webfonts.css"
+  />
+
+  
+  <meta name="description" content="
+  
+
+    
+
+  
+    
+      
+        
+          
+        
+        
+          Artsy's Culture Stack, 2017
+        
+        Mar 5, 2017
+          
+
+
+  
+...">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:image" content="http://artsy.github.io/images/artsy_oss_image.png" />
+  <meta property="og:image:type" content="image/png" />
+
+  
+  <link rel="canonical" href="http://localhost:4000/blog/2017/03/05/artsy-engineering-culture-2017/">
+  <link rel="alternate" type="application/rss+xml" title="Artsy Engineering Blog" href="/feed">
+  <link rel="alternate" type="application/atom+xml" title="Podcast Feed" href="/podcast.xml" />
+
+  <link href="/favicon.ico" rel="icon">
+  <link href="/blog/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+  <script src="/blog/javascripts/jquery-1.11.3.min.js"> </script>
+  <script src="/blog/javascripts/gradient-fade.js"></script>
+  <script src="/blog/javascripts/noframework.waypoints.min.js"></script>
+  <script src="/blog/javascripts/sticky.min.js"></script>
+  <script src="/blog/javascripts/custom-elements.min.js"></script>
+  <script src="/blog/javascripts/g-emoji-element.js"></script>
+  <script src="/blog/javascripts/related-articles.js"></script>
+
+  
+
+  <link href="/feed.xml" rel="alternate" title="iOS Engineering" type="application/atom+xml">
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-12450662-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+  <div id="logo-container">
+  </div>
+  <header id="banner"><div id="header">
+  <div class="header-navigation">
+    <ul>
+      <li><a href="https://developers.artsy.net/">API</a></li>
+      <li><a href="https://www.artsy.net/jobs">Careers</a></li>
+      <li><a href="http://twitter.com/artsyopensource">@artsyopensource</a></li>
+      <li><a href="http://www.artsy.net/">Artsy.net</a></li>
+    </ul>
+    <span class="header-section-title">
+      
+        <a href="/open-source">Open Source</a>
+      
+    </span>
+  </div>
+
+  <div class="header-sticky-container">
+    <div class="header-logo">
+      <h2><a href="http://localhost:4000">Artsy</a></h2>
+    </div>
+    <div class="header-search">
+      
+        <h2><a href="/">Engineering Blog</a></h2>
+      
+    </div>
+  </div>
+</div>
+</header>
+  <div class="header-hamburger">
+    <button class="cmn-toggle-switch cmn-toggle-switch__htx">
+      <span>toggle menu</span>
+    </button>
+  </div>
+  <div id="main">
+    <div id="content">
+
+      <div class="longform">
+  <article class="hentry" role="article">
+
+    <div class="article-container-single ">
+
+  
+    <div class="meta-container">
+      <header>
+        
+          <a href="">
+        
+        
+          <h2 class="entry-title">Artsy's Culture Stack, 2017</h2>
+        
+        <time datetime="2017-03-05">Mar 5, 2017</time>
+          <p class="meta-author">
+
+
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="/author/orta">Orta Therox<a/></span>
+      
+      <p class="fn">
+        <a href="https://twitter.com/orta">@orta</a>
+      </p>
+      
+
+    </div>
+  
+
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="/author/artsy-engineering">The Artsy Engineering Team<a/></span>
+      
+      <p class="fn">
+        <a href="https://twitter.com/ArtsyOpenSource">@ArtsyOpenSource</a>
+      </p>
+      
+
+    </div>
+  
+
+</p>
+          </a>
+      </header>
+    </div>
+  
+
+  <div class="content-container">
+    
+      <div class="entry-content"><!-- This comes out of the tech stack 2017, and isn't up for review yet -->
+
+<h1 id="people-and-culture">People and Culture</h1>
+
+<h2 id="open-source-by-default">Open Source by Default</h2>
+
+<p>By the end of 2016, almost every major front-end application at Artsy was <a href="http://code.dblock.org/2015/02/09/becoming-open-source-by-default.html">Open Source by Default</a>. This means looking for reasons for something to be closed-source as opposed to reasons to be open. Our entire working process is done in the open, from developer PRs to QA. This post was also written collaboratively and in the open as you can see <a href="https://github.com/artsy/artsy.github.io/pull/325">here</a>.</p>
+
+<p>Sometimes it makes sense to keep some details private for competitive reasons. We therefore also create a private GitHub repository for front-end teams that require cross-project issues and team milestones. This is done using <a href="https://www.zenhub.com">ZenHub</a>, and is managed by Engineering leads and Product Managers.</p>
+
+<h2 id="developer-workflow">Developer Workflow</h2>
+
+<p>Most development workflow tries to mimic large open-source project development where most work happens on forks and is pull-requested into an Artsy repository shared by everyone. Typically an engineer will start a project, application or service and is automatically its benevolent dictator. They will add continuous integration and will ask other engineers on the team to code review everything from day one. Others will join and entire teams may take over. Continuous deployment and other operational infrastructure will get setup early.</p>
+
+<p>In some of our newer apps we have switched to PR based deployments via CIs. In this case, on Artsy’s repository, we would have <em>master</em> and <em>release</em> branches where <em>master</em> is the default branch and all the PRs are made to master. Once a PR is reviewed and merged to <em>master</em> it will automatically get deployed on staging. Production deployment is a pull request from <em>master</em> to a <em>release</em> branch, this way we know what commits are going to be deployed in this release. Once merged, CI will automatically deploy the <em>release</em> branch to production.</p>
+
+<h2 id="slack">Slack</h2>
+
+<p>Originally the engineering team used IRC, but in 2015 we switched to Slack and encouraged its use throughout the whole company. We’re now averaging about 16,000 Slack messages a day inside Artsy.</p>
+
+<p>Slack usage started out small, but as the Artsy team grew, so did the number of locations where people worked. Encouraging people to move from disparate private conversations in different messaging clients to using slack channels has really made it easier to keep people in the loop. It’s made it possible to have the serendipitous collaboration you get by overhearing something important nearby physically.</p>
+
+<h2 id="global-engineering">Global Engineering</h2>
+
+<p>While most Engineers live in New York, our Engineering team has contributors in Amsterdam, Berlin, Seattle, Minneapolis, Boston and London. We’ve not shied away from hiring regardless of locations.</p>
+
+<p>To help people know each-other across the company we developed and open-sourced a <a href="https://github.com/artsy/team-navigator">team navigator</a>. We also facilitate weekly meetings between any three people across the company with a tool called <a href="https://github.com/ilyakava/sup">sup</a>.</p>
+
+<blockquote>
+  <p>Maybe worth mentioning that most of the channels shared between developers and other people at artsy(specialists, designers, product people, etc) which encourages collaboration and integration of art+technology as well. Also maybe worth mentioning that we have dedicated help channels per product team and well as company wide help channel.</p>
+</blockquote>
+</div>
+    
+
+    <p class="meta-author">
+      
+
+
+
+
+<div class="meta">
+  Posted by
+
+
+  
+
+  
+    <span class="byline author vcard">
+
+      <div class="meta"><span class="fn"><a href="/author/orta">
+        Orta Therox
+      </a></span></div>
+
+      
+      <span class="fn">
+        <a href="http://orta.io">Site</a>
+      </span>
+      
+      
+      <span class="fn">
+        <a href="https://github.com/orta">GitHub</a>
+      </span>
+      
+      
+      <span class="fn">
+        <a href="https://twitter.com/orta">@orta</a>
+      </span>
+      
+    </span>
+
+  
+</div>
+
+
+  
+
+  
+    <span class="byline author vcard">
+
+      <div class="meta"><span class="fn"><a href="/author/artsy-engineering">
+        The Artsy Engineering Team
+      </a></span></div>
+
+      
+      <span class="fn">
+        <a href="http://artsy.github.io">Site</a>
+      </span>
+      
+      
+      
+      <span class="fn">
+        <a href="https://twitter.com/ArtsyOpenSource">@ArtsyOpenSource</a>
+      </span>
+      
+    </span>
+
+  
+</div>
+
+
+
+
+    </p>
+    <p class="meta-categories">
+      Categories: 
+
+<span class="categories">
+  
+    Technologyeigenforcegravity
+  
+</span>
+
+
+    </p>
+    
+      <p class="meta-series" style="padding-bottom:0;">Part of a series: <strong>Artsy Tech Stack</strong></p>
+      <ul>
+        
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+        <li><div>
+  <a href="/blog/2017/03/05/artsy-engineering-culture-2017/">
+    <b>Artsy's Culture Stack, 2017</b> -
+    
+     <span class="byline author vcard"><a href ="/author/orta">Orta Therox</a></span>, <span class="byline author vcard"><a href ="/author/artsy-engineering">The Artsy Engineering Team</a></span>
+  </a>
+</div>
+</li>
+        
+      
+        
+      
+
+      </ul>
+    
+
+    
+
+    <p class="meta-paginate">
+      
+        <a class="previous" href="/blog/2015/08/06/open-sourcing-energy/" title="Previous Post: Open Sourcing Energy">&laquo; Open Sourcing Energy</a>
+      
+      
+        <a class="next" href="/blog/2020/12/31/echo-supporting-old-app-versions/" title="next Post: Echoes From the Past: Supporting Old App Versions">Echoes From the Past: Supporting Old App Versions &raquo;</a>
+      
+    </p>
+  </div>
+
+
+  <footer>
+  </footer>
+
+</div>
+
+
+  </article>
+</div>
+
+
+    </div>
+
+    <aside class="related-articles"></aside>
+
+  </div>
+  <footer id="main_footer"> <div class="footer-navigation">
+  <ul>
+    <li><a href="https://developers.artsy.net/">API</a></li>
+    <li><a href="https://www.artsy.net/jobs">Careers</a></li>
+    <li><a href="http://twitter.com/artsyopensource">@artsyopensource</a></li>
+    <li><a href="http://www.artsy.net/">Artsy.net</a></li>
+  </ul>
+</div>
+
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'artsy';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+</footer>
+  <script type="text/javascript">
+  $(function() {
+    // TODO: Move this whole file to a javascript file that is included in the footer
+
+    // Main sticky header
+    if ($(window).width() >= 700) {
+      var sticky = new Waypoint.Sticky({
+        element: $("#banner"),
+        offset: -100
+      });
+    }
+
+    // Toggle hamburger menu
+    $('.header-hamburger').click(function() {
+      $('#banner, .cmn-toggle-switch').toggleClass('active');
+      if (location.pathname == '/open-source') {
+        $('#page-sidebar').toggle();
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

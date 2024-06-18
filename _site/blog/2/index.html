@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Blog Engineering</title>
+  <title>iOS Engineering</title>
   <meta name="author" content="">
 
   <link
@@ -48,31 +48,38 @@
   <link rel="alternate" type="application/atom+xml" title="Podcast Feed" href="/podcast.xml" />
 
   <link href="/favicon.ico" rel="icon">
-  <link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/blog/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
 
-  <script src="/javascripts/jquery-1.11.3.min.js"> </script>
-  <script src="/javascripts/gradient-fade.js"></script>
-  <script src="/javascripts/noframework.waypoints.min.js"></script>
-  <script src="/javascripts/sticky.min.js"></script>
-  <script src="/javascripts/custom-element.min.js"></script>
-  <script src="/javascripts/g-emoji-element.js"></script>
-  <script src="/javascripts/related-articles.js"></script>
+  <script src="/blog/javascripts/jquery-1.11.3.min.js"> </script>
+  <script src="/blog/javascripts/gradient-fade.js"></script>
+  <script src="/blog/javascripts/noframework.waypoints.min.js"></script>
+  <script src="/blog/javascripts/sticky.min.js"></script>
+  <script src="/blog/javascripts/custom-elements.min.js"></script>
+  <script src="/blog/javascripts/g-emoji-element.js"></script>
+  <script src="/blog/javascripts/related-articles.js"></script>
 
   
 
-  <link href="/feed.xml" rel="alternate" title="Blog Engineering" type="application/atom+xml">
+  <link href="/feed.xml" rel="alternate" title="iOS Engineering" type="application/atom+xml">
   
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-12450662-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
 
 </head>
 
 
 <body>
   <div id="logo-container">
-    <a id="lrg-mark" href="https://www.artsy.net/">
-      <svg viewBox="0 0 510 510" width="40" height="40" xmlns="http://www.w3.org/2000/svg">
-        <path transform="scale(1, -1) translate(0, -480)" d="M0 -32h512v512h-512v-512v0zM464 16h-80v80h-48v-80h-288v416h416v-416v0zM194 384h-40l-74 -186h38l20 52h72l19 -52h39l-74 186v0zM149 282l25 66l24 -66h-49v0z"/>
-      </svg>
-    </a>
   </div>
   <header id="banner"><div id="header">
   <div class="header-navigation">
@@ -636,6 +643,105 @@ Artsy Engineering.</p>
     <div class="meta-container">
       <header>
         
+          <a href="/blog/2017/03/05/artsy-engineering-culture-2017/">
+        
+        
+          <h2 class="entry-title">Artsy's Culture Stack, 2017</h2>
+        
+        <time datetime=""></time>
+          <p class="meta-author">
+
+
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="/author/orta">Orta Therox<a/></span>
+      
+      <p class="fn">
+        <a href="https://twitter.com/orta">@orta</a>
+      </p>
+      
+
+    </div>
+  
+
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="/author/artsy-engineering">The Artsy Engineering Team<a/></span>
+      
+      <p class="fn">
+        <a href="https://twitter.com/ArtsyOpenSource">@ArtsyOpenSource</a>
+      </p>
+      
+
+    </div>
+  
+
+</p>
+          </a>
+      </header>
+    </div>
+  
+
+  <div class="content-container">
+    
+    
+        <!-- This comes out of the tech stack 2017, and isn't up for review yet -->
+
+<h1 id="people-and-culture">People and Culture</h1>
+
+<h2 id="open-source-by-default">Open Source by Default</h2>
+
+<p>By the end of 2016, almost every major front-end application at Artsy was <a href="http://code.dblock.org/2015/02/09/becoming-open-source-by-default.html">Open Source by Default</a>. This means looking for reasons for something to be closed-source as opposed to reasons to be open. Our entire working process is done in the open, from developer PRs to QA. This post was also written collaboratively and in the open as you can see <a href="https://github.com/artsy/artsy.github.io/pull/325">here</a>.</p>
+
+<p>Sometimes it makes sense to keep some details private for competitive reasons. We therefore also create a private GitHub repository for front-end teams that require cross-project issues and team milestones. This is done using <a href="https://www.zenhub.com">ZenHub</a>, and is managed by Engineering leads and Product Managers.</p>
+
+<h2 id="developer-workflow">Developer Workflow</h2>
+
+<p>Most development workflow tries to mimic large open-source project development where most work happens on forks and is pull-requested into an Artsy repository shared by everyone. Typically an engineer will start a project, application or service and is automatically its benevolent dictator. They will add continuous integration and will ask other engineers on the team to code review everything from day one. Others will join and entire teams may take over. Continuous deployment and other operational infrastructure will get setup early.</p>
+
+<p>In some of our newer apps we have switched to PR based deployments via CIs. In this case, on Artsy’s repository, we would have <em>master</em> and <em>release</em> branches where <em>master</em> is the default branch and all the PRs are made to master. Once a PR is reviewed and merged to <em>master</em> it will automatically get deployed on staging. Production deployment is a pull request from <em>master</em> to a <em>release</em> branch, this way we know what commits are going to be deployed in this release. Once merged, CI will automatically deploy the <em>release</em> branch to production.</p>
+
+<h2 id="slack">Slack</h2>
+
+<p>Originally the engineering team used IRC, but in 2015 we switched to Slack and encouraged its use throughout the whole company. We’re now averaging about 16,000 Slack messages a day inside Artsy.</p>
+
+<p>Slack usage started out small, but as the Artsy team grew, so did the number of locations where people worked. Encouraging people to move from disparate private conversations in different messaging clients to using slack channels has really made it easier to keep people in the loop. It’s made it possible to have the serendipitous collaboration you get by overhearing something important nearby physically.</p>
+
+<h2 id="global-engineering">Global Engineering</h2>
+
+<p>While most Engineers live in New York, our Engineering team has contributors in Amsterdam, Berlin, Seattle, Minneapolis, Boston and London. We’ve not shied away from hiring regardless of locations.</p>
+
+<p>To help people know each-other across the company we developed and open-sourced a <a href="https://github.com/artsy/team-navigator">team navigator</a>. We also facilitate weekly meetings between any three people across the company with a tool called <a href="https://github.com/ilyakava/sup">sup</a>.</p>
+
+<blockquote>
+  <p>Maybe worth mentioning that most of the channels shared between developers and other people at artsy(specialists, designers, product people, etc) which encourages collaboration and integration of art+technology as well. Also maybe worth mentioning that we have dedicated help channels per product team and well as company wide help channel.</p>
+</blockquote>
+
+    
+
+    
+  </div>
+
+
+  <footer>
+  </footer>
+
+</div>
+
+      </article>
+  
+    
+      <article>
+        <div class="article-container">
+
+  
+    <div class="meta-container">
+      <header>
+        
           <a href="/blog/2015/08/06/open-sourcing-energy/">
         
         
@@ -736,7 +842,7 @@ commits.</p>
 
 
 <script type="text/javascript">
-      var disqus_shortname = 'blog';
+      var disqus_shortname = 'artsy';
       
         
         var disqus_script = 'count.js';
