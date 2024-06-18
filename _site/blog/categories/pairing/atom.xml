@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: pairing | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/pairing/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/pairing/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[The Hows and Whys of Pair Programming]]></title>
-    <link href="https://marinahuber.github.io/blog/2018/10/19/pair-programming/"/>
+    <link href="http://localhost:4000/blog/2018/10/19/pair-programming/"/>
     <updated>2018-10-19T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2018/10/19/pair-programming</id>
+    <id>http://localhost:4000/blog/2018/10/19/pair-programming</id>
     <content type="html"><![CDATA[<p><em>Why pair program? As new engineers join Artsy, we’ve been experimenting with different programming cultures - Yuki
 came from Pivotal Labs where they have a strong pair programming culture and introduced it at Artsy - it’s been
 about a year and a half and we’re all really loving the changes he’s introduced.</em></p>

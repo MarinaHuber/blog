@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: ruby | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/ruby/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/ruby/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[GraphQL: Union vs. Interface]]></title>
-    <link href="https://marinahuber.github.io/blog/2019/01/14/graphql-union-vs-interface/"/>
+    <link href="http://localhost:4000/blog/2019/01/14/graphql-union-vs-interface/"/>
     <updated>2019-01-14T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2019/01/14/graphql-union-vs-interface</id>
+    <id>http://localhost:4000/blog/2019/01/14/graphql-union-vs-interface</id>
     <content type="html"><![CDATA[<p>At Artsy we’ve been moving towards GraphQL for all of our new services. Acknowledging GraphQL is a relatively new
 technology, we faced some challenging questions as we were developing one of our most recent services.</p>
 
@@ -313,9 +313,9 @@ the needs of that layer and then separately think about what’s the best way to
   
   <entry>
     <title type="html"><![CDATA[Apogee Technical Retrospective]]></title>
-    <link href="https://marinahuber.github.io/blog/2018/02/06/apogee-technical-retrospective/"/>
+    <link href="http://localhost:4000/blog/2018/02/06/apogee-technical-retrospective/"/>
     <updated>2018-02-06T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2018/02/06/apogee-technical-retrospective</id>
+    <id>http://localhost:4000/blog/2018/02/06/apogee-technical-retrospective</id>
     <content type="html"><![CDATA[<p>We’ve previously covered <a href="/blog/2018/02/02/artsy-apogee/">what Apogee is</a> and <a href="/blog/2018/01/24/kubernetes-and-hokusai/">how it’s deployed</a>, so all that’s left to cover is the technology used to build it. As a refresher: Apogee is a Google Sheets Add-on we built to help our Auctions Ops team transform the data given to us by our partners into a format that our CMS can understand. This process, done manually up until now, takes a long time and is a perfect candidate for automation.</p>
 
 <p>Apogee had some really interesting technical challenges that I enjoyed solving, and I’m excited to share some lessons I learned. So let’s dive in!</p>
@@ -563,9 +563,9 @@ GitHub repositories and editorial content (<a href="https://github.com/artsy/REA
   
   <entry>
     <title type="html"><![CDATA[Debugging Bundler Issues on Heroku]]></title>
-    <link href="https://marinahuber.github.io/blog/2013/01/15/debugging-bundler-issues-with-heroku/"/>
+    <link href="http://localhost:4000/blog/2013/01/15/debugging-bundler-issues-with-heroku/"/>
     <updated>2013-01-15T21:21:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2013/01/15/debugging-bundler-issues-with-heroku</id>
+    <id>http://localhost:4000/blog/2013/01/15/debugging-bundler-issues-with-heroku</id>
     <content type="html"><![CDATA[<p>A few days ago we have started seeing the Heroku deployments of one of our applications randomly hang during <code class="language-plaintext highlighter-rouge">bundle install</code>. The problem worsened with time and we were not able to do a deployment for days.</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git push -f git@heroku.com:application.git FETCH_HEAD:master
@@ -672,9 +672,9 @@ bundle install
   
   <entry>
     <title type="html"><![CDATA[Beat Heroku's 60 Seconds Application Boot Timeout with a Proxy]]></title>
-    <link href="https://marinahuber.github.io/blog/2012/12/13/beat-heroku-60-seconds-application-boot-timeout-with-a-proxy/"/>
+    <link href="http://localhost:4000/blog/2012/12/13/beat-heroku-60-seconds-application-boot-timeout-with-a-proxy/"/>
     <updated>2012-12-13T21:21:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2012/12/13/beat-heroku-60-seconds-application-boot-timeout-with-a-proxy</id>
+    <id>http://localhost:4000/blog/2012/12/13/beat-heroku-60-seconds-application-boot-timeout-with-a-proxy</id>
     <content type="html"><![CDATA[<p><img src="/images/2012-12-13-beat-heroku-60-seconds-application-boot-timeout-with-a-proxy/heroku-logo-light-234x60.png" /></p>
 
 <p>Heroku will log an <a href="https://devcenter.heroku.com/articles/error-codes#r10-boot-timeout">R10 - Boot Timeout</a> error when a web process takes longer than 60 seconds to bind to its assigned port. This error is often caused by a process being unable to reach an external resource, such as a database or because you have a lot of gems in your <code class="language-plaintext highlighter-rouge">Gemfile</code> which take a long time to load.</p>
@@ -713,9 +713,9 @@ bundle install
   
   <entry>
     <title type="html"><![CDATA[Measuring Performance in Grape APIs with NewRelic RPM]]></title>
-    <link href="https://marinahuber.github.io/blog/2012/11/29/measuring-performance-in-grape-apis-with-new-relic/"/>
+    <link href="http://localhost:4000/blog/2012/11/29/measuring-performance-in-grape-apis-with-new-relic/"/>
     <updated>2012-11-29T21:21:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2012/11/29/measuring-performance-in-grape-apis-with-new-relic</id>
+    <id>http://localhost:4000/blog/2012/11/29/measuring-performance-in-grape-apis-with-new-relic</id>
     <content type="html"><![CDATA[<p>Knowing how well your API performs in real time is essential to any successful project. That’s because you can’t fix what you can’t measure.</p>
 
 <p>We use and heavily contribute to <a href="http://github.com/intridea/grape">Grape</a>, a Ruby API DSL. Grape is a Rack middleware and we have been reporting API performance data to <a href="http://newrelic.com/">NewRelic</a> with code from <a href="http://code.dblock.org/new-relic-performance-instrumentation-with-grape-api">my older blog post</a>.</p>

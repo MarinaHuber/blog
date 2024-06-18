@@ -11,13 +11,13 @@
   <channel>
     <title>Artsy Engineering Radio</title>
     
-    <atom:link href="https://marinahuber.github.io/podcast.xml" rel="self" type="application/rss+xml" />
-    <itunes:new-feed-url>https://marinahuber.github.io/podcast.xml</itunes:new-feed-url>
+    <atom:link href="http://localhost:4000/podcast.xml" rel="self" type="application/rss+xml" />
+    <itunes:new-feed-url>http://localhost:4000/podcast.xml</itunes:new-feed-url>
     
-    <link>https://marinahuber.github.io</link>
+    <link>http://localhost:4000</link>
     <description>A podcast exploring questions in software engineering.</description>
     
-    <lastBuildDate>Tue, 18 Jun 2024 15:01:35 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 18 Jun 2024 16:08:03 +0200</lastBuildDate>
     <sy:updatePeriod>hourly</sy:updatePeriod>
     <sy:updateFrequency>1</sy:updateFrequency>
     

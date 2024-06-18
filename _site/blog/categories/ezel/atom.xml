@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: ezel | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/ezel/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/ezel/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[A History of Artsy's Web Frontend]]></title>
-    <link href="https://marinahuber.github.io/blog/2018/10/04/artsy-frontend-history/"/>
+    <link href="http://localhost:4000/blog/2018/10/04/artsy-frontend-history/"/>
     <updated>2018-10-04T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2018/10/04/artsy-frontend-history</id>
+    <id>http://localhost:4000/blog/2018/10/04/artsy-frontend-history</id>
     <content type="html"><![CDATA[<p>As Artsy Engineering grows in 2018, we have so many newcomers looking for context: they want to understand the
 systems they’ll be working in day-to-day. Awesome! But it’s not enough to understand the systems themselves, it’s
 often helpful to understand the <em>history</em> of how we ended up where we are.</p>

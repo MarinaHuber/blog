@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: KAWS refactoring gravity | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/kaws-refactoring-gravity/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/kaws-refactoring-gravity/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Third Time's the Charm: Deprecating KAWS]]></title>
-    <link href="https://marinahuber.github.io/blog/2022/05/09/deprecating-kaws/"/>
+    <link href="http://localhost:4000/blog/2022/05/09/deprecating-kaws/"/>
     <updated>2022-05-09T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2022/05/09/deprecating-kaws</id>
+    <id>http://localhost:4000/blog/2022/05/09/deprecating-kaws</id>
     <content type="html"><![CDATA[<p>How do you tell when it’s time to deprecate a system? If something mostly works OK, is it worth spending time and
 effort replacing its functionality?</p>
 

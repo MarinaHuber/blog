@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: git | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/git/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/git/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Why Projects Need Code Names]]></title>
-    <link href="https://marinahuber.github.io/blog/2019/05/10/why-projects-need-codenames/"/>
+    <link href="http://localhost:4000/blog/2019/05/10/why-projects-need-codenames/"/>
     <updated>2019-05-10T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2019/05/10/why-projects-need-codenames</id>
+    <id>http://localhost:4000/blog/2019/05/10/why-projects-need-codenames</id>
     <content type="html"><![CDATA[<p>Before I joined Artsy, I worked at companies where software projects tended to have meaningful, predictable names. If we were building a system for flagging media uploads, it might be called <code class="language-plaintext highlighter-rouge">media-review</code>. In many cases, our code repositories’ names matched the main product’s branding or even the company’s name. Life was simple and there was no risk of ambiguity.</p>
 
 <p>At Artsy, our systems have peculiar code names like <em>Gravity</em>, <em>Pulse</em>, and <em>Vortex</em>. There’s a persistent learning curve as you contribute to different repositories or as new services get created. Numerous times, I’ve wondered: are code names worth the trouble?</p>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: teams | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/teams/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/teams/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Stepping Out Of The Knowledge Zone]]></title>
-    <link href="https://marinahuber.github.io/blog/2022/04/13/stepping-out-of-the-knowledge-zone/"/>
+    <link href="http://localhost:4000/blog/2022/04/13/stepping-out-of-the-knowledge-zone/"/>
     <updated>2022-04-13T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2022/04/13/stepping-out-of-the-knowledge-zone</id>
+    <id>http://localhost:4000/blog/2022/04/13/stepping-out-of-the-knowledge-zone</id>
     <content type="html"><![CDATA[<p>As I am writing my first blog post for Artsy, here is a short introduction on who I am: My name is Kaja and I am an
 engineer in our Berlin entity. As a Ruby-born programmer I am calling myself a backend engineer, but that also may
 change and is more about emotional identification and less about what I actually do (as you will see in this blog
@@ -194,9 +194,9 @@ that you don’t know” as a snail would do to find her way forward very slowly
   
   <entry>
     <title type="html"><![CDATA[Unstructured Knowledge Sharing]]></title>
-    <link href="https://marinahuber.github.io/blog/2021/05/11/unstructured-knowledge-sharing/"/>
+    <link href="http://localhost:4000/blog/2021/05/11/unstructured-knowledge-sharing/"/>
     <updated>2021-05-11T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2021/05/11/unstructured-knowledge-sharing</id>
+    <id>http://localhost:4000/blog/2021/05/11/unstructured-knowledge-sharing</id>
     <content type="html"><![CDATA[<p>We have a handful of regularly scheduled meetings in place at Artsy devoted to knowledge sharing.</p>
 
 <p>But what about the <em>unstructured</em> ways in which we share knowledge? If structured sharing time demonstrates that a
@@ -295,9 +295,9 @@ or the product you’re building — it’s knowledge-sharing of tools, skills, 
   
   <entry>
     <title type="html"><![CDATA[Echoes From the Past: Supporting Old App Versions]]></title>
-    <link href="https://marinahuber.github.io/blog/2020/12/31/echo-supporting-old-app-versions/"/>
+    <link href="http://localhost:4000/blog/2020/12/31/echo-supporting-old-app-versions/"/>
     <updated>2020-12-31T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2020/12/31/echo-supporting-old-app-versions</id>
+    <id>http://localhost:4000/blog/2020/12/31/echo-supporting-old-app-versions</id>
     <content type="html"><![CDATA[<p><a href="https://artsy.github.io/blog/2020/03/02/ios-deploys-super-weird-totally-normal/">In, a recent blog post</a>, I discussed a fundamental difference between web and iOS deployments. Web software is deployed to servers that are under your control, while iOS software is deployed to users’ devices that you have <em>no</em> control over. This distinction really changes how you think about the code that you ship, because that code could be running indefinitely on devices that never get updated.</p>
 
 <p>The previous post focused on this distinction through the lens of accidentally shipping (and then fixing) a bug. This focus on bugs is important, but focusing <em>only</em> on bugs left me unable to articulate an important, nuanced distinction between hosting code and shipping app binaries. So let’s dive in.</p>
@@ -359,9 +359,9 @@ or the product you’re building — it’s knowledge-sharing of tools, skills, 
   
   <entry>
     <title type="html"><![CDATA[Knowledge Shares For Great Good]]></title>
-    <link href="https://marinahuber.github.io/blog/2020/12/09/share-your-knowledge/"/>
+    <link href="http://localhost:4000/blog/2020/12/09/share-your-knowledge/"/>
     <updated>2020-12-09T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2020/12/09/share-your-knowledge</id>
+    <id>http://localhost:4000/blog/2020/12/09/share-your-knowledge</id>
     <content type="html"><![CDATA[<p>Sharing knowledge! What a concept! <a href="/blog/2020/09/29/becoming-mobile-first-at-artsy/">In my recent blog post</a>, I discussed “Knowledge Share” meetings (also known simply as “Knowledge Shares”, or abbreviated “KS”) and I want to dive deeper into them today. Last time, I described them as follows:</p>
 
 <blockquote>
@@ -424,9 +424,9 @@ or the product you’re building — it’s knowledge-sharing of tools, skills, 
   
   <entry>
     <title type="html"><![CDATA[Becoming Mobile First]]></title>
-    <link href="https://marinahuber.github.io/blog/2020/09/29/becoming-mobile-first-at-artsy/"/>
+    <link href="http://localhost:4000/blog/2020/09/29/becoming-mobile-first-at-artsy/"/>
     <updated>2020-09-29T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2020/09/29/becoming-mobile-first-at-artsy</id>
+    <id>http://localhost:4000/blog/2020/09/29/becoming-mobile-first-at-artsy</id>
     <content type="html"><![CDATA[<p>It was a Wednesday, mid-summer 2019. I don’t know which Wednesday specifically, but I know that it was <em>a</em>
 Wednesday because I was attending Artsy’s weekly all-hands meeting. Two hundred colleagues were also there (many
 dialing in remotely) and we were all listening to

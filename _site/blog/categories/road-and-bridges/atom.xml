@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: road and bridges | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/road-and-bridges/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/road-and-bridges/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Deploying canaries with auto]]></title>
-    <link href="https://marinahuber.github.io/blog/2020/02/20/deploying-canaries-with-auto/"/>
+    <link href="http://localhost:4000/blog/2020/02/20/deploying-canaries-with-auto/"/>
     <updated>2020-02-20T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2020/02/20/deploying-canaries-with-auto</id>
+    <id>http://localhost:4000/blog/2020/02/20/deploying-canaries-with-auto</id>
     <content type="html"><![CDATA[<p>Coordinating changes across many packages in the node ecosystem can be quite the challenge. You can use <code class="language-plaintext highlighter-rouge">npm link</code>
 or <code class="language-plaintext highlighter-rouge">yarn link</code> to create a symlink of the package you’re developing on into another package, but it
 <a href="https://github.com/yarnpkg/yarn/issues/1761#issuecomment-259706202">has some drawbacks</a>. If you’re doing local
@@ -81,9 +81,9 @@ that’ll be another blog post for another day.</p>
   
   <entry>
     <title type="html"><![CDATA[Migrating to PR Label based Continuous Deployment]]></title>
-    <link href="https://marinahuber.github.io/blog/2019/01/03/label-based-prs/"/>
+    <link href="http://localhost:4000/blog/2019/01/03/label-based-prs/"/>
     <updated>2019-01-03T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2019/01/03/label-based-prs</id>
+    <id>http://localhost:4000/blog/2019/01/03/label-based-prs</id>
     <content type="html"><![CDATA[<p>In the JavaScript world, the idea of deploying your libraries on every PR is pretty common. As someone who runs a
 dependency manager but comes from a native background, it’s easy for me to cringe and imagine the strain this puts
 on NPM’s servers. However, that is where the ecosystem is and <a href="https://github.com/artsy/reaction/issues/388">continuous deployment</a> can be really useful. So,

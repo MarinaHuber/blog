@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: tools | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/tools/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/tools/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Strategies For Small, Focused Pull Requests]]></title>
-    <link href="https://marinahuber.github.io/blog/2021/03/09/strategies-for-small-focused-pull-requests/"/>
+    <link href="http://localhost:4000/blog/2021/03/09/strategies-for-small-focused-pull-requests/"/>
     <updated>2021-03-09T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2021/03/09/strategies-for-small-focused-pull-requests</id>
+    <id>http://localhost:4000/blog/2021/03/09/strategies-for-small-focused-pull-requests</id>
     <content type="html"><![CDATA[<p>A common suggestion for improving pull requests (PRs) is to “make your PR small and focused”. I myself gave this suggestion in <a href="https://artsy.github.io/blog/2020/08/11/improve-pull-requests-by-including-valuable-context/">a recent article on this very blog about including context in PRs</a>.</p>
 
 <p>Like most internet advice, this can feel like the <a href="https://knowyourmeme.com/memes/how-to-draw-an-owl">“draw the rest of the owl”</a> meme. Even if we’re in agreement that I <em>should</em> make a PR smaller…<strong><em>how</em></strong> do I do it? How do I avoid a big PR when there’s a lot of cross-cutting changes to make? How do I create small, focused units of work when I’m building a large feature? How can I overcome my perfectionism and submit a PR that feels incomplete to me because the edges aren’t all polished?</p>
@@ -138,9 +138,9 @@
   
   <entry>
     <title type="html"><![CDATA[Improve Pull Requests By Including Valuable Context]]></title>
-    <link href="https://marinahuber.github.io/blog/2020/08/11/improve-pull-requests-by-including-valuable-context/"/>
+    <link href="http://localhost:4000/blog/2020/08/11/improve-pull-requests-by-including-valuable-context/"/>
     <updated>2020-08-11T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2020/08/11/improve-pull-requests-by-including-valuable-context</id>
+    <id>http://localhost:4000/blog/2020/08/11/improve-pull-requests-by-including-valuable-context</id>
     <content type="html"><![CDATA[<p>Code review is an engineering process that has benefited greatly from a move toward asynchronous communication.
 Long ago, engineering teams would sit in a room with code on a projector to review changes together. 😱 For many
 teams this led to batching code reviews or even skipping them altogether. 😱😱</p>
@@ -301,9 +301,9 @@ of great PRs to share with the rest of us, leave a comment!</p>
   
   <entry>
     <title type="html"><![CDATA[Deploying canaries with auto]]></title>
-    <link href="https://marinahuber.github.io/blog/2020/02/20/deploying-canaries-with-auto/"/>
+    <link href="http://localhost:4000/blog/2020/02/20/deploying-canaries-with-auto/"/>
     <updated>2020-02-20T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2020/02/20/deploying-canaries-with-auto</id>
+    <id>http://localhost:4000/blog/2020/02/20/deploying-canaries-with-auto</id>
     <content type="html"><![CDATA[<p>Coordinating changes across many packages in the node ecosystem can be quite the challenge. You can use <code class="language-plaintext highlighter-rouge">npm link</code>
 or <code class="language-plaintext highlighter-rouge">yarn link</code> to create a symlink of the package you’re developing on into another package, but it
 <a href="https://github.com/yarnpkg/yarn/issues/1761#issuecomment-259706202">has some drawbacks</a>. If you’re doing local
@@ -367,9 +367,9 @@ that’ll be another blog post for another day.</p>
   
   <entry>
     <title type="html"><![CDATA[Releasecop Tracks Stale Releases]]></title>
-    <link href="https://marinahuber.github.io/blog/2015/09/01/releasecop-tracks-stale-releases/"/>
+    <link href="http://localhost:4000/blog/2015/09/01/releasecop-tracks-stale-releases/"/>
     <updated>2015-09-01T17:30:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2015/09/01/releasecop-tracks-stale-releases</id>
+    <id>http://localhost:4000/blog/2015/09/01/releasecop-tracks-stale-releases</id>
     <content type="html"><![CDATA[<p>Artsy practices a sort of <a href="http://en.wikipedia.org/wiki/Continuous_delivery">continuous delivery</a>. We keep release cycles short and the process of reviewing, testing, and deploying our software as reliable, fast, and automated as possible. (This blog has touched on these practices <a href="http://artsy.github.io/blog/categories/testing/">multiple</a> <a href="http://artsy.github.io/blog/categories/continuous-integration">times</a>.)</p>
 
 <p>Usually, commits that have been reviewed and merged are immediately built and tested. Successfully built versions of the codebase are often automatically deployed to a staging environment. On an automated or frequent-but-manual basis, that version is deployed to a production environment. Thus, commits form a pipeline:</p>

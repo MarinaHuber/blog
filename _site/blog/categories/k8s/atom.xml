@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: k8s | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/k8s/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/k8s/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Kubernetes and Hokusai]]></title>
-    <link href="https://marinahuber.github.io/blog/2019/10/18/kubernetes-and-hokusai/"/>
+    <link href="http://localhost:4000/blog/2019/10/18/kubernetes-and-hokusai/"/>
     <updated>2019-10-18T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2019/10/18/kubernetes-and-hokusai</id>
+    <id>http://localhost:4000/blog/2019/10/18/kubernetes-and-hokusai</id>
     <content type="html"><![CDATA[<p>When I joined Artsy Engineering a few months ago, I had roughly zero knowledge of Kubernetes. I’d heard the term
 thrown around a few times, but had no idea how it worked or what it was used for.</p>
 

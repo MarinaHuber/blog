@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Relay | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/relay/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/relay/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Effortless Pagination with GraphQL and Relay? Really!]]></title>
-    <link href="https://marinahuber.github.io/blog/2020/01/21/graphql-relay-windowed-pagination/"/>
+    <link href="http://localhost:4000/blog/2020/01/21/graphql-relay-windowed-pagination/"/>
     <updated>2020-01-21T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2020/01/21/graphql-relay-windowed-pagination</id>
+    <id>http://localhost:4000/blog/2020/01/21/graphql-relay-windowed-pagination</id>
     <content type="html"><![CDATA[<p>It’s the year 2020. You use a modern front-end stack of <a href="https://relay.dev/">Relay</a>,
 <a href="https://graphql.org/">GraphQL</a>, <a href="https://reactjs.org/">React</a> and <a href="https://www.typescriptlang.org/">TypeScript</a>.
 You can build an infinite scroll ‘feed’ type UI totally out of the box with these tools, by mostly putting together

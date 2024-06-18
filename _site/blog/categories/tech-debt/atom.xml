@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: tech debt | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/tech-debt/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/tech-debt/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[At Long Last: A Log Out Button]]></title>
-    <link href="https://marinahuber.github.io/blog/2020/01/15/ios-logout-button-at-last/"/>
+    <link href="http://localhost:4000/blog/2020/01/15/ios-logout-button-at-last/"/>
     <updated>2020-01-15T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2020/01/15/ios-logout-button-at-last</id>
+    <id>http://localhost:4000/blog/2020/01/15/ios-logout-button-at-last</id>
     <content type="html"><![CDATA[<p>In 2013, Artsy shipped the first version of our iOS app. Typical for an early-day startup, the app was a “minimum
 viable product” (with a big emphasis on “minimum”). One of the features that didn’t make the cut was something you
 expect to see in most apps: a log out button.</p>

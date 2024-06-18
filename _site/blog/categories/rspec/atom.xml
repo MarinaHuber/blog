@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: rspec | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/rspec/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/rspec/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[What JavaScript Tests Could Learn From RSpec]]></title>
-    <link href="https://marinahuber.github.io/blog/2021/09/10/what-javascript-tests-could-learn-from-rspec/"/>
+    <link href="http://localhost:4000/blog/2021/09/10/what-javascript-tests-could-learn-from-rspec/"/>
     <updated>2021-09-10T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2021/09/10/what-javascript-tests-could-learn-from-rspec</id>
+    <id>http://localhost:4000/blog/2021/09/10/what-javascript-tests-could-learn-from-rspec</id>
     <content type="html"><![CDATA[<p>When I started at Artsy a few years ago, I’d never written a line of Ruby. I feel at home with JavaScript — it’s
 been my buddy since I started my career over 20 years ago. I’ve written enough tests in JavaScript that I sometimes
 feel like I can write them in my sleep (as long as they don’t involve async React events 😅).</p>
@@ -293,9 +293,9 @@ I’m in ❤️ ❤️ ❤️ ❤️ ❤️.</p>
   
   <entry>
     <title type="html"><![CDATA[Switch from Capybara Webkit to Chrome]]></title>
-    <link href="https://marinahuber.github.io/blog/2018/11/27/switch-from-capybara-webkit-to-chrome/"/>
+    <link href="http://localhost:4000/blog/2018/11/27/switch-from-capybara-webkit-to-chrome/"/>
     <updated>2018-11-27T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2018/11/27/switch-from-capybara-webkit-to-chrome</id>
+    <id>http://localhost:4000/blog/2018/11/27/switch-from-capybara-webkit-to-chrome</id>
     <content type="html"><![CDATA[<p>Volt is the internal app name of Artsy CMS, and our partners use it to manage their inventory and presence on artsy.net. It’s a Rails-based UI app that talks to many API services. We use <a href="https://github.com/rspec/rspec">RSpec</a> extensively to cover controller, model, view, and feature specs. As of Jun. 2018, Volt had 3751 specs and 495 of them were run with JavaScript enabled. It took about 16 mins to run on CircleCI with 6x parallelism.</p>
 
 <p>Capybara-webkit was introduced from the very beginning of Volt for testing JavaScript-enabled specs via headless WebKit browser. It’s been providing a lot of confidence for the past 4+ years; however, a few reasons/growing concerns have encouraged us to look for (more modern) alternatives:</p>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: ocmock | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/ocmock/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/ocmock/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[How To Write Unit Tests Like a Brood Parasite]]></title>
-    <link href="https://marinahuber.github.io/blog/2015/07/06/how-to-write-unit-tests-like-a-brood-parasite/"/>
+    <link href="http://localhost:4000/blog/2015/07/06/how-to-write-unit-tests-like-a-brood-parasite/"/>
     <updated>2015-07-06T13:54:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2015/07/06/how-to-write-unit-tests-like-a-brood-parasite</id>
+    <id>http://localhost:4000/blog/2015/07/06/how-to-write-unit-tests-like-a-brood-parasite</id>
     <content type="html"><![CDATA[<p>To a beginner, <a href="http://ocmock.org/">OCMock</a> looks scary. The syntax is strange, the idea of stubbing seems complicated, and skirting around the need to use it at all times kind of works out for a while.</p>
 
 <div class="language-objc highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[[[</span><span class="n">mock</span> <span class="nf">stub</span><span class="p">]</span> <span class="c1">// three brackets!!</span>

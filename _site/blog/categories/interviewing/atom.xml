@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: interviewing | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/interviewing/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/interviewing/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Interviewing, applying and getting your first job in iOS]]></title>
-    <link href="https://marinahuber.github.io/blog/2016/01/30/iOS-Junior-Interviews/"/>
+    <link href="http://localhost:4000/blog/2016/01/30/iOS-Junior-Interviews/"/>
     <updated>2016-01-30T11:09:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2016/01/30/iOS-Junior-Interviews</id>
+    <id>http://localhost:4000/blog/2016/01/30/iOS-Junior-Interviews</id>
     <content type="html"><![CDATA[<p>When I was at the beginning of my career, my first developer job application was to a design agency who were doing
 Mac development too. It was pretty nerve-wracking to apply for my first programming job, and I came into the
 interview with no idea what to expect. I had just graduated from university and was at the first few steps of my

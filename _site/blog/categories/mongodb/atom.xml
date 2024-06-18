@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: MongoDB | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/mongodb/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/mongodb/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Are you using the right Mongo geospatial query?]]></title>
-    <link href="https://marinahuber.github.io/blog/2023/02/10/mongo-geospatial-queries/"/>
+    <link href="http://localhost:4000/blog/2023/02/10/mongo-geospatial-queries/"/>
     <updated>2023-02-10T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2023/02/10/mongo-geospatial-queries</id>
+    <id>http://localhost:4000/blog/2023/02/10/mongo-geospatial-queries</id>
     <content type="html"><![CDATA[<p>We recently got a report from one of our galleries in the Los Angeles area that
 they weren’t showing up on our
 <a href="https://www.artsy.net/shows/los-angeles-ca-usa">Los Angeles exhibition listings</a>.</p>
@@ -312,9 +312,9 @@ geospatial engines.</p>
   
   <entry>
     <title type="html"><![CDATA[Building an English Auction with MongoDB]]></title>
-    <link href="https://marinahuber.github.io/blog/2014/04/17/building-an-english-auction-with-mongodb/"/>
+    <link href="http://localhost:4000/blog/2014/04/17/building-an-english-auction-with-mongodb/"/>
     <updated>2014-04-17T12:21:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2014/04/17/building-an-english-auction-with-mongodb</id>
+    <id>http://localhost:4000/blog/2014/04/17/building-an-english-auction-with-mongodb</id>
     <content type="html"><![CDATA[<p>Artsy ran several successful auctions over the past few months. The first, <a href="https://artsy.net/feature/two-x-two">TWO x TWO</a>, raised hundreds of thousands of dollars for amfAR (the AIDS Research foundation), and the Dallas Museum of Art. It was followed by <a href="https://artsy.net/feature/ici-benefit-auction">Independent Curators International</a>, at which Artsy launched on-site auction projection screens, which displayed competing bids coming in online from places around the world, like Oslo and Santa Monica, in realtime. Users could place bids on the website, via the iPhone app or with one of the Artsy representatives in the room carrying an iPad.  All the auction lots sold, and Artsy helped ICI to raise 50% more than its target revenue goal. Other, recent Artsy auctions include <a href="https://artsy.net/feature/public-art-fund-2014-spring-benefit">Public Art Fund</a> and the <a href="https://artsy.net/feature/brooklyn-artists-ball">Brooklyn Artists Ball</a>, benefitting the Brooklyn Museum.</p>
 
 <p><img src="/images/2014-04-17-implementing-bidding-in-an-english-auction-with-mongodb/ici-live-auction.jpg" alt="ICI Auction: Live" /></p>
@@ -482,9 +482,9 @@ scientists</a> by Simon Parsons (CUNY), Juan A. Rodriguez-Aguilar (CSIC) and Mar
   
   <entry>
     <title type="html"><![CDATA[Upgrading to Mongoid 4.x]]></title>
-    <link href="https://marinahuber.github.io/blog/2013/11/07/upgrading-to-mongoid4/"/>
+    <link href="http://localhost:4000/blog/2013/11/07/upgrading-to-mongoid4/"/>
     <updated>2013-11-07T12:34:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2013/11/07/upgrading-to-mongoid4</id>
+    <id>http://localhost:4000/blog/2013/11/07/upgrading-to-mongoid4</id>
     <content type="html"><![CDATA[<p>I recently went through an exercise of upgrading one of Artsy’s largest web projects to the current HEAD of Mongoid 4.x. This is going to be a major release with numerous changes and I wanted to flush out bugs before the final version of the ODM is released. All Mongoid changes currently live on <a href="https://github.com/mongoid/mongoid">master</a>.</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gem</span> <span class="s1">'mongoid'</span><span class="p">,</span> <span class="ss">github: </span><span class="s1">'mongoid/mongoid'</span>
@@ -649,9 +649,9 @@ end   end end ```
   
   <entry>
     <title type="html"><![CDATA[Infinite Scroll with MongoDB]]></title>
-    <link href="https://marinahuber.github.io/blog/2013/02/15/infinite-scroll-with-mongodb/"/>
+    <link href="http://localhost:4000/blog/2013/02/15/infinite-scroll-with-mongodb/"/>
     <updated>2013-02-15T21:21:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2013/02/15/infinite-scroll-with-mongodb</id>
+    <id>http://localhost:4000/blog/2013/02/15/infinite-scroll-with-mongodb</id>
     <content type="html"><![CDATA[<p>An infinite scroll can be a beautiful and functional way to present feed data. You can see ours on the <a href="https://artsy.net/">homepage of artsy.net</a>. It works by fetching a few items from the API, then fetching some more items as the user scrolls down the feed. Each API call returns the items along with a “cursor”, which marks the position of the last item retrieved. Subsequent API calls include the cursor in the query string and the iteration resumes from there.</p>
 
 <p>Why use a cursor and not standard pagination? Because inserting an item on top of the feed would shift the existing items down, causing the API to return a duplicate item on the page boundary. Removing an item from the top of the feed would pull the remaining items up, causing an item to be missed in the next request on the page boundary.</p>
@@ -763,9 +763,9 @@ end   end end ```
   
   <entry>
     <title type="html"><![CDATA[Data Corruption and Concurrent Updates to Embedded Objects with MongoDB]]></title>
-    <link href="https://marinahuber.github.io/blog/2013/02/09/data-corruption-and-concurrent-updates-to-embedded-objects-with-mongoid/"/>
+    <link href="http://localhost:4000/blog/2013/02/09/data-corruption-and-concurrent-updates-to-embedded-objects-with-mongoid/"/>
     <updated>2013-02-09T21:21:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2013/02/09/data-corruption-and-concurrent-updates-to-embedded-objects-with-mongoid</id>
+    <id>http://localhost:4000/blog/2013/02/09/data-corruption-and-concurrent-updates-to-embedded-objects-with-mongoid</id>
     <content type="html"><![CDATA[<p>We use <a href="http://www.mongodb.org/">MongoDB</a> at Artsy as our primary data store via the <a href="http://mongoid.org/">Mongoid ODM</a>. Eventually, we started noticing data corruption inside embedded objects at an alarming rate of 2-3 records a day. The number of occurrences increased rapidly with load as our user growth accelerated.</p>
 
 <p>The root cause was not a HN-worthy sensational declaration about how MongoDB trashes data, but our lack of understanding of what can and cannot be concurrently written to the database, neatly hidden behind the object data mapping layer.</p>

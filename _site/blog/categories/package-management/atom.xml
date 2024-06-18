@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: package-management | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/package-management/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/package-management/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[It's time to use Swift Package Manager]]></title>
-    <link href="https://marinahuber.github.io/blog/2019/01/05/its-time-to-use-spm/"/>
+    <link href="http://localhost:4000/blog/2019/01/05/its-time-to-use-spm/"/>
     <updated>2019-01-05T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2019/01/05/its-time-to-use-spm</id>
+    <id>http://localhost:4000/blog/2019/01/05/its-time-to-use-spm</id>
     <content type="html"><![CDATA[<p>It’s been three years, and <a href="https://swift.org/package-manager/">Swift Package Manager</a> (SPM) is at a point where it can be useful for iOS
 projects. It’ll take a bit of sacrifice and a little bit of community spirit to fix some holes probably but <strong>in my
 opinion, it’s time for teams to start adopting SPM for their 3rd party dev tools</strong>.</p>
@@ -181,9 +181,9 @@ warrant linters/formatters yet.</p>
   
   <entry>
     <title type="html"><![CDATA[Why is the Swift Package Manager taking so long?]]></title>
-    <link href="https://marinahuber.github.io/blog/2018/12/21/why-is-swiftpm-taking-so-long/"/>
+    <link href="http://localhost:4000/blog/2018/12/21/why-is-swiftpm-taking-so-long/"/>
     <updated>2018-12-21T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2018/12/21/why-is-swiftpm-taking-so-long</id>
+    <id>http://localhost:4000/blog/2018/12/21/why-is-swiftpm-taking-so-long</id>
     <content type="html"><![CDATA[<p>Last month I was chatting at a bar with an engineer working on the Swift team, and we welcomed someone to our
 conversation where they opened with the question: <em>“When can I stop using CocoaPods and switch to Swift PM?”</em> I
 chuckled, because I get this a lot (I have been helping to maintain CocoaPods for about 6 years now) but they had

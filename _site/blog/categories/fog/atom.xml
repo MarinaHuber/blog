@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Fog | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/fog/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/fog/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Beyond Heroku: "Satellite" Delayed Job Workers on EC2]]></title>
-    <link href="https://marinahuber.github.io/blog/2012/01/31/beyond-heroku-satellite-delayed-job-workers-on-ec2/"/>
+    <link href="http://localhost:4000/blog/2012/01/31/beyond-heroku-satellite-delayed-job-workers-on-ec2/"/>
     <updated>2012-01-31T11:45:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2012/01/31/beyond-heroku-satellite-delayed-job-workers-on-ec2</id>
+    <id>http://localhost:4000/blog/2012/01/31/beyond-heroku-satellite-delayed-job-workers-on-ec2</id>
     <content type="html"><![CDATA[<p>[TL;DR: To supplement Heroku-managed app servers, we launched custom EC2 instances to host Delayed Job worker processes. See the <a href="https://github.com/joeyAghion/satellite_setup">satellite_setup github repo</a> for rake tasks and Chef recipes that make it easy.]</p>
 
 <p><a href="http://artsy.net">Artsy</a> engineers are big users and abusers of <a href="http://heroku.com">Heroku</a>. It’s a neat abstraction of server resources, so we were conflicted when parts of our application started to bump into Heroku’s limitations. While we weren’t eager to start managing additional infrastructure, we found that–with a few good tools–we could migrate some components away from Heroku without fragmenting the codebase or over-complicating our development environments.</p>

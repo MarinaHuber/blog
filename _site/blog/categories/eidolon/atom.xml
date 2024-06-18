@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: eidolon | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/eidolon/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/eidolon/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Retrospective: Swift at Artsy]]></title>
-    <link href="https://marinahuber.github.io/blog/2017/02/05/Retrospective-Swift-at-Artsy/"/>
+    <link href="http://localhost:4000/blog/2017/02/05/Retrospective-Swift-at-Artsy/"/>
     <updated>2017-02-05T12:18:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2017/02/05/Retrospective-Swift-at-Artsy</id>
+    <id>http://localhost:4000/blog/2017/02/05/Retrospective-Swift-at-Artsy</id>
     <content type="html"><![CDATA[<center>
 <img src="/images/swift-in-rn/swift-in-react-native.svg" style="width:300px;" />
 </center>
@@ -317,9 +317,9 @@
   
   <entry>
     <title type="html"><![CDATA[The Eidolon Deploy Process]]></title>
-    <link href="https://marinahuber.github.io/blog/2016/10/08/eidolon-deploy-process/"/>
+    <link href="http://localhost:4000/blog/2016/10/08/eidolon-deploy-process/"/>
     <updated>2016-10-08T12:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2016/10/08/eidolon-deploy-process</id>
+    <id>http://localhost:4000/blog/2016/10/08/eidolon-deploy-process</id>
     <content type="html"><![CDATA[<p>Since we <a href="http://artsy.github.io/blog/2014/11/13/eidolon-retrospective/">originally built</a> Eidolon – an auction bidding kiosk app – the project has largely remained in maintenance mode. Eidolon was one of the first projects that we used automated deploys for, and the deploy process has remained largely unchanged. I believe this stability of the deploy process is a testament to how well the automated deploys have gone.</p>
 
 <p>This post is going to detail the mechanics of automated deploys for an enterprise-distributed iOS application, discuss lessons we learned and applied to other projects’ deploy processes, and describe some of the changes we’d like to make. Our project is entirely open source, so you can check out any part of the code on your own or <a href="https://github.com/artsy/eidolon/issues/new">open an issue</a> with questions.</p>
@@ -500,9 +500,9 @@ releases:
   
   <entry>
     <title type="html"><![CDATA[Depedency Injection in Swift]]></title>
-    <link href="https://marinahuber.github.io/blog/2016/06/27/dependency-injection-in-swift/"/>
+    <link href="http://localhost:4000/blog/2016/06/27/dependency-injection-in-swift/"/>
     <updated>2016-06-27T12:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2016/06/27/dependency-injection-in-swift</id>
+    <id>http://localhost:4000/blog/2016/06/27/dependency-injection-in-swift</id>
     <content type="html"><![CDATA[<p>Dependency Injection (DI) is a <a href="http://www.jamesshore.com/Blog/Dependency-Injection-Demystified.html">$25 word for a 5¢ idea</a>, but it’s an idea that has become wholly foundation to how I write software. I want to take a look at some of the ways our team have been using DI in Swift.</p>
 
 <!-- more -->
@@ -659,9 +659,9 @@ releases:
   
   <entry>
     <title type="html"><![CDATA[Cocoa Architecture: ARSwitchboard]]></title>
-    <link href="https://marinahuber.github.io/blog/2015/08/19/Cocoa-Architecture-Switchboard-Pattern/"/>
+    <link href="http://localhost:4000/blog/2015/08/19/Cocoa-Architecture-Switchboard-Pattern/"/>
     <updated>2015-08-19T02:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2015/08/19/Cocoa-Architecture-Switchboard-Pattern</id>
+    <id>http://localhost:4000/blog/2015/08/19/Cocoa-Architecture-Switchboard-Pattern</id>
     <content type="html"><![CDATA[<p>As a part of going through the design patterns we’ve found in the creation of the Artsy iOS apps, I’d like to introduce the Switchboard pattern. This evolved quite naturally out of <a href="/blog/2015/08/15/Cocoa-Architecture:-Router-Pattern/">ARRouter</a> when applied to generating view controllers instead of API requests.</p>
 
 <!-- more -->
@@ -767,9 +767,9 @@ releases:
   
   <entry>
     <title type="html"><![CDATA[Cocoa Architecture: ARRouter]]></title>
-    <link href="https://marinahuber.github.io/blog/2015/08/15/Cocoa-Architecture-Router-Pattern/"/>
+    <link href="http://localhost:4000/blog/2015/08/15/Cocoa-Architecture-Router-Pattern/"/>
     <updated>2015-08-15T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2015/08/15/Cocoa-Architecture-Router-Pattern</id>
+    <id>http://localhost:4000/blog/2015/08/15/Cocoa-Architecture-Router-Pattern</id>
     <content type="html"><![CDATA[<p>I want to talk about a pattern that we’ve been using for the last few years on the Artsy Mobile team. This pattern pre-dates me joining Artsy by a few weeks, and was introduced into our codebase by <a href="http://90wpm.com">Ben Jackson</a>, this was the <code class="language-plaintext highlighter-rouge">ARRouter</code>’s first method:</p>
 
 <div class="language-objc highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">+</span> <span class="p">(</span><span class="n">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nf">newOAuthURLWithUsername</span><span class="p">:(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">username</span> <span class="nf">password</span><span class="p">:(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">password</span> <span class="p">{</span>

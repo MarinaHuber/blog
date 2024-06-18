@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: cocoapods | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/cocoapods/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/cocoapods/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Why does my team's Podfile.lock Podspec checksums change?]]></title>
-    <link href="https://marinahuber.github.io/blog/2016/05/03/podspec-checksums/"/>
+    <link href="http://localhost:4000/blog/2016/05/03/podspec-checksums/"/>
     <updated>2016-05-03T12:09:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2016/05/03/podspec-checksums</id>
+    <id>http://localhost:4000/blog/2016/05/03/podspec-checksums</id>
     <content type="html"><![CDATA[<p>We use CocoaPods, and <a href="https://github.com/artsy/eigen/issues/418">we don’t check in our Pods</a> directory for one of our fastest moving apps, <a href="https://github.com/artsy/eigen/">Eigen</a>. This sometimes can cause an <a href="https://github.com/artsy/eigen/pull/1464">interesting data churn</a> inside the <code class="language-plaintext highlighter-rouge">Podfile.lock</code> when developers have different sha checksums for their Pods. This is weird, what gives?</p>
 
 <!-- more -->

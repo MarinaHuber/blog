@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: context | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/context/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/context/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Using Context to Simplify a VERY Large React Form]]></title>
-    <link href="https://marinahuber.github.io/blog/2022/02/01/using-context-to-simplify-a-react-form/"/>
+    <link href="http://localhost:4000/blog/2022/02/01/using-context-to-simplify-a-react-form/"/>
     <updated>2022-02-01T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2022/02/01/using-context-to-simplify-a-react-form</id>
+    <id>http://localhost:4000/blog/2022/02/01/using-context-to-simplify-a-react-form</id>
     <content type="html"><![CDATA[<p>For those unfamiliar, Artsy is a fine art marketplace. Knowing that, it follows logically to say that the form via
 which our partners list artworks for sale is an integral part of Artsy’s core systems. This form, known only as
 “The Artwork Form,” is whispered about in the halls of Arty’s New York headquarters. It is legendary. It is a

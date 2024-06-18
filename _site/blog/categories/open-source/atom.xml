@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: open-source | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/open-source/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/open-source/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[In the 'Whelp!' of the Great Wave]]></title>
-    <link href="https://marinahuber.github.io/blog/2018/01/24/kubernetes-and-hokusai/"/>
+    <link href="http://localhost:4000/blog/2018/01/24/kubernetes-and-hokusai/"/>
     <updated>2018-01-24T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2018/01/24/kubernetes-and-hokusai</id>
+    <id>http://localhost:4000/blog/2018/01/24/kubernetes-and-hokusai</id>
     <content type="html"><![CDATA[<p>This past week has found me working on a brand new Rails project. Now, if I was building this project for my personal needs, I would without a doubt deploy it to <a href="https://www.heroku.com">Heroku</a> – for both the ease of use and the high level of abstraction that <a href="https://www.heroku.com/dynos">Dynos</a> afford. But I’m not building this for myself, I’m building it for my team.</p>
 
 <!-- more -->

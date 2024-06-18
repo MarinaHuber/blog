@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: bundler | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/bundler/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/bundler/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Debugging Bundler Issues on Heroku]]></title>
-    <link href="https://marinahuber.github.io/blog/2013/01/15/debugging-bundler-issues-with-heroku/"/>
+    <link href="http://localhost:4000/blog/2013/01/15/debugging-bundler-issues-with-heroku/"/>
     <updated>2013-01-15T21:21:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2013/01/15/debugging-bundler-issues-with-heroku</id>
+    <id>http://localhost:4000/blog/2013/01/15/debugging-bundler-issues-with-heroku</id>
     <content type="html"><![CDATA[<p>A few days ago we have started seeing the Heroku deployments of one of our applications randomly hang during <code class="language-plaintext highlighter-rouge">bundle install</code>. The problem worsened with time and we were not able to do a deployment for days.</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git push -f git@heroku.com:application.git FETCH_HEAD:master

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: JWT | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/jwt/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/jwt/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[JSON Web Tokens: Artsy's Journey]]></title>
-    <link href="https://marinahuber.github.io/blog/2016/10/26/jwt-artsy-journey/"/>
+    <link href="http://localhost:4000/blog/2016/10/26/jwt-artsy-journey/"/>
     <updated>2016-10-26T11:03:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2016/10/26/jwt-artsy-journey</id>
+    <id>http://localhost:4000/blog/2016/10/26/jwt-artsy-journey</id>
     <content type="html"><![CDATA[<p>At Artsy we currently have thousands of client applications hitting our API and requesting authentication. When a user successfully authenticates through one of these clients, we want to embed basic user and application data in the resulting token rather than have to look up a session ID in the database on each request. For that we want to use JWT.</p>
 
 <p>JWT (JSON Web Token) is a self-contained, secure and standard way of transmitting data between applications and clients as JSON objects. Using JWTs lets us use a standardized technology to cut our authentication workflow down by one round-trip.</p>

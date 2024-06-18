@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: forque | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/forque/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/forque/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Stepping Out Of The Knowledge Zone]]></title>
-    <link href="https://marinahuber.github.io/blog/2022/04/13/stepping-out-of-the-knowledge-zone/"/>
+    <link href="http://localhost:4000/blog/2022/04/13/stepping-out-of-the-knowledge-zone/"/>
     <updated>2022-04-13T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2022/04/13/stepping-out-of-the-knowledge-zone</id>
+    <id>http://localhost:4000/blog/2022/04/13/stepping-out-of-the-knowledge-zone</id>
     <content type="html"><![CDATA[<p>As I am writing my first blog post for Artsy, here is a short introduction on who I am: My name is Kaja and I am an
 engineer in our Berlin entity. As a Ruby-born programmer I am calling myself a backend engineer, but that also may
 change and is more about emotional identification and less about what I actually do (as you will see in this blog

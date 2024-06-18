@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: guest | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/guest/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/guest/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[The Relay Network Deep Dive]]></title>
-    <link href="https://marinahuber.github.io/blog/2018/07/25/Relay-Networking-Deep-Dive/"/>
+    <link href="http://localhost:4000/blog/2018/07/25/Relay-Networking-Deep-Dive/"/>
     <updated>2018-07-25T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2018/07/25/Relay-Networking-Deep-Dive</id>
+    <id>http://localhost:4000/blog/2018/07/25/Relay-Networking-Deep-Dive</id>
     <content type="html"><![CDATA[<blockquote>
   <p>Hey all, we have another guest post, this one comes from <a href="https://github.com/sibelius">Sibelius Seraphini</a> - a very active contributor to
 Relay and its eco-system. When we spotted he had wrote an amazing article on how the networking aspects of Relay
@@ -407,9 +407,9 @@ retrying, logging, caching and auth.</p>
   
   <entry>
     <title type="html"><![CDATA[Relay Mutations]]></title>
-    <link href="https://marinahuber.github.io/blog/2017/04/26/Relay-Mutations/"/>
+    <link href="http://localhost:4000/blog/2017/04/26/Relay-Mutations/"/>
     <updated>2017-04-26T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2017/04/26/Relay-Mutations</id>
+    <id>http://localhost:4000/blog/2017/04/26/Relay-Mutations</id>
     <content type="html"><![CDATA[<blockquote>
   <p>Hey there everyone, it took us two years to <a href="https://github.com/artsy/metaphysics/pull/583">make our</a> GraphQL implementation support any mutations. We opted to keep it read-only for quite a long time because we use GraphQL to consolidate multiple APIs, but as we start new projects as GraphQL + databases then understanding mutations becomes much more important.</p>
 

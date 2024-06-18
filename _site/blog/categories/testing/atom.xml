@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: testing | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/testing/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/testing/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[What JavaScript Tests Could Learn From RSpec]]></title>
-    <link href="https://marinahuber.github.io/blog/2021/09/10/what-javascript-tests-could-learn-from-rspec/"/>
+    <link href="http://localhost:4000/blog/2021/09/10/what-javascript-tests-could-learn-from-rspec/"/>
     <updated>2021-09-10T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2021/09/10/what-javascript-tests-could-learn-from-rspec</id>
+    <id>http://localhost:4000/blog/2021/09/10/what-javascript-tests-could-learn-from-rspec</id>
     <content type="html"><![CDATA[<p>When I started at Artsy a few years ago, I’d never written a line of Ruby. I feel at home with JavaScript — it’s
 been my buddy since I started my career over 20 years ago. I’ve written enough tests in JavaScript that I sometimes
 feel like I can write them in my sleep (as long as they don’t involve async React events 😅).</p>
@@ -293,9 +293,9 @@ I’m in ❤️ ❤️ ❤️ ❤️ ❤️.</p>
   
   <entry>
     <title type="html"><![CDATA[Testing React Tracking with Jest and Enzyme]]></title>
-    <link href="https://marinahuber.github.io/blog/2021/04/15/testing-react-tracking-with-jest-and-enzyme/"/>
+    <link href="http://localhost:4000/blog/2021/04/15/testing-react-tracking-with-jest-and-enzyme/"/>
     <updated>2021-04-15T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2021/04/15/testing-react-tracking-with-jest-and-enzyme</id>
+    <id>http://localhost:4000/blog/2021/04/15/testing-react-tracking-with-jest-and-enzyme</id>
     <content type="html"><![CDATA[<p>Recently, I needed to test a button that would make an analytics tracking call using
 <a href="https://github.com/NYTimes/react-tracking">react-tracking</a> and then navigate to a new page in a callback. This
 presented some challenges - I wasn’t sure how to create a mocked version of react-tracking that would allow a
@@ -539,9 +539,9 @@ you’re still confused, leave a comment!</p>
   
   <entry>
     <title type="html"><![CDATA[Switch from Capybara Webkit to Chrome]]></title>
-    <link href="https://marinahuber.github.io/blog/2018/11/27/switch-from-capybara-webkit-to-chrome/"/>
+    <link href="http://localhost:4000/blog/2018/11/27/switch-from-capybara-webkit-to-chrome/"/>
     <updated>2018-11-27T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2018/11/27/switch-from-capybara-webkit-to-chrome</id>
+    <id>http://localhost:4000/blog/2018/11/27/switch-from-capybara-webkit-to-chrome</id>
     <content type="html"><![CDATA[<p>Volt is the internal app name of Artsy CMS, and our partners use it to manage their inventory and presence on artsy.net. It’s a Rails-based UI app that talks to many API services. We use <a href="https://github.com/rspec/rspec">RSpec</a> extensively to cover controller, model, view, and feature specs. As of Jun. 2018, Volt had 3751 specs and 495 of them were run with JavaScript enabled. It took about 16 mins to run on CircleCI with 6x parallelism.</p>
 
 <p>Capybara-webkit was introduced from the very beginning of Volt for testing JavaScript-enabled specs via headless WebKit browser. It’s been providing a lot of confidence for the past 4+ years; however, a few reasons/growing concerns have encouraged us to look for (more modern) alternatives:</p>
@@ -627,9 +627,9 @@ you’re still confused, leave a comment!</p>
   
   <entry>
     <title type="html"><![CDATA[How To Debug Jest Tests]]></title>
-    <link href="https://marinahuber.github.io/blog/2018/08/24/How-to-debug-jest-tests/"/>
+    <link href="http://localhost:4000/blog/2018/08/24/How-to-debug-jest-tests/"/>
     <updated>2018-08-24T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2018/08/24/How-to-debug-jest-tests</id>
+    <id>http://localhost:4000/blog/2018/08/24/How-to-debug-jest-tests</id>
     <content type="html"><![CDATA[<p>Hey there! My name is Anson and I work on the Platform team at Artsy. Recently, we faced an issue where a certain
 <a href="https://github.com/airbnb/enzyme">Enzyme</a> test we wrote using mock tracking was failing, but we couldn’t figure
 out why. Luckily, with some help from <a href="/author/orta">Orta</a> and some clever thinking, we figured out what was going
@@ -694,9 +694,9 @@ way to debug test failures. Hope this helps, and happy hacking!</p>
   
   <entry>
     <title type="html"><![CDATA[Splitting up a large test suite]]></title>
-    <link href="https://marinahuber.github.io/blog/2015/09/24/splitting-up-a-large-test-suite/"/>
+    <link href="http://localhost:4000/blog/2015/09/24/splitting-up-a-large-test-suite/"/>
     <updated>2015-09-24T22:13:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2015/09/24/splitting-up-a-large-test-suite</id>
+    <id>http://localhost:4000/blog/2015/09/24/splitting-up-a-large-test-suite</id>
     <content type="html"><![CDATA[<p>A while back, we wrote about <a href="/blog/2012/10/09/how-to-run-rspec-test-suites-in-parallel-with-jenkins-ci-build-flow/">How to Run RSpec Test Suites in Parallel with Jenkins CI Build Flow</a>. A version of that still handles our largest test suite, but over time the initial division of specs became unbalanced. We ended up with some tasks that took twice as long as others. Even worse, in an attempt to rebalance task times, we ended up with awkward file patterns like <code class="language-plaintext highlighter-rouge">'spec/api/**/[a-m]*_spec.rb'</code>.</p>
 
 <p>To keep our parallel spec tasks approximately equal in size and to support arbitrary concurrency, we’ve added a new <code class="language-plaintext highlighter-rouge">spec:sliced</code> task:</p>

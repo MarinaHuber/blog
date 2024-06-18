@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: webpack | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/webpack/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/webpack/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[JavaScriptures 4.2 - Local State]]></title>
-    <link href="https://marinahuber.github.io/blog/2018/06/15/JavaScriptures-4.2-Local-State/"/>
+    <link href="http://localhost:4000/blog/2018/06/15/JavaScriptures-4.2-Local-State/"/>
     <updated>2018-06-15T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2018/06/15/JavaScriptures-4.2-Local-State</id>
+    <id>http://localhost:4000/blog/2018/06/15/JavaScriptures-4.2-Local-State</id>
     <content type="html"><![CDATA[<p>The fifth in our JavaScriptures series on the Artsy <a href="http://artsy.github.io/blog/2017/02/05/Front-end-JavaScript-at-Artsy-2017/">omakase</a>. This talk is the second part on state
 management inside JavaScript projects. In this talk <a href="https://github.com/damassi">Chris</a> and <a href="https://twitter.com/seevexes">Eve</a> cover the basics of how we handle
 interacting with local state in our different applications.</p>

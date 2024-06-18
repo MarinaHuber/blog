@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: OSS | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/oss/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/oss/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Using OCR To Fix a Hilarious Bug]]></title>
-    <link href="https://marinahuber.github.io/blog/2015/11/05/Using-OCR-To-Fix-A-Hilarious-Bug/"/>
+    <link href="http://localhost:4000/blog/2015/11/05/Using-OCR-To-Fix-A-Hilarious-Bug/"/>
     <updated>2015-11-05T01:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2015/11/05/Using-OCR-To-Fix-A-Hilarious-Bug</id>
+    <id>http://localhost:4000/blog/2015/11/05/Using-OCR-To-Fix-A-Hilarious-Bug</id>
     <content type="html"><![CDATA[<p>For a little while, we would get very strange bug reports. People would complain that artist thumbnails (viewed in several different contexts across the web and our iOS apps) would not be an image of the artist’s work, but rather text, which had inexplicably become an actual JPG. This wasn’t just text appearing in a <code class="language-plaintext highlighter-rouge">div</code> that should contain an <code class="language-plaintext highlighter-rouge">img</code> or something like that, these were actual JPG’s that were pictures of text.</p>
 
 <p>We would fix these as they came up, chalking the strangeness up to some relic of an old image processing pipeline, data being migrated, etc.</p>
@@ -75,9 +75,9 @@
   
   <entry>
     <title type="html"><![CDATA[Releasecop Tracks Stale Releases]]></title>
-    <link href="https://marinahuber.github.io/blog/2015/09/01/releasecop-tracks-stale-releases/"/>
+    <link href="http://localhost:4000/blog/2015/09/01/releasecop-tracks-stale-releases/"/>
     <updated>2015-09-01T17:30:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2015/09/01/releasecop-tracks-stale-releases</id>
+    <id>http://localhost:4000/blog/2015/09/01/releasecop-tracks-stale-releases</id>
     <content type="html"><![CDATA[<p>Artsy practices a sort of <a href="http://en.wikipedia.org/wiki/Continuous_delivery">continuous delivery</a>. We keep release cycles short and the process of reviewing, testing, and deploying our software as reliable, fast, and automated as possible. (This blog has touched on these practices <a href="http://artsy.github.io/blog/categories/testing/">multiple</a> <a href="http://artsy.github.io/blog/categories/continuous-integration">times</a>.)</p>
 
 <p>Usually, commits that have been reviewed and merged are immediately built and tested. Successfully built versions of the codebase are often automatically deployed to a staging environment. On an automated or frequent-but-manual basis, that version is deployed to a production environment. Thus, commits form a pipeline:</p>

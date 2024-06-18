@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: workshop | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/workshop/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/workshop/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Art + Feminism and Artsy Wikipedia/Wikidata Editathon]]></title>
-    <link href="https://marinahuber.github.io/blog/2017/08/31/Editathon/"/>
+    <link href="http://localhost:4000/blog/2017/08/31/Editathon/"/>
     <updated>2017-08-31T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2017/08/31/Editathon</id>
+    <id>http://localhost:4000/blog/2017/08/31/Editathon</id>
     <content type="html"><![CDATA[<p>Artsy has always had a focus on Art meets Science, and we <a href="https://www.meetup.com/CocoaPods-NYC/messages/boards/thread/50940969">hosted a meet-up in July</a> that really hits
 on both. We had a collection of Artsy Staff, members of <a href="http://www.artandfeminism.org">Art + Feminism</a> NYC, the <a href="/blog/2015/08/10/peer-lab/">CocoaPods Peer
 Lab</a>, <a href="http://www.artspracticum.org">New York Arts Practicum</a> and volunteers from <a href="https://nyc.wikimedia.org/">Wikimedia NYC</a> all helping out.</p>
@@ -307,9 +307,9 @@ interesting uses.</p>
   
   <entry>
     <title type="html"><![CDATA[macOS Keyboard Shortcuts workshop video]]></title>
-    <link href="https://marinahuber.github.io/blog/2016/08/31/Keyboard-Shortcuts-workshop/"/>
+    <link href="http://localhost:4000/blog/2016/08/31/Keyboard-Shortcuts-workshop/"/>
     <updated>2016-08-31T12:09:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2016/08/31/Keyboard-Shortcuts-workshop</id>
+    <id>http://localhost:4000/blog/2016/08/31/Keyboard-Shortcuts-workshop</id>
     <content type="html"><![CDATA[<p>Hey all, I was asked to talk internally about ways in which anyone can improve their day-to-day computer usage. For me, using keyboard shortcuts shows a greater level of control of your machine - and more importantly can be considerably faster.</p>
 
 <p>I have all of my notes, annotated with images inside a personal GitHub repo: <a href="https://github.com/orta/keyboard_shortcuts">orta/keyboard_shortcuts</a>. We covered:</p>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: js | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/js/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/js/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Helping the Web Towards OSS by Default]]></title>
-    <link href="https://marinahuber.github.io/blog/2016/09/06/Milestone-on-OSS-by-Default/"/>
+    <link href="http://localhost:4000/blog/2016/09/06/Milestone-on-OSS-by-Default/"/>
     <updated>2016-09-06T12:17:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2016/09/06/Milestone-on-OSS-by-Default</id>
+    <id>http://localhost:4000/blog/2016/09/06/Milestone-on-OSS-by-Default</id>
     <content type="html"><![CDATA[<p>The main Artsy.net website for the desktop, <a href="https://github.com/artsy/force">Force</a>, was our first Artsy application to open its source
 code, <a href="http://artsy.github.io/author/craig">Craig</a> and <a href="http://artsy.github.io/author/brennan">Brennan</a> did it <a href="/blog/2014/09/05/we-open-sourced-our-isomorphic-javascript-website/">back in 2014</a>. Force’s public offering laid the
 groundwork for the iOS OSS projects to come afterwards: <a href="/blog/2014/11/13/eidolon-retrospective/">Eidolon</a>, <a href="/blog/2015/04/28/how-we-open-sourced-eigen/">Eigen</a>,

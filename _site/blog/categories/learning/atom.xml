@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: learning | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/learning/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/learning/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Why Asking for Help Strengthens Engineering Teams]]></title>
-    <link href="https://marinahuber.github.io/blog/2021/02/11/asking-for-help/"/>
+    <link href="http://localhost:4000/blog/2021/02/11/asking-for-help/"/>
     <updated>2021-02-11T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2021/02/11/asking-for-help</id>
+    <id>http://localhost:4000/blog/2021/02/11/asking-for-help</id>
     <content type="html"><![CDATA[<p>I know that for many developers, especially those early in their careers, asking for help can be intimidating. I
 often fear wasting someone’s time or exposing myself as less skilled or smart than my team initially thought.</p>
 
@@ -122,9 +122,9 @@ career will pay dividends to my team in the months and years to come.</p>
   
   <entry>
     <title type="html"><![CDATA[Introducing Artsy Engineering Radio]]></title>
-    <link href="https://marinahuber.github.io/blog/2021/01/06/introducing-artsy-engineering-radio/"/>
+    <link href="http://localhost:4000/blog/2021/01/06/introducing-artsy-engineering-radio/"/>
     <updated>2021-01-06T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2021/01/06/introducing-artsy-engineering-radio</id>
+    <id>http://localhost:4000/blog/2021/01/06/introducing-artsy-engineering-radio</id>
     <content type="html"><![CDATA[<p>Available now on <a href="https://podcasts.apple.com/us/podcast/artsy-engineering-radio/id1545870104">Apple Podcasts</a>, <a href="https://open.spotify.com/show/0gJYxpqN6P11dbjNw8VT2a?si=L4TWDrQETwuVO6JR1SOZTQ">Spotify</a>, and coming soon elsewhere, is Artsy
 Engineering Radio!</p>
 
@@ -164,9 +164,9 @@ announce them <a href="https://twitter.com/artsyopensource">on Twitter</a> when 
   
   <entry>
     <title type="html"><![CDATA[iOS Learning Group]]></title>
-    <link href="https://marinahuber.github.io/blog/2019/12/03/ios-learning-group/"/>
+    <link href="http://localhost:4000/blog/2019/12/03/ios-learning-group/"/>
     <updated>2019-12-03T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2019/12/03/ios-learning-group</id>
+    <id>http://localhost:4000/blog/2019/12/03/ios-learning-group</id>
     <content type="html"><![CDATA[<p>Regular readers of our blog might be familiar with <a href="https://www.cultureamp.com">Culture Amp</a>, a tool Artsy uses to
 collect anonymous feedback and take action on cultural issues (we most recently discussed the tool
 <a href="https://artsy.github.io/blog/2019/04/19/having-a-coffee-with-every-engineer/">in this blog post</a>). At a
@@ -298,9 +298,9 @@ is more prepared than ever to deliver user experiences that are of a quality wor
   
   <entry>
     <title type="html"><![CDATA[Public Speaking - Part 2: Where To Start?]]></title>
-    <link href="https://marinahuber.github.io/blog/2016/03/14/public-speaking-part2-where-to-start/"/>
+    <link href="http://localhost:4000/blog/2016/03/14/public-speaking-part2-where-to-start/"/>
     <updated>2016-03-14T11:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2016/03/14/public-speaking-part2-where-to-start</id>
+    <id>http://localhost:4000/blog/2016/03/14/public-speaking-part2-where-to-start</id>
     <content type="html"><![CDATA[<p>So you’ve decided <a href="http://artsy.github.io/blog/2016/03/09/public-speaking-part1-is-it-for-me/">you’d like to give speaking a go</a>, or perhaps you were always interested. By now you’re probably wondering where to start.</p>
 
 <p>There are various options depending on what you’re looking for. Would you prefer a smaller, intimate audience or would you like to reach far and wide? Is the topic of your choice suited for a quick talk or would you rather discuss it at length? Let’s have a look.</p>
@@ -356,9 +356,9 @@ is more prepared than ever to deliver user experiences that are of a quality wor
   
   <entry>
     <title type="html"><![CDATA[Public Speaking - Part 1: Is It For Me?]]></title>
-    <link href="https://marinahuber.github.io/blog/2016/03/09/public-speaking-part1-is-it-for-me/"/>
+    <link href="http://localhost:4000/blog/2016/03/09/public-speaking-part1-is-it-for-me/"/>
     <updated>2016-03-09T11:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2016/03/09/public-speaking-part1-is-it-for-me</id>
+    <id>http://localhost:4000/blog/2016/03/09/public-speaking-part1-is-it-for-me</id>
     <content type="html"><![CDATA[<p>At Artsy, sharing knowledge is heavily encouraged and so we write our code in the open, document using blog posts, and speak about our experiences. Many have <a href="https://twitter.com/qnoid/status/702955785064677376">bumped into us</a> at various places around the world. And so I often get the question: “How did you get started? I’m interested in speaking too”.</p>
 
 <p>In the name of sharing experiences with others, I can’t encourage this enough. Unfortunately though, public speaking is still considered <a href="https://www.washingtonpost.com/news/wonk/wp/2014/10/30/clowns-are-twice-as-scary-to-democrats-as-they-are-to-republicans/">man’s biggest fear</a>.</p>

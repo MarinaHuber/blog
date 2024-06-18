@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: encryption | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/encryption/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/encryption/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Diagnosing our Radiation Problems]]></title>
-    <link href="https://marinahuber.github.io/blog/2019/11/14/diagnosing-our-radiation-problems/"/>
+    <link href="http://localhost:4000/blog/2019/11/14/diagnosing-our-radiation-problems/"/>
     <updated>2019-11-14T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2019/11/14/diagnosing-our-radiation-problems</id>
+    <id>http://localhost:4000/blog/2019/11/14/diagnosing-our-radiation-problems</id>
     <content type="html"><![CDATA[<p>Email! Electronic mail! What a concept! Like many companies, Artsy has built products on top of email, but this is
 a decision that (like many companies) Artsy periodically regrets. But overall, our email systems work well!</p>
 

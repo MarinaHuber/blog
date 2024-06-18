@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: automation | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/automation/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/automation/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Automation Encourages More Automation]]></title>
-    <link href="https://marinahuber.github.io/blog/2019/01/08/automation-encourages-more-automation/"/>
+    <link href="http://localhost:4000/blog/2019/01/08/automation-encourages-more-automation/"/>
     <updated>2019-01-08T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2019/01/08/automation-encourages-more-automation</id>
+    <id>http://localhost:4000/blog/2019/01/08/automation-encourages-more-automation</id>
     <content type="html"><![CDATA[<p>Last year, <a href="http://artsy.github.io/blog/2018/05/07/fully-automated-standups/">I wrote about the process of fully automating our weekly engineering-wide standup</a>. One of
 the benefits of automating what <em>was</em> a meeting run by a single person to a meeting run by everyone is that we
 removed a <a href="https://en.wikipedia.org/wiki/Single_point_of_failure">single point of failure</a>. However, I may have fibbed just slightly when I called our standups
@@ -108,9 +108,9 @@ it was very satisfying.</p>
   
   <entry>
     <title type="html"><![CDATA[Being a Better Programmer When You're Actually Lazy.]]></title>
-    <link href="https://marinahuber.github.io/blog/2016/03/02/Lazily-Automation/"/>
+    <link href="http://localhost:4000/blog/2016/03/02/Lazily-Automation/"/>
     <updated>2016-03-02T12:09:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2016/03/02/Lazily-Automation</id>
+    <id>http://localhost:4000/blog/2016/03/02/Lazily-Automation</id>
     <content type="html"><![CDATA[<p>I juggle a bunch of projects, both in Artsy and in the Open Source community. If you don’t work with me directly, you’d be mistaken for believing that I was an organized person. I’m pretty far from that, and <a href="https://github.com/artsy/mobile/issues/68">don’t really</a> plan on changing that.</p>
 
 <p>However, I work with other people and very strongly believe that programming is mostly a social problem once you’re good enough at writing code. It’d be hypocritical of me to not improve the people process side, so I try to automate processes that makes me a better team-mate.</p>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Cookies | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/cookies/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/cookies/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Hacking Around Safari's 7-day Cookie Limit]]></title>
-    <link href="https://marinahuber.github.io/blog/2022/08/23/getting-around-7-day-cookie/"/>
+    <link href="http://localhost:4000/blog/2022/08/23/getting-around-7-day-cookie/"/>
     <updated>2022-08-23T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2022/08/23/getting-around-7-day-cookie</id>
+    <id>http://localhost:4000/blog/2022/08/23/getting-around-7-day-cookie</id>
     <content type="html"><![CDATA[<p>Amongst the many, many things that organizations have to contend with around
 cookie consent laws is Apple’s very own browser, Safari. Did you know that
 Safari will only retain a client-side cookie for 7 days? This is in support of

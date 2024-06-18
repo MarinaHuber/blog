@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: react | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/react/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/react/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Using Context to Simplify a VERY Large React Form]]></title>
-    <link href="https://marinahuber.github.io/blog/2022/02/01/using-context-to-simplify-a-react-form/"/>
+    <link href="http://localhost:4000/blog/2022/02/01/using-context-to-simplify-a-react-form/"/>
     <updated>2022-02-01T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2022/02/01/using-context-to-simplify-a-react-form</id>
+    <id>http://localhost:4000/blog/2022/02/01/using-context-to-simplify-a-react-form</id>
     <content type="html"><![CDATA[<p>For those unfamiliar, Artsy is a fine art marketplace. Knowing that, it follows logically to say that the form via
 which our partners list artworks for sale is an integral part of Artsy’s core systems. This form, known only as
 “The Artwork Form,” is whispered about in the halls of Arty’s New York headquarters. It is legendary. It is a
@@ -173,9 +173,9 @@ elevate the user experience while allowing us to use that opportunity to improve
   
   <entry>
     <title type="html"><![CDATA[Accessing the Relay Store Without a Mutation]]></title>
-    <link href="https://marinahuber.github.io/blog/2021/04/15/accessing-the-relay-store/"/>
+    <link href="http://localhost:4000/blog/2021/04/15/accessing-the-relay-store/"/>
     <updated>2021-04-15T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2021/04/15/accessing-the-relay-store</id>
+    <id>http://localhost:4000/blog/2021/04/15/accessing-the-relay-store</id>
     <content type="html"><![CDATA[<p>I recently encountered a problem where client-side data (returned from a Relay query) became out of sync after a
 user interaction. How can we make sure our data is consistent while maintaining a single source of truth? This post
 explores why a developer might want to update client-side data locally, the basics of Relay and its store, and how
@@ -368,9 +368,9 @@ mutation to update server-side data.</li>
   
   <entry>
     <title type="html"><![CDATA[Relay Pagination Containers Demystified]]></title>
-    <link href="https://marinahuber.github.io/blog/2020/08/31/relay-pagination-containers-demystified/"/>
+    <link href="http://localhost:4000/blog/2020/08/31/relay-pagination-containers-demystified/"/>
     <updated>2020-08-31T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2020/08/31/relay-pagination-containers-demystified</id>
+    <id>http://localhost:4000/blog/2020/08/31/relay-pagination-containers-demystified</id>
     <content type="html"><![CDATA[<p>In 2017, Artsy adopted <a href="https://relay.dev/en/">Relay</a> in both its front-end web and iOS codebases (using React and
 React Native, respectively). Generally speaking, this investment has turned out very well for us! Relay empowers
 product teams to quickly iterate on new features and to share common infrastructure across web and iOS codebases.
@@ -617,9 +617,9 @@ hope this blog post illustrates the value in the learn-then-teach approach.</p>
   
   <entry>
     <title type="html"><![CDATA[Server-Rendering Responsively]]></title>
-    <link href="https://marinahuber.github.io/blog/2019/05/24/server-rendering-responsively/"/>
+    <link href="http://localhost:4000/blog/2019/05/24/server-rendering-responsively/"/>
     <updated>2019-05-24T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2019/05/24/server-rendering-responsively</id>
+    <id>http://localhost:4000/blog/2019/05/24/server-rendering-responsively</id>
     <content type="html"><![CDATA[<p>We use server-side rendering (SSR) to deliver every page you hit on <a href="https://artsy.net">artsy.net</a>. We decided on
 using SSR for many reasons, amongst them performance.
 <a href="https://artsy.github.io/blog/2013/11/30/rendering-on-the-server-and-client-in-node-dot-js/">We wrote about this all the way back in 2013</a>!</p>
@@ -795,9 +795,9 @@ server that their client can use.</p>
   
   <entry>
     <title type="html"><![CDATA[Rosalind and The Art Genome Project]]></title>
-    <link href="https://marinahuber.github.io/blog/2019/05/09/rosalind/"/>
+    <link href="http://localhost:4000/blog/2019/05/09/rosalind/"/>
     <updated>2019-05-09T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2019/05/09/rosalind</id>
+    <id>http://localhost:4000/blog/2019/05/09/rosalind</id>
     <content type="html"><![CDATA[<p>We recently bade a fond farewell to two <a href="https://code.dblock.org">of</a> <a href="http://orta.io">the</a> champions of our “open source by default” ethos, but
 this spirit lives on at Artsy.</p>
 

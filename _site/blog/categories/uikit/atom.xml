@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: uikit | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/uikit/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/uikit/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Retrospective: Swift at Artsy]]></title>
-    <link href="https://marinahuber.github.io/blog/2017/02/05/Retrospective-Swift-at-Artsy/"/>
+    <link href="http://localhost:4000/blog/2017/02/05/Retrospective-Swift-at-Artsy/"/>
     <updated>2017-02-05T12:18:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2017/02/05/Retrospective-Swift-at-Artsy</id>
+    <id>http://localhost:4000/blog/2017/02/05/Retrospective-Swift-at-Artsy</id>
     <content type="html"><![CDATA[<center>
 <img src="/images/swift-in-rn/swift-in-react-native.svg" style="width:300px;" />
 </center>

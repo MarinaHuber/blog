@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: deploy process | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/deploy-process/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/deploy-process/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[The Checklist for Deploying a Scary Change]]></title>
-    <link href="https://marinahuber.github.io/blog/2023/09/13/deploying-a-scary-change/"/>
+    <link href="http://localhost:4000/blog/2023/09/13/deploying-a-scary-change/"/>
     <updated>2023-09-13T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2023/09/13/deploying-a-scary-change</id>
+    <id>http://localhost:4000/blog/2023/09/13/deploying-a-scary-change</id>
     <content type="html"><![CDATA[<p>Lately, I’ve been getting involved with some sketchy stuff. You know what I’m
 talking about–data migrations.</p>
 

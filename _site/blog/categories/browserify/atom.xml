@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Browserify | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/browserify/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/browserify/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Rendering on the Server and Client in Node.js]]></title>
-    <link href="https://marinahuber.github.io/blog/2013/11/30/rendering-on-the-server-and-client-in-node-dot-js/"/>
+    <link href="http://localhost:4000/blog/2013/11/30/rendering-on-the-server-and-client-in-node-dot-js/"/>
     <updated>2013-11-30T22:38:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2013/11/30/rendering-on-the-server-and-client-in-node-dot-js</id>
+    <id>http://localhost:4000/blog/2013/11/30/rendering-on-the-server-and-client-in-node-dot-js</id>
     <content type="html"><![CDATA[<p><img src="/images/2013-12-18-rendering-on-the-server-and-client-in-node-dot-js/isomorphic.png" alt="Diagram of Shared Server/Client Architecture" /></p>
 
 <p>At Artsy we’ve been building <a href="http://nodejs.org/">Node.js</a> applications that share code and rendering between the server and browser. We’ve seen many benefits from this – pages load faster, we can optimize SEO, developers are more productive, and JavaScript coding is just an overall better experience.</p>

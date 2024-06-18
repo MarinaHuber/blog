@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: arkit | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/arkit/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/arkit/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Augmenting Artworks: AR at Artsy]]></title>
-    <link href="https://marinahuber.github.io/blog/2018/03/18/ar/"/>
+    <link href="http://localhost:4000/blog/2018/03/18/ar/"/>
     <updated>2018-03-18T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2018/03/18/ar</id>
+    <id>http://localhost:4000/blog/2018/03/18/ar</id>
     <content type="html"><![CDATA[<p>In 2017, Apple released ARKit to universal acclaim. It’s a solid foundation for application developers to build
 Augmented Reality (AR) experiences without learning a whole new skillset in computer vision. Like a lot of Apple’s
 technology, it’s a clever blend of existing projects: <a href="https://developer.apple.com/documentation/scenekit">SceneKit</a>, <a href="https://developer.apple.com/documentation/coremotion">CoreMotion</a>, <a href="https://developer.apple.com/documentation/coreml">CoreML</a> and some very

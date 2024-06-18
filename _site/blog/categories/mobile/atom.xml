@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Mobile | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/mobile/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/mobile/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[React Native at Artsy]]></title>
-    <link href="https://marinahuber.github.io/blog/2016/08/15/React-Native-at-Artsy/"/>
+    <link href="http://localhost:4000/blog/2016/08/15/React-Native-at-Artsy/"/>
     <updated>2016-08-15T21:17:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2016/08/15/React-Native-at-Artsy</id>
+    <id>http://localhost:4000/blog/2016/08/15/React-Native-at-Artsy</id>
     <content type="html"><![CDATA[<center>
 <img src="/images/react-native/artsy_react_logo.svg" style="width:300px;" />
 </center>

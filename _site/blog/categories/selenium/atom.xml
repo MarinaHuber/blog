@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Selenium | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/selenium/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/selenium/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Reliably Testing Asynchronous UI w/ RSpec and Capybara]]></title>
-    <link href="https://marinahuber.github.io/blog/2012/02/03/reliably-testing-asynchronous-ui-w-slash-rspec-and-capybara/"/>
+    <link href="http://localhost:4000/blog/2012/02/03/reliably-testing-asynchronous-ui-w-slash-rspec-and-capybara/"/>
     <updated>2012-02-03T11:45:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2012/02/03/reliably-testing-asynchronous-ui-w-slash-rspec-and-capybara</id>
+    <id>http://localhost:4000/blog/2012/02/03/reliably-testing-asynchronous-ui-w-slash-rspec-and-capybara</id>
     <content type="html"><![CDATA[<p>tl;dr - You can write 632 rock solid UI tests with Capybara and RSpec, too.</p>
 
 <p><img src="Miami Weather in NYC" alt="/images/2012-02-03-reliably-testing-asynchronous-ui-w-slash-rspec-and-capybara/jenkins-ci.png" /></p>

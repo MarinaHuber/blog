@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: organization | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/organization/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/organization/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Professional Development at Artsy Engineering]]></title>
-    <link href="https://marinahuber.github.io/blog/2016/09/22/professional-development-at-artsy-engineering/"/>
+    <link href="http://localhost:4000/blog/2016/09/22/professional-development-at-artsy-engineering/"/>
     <updated>2016-09-22T16:37:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2016/09/22/professional-development-at-artsy-engineering</id>
+    <id>http://localhost:4000/blog/2016/09/22/professional-development-at-artsy-engineering</id>
     <content type="html"><![CDATA[<p>In considering an offer to join us at Artsy, one of our newest incoming engineers asked me a great question: <em>How does the tech team do professional development?</em></p>
 
 <p>As I thought about it, I began to realize that the answer is “a lot”! Most of our efforts evolved organically. Someone had an idea, and people rallied around it. I thought it would be useful to share, in case others are inspired by what’s caught on here. Here are some of the things we do.</p>

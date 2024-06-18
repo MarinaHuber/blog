@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: joi | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/joi/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/joi/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Improving Page Speed with GraphQL]]></title>
-    <link href="https://marinahuber.github.io/blog/2016/11/02/improving-page-speed-with-graphql/"/>
+    <link href="http://localhost:4000/blog/2016/11/02/improving-page-speed-with-graphql/"/>
     <updated>2016-11-02T14:21:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2016/11/02/improving-page-speed-with-graphql</id>
+    <id>http://localhost:4000/blog/2016/11/02/improving-page-speed-with-graphql</id>
     <content type="html"><![CDATA[<p>This past year, our team started using a GraphQL orchestration layer that connects various APIs with multiple
 front-end apps including <a href="http://artsy.github.io/blog/2016/06/19/graphql-for-mobile">iOS</a>. It also handles caching
 and extracts some business logic out of our client apps. This helped us not only to be more consistent with the way

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Rake | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/rake/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/rake/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Master the Heroku CLI with Heroku Commander]]></title>
-    <link href="https://marinahuber.github.io/blog/2013/02/01/master-heroku-command-line-with-heroku-commander/"/>
+    <link href="http://localhost:4000/blog/2013/02/01/master-heroku-command-line-with-heroku-commander/"/>
     <updated>2013-02-01T21:21:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2013/02/01/master-heroku-command-line-with-heroku-commander</id>
+    <id>http://localhost:4000/blog/2013/02/01/master-heroku-command-line-with-heroku-commander</id>
     <content type="html"><![CDATA[<p><img src="/images/2013-02-01-master-heroku-command-line-with-heroku-commander/heroku-commander.png" /></p>
 
 <p>Heroku users frequently run the <strong>heroku</strong> command-line tool that ships with the <a href="https://toolbelt.heroku.com/">Heroku Toolbelt</a>. It has two very convenient features: it will remember API credentials and default to the “heroku” GIT remote to figure out the application to connect to. Neither of these features are available in the Heroku client API, so it’s not unusual to find developers invoke the Heroku CLI from Rake tasks and other automation scripts.</p>
@@ -84,9 +84,9 @@
   
   <entry>
     <title type="html"><![CDATA[Create MongoDB Command-Lines from Mongoid Configuration]]></title>
-    <link href="https://marinahuber.github.io/blog/2013/01/31/create-mongodb-command-lines-with-mongo/"/>
+    <link href="http://localhost:4000/blog/2013/01/31/create-mongodb-command-lines-with-mongo/"/>
     <updated>2013-01-31T21:21:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2013/01/31/create-mongodb-command-lines-with-mongo</id>
+    <id>http://localhost:4000/blog/2013/01/31/create-mongodb-command-lines-with-mongo</id>
     <content type="html"><![CDATA[<p>We use MongoDB as our primary store and have built a healthy amount of automation around various database instances and operational environments. For example, we backup databases to S3 using <code class="language-plaintext highlighter-rouge">mongodump</code>, mirror data between instances with <code class="language-plaintext highlighter-rouge">mongorestore</code> and often need to open a MongoDB shell with <code class="language-plaintext highlighter-rouge">mongo</code> to examine data at the lowest level.</p>
 
 <p>Generating MongoDB command-lines is tedious and error-prone. Introducing a new gem called <a href="https://github.com/dblock/mongoid-shell">mongoid-shell</a> to help with this. The library can generate command-lines for various MongoDB shell tools from your Mongoid configuration.</p>

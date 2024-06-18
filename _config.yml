@@ -1,9 +1,8 @@
 url: https://marinahuber.github.io
 title: Blog Engineering
 subtitle: Discover iOS engineering.
-google_analytics_tracking_id: UA-12450662-3
 permalink: /blog/:year/:month/:day/:title/
-baseurl: "blog"
+baseurl: ""
 twitter_username: x
 github_username: MarinaHuber
 

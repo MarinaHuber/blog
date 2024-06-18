@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: jest | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/jest/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/jest/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[What JavaScript Tests Could Learn From RSpec]]></title>
-    <link href="https://marinahuber.github.io/blog/2021/09/10/what-javascript-tests-could-learn-from-rspec/"/>
+    <link href="http://localhost:4000/blog/2021/09/10/what-javascript-tests-could-learn-from-rspec/"/>
     <updated>2021-09-10T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2021/09/10/what-javascript-tests-could-learn-from-rspec</id>
+    <id>http://localhost:4000/blog/2021/09/10/what-javascript-tests-could-learn-from-rspec</id>
     <content type="html"><![CDATA[<p>When I started at Artsy a few years ago, I’d never written a line of Ruby. I feel at home with JavaScript — it’s
 been my buddy since I started my career over 20 years ago. I’ve written enough tests in JavaScript that I sometimes
 feel like I can write them in my sleep (as long as they don’t involve async React events 😅).</p>

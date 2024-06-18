@@ -1,1 +1,871 @@
 
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Blog Engineering</title>
+  <meta name="author" content="">
+
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://webfonts.artsy.net/all-webfonts.css"
+  />
+
+  
+  <meta name="description" content="
+  
+  
+    
+      
+        
+
+  
+    
+      
+        
+          
+        
+        
+          Two years of Next.js at Artsy: A Retrospective
+        ...">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:image" content="http://artsy.github.io/images/artsy_oss_image.png" />
+  <meta property="og:image:type" content="image/png" />
+
+  
+  <link rel="canonical" href="http://localhost:4000/">
+  <link rel="alternate" type="application/rss+xml" title="Artsy Engineering Blog" href="/feed">
+  <link rel="alternate" type="application/atom+xml" title="Podcast Feed" href="/podcast.xml" />
+
+  <link href="/favicon.ico" rel="icon">
+  <link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+  <script src="/javascripts/jquery-1.11.3.min.js"> </script>
+  <script src="/javascripts/gradient-fade.js"></script>
+  <script src="/javascripts/noframework.waypoints.min.js"></script>
+  <script src="/javascripts/sticky.min.js"></script>
+  <script src="/javascripts/custom-element.min.js"></script>
+  <script src="/javascripts/g-emoji-element.js"></script>
+  <script src="/javascripts/related-articles.js"></script>
+
+  
+
+  <link href="/feed.xml" rel="alternate" title="Blog Engineering" type="application/atom+xml">
+  
+
+</head>
+
+
+<body>
+  <div id="logo-container">
+    <a id="lrg-mark" href="https://www.artsy.net/">
+      <svg viewBox="0 0 510 510" width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+        <path transform="scale(1, -1) translate(0, -480)" d="M0 -32h512v512h-512v-512v0zM464 16h-80v80h-48v-80h-288v416h416v-416v0zM194 384h-40l-74 -186h38l20 52h72l19 -52h39l-74 186v0zM149 282l25 66l24 -66h-49v0z"/>
+      </svg>
+    </a>
+  </div>
+  <header id="banner"><div id="header">
+  <div class="header-navigation">
+    <ul>
+      <li><a href="https://developers.artsy.net/">API</a></li>
+      <li><a href="https://www.artsy.net/jobs">Careers</a></li>
+      <li><a href="http://twitter.com/artsyopensource">@artsyopensource</a></li>
+      <li><a href="http://www.artsy.net/">Artsy.net</a></li>
+    </ul>
+    <span class="header-section-title">
+      
+        <a href="/open-source">Open Source</a>
+      
+    </span>
+  </div>
+
+  <div class="header-sticky-container">
+    <div class="header-logo">
+      <h2><a href="http://localhost:4000">Artsy</a></h2>
+    </div>
+    <div class="header-search">
+      
+        <h2><a href="/">Engineering Blog</a></h2>
+      
+    </div>
+  </div>
+</div>
+</header>
+  <div class="header-hamburger">
+    <button class="cmn-toggle-switch cmn-toggle-switch__htx">
+      <span>toggle menu</span>
+    </button>
+  </div>
+  <div id="main">
+    <div id="content">
+
+      <div class="blog-index">
+  
+  
+    
+      <article>
+        <div class="article-container">
+
+  
+    <div class="meta-container">
+      <header>
+        
+          <a href="/blog/2024/03/07/nextjs-at-artsy-retrospective/">
+        
+        
+          <h2 class="entry-title">Two years of Next.js at Artsy: A Retrospective</h2>
+        
+        <time datetime=""></time>
+          <p class="meta-author">
+
+
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="/author/chris">Christopher Pappas<a/></span>
+      
+
+    </div>
+  
+
+</p>
+          </a>
+      </header>
+    </div>
+  
+
+  <div class="content-container">
+    
+    
+        <p>Where to begin! Where to begin…</p>
+
+<p>Lets start with a good measure of success, one that I think most engineers could
+agree on: a from-scratch rebuild of a complex, internal tools app. Success with
+rebuilds is often fleeting, as many can attest. There’s risk involved. Extending
+the challenge further, lets assign (most) of the task to a team of platform
+engineers who aren’t too familiar with modern front-end technology – and then
+say that we succeeded.</p>
+
+<p>Is Artsy crazy? Or is Next.js (along with our team 🙂) just that good? Well,
+it’s a little of both. And it’s a little bittersweet, in a way. Here’s our tale.</p>
+
+
+        <p><a href="/blog/2024/03/07/nextjs-at-artsy-retrospective/">Read on →</a></p>
+    
+
+    
+  </div>
+
+
+  <footer>
+  </footer>
+
+</div>
+
+      </article>
+  
+    
+      <article>
+        <div class="article-container">
+
+  
+    <div class="meta-container">
+      <header>
+        
+          <a href="/blog/2023/09/13/deploying-a-scary-change/">
+        
+        
+          <h2 class="entry-title">The Checklist for Deploying a Scary Change</h2>
+        
+        <time datetime=""></time>
+          <p class="meta-author">
+
+
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="/author/matt-dole">Matt Dole<a/></span>
+      
+
+    </div>
+  
+
+</p>
+          </a>
+      </header>
+    </div>
+  
+
+  <div class="content-container">
+    
+    
+        <p>Lately, I’ve been getting involved with some sketchy stuff. You know what I’m
+talking about–data migrations.</p>
+
+<p>I’ve been rolling out changes that have a significant risk of breaking our
+production environment for mission-critical services. It’s been exciting work
+(keep your eyes out for more posts on the exact project, coming soon™️), but
+I’ve definitely caused a couple incidents along the way.</p>
+
+<p>After accidentally taking down a key service for a couple hours, I decided I
+needed to have a better pre-deploy process for these changes. I did some
+thinking and came up with a short checklist to run through before I press the
+shiny green button.</p>
+
+
+        <p><a href="/blog/2023/09/13/deploying-a-scary-change/">Read on →</a></p>
+    
+
+    
+  </div>
+
+
+  <footer>
+  </footer>
+
+</div>
+
+      </article>
+  
+    
+      <article>
+        <div class="article-container">
+
+  
+    <div class="meta-container">
+      <header>
+        
+          <a href="/blog/2023/03/01/typescript-magic/">
+        
+        
+          <h2 class="entry-title">TypeScript magic</h2>
+        
+        <time datetime=""></time>
+          <p class="meta-author">
+
+
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="/author/pvinis">Pavlos Vinieratos<a/></span>
+      
+      <p class="fn">
+        <a href="https://twitter.com/pvinis">@pvinis</a>
+      </p>
+      
+
+    </div>
+  
+
+</p>
+          </a>
+      </header>
+    </div>
+  
+
+  <div class="content-container">
+    
+    
+        <p>At Artsy, we love TypeScript. We use it in most of our node/web/mobile repos.
+Today, I want to talk about a specific case we found while trying to make our
+types more strict on <a href="https://github.com/artsy/palette-mobile">palette-mobile</a>,
+which is our Design System for React Native.</p>
+
+<p>Check this out:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">welp</span><span class="p">:</span> <span class="dl">"</span><span class="s2">hello</span><span class="dl">"</span> <span class="o">|</span> <span class="dl">"</span><span class="s2">world</span><span class="dl">"</span> <span class="o">|</span> <span class="kr">string</span> <span class="c1">// `welp` is of type `string`.</span>
+</code></pre></div></div>
+
+<p>Like the comment says, even though we have two specific strings, the fact that
+we do a union with <code class="language-plaintext highlighter-rouge">string</code>, makes <code class="language-plaintext highlighter-rouge">welp</code> have a type of just <code class="language-plaintext highlighter-rouge">string</code>. This is
+because both <code class="language-plaintext highlighter-rouge">"hello"</code> and <code class="language-plaintext highlighter-rouge">"world"</code> are strings, and the union tends to go to
+the type that includes the most.</p>
+
+<p>Think of set theory and bubbles.</p>
+
+
+        <p><a href="/blog/2023/03/01/typescript-magic/">Read on →</a></p>
+    
+
+    
+  </div>
+
+
+  <footer>
+  </footer>
+
+</div>
+
+      </article>
+  
+    
+      <article>
+        <div class="article-container">
+
+  
+    <div class="meta-container">
+      <header>
+        
+          <a href="/blog/2023/02/10/mongo-geospatial-queries/">
+        
+        
+          <h2 class="entry-title">Are you using the right Mongo geospatial query?</h2>
+        
+        <time datetime=""></time>
+          <p class="meta-author">
+
+
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="/author/roop">Roop<a/></span>
+      
+
+    </div>
+  
+
+</p>
+          </a>
+      </header>
+    </div>
+  
+
+  <div class="content-container">
+    
+    
+        <p>We recently got a report from one of our galleries in the Los Angeles area that
+they weren’t showing up on our
+<a href="https://www.artsy.net/shows/los-angeles-ca-usa">Los Angeles exhibition listings</a>.</p>
+
+<p>I fielded the report and right away confirmed: when we asked our core API for
+<code class="language-plaintext highlighter-rouge">/shows?near=&lt;los angeles coordinates&gt;</code>, sure enough this gallery partner didn’t
+make the cut.</p>
+
+<p>Turns out they are based in Santa Monica, a separate and neighboring
+municipality. They must not be within the 25km radius that we use by default for
+these sorts of queries.</p>
+
+<p><em>Case closed</em>. Or so I thought.</p>
+
+
+        <p><a href="/blog/2023/02/10/mongo-geospatial-queries/">Read on →</a></p>
+    
+
+    
+  </div>
+
+
+  <footer>
+  </footer>
+
+</div>
+
+      </article>
+  
+    
+      <article>
+        <div class="article-container">
+
+  
+    <div class="meta-container">
+      <header>
+        
+          <a href="/blog/2022/09/07/quick-tips-to-speed-up-ci/">
+        
+        
+          <h2 class="entry-title">Parallelizing Jest and Cypress.io Tests on CircleCI</h2>
+        
+        <time datetime=""></time>
+          <p class="meta-author">
+
+
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="/author/chris">Christopher Pappas<a/></span>
+      
+
+    </div>
+  
+
+</p>
+          </a>
+      </header>
+    </div>
+  
+
+  <div class="content-container">
+    
+    
+        <p>At Artsy, exploring ways to improve the developer experience is part of our
+makeup. Whether it’s implementing <a href="https://github.com/artsy/express-reloadable">hot-swapping</a> for Express.js or
+integrating the Rust-based <a href="https://github.com/artsy/force/pull/10598">SWC compiler</a> into our front-end build
+pipeline, we’re always trying to reduce the amount of time it takes for a code
+cycle to take place. CI is no exception. When a developer opens a PR, we want to
+ensure they get timely feedback. Do their unit tests pass? Does the app build
+correctly? And how about smoke tests? Each of these jobs are complex processes
+that take time, and the more one can parallelize said tasks the less devs will
+need to wait. Scaled out to a whole engineering org, minor improvements to CI
+can be radical.</p>
+
+<p>In this regard, two things came across our radar recently that we’d like to
+share: sharding via Jest, and a (free) way to parallelize Cypress.io integration
+tests via CircleCI’s <code class="language-plaintext highlighter-rouge">split</code> command.</p>
+
+
+        <p><a href="/blog/2022/09/07/quick-tips-to-speed-up-ci/">Read on →</a></p>
+    
+
+    
+  </div>
+
+
+  <footer>
+  </footer>
+
+</div>
+
+      </article>
+  
+    
+      <article>
+        <div class="article-container">
+
+  
+    <div class="meta-container">
+      <header>
+        
+          <a href="/blog/2022/08/23/getting-around-7-day-cookie/">
+        
+        
+          <h2 class="entry-title">Hacking Around Safari's 7-day Cookie Limit</h2>
+        
+        <time datetime=""></time>
+          <p class="meta-author">
+
+
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="/author/chris">Christopher Pappas<a/></span>
+      
+
+    </div>
+  
+
+</p>
+          </a>
+      </header>
+    </div>
+  
+
+  <div class="content-container">
+    
+    
+        <p>Amongst the many, many things that organizations have to contend with around
+cookie consent laws is Apple’s very own browser, Safari. Did you know that
+Safari will only retain a client-side cookie for 7 days? This is in support of
+Apple’s <a href="https://clearcode.cc/blog/intelligent-tracking-prevention-faq">Intelligent Tracking Prevention (ITP)</a> feature, designed to
+protect a user’s privacy.</p>
+
+<p>These privacy efforts are great but, in hand with laws like <a href="https://gdpr-info.eu">GDPR</a> and
+<a href="https://oag.ca.gov/privacy/ccpa">CCPA</a>, their rollout often creates a UX nightmare for users without some
+extra care. Here at Artsy, we’ve landed on a way to make things slightly less
+bad and want to share our approach.</p>
+
+
+        <p><a href="/blog/2022/08/23/getting-around-7-day-cookie/">Read on →</a></p>
+    
+
+    
+  </div>
+
+
+  <footer>
+  </footer>
+
+</div>
+
+      </article>
+  
+    
+      <article>
+        <div class="article-container">
+
+  
+    <div class="meta-container">
+      <header>
+        
+          <a href="/blog/2022/05/09/deprecating-kaws/">
+        
+        
+          <h2 class="entry-title">Third Time's the Charm: Deprecating KAWS</h2>
+        
+        <time datetime=""></time>
+          <p class="meta-author">
+
+
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="/author/matt-dole">Matt Dole<a/></span>
+      
+
+    </div>
+  
+
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="/author/roop">Roop<a/></span>
+      
+
+    </div>
+  
+
+</p>
+          </a>
+      </header>
+    </div>
+  
+
+  <div class="content-container">
+    
+    
+        <p>How do you tell when it’s time to deprecate a system? If something mostly works OK, is it worth spending time and
+effort replacing its functionality?</p>
+
+<p>At Artsy, we realized several years ago that we needed to be able to group a bunch of artworks together. If we
+wanted to have a page with all of the
+<a href="https://www.artsy.net/collection/lucio-fontana-ceramics">ceramics by Lucio Fontana</a>, or
+<a href="https://www.artsy.net/collection/buy-now-contemporary-prints-in-the-ifpda-fair-spring-2022">contemporary prints from the IFPDA Fair Sprint 2022</a>,
+or a <a href="https://www.artsy.net/collection/antwaun-sargents-wishlist">gift guide curated by Antwaun Sargent</a>, we needed
+to have a way to make that happen.</p>
+
+<p>We decided to call these things “collections,” a reasonable name for a collection of artworks. In order to create
+them, we developed a service called KAWS, named after the artist (whose works we wanted to put in several of these
+collections).</p>
+
+<p>Now, 4 years later, we’ve taken down the service and folded its functionality into Artsy’s main database and API,
+Gravity.</p>
+
+<p>Let’s talk about why and what we learned along the way.</p>
+
+
+        <p><a href="/blog/2022/05/09/deprecating-kaws/">Read on →</a></p>
+    
+
+    
+  </div>
+
+
+  <footer>
+  </footer>
+
+</div>
+
+      </article>
+  
+    
+      <article>
+        <div class="article-container">
+
+  
+    <div class="meta-container">
+      <header>
+        
+          <a href="/blog/2022/04/13/stepping-out-of-the-knowledge-zone/">
+        
+        
+          <h2 class="entry-title">Stepping Out Of The Knowledge Zone</h2>
+        
+        <time datetime=""></time>
+          <p class="meta-author">
+
+
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="/author/kaja">Kaja Santro<a/></span>
+      
+      <p class="fn">
+        <a href="https://twitter.com/alizenero">@alizenero</a>
+      </p>
+      
+
+    </div>
+  
+
+</p>
+          </a>
+      </header>
+    </div>
+  
+
+  <div class="content-container">
+    
+    
+        <p>As I am writing my first blog post for Artsy, here is a short introduction on who I am: My name is Kaja and I am an
+engineer in our Berlin entity. As a Ruby-born programmer I am calling myself a backend engineer, but that also may
+change and is more about emotional identification and less about what I actually do (as you will see in this blog
+post). My background is not in engineering at all. In university I graduated in philosophy and historical
+linguistics, both the most impractical but most beautifully theoretical subjects I can think of. I really love
+being in the world of ideas and thought experiments that challenge the current status of what <em>is</em>, as opposed to
+what is <em>thinkable</em>.</p>
+
+
+        <p><a href="/blog/2022/04/13/stepping-out-of-the-knowledge-zone/">Read on →</a></p>
+    
+
+    
+  </div>
+
+
+  <footer>
+  </footer>
+
+</div>
+
+      </article>
+  
+    
+      <article>
+        <div class="article-container">
+
+  
+    <div class="meta-container">
+      <header>
+        
+          <a href="/blog/2022/02/01/using-context-to-simplify-a-react-form/">
+        
+        
+          <h2 class="entry-title">Using Context to Simplify a VERY Large React Form</h2>
+        
+        <time datetime=""></time>
+          <p class="meta-author">
+
+
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="/author/anna">Anna Carey<a/></span>
+      
+      <p class="fn">
+        <a href="https://twitter.com/anna_carey">@anna_carey</a>
+      </p>
+      
+
+    </div>
+  
+
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="/author/laura">Laura Bhayani<a/></span>
+      
+      <p class="fn">
+        <a href="https://twitter.com/laurabethdotdev">@laurabethdotdev</a>
+      </p>
+      
+
+    </div>
+  
+
+</p>
+          </a>
+      </header>
+    </div>
+  
+
+  <div class="content-container">
+    
+    
+        <p>For those unfamiliar, Artsy is a fine art marketplace. Knowing that, it follows logically to say that the form via
+which our partners list artworks for sale is an integral part of Artsy’s core systems. This form, known only as
+“The Artwork Form,” is whispered about in the halls of Arty’s New York headquarters. It is legendary. It is a
+colossus. It is old enough not only to predate React v16.8 hooks and context APIs, but Artsy’s use of React
+entirely. The first version of the Artwork Form was built in 2014 using ruby and haml, and began its refactoring
+into JS/JQuery/React a full 2 years later, after having expanded considerably from the original implementation.
+That process (at least what we’ve gleaned from our git excavation) was incremental, experimental, and passed
+through many hands before it landed in the lap of the current Partner Experience (PX) team.</p>
+
+
+        <p><a href="/blog/2022/02/01/using-context-to-simplify-a-react-form/">Read on →</a></p>
+    
+
+    
+  </div>
+
+
+  <footer>
+  </footer>
+
+</div>
+
+      </article>
+  
+    
+      <article>
+        <div class="article-container">
+
+  
+    <div class="meta-container">
+      <header>
+        
+          <a href="/blog/2022/01/06/a-year-in-review-2021/">
+        
+        
+          <h2 class="entry-title">A Year in Review: 2021</h2>
+        
+        <time datetime=""></time>
+          <p class="meta-author">
+
+
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="/author/devon">Devon Blandin<a/></span>
+      
+      <p class="fn">
+        <a href="https://twitter.com/dblandin">@dblandin</a>
+      </p>
+      
+
+    </div>
+  
+
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="/author/artsy-engineering">The Artsy Engineering Team<a/></span>
+      
+      <p class="fn">
+        <a href="https://twitter.com/ArtsyOpenSource">@ArtsyOpenSource</a>
+      </p>
+      
+
+    </div>
+  
+
+</p>
+          </a>
+      </header>
+    </div>
+  
+
+  <div class="content-container">
+    
+    
+        <p>Ufff, 2021 was a tough year. It was the second year of the Covid-19 pandemic. We tried our best to support each
+other through these challenging times and in that spirit, we feel like it’s important not to lose sight of our
+accomplishments. As we say goodbye to 2021 and hello to 2022, here are some Artsy Engineering wins from this past year.</p>
+
+<p>What did you ship in 2021? We would love to hear about it and celebrate with you!</p>
+
+
+        <p><a href="/blog/2022/01/06/a-year-in-review-2021/">Read on →</a></p>
+    
+
+    
+  </div>
+
+
+  <footer>
+  </footer>
+
+</div>
+
+      </article>
+  
+
+  <div class="pagination">
+    <a href="/blog/archives">Blog Archives</a>
+    <a href="/blog/categories">Categories</a>
+
+    
+    <span class="page_number ">Page: 1 of 28</span>
+
+    
+      <a href="/blog/2/" class="next">Older</a>
+    
+  </div>
+</div>
+
+
+    </div>
+
+    <aside class="related-articles"></aside>
+
+  </div>
+  <footer id="main_footer"> <div class="footer-navigation">
+  <ul>
+    <li><a href="https://developers.artsy.net/">API</a></li>
+    <li><a href="https://www.artsy.net/jobs">Careers</a></li>
+    <li><a href="http://twitter.com/artsyopensource">@artsyopensource</a></li>
+    <li><a href="http://www.artsy.net/">Artsy.net</a></li>
+  </ul>
+</div>
+
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'blog';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+</footer>
+  <script type="text/javascript">
+  $(function() {
+    // TODO: Move this whole file to a javascript file that is included in the footer
+
+    // Main sticky header
+    if ($(window).width() >= 700) {
+      var sticky = new Waypoint.Sticky({
+        element: $("#banner"),
+        offset: -100
+      });
+    }
+
+    // Toggle hamburger menu
+    $('.header-hamburger').click(function() {
+      $('#banner, .cmn-toggle-switch').toggleClass('active');
+      if (location.pathname == '/open-source') {
+        $('#page-sidebar').toggle();
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

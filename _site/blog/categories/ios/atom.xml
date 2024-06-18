@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: ios | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/ios/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/ios/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Echoes From the Past: Supporting Old App Versions]]></title>
-    <link href="https://marinahuber.github.io/blog/2020/12/31/echo-supporting-old-app-versions/"/>
+    <link href="http://localhost:4000/blog/2020/12/31/echo-supporting-old-app-versions/"/>
     <updated>2020-12-31T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2020/12/31/echo-supporting-old-app-versions</id>
+    <id>http://localhost:4000/blog/2020/12/31/echo-supporting-old-app-versions</id>
     <content type="html"><![CDATA[<p><a href="https://artsy.github.io/blog/2020/03/02/ios-deploys-super-weird-totally-normal/">In, a recent blog post</a>, I discussed a fundamental difference between web and iOS deployments. Web software is deployed to servers that are under your control, while iOS software is deployed to users’ devices that you have <em>no</em> control over. This distinction really changes how you think about the code that you ship, because that code could be running indefinitely on devices that never get updated.</p>
 
 <p>The previous post focused on this distinction through the lens of accidentally shipping (and then fixing) a bug. This focus on bugs is important, but focusing <em>only</em> on bugs left me unable to articulate an important, nuanced distinction between hosting code and shipping app binaries. So let’s dive in.</p>
@@ -79,9 +79,9 @@
   
   <entry>
     <title type="html"><![CDATA[Becoming Mobile First]]></title>
-    <link href="https://marinahuber.github.io/blog/2020/09/29/becoming-mobile-first-at-artsy/"/>
+    <link href="http://localhost:4000/blog/2020/09/29/becoming-mobile-first-at-artsy/"/>
     <updated>2020-09-29T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2020/09/29/becoming-mobile-first-at-artsy</id>
+    <id>http://localhost:4000/blog/2020/09/29/becoming-mobile-first-at-artsy</id>
     <content type="html"><![CDATA[<p>It was a Wednesday, mid-summer 2019. I don’t know which Wednesday specifically, but I know that it was <em>a</em>
 Wednesday because I was attending Artsy’s weekly all-hands meeting. Two hundred colleagues were also there (many
 dialing in remotely) and we were all listening to
@@ -422,9 +422,9 @@ and I’m excited for what the new Collector Experience team is going to do next
   
   <entry>
     <title type="html"><![CDATA[iOS Deploys: Super Weird And Totally Normal]]></title>
-    <link href="https://marinahuber.github.io/blog/2020/03/02/ios-deploys-super-weird-totally-normal/"/>
+    <link href="http://localhost:4000/blog/2020/03/02/ios-deploys-super-weird-totally-normal/"/>
     <updated>2020-03-02T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2020/03/02/ios-deploys-super-weird-totally-normal</id>
+    <id>http://localhost:4000/blog/2020/03/02/ios-deploys-super-weird-totally-normal</id>
     <content type="html"><![CDATA[<p>Software deploys! What a concept. You have some code running somewhere, and you need to get it running somewhere
 else. What could possibly go wrong? While web developers have become accustom to some <em>really slick</em> deploy
 processes, iOS developers have to work within some very different constraints.</p>
@@ -547,9 +547,9 @@ and grown together.</p>
   
   <entry>
     <title type="html"><![CDATA[At Long Last: A Log Out Button]]></title>
-    <link href="https://marinahuber.github.io/blog/2020/01/15/ios-logout-button-at-last/"/>
+    <link href="http://localhost:4000/blog/2020/01/15/ios-logout-button-at-last/"/>
     <updated>2020-01-15T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2020/01/15/ios-logout-button-at-last</id>
+    <id>http://localhost:4000/blog/2020/01/15/ios-logout-button-at-last</id>
     <content type="html"><![CDATA[<p>In 2013, Artsy shipped the first version of our iOS app. Typical for an early-day startup, the app was a “minimum
 viable product” (with a big emphasis on “minimum”). One of the features that didn’t make the cut was something you
 expect to see in most apps: a log out button.</p>
@@ -677,9 +677,9 @@ our users need – even less-than-glamorous features, like a log out button.</p>
   
   <entry>
     <title type="html"><![CDATA[iOS Learning Group]]></title>
-    <link href="https://marinahuber.github.io/blog/2019/12/03/ios-learning-group/"/>
+    <link href="http://localhost:4000/blog/2019/12/03/ios-learning-group/"/>
     <updated>2019-12-03T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2019/12/03/ios-learning-group</id>
+    <id>http://localhost:4000/blog/2019/12/03/ios-learning-group</id>
     <content type="html"><![CDATA[<p>Regular readers of our blog might be familiar with <a href="https://www.cultureamp.com">Culture Amp</a>, a tool Artsy uses to
 collect anonymous feedback and take action on cultural issues (we most recently discussed the tool
 <a href="https://artsy.github.io/blog/2019/04/19/having-a-coffee-with-every-engineer/">in this blog post</a>). At a

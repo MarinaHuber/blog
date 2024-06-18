@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: omakase | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/omakase/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/omakase/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Why does Artsy use Relay?]]></title>
-    <link href="https://marinahuber.github.io/blog/2019/04/10/omakase-relay/"/>
+    <link href="http://localhost:4000/blog/2019/04/10/omakase-relay/"/>
     <updated>2019-04-10T00:00:00+02:00</updated>
-    <id>https://marinahuber.github.io/blog/2019/04/10/omakase-relay</id>
+    <id>http://localhost:4000/blog/2019/04/10/omakase-relay</id>
     <content type="html"><![CDATA[<p>When the mobile team at Artsy considered [moving to React Native][iosrn] back in 2016, one of the most compelling
 cases for making that jump was Relay. This, it seems, is a dependency that is rarely used in the JS community and
 we often find ourselves re-explaining this decision to new engineers during onboarding, and to the public at large.</p>

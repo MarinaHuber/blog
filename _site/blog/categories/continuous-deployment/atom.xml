@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: continuous deployment | Blog Engineering]]></title>
-  <link href="https://marinahuber.github.io/blog/categories/continuous-deployment/atom.xml" rel="self"/>
-  <link href="https://marinahuber.github.io/"/>
-  <updated>2024-06-18T15:01:35+02:00</updated>
-  <id>https://marinahuber.github.io/</id>
+  <link href="http://localhost:4000/blog/categories/continuous-deployment/atom.xml" rel="self"/>
+  <link href="http://localhost:4000/"/>
+  <updated>2024-06-18T16:08:03+02:00</updated>
+  <id>http://localhost:4000/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[iOS Deploys: Super Weird And Totally Normal]]></title>
-    <link href="https://marinahuber.github.io/blog/2020/03/02/ios-deploys-super-weird-totally-normal/"/>
+    <link href="http://localhost:4000/blog/2020/03/02/ios-deploys-super-weird-totally-normal/"/>
     <updated>2020-03-02T00:00:00+01:00</updated>
-    <id>https://marinahuber.github.io/blog/2020/03/02/ios-deploys-super-weird-totally-normal</id>
+    <id>http://localhost:4000/blog/2020/03/02/ios-deploys-super-weird-totally-normal</id>
     <content type="html"><![CDATA[<p>Software deploys! What a concept. You have some code running somewhere, and you need to get it running somewhere
 else. What could possibly go wrong? While web developers have become accustom to some <em>really slick</em> deploy
 processes, iOS developers have to work within some very different constraints.</p>
