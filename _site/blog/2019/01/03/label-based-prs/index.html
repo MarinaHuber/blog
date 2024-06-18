@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Migrating to PR Label based Continuous Deployment - Blog Engineering</title>
+  <meta name="author" content="">
+
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://webfonts.artsy.net/all-webfonts.css"
+  />
+
+  
+  <meta name="description" content="In the JavaScript world, the idea of deploying your libraries on every PR is pretty common. As someone who runs a
+dependency manager but comes from...">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:image" content="http://artsy.github.io/images/artsy_oss_image.png" />
+  <meta property="og:image:type" content="image/png" />
+
+  
+  <link rel="canonical" href="https://marinahuber.github.io/blog/2019/01/03/label-based-prs/">
+  <link rel="alternate" type="application/rss+xml" title="Artsy Engineering Blog" href="/feed">
+  <link rel="alternate" type="application/atom+xml" title="Podcast Feed" href="/podcast.xml" />
+
+  <link href="/favicon.ico" rel="icon">
+  <link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+  <script src="/javascripts/jquery-1.11.3.min.js"> </script>
+  <script src="/javascripts/gradient-fade.js"></script>
+  <script src="/javascripts/noframework.waypoints.min.js"></script>
+  <script src="/javascripts/sticky.min.js"></script>
+  <script src="/javascripts/custom-element.min.js"></script>
+  <script src="/javascripts/g-emoji-element.js"></script>
+  <script src="/javascripts/related-articles.js"></script>
+
+  
+
+  <link href="/feed.xml" rel="alternate" title="Blog Engineering" type="application/atom+xml">
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-12450662-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<link href="/css/epic.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+
+
+<body>
+  <div>
+    <div id="bodywrapper">
+      <header>
+        <ul>
+          <li><a href="/">Artsy Engineering Blog</a></li>
+          <li><a href="https://www.artsy.net/jobs">Careers</a></li>
+          <li><a href="https://github.com/artsy">Github</a></li>
+        </ul>
+
+        <ul>
+          <li><a href="https://github.com/orgs/artsy/repositories?language=&q=&sort=&type=source">Our Open Source</a></li>
+          <li><a href="http://twitter.com/artsyopensource">@artsyopensource</a></li>
+          <li><a href="https://www.artsy.net">artsy.net</a></li>
+        </ul>
+      </header>
+
+      <section>
+        <header id="page">
+          <h1>Migrating to PR Label based Continuous Deployment</h1>
+          <h3>
+          <!-- Yep, single line so the comma lines up right -->
+          By  Orta Therox
+          </h3>
+          <time datetime="2019-01-03">Jan 3, 2019</time>
+        </header>
+
+        <article class='post'>
+          <p>In the JavaScript world, the idea of deploying your libraries on every PR is pretty common. As someone who runs a
+dependency manager but comes from a native background, it’s easy for me to cringe and imagine the strain this puts
+on NPM’s servers. However, that is where the ecosystem is and <a href="https://github.com/artsy/reaction/issues/388">continuous deployment</a> can be really useful. So,
+about a year ago <a href="https://github.com/artsy/reaction/pull/521">we started</a> moving a lot of our libraries to do this at Artsy too. Starting with our most
+critical dependencies:</p>
+
+<ul>
+  <li><a href="https://github.com/artsy/reaction#readme">Reaction</a> (our React components used in many of our web apps)</li>
+  <li><a href="https://github.com/artsy/palette#readme">Palette</a> (our <a href="https://palette.artsy.net">design system</a>)</li>
+</ul>
+
+<p>We started off using a commit message based workflow, but have just finished the migrating to a GitHub Label based
+workflow that is less workload on individual contributors. This post will cover how, and why.</p>
+
+<!-- more -->
+
+<h2 id="why">Why?</h2>
+
+<p>We started using <a href="https://semantic-release.gitbook.io/semantic-release/">semantic-release</a> to handle commit message based deploys. The way semantic-release works
+is you would add a specially formatted commit that included a version prefix indicating you wanted a deploy. For
+example, <code class="language-plaintext highlighter-rouge">[PATCH artwork] Fix safari mail issue</code> would mean that by merging a PR with this commit into master
+should trigger a patch release.</p>
+
+<p>This is their ideal flow, but the reality for us is that a lot of people would forget to do this, or write commits
+like: <code class="language-plaintext highlighter-rouge">[PATCH] bumpity bump</code>. Even worse, these kind of commits were the perfect reason for pushing to master and
+skipping code review to speed things up.</p>
+
+<p>We could have added a pre-commit hooks that enforced the messaging on commits, but that’s not very <a href="https://github.com/artsy/README/blob/master/culture/engineering-principles.md#minimal-viable-process">Minimum Viable
+Process</a> - where we try to map new tool/process improvements to existing behavior instead of regimenting new
+behavior when possible.</p>
+
+<p>The problem felt like the idea of declaring your version changes at commit time felt like a disconnect from how
+people thought about deploys. The code unit for a review is a Pull Request, not per-commit. To try improve on our
+deployment, we re-grouped and discussed what could be a better mapping to our existing workflow. Our answer was: PR
+Label based deploys.</p>
+
+<p>The idea is: You write a PR exactly as you used to, when you create a new PR then you apply a label saying whether
+it is a major, minor, patch or trivial PR and when it is merged then deploy could be made for you.</p>
+
+<p>To match our existing behavior completely, we would automatically add the “patch” label to any PR which doesn’t
+declare what type of deployment it is up-front.</p>
+
+<p>I summarized our ideal state, and turned it into an RFC on our Reaction repo: <a href="https://github.com/artsy/reaction/issues/1095">“Change rules around automatic
+deploys, and add a CHANGELOG”</a> .</p>
+
+<h2 id="how">How?</h2>
+
+<h4 id="deployment">Deployment</h4>
+
+<p>We started building this infrastructure inside <a href="https://github.com/artsy/reaction/pull/1407">our app Reaction</a>. Our implementation was a PR that lasted a
+few months. It was a hard project to prioritize, and didn’t really seem to have an end in sight. This changed last
+week when we discovered the work going on over at <a href="https://github.com/intuit/auto-release#readme">auto-release</a> by the team at <a href="https://github.com/intuit/">Intuit</a>.</p>
+
+<p>The team at Intuit had taken the same problem and worked to apply it generically, making it a useful tool for
+everyone rather than just for one type of project. Perfect.</p>
+
+<p>To try it out, I set it up on our upcoming CLI for the <a href="https://github.com/omakase-js/omakase#readme">Artsy Omakase</a> JS stack - which is a <a href="https://github.com/lerna/lerna#readme">Lerna</a>
+mono-repo. This means it’s a single repo for many JS packages, which makes it a bit more complex than a normal repo
+for a node project.</p>
+
+<p>Auto-release handled this setup out-of-the-box, <code class="language-plaintext highlighter-rouge">10/10</code> - so it was likely to handle our simpler repos. In the
+process we made a bunch of PRs back and were quickly iterating on making it work well for Artsy also. Collaborating
+on projects like this is our <a href="https://github.com/artsy/README/blob/master/culture/engineering-principles.md#own-your-dependencies">bread and butter</a>, it means we don’t have to build tools from scratch and
+can improve upon great work by others.</p>
+
+<p>To use it, we needed to set up two environment variables:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">NPM_TOKEN</code> - used to deploy your package to NPM</li>
+  <li><code class="language-plaintext highlighter-rouge">GH_TOKEN</code> - used to create GitHub releases</li>
+</ul>
+
+<p>and you need to make sure your CI has write access to your repo, so it can push tags and the CHANGELOG entries back
+to your repo.</p>
+
+<h4 id="downsides-to-continuous-deployment">Downsides to Continuous Deployment</h4>
+
+<p>Both the commit message and PR label based continuous deployment structure comes with one annoying flaw, if you’re
+merging many PRs at once - then you can get into trouble with versioning. We’ve been discussing ideas around this
+in the [auto-release issues][ar_iss]. We already had this flaw, so it just propagated to the new technique. We’ve
+been wondering if deploying via <a href="https://github.com/features/actions">GitHub actions</a> may fix this.</p>
+
+<h4 id="peril">Peril</h4>
+
+<p>With auto-release you can have set an option to treat having no release label on your PR as a being a “patch”
+release. This is a great setting, but an ideal workflow for us is to showcase what is happening every time. This
+makes the understanding of our deployments explicit, and is a good reminder to highlight that you might want to
+change the type of deployment. You can see this happening to me <a href="https://github.com/artsy/reaction/pull/1787">in this PR</a>.</p>
+
+<p>We’re currently at <code class="language-plaintext highlighter-rouge">9.1.59</code> - meaning 58 patches in a row, so it’s pretty rare for a minor or major. By making it
+obvious how to change that during the PR (by highlighting that it’s classed as a patch each time) we can maybe make
+the version number change a bit closer to <em>some form</em> of “semantic reality”.</p>
+
+<p>We wanted to first roll this out on one repo, so we scoped <a href="https://github.com/artsy/peril-settings/pull/88">our Artsy Peril changes</a> to just the
+<code class="language-plaintext highlighter-rouge">artsy/reaction</code> repo</p>
+
+<div class="language-diff highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "rules": {
+    // Keep a list of all deployments in slack
+    "create (ref_type == tag)": "org/newRelease.ts",
+    ...
+  },
+  "repos": {
+    "artsy/reaction": {
+      "pull_request": "danger/pr.ts",
+<span class="gi">+     "pull_request.opened": "artsy/peril-settings@repos/reaction/addPatchLabel.ts"
+</span>    },
+    "artsy/force": {
+      "pull_request": "dangerfile.ts"
+    },
+    ...
+  },
+}
+</code></pre></div></div>
+
+<p>The simplest implementation for adding the label is this:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// repos/reaction/addPatchLabel.ts</span>
+<span class="c1">//</span>
+<span class="k">export</span> <span class="k">default</span> <span class="k">async </span><span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">pr</span> <span class="o">=</span> <span class="nx">danger</span><span class="p">.</span><span class="nx">github</span><span class="p">.</span><span class="nx">pr</span>
+
+  <span class="kd">const</span> <span class="nx">patchLabelName</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Version: Patch</span><span class="dl">"</span>
+  <span class="kd">const</span> <span class="nx">requiredPrefix</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Version: </span><span class="dl">"</span>
+
+  <span class="c1">// Someone's already made a decision on the version</span>
+  <span class="kd">const</span> <span class="nx">hasAlreadyGotLabel</span> <span class="o">=</span> <span class="nx">danger</span><span class="p">.</span><span class="nx">github</span><span class="p">.</span><span class="nx">issue</span><span class="p">.</span><span class="nx">labels</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="nx">l</span> <span class="o">=&gt;</span> <span class="nx">l</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nf">startsWith</span><span class="p">(</span><span class="nx">requiredPrefix</span><span class="p">))</span>
+  <span class="k">if </span><span class="p">(</span><span class="nx">hasAlreadyGotLabel</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="s2">`Skipping setting the patch label, because the PR author already set one.`</span><span class="p">)</span>
+    <span class="k">return</span>
+  <span class="p">}</span>
+
+  <span class="c1">// Create or add the label if it's not being used</span>
+  <span class="kd">const</span> <span class="nx">label</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">name</span><span class="p">:</span> <span class="nx">patchLabelName</span><span class="p">,</span>
+    <span class="na">color</span><span class="p">:</span> <span class="dl">"</span><span class="s2">247A38</span><span class="dl">"</span><span class="p">,</span>
+    <span class="na">description</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Indicates that you want this PR to trigger a patch release</span><span class="dl">"</span>
+  <span class="p">}</span>
+
+  <span class="kd">const</span> <span class="nx">repo</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">owner</span><span class="p">:</span> <span class="nx">pr</span><span class="p">.</span><span class="nx">base</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">login</span><span class="p">,</span>
+    <span class="na">repo</span><span class="p">:</span> <span class="nx">pr</span><span class="p">.</span><span class="nx">base</span><span class="p">.</span><span class="nx">repo</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+    <span class="na">id</span><span class="p">:</span> <span class="nx">pr</span><span class="p">.</span><span class="nx">number</span>
+  <span class="p">}</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Adding the label:</span><span class="dl">"</span><span class="p">,</span> <span class="nx">label</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
+  <span class="k">await</span> <span class="nx">danger</span><span class="p">.</span><span class="nx">github</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nf">createOrAddLabel</span><span class="p">(</span><span class="nx">label</span><span class="p">,</span> <span class="nx">repo</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This will dynamically add your label if it doesn’t exist on the repo yet. Our <a href="https://github.com/artsy/peril-settings/blob/db492b5f9213faee3e5d8659c55b84c635240f0c/repos/reaction/addPatchLabel.ts">production
+implementation</a> is a bit more complicated because it will create all of the different labels too. This
+means as we roll out the PR Label based workflow to other repos, the labels will be consistent.</p>
+
+<p>Introducing auto-release meant introducing our first automatically generated changelog (something I’m not sold on,
+I see changelogs as consumer-facing. Most PR title/descriptions aren’t aimed at downstream consumers, but I’m open
+to giving this a shot as today the consumers are also contributors to the repo) which broke one of our global Peril
+rules. This rule would detect a if a repo has a changelog, and ask you to update it if you’ve made any app changes.
+We <a href="https://github.com/artsy/peril-settings/pull/89">amended that rule</a> to detect auto-release on the repo first.</p>
+
+<h2 id="so-how-do-i-get-this-set-up">So, how do I get this set up?</h2>
+
+<p>For the automatic deployment:</p>
+
+<ol>
+  <li>Install auto: <code class="language-plaintext highlighter-rouge">yarn add -D auto-release-cli</code></li>
+  <li>Run <code class="language-plaintext highlighter-rouge">yarn auto init</code> and go through the questions</li>
+  <li>Add a <code class="language-plaintext highlighter-rouge">release</code> script to your <code class="language-plaintext highlighter-rouge">package.json</code>: <code class="language-plaintext highlighter-rouge">"release": "auto shipit"</code></li>
+  <li>In your CI, set both <code class="language-plaintext highlighter-rouge">NPM_TOKEN</code> and <code class="language-plaintext highlighter-rouge">GH_TOKEN</code></li>
+  <li>Add <code class="language-plaintext highlighter-rouge">echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" &gt;&gt; ~/.npmrc</code> to “log in” to NPM in our deploy steps</li>
+  <li>In your deployment phase run: <code class="language-plaintext highlighter-rouge">yarn release</code></li>
+</ol>
+
+<p>For the Peril rule:</p>
+
+<ol>
+  <li>Add <code class="language-plaintext highlighter-rouge">"pull_request.opened": "artsy/peril-settings@repos/reaction/addPatchLabel.ts"</code> to your
+<code class="language-plaintext highlighter-rouge">peril.settings.json</code></li>
+</ol>
+
+<p>This is a little bit risky, because we can change our implementation anytime. If that’s an issue, implement it
+yourself in your settings repo. You got this.</p>
+
+<p>You can get the full details for <a href="https://intuit.github.io/auto-release/">auto-release in their docs</a>, and you can use both <a href="https://github.com/artsy/reaction#readme"><code class="language-plaintext highlighter-rouge">artsy/reaction</code></a>
+and <a href="https://github.com/omakase-js/omakase#readme"><code class="language-plaintext highlighter-rouge">omakase/omakase-js</code></a> as references for how to set it up with Circle CI 2.0.</p>
+
+<p>To wrap this up, I specifically want to call out <a href="https://github.com/hipstersmoothie">@hipstersmoothie</a> for their great work on auto-release (and
+<a href="https://github.com/oliver-moran/jimp">jimp</a>.) It’s been really easy to get started and already covered nearly all the cases we needed. You did great
+work here.</p>
+
+<!-- prettier-ignore-start -->
+<!-- prettier-ignore-end -->
+
+
+        </article>
+
+        <article class='post'>
+          <p style="padding-bottom: 0; margin-bottom:0;">
+            <a href="https://www.artsy.net/" style="background-image: none;">
+              <svg viewBox="0 0 510 510" width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+                <path transform="scale(1, -1) translate(0, -480)" d="M0 -32h512v512h-512v-512v0zM464 16h-80v80h-48v-80h-288v416h416v-416v0zM194 384h-40l-74 -186h38l20 52h72l19 -52h39l-74 186v0zM149 282l25 66l24 -66h-49v0z"></path>
+              </svg>
+            </a>
+          <p/>
+        </article>
+
+        <aside class="related-articles"></aside>
+
+      
+        <article class='post'>
+          <section id="comments" />
+
+<script type="text/javascript">
+  // Comes from https://stackoverflow.com/questions/3177836/how-to-format-time-since-xxx-e-g-4-minutes-ago-similar-to-stack-exchange-site
+  function timeSince(date) {
+    var seconds = Math.floor((new Date() - date) / 1000)
+    var interval = Math.floor(seconds / 31536000)
+
+    if (interval > 1) {
+      return interval + " years"
+    }
+    interval = Math.floor(seconds / 2592000)
+    if (interval > 1) {
+      return interval + " months"
+    }
+    interval = Math.floor(seconds / 86400)
+    if (interval > 1) {
+      return interval + " days"
+    }
+    interval = Math.floor(seconds / 3600)
+    if (interval > 1) {
+      return interval + " hours"
+    }
+    interval = Math.floor(seconds / 60)
+    if (interval > 1) {
+      return interval + " minutes"
+    }
+    return Math.floor(seconds) + " seconds"
+  }
+
+  var writeToComment = function (element, html) {
+    var element = document.createElement(element)
+    element.innerHTML = html
+    document.getElementById("comments").appendChild(element)
+  }
+
+  var addReactions = function (reactions, link) {
+    var returnString = ""
+    var emojiCode = {
+      '+1': "<g-emoji alias='+1' fallback-src='https://assets-cdn.github.com/images/icons/emoji/unicode/1f44d.png' class='emoji'>👍</g-emoji>",
+      '-1': "<g-emoji alias='-1' fallback-src='https://assets-cdn.github.com/images/icons/emoji/unicode/1f44e.png' class='emoji'>👎</g-emoji>",
+      laugh: "<g-emoji alias='smile' fallback-src='https://assets-cdn.github.com/images/icons/emoji/unicode/1f604.png' class='emoji'>😄</g-emoji>",
+      hooray: "<g-emoji alias='tada' fallback-src='https://assets-cdn.github.com/images/icons/emoji/unicode/1f389.png' class='emoji'>🎉</g-emoji>",
+      confused: "<g-emoji alias='thinking_face' fallback-src='https://assets-cdn.github.com/images/icons/emoji/unicode/1f615.png' class='emoji'>😕</g-emoji>",
+      heart: "<g-emoji alias='framed_picture' fallback-src='https://assets-cdn.github.com/images/icons/emoji/unicode/1f5bc.png' class='emoji'>🖼</g-emoji>"
+    }
+
+    if (reactions.total_count > 0) {
+      returnString += "<div class='comment-reactions'>"
+      for (var key in reactions) {
+        if (reactions.hasOwnProperty(key)) {
+          if (reactions[key] > 0 && key !== "total_count") {
+            returnString += "<a href='" + link + "' class='emoji-wrapper'>" + emojiCode[key] + reactions[key] + "</a>"
+          }
+        }
+      }
+      returnString += "</div>"
+      return returnString
+    } else {
+      return "<div></div>"
+    }
+  }
+
+  // Based on http://ivanzuzak.info/2011/02/18/github-hosted-comments-for-github-hosted-blogs.html
+  // And http://donw.io/post/github-comments/
+
+  var loadComments = function (data) {
+    writeToComment("h2", "Comments")
+    for (var i = 0; i < data.length; i++) {
+      var cuser = data[i].user.login
+      var cuserlink = data[i].user.html_url
+      var clink = data[i].html_url
+      var cbody = data[i].body_html
+      var cavatarlink = data[i].user.avatar_url
+      var cdate = new Date(data[i].created_at)
+      var creactions = addReactions(data[i].reactions, clink)
+
+      var commentHTML =
+        "<div class='comment'>" +
+        "<div class='comment-header'>" +
+        "<a class='comment-username' href=\"" + cuserlink + '">' +
+        '<img src="' + cavatarlink + '" alt="" width="40" height="40">' +
+        cuser +
+        "</a>" + " commented " +
+        "<a class='comment-date' href=\"" + clink + '">' +
+        timeSince(cdate) + " ago" +
+        "</a>" +
+        "</div>" +
+        "<div class='comment-body'>"
+        + cbody +
+        "</div>" +
+        creactions +
+        "</div>"
+      writeToComment("div", commentHTML)
+    }
+
+    var callToAction =
+      "<hr/>" +
+      "<p>" +
+      "Our comments are using GitHub Issues on the Artsy Blog repo. You can post by replying to <a href='https://github.com/artsy/artsy.github.io/issues/515'>issue #515</a>." +
+      "</p>"
+    writeToComment("div", callToAction)
+  }
+
+  var writeFirstComment = function () {
+    var callToAction =
+      "<hr/>" +
+      "<p>" +
+      "This post has no comments, yet, you could be the first. Our comments are using GitHub Issues on the Artsy Blog repo. You can post by replying to <a href='https://github.com/artsy/artsy.github.io/issues/515'>issue #515</a>." +
+      "</p>"
+    writeToComment("div", callToAction)
+  }
+
+  if (window.fetch) {
+    var url =
+      "https://artsy-blog-gh-commentify.herokuapp.com/repos/artsy/artsy.github.io/issues/515/comments"
+    window
+      .fetch(url, { Accept: "application/vnd.github.v3.html+json" })
+      .then(function (response) {
+        return response.json()
+      })
+      .then(function (json) {
+        if (json.length) {
+          loadComments(json)
+        } else {
+          writeFirstComment()
+        }
+      })
+  }
+
+</script>
+        </article>
+      
+
+      </section>
+
+      <footer>
+        <article>
+
+          <section>
+            <h4>Author</h4>
+            <p> <a href="/author/orta">Orta Therox</a></p>
+            <p>Code Janitor at Artsy, thinking about JS tooling.</a></p>
+          </section>
+
+          <section>
+            <h4>Post Meta</h4>
+            <p>Jan 3, 2019</p>
+            <p>Tagged: <a class='category' href='/blog/categories/build-tools/'>build tools</a>, <a class='category' href='/blog/categories/deployment/'>deployment</a>, <a class='category' href='/blog/categories/road-and-bridges/'>road and bridges</a></p>
+          </section>
+          <br/>
+          <section>
+            <h4>Artsy OSS</h4>
+            <ul>
+              <li><a href='https://www.artsy.net'>Artsy.net</a></li>
+              <li><a href='https://github.com/artsy'>Github</a></li>
+              <li><a href='https://github.com/orgs/artsy/repositories?language=&q=&sort=&type=source'>Open Source</a></li>
+              <li><a href='https://www.artsy.net/jobs'>Careers</a></li>
+            </ul>
+          </section>
+
+          <section>
+            <h4>Blog</h4>
+            <ul>
+              <li><a href='http://artsy.github.io/blog/archives/'>Archives</a></li>
+              <!-- TODO: bring back a different version of site search  -->
+              <!-- <li><a href='http://artsy.github.io/search/'>Search</a></li> -->
+              <li><a href='https://github.com/artsy/artsy.github.io'>Code on GitHub</a></li>
+              <li><a href='https://github.com/artsy/artsy.github.io/edit/source/_posts/2019-01-03-label-based-prs.markdown'>Fix typos in this post</a></li>
+            </ul>
+          </section>
+
+        </article>
+
+        <article>
+          <section>
+            <h4>Post Series on the Blog</h4>
+            <ul>
+              
+              <li><a href='/series/react-native-at-artsy/'>React Native at Artsy</a></li>
+              
+              <li><a href='/series/javascriptures/'>JavaScriptures</a></li>
+              
+              <li><a href='/series/stages-of-professional-growth/'>Stages of Professional Growth</a></li>
+              
+              <li><a href='/series/artsy-tech-stack/'>Artsy Tech Stack</a></li>
+              
+              <li><a href='/series/open-source-by-default/'>Open Source by Default</a></li>
+              
+            </ul>
+          </section>
+
+          <section>
+          
+          </section>
+        </article>
+
+      </footer>
+    </div>
+  </div>
+</body>

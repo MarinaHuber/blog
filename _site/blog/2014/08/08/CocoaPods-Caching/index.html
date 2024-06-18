@@ -1,0 +1,492 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Using CocoaPods Caching with Travis CI - Blog Engineering</title>
+  <meta name="author" content="">
+
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://webfonts.artsy.net/all-webfonts.css"
+  />
+
+  
+  <meta name="description" content="
+  
+
+    
+
+  
+    
+      
+        
+          
+        
+        
+          Using CocoaPods Caching with Travis CI
+        
+        Aug 8, 2014
+     ...">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:image" content="http://artsy.github.io/images/artsy_oss_image.png" />
+  <meta property="og:image:type" content="image/png" />
+
+  
+  <link rel="canonical" href="https://marinahuber.github.io/blog/2014/08/08/CocoaPods-Caching/">
+  <link rel="alternate" type="application/rss+xml" title="Artsy Engineering Blog" href="/feed">
+  <link rel="alternate" type="application/atom+xml" title="Podcast Feed" href="/podcast.xml" />
+
+  <link href="/favicon.ico" rel="icon">
+  <link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+  <script src="/javascripts/jquery-1.11.3.min.js"> </script>
+  <script src="/javascripts/gradient-fade.js"></script>
+  <script src="/javascripts/noframework.waypoints.min.js"></script>
+  <script src="/javascripts/sticky.min.js"></script>
+  <script src="/javascripts/custom-element.min.js"></script>
+  <script src="/javascripts/g-emoji-element.js"></script>
+  <script src="/javascripts/related-articles.js"></script>
+
+  
+
+  <link href="/feed.xml" rel="alternate" title="Blog Engineering" type="application/atom+xml">
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-12450662-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+  <div id="logo-container">
+    <a id="lrg-mark" href="https://www.artsy.net/">
+      <svg viewBox="0 0 510 510" width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+        <path transform="scale(1, -1) translate(0, -480)" d="M0 -32h512v512h-512v-512v0zM464 16h-80v80h-48v-80h-288v416h416v-416v0zM194 384h-40l-74 -186h38l20 52h72l19 -52h39l-74 186v0zM149 282l25 66l24 -66h-49v0z"/>
+      </svg>
+    </a>
+  </div>
+  <header id="banner"><div id="header">
+  <div class="header-navigation">
+    <ul>
+      <li><a href="https://developers.artsy.net/">API</a></li>
+      <li><a href="https://www.artsy.net/jobs">Careers</a></li>
+      <li><a href="http://twitter.com/artsyopensource">@artsyopensource</a></li>
+      <li><a href="http://www.artsy.net/">Artsy.net</a></li>
+    </ul>
+    <span class="header-section-title">
+      
+        <a href="/open-source">Open Source</a>
+      
+    </span>
+  </div>
+
+  <div class="header-sticky-container">
+    <div class="header-logo">
+      <h2><a href="https://marinahuber.github.io">Artsy</a></h2>
+    </div>
+    <div class="header-search">
+      
+        <h2><a href="/">Engineering Blog</a></h2>
+      
+    </div>
+  </div>
+</div>
+</header>
+  <div class="header-hamburger">
+    <button class="cmn-toggle-switch cmn-toggle-switch__htx">
+      <span>toggle menu</span>
+    </button>
+  </div>
+  <div id="main">
+    <div id="content">
+
+      <div>
+  <article class="hentry" role="article">
+
+    <div class="article-container-single ">
+
+  
+    <div class="meta-container">
+      <header>
+        
+          <a href="">
+        
+        
+          <h2 class="entry-title">Using CocoaPods Caching with Travis CI</h2>
+        
+        <time datetime="2014-08-08">Aug 8, 2014</time>
+          <p class="meta-author">
+
+
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="/author/orta">Orta Therox<a/></span>
+      
+      <p class="fn">
+        <a href="https://twitter.com/orta">@orta</a>
+      </p>
+      
+
+    </div>
+  
+
+</p>
+          </a>
+      </header>
+    </div>
+  
+
+  <div class="content-container">
+    
+      <div class="entry-content"><p>As <a href="http://artsy.github.io/blog/2014/08/07/taking-a-snapshot-with-second-curtain/">Ash said earlier</a> we like using Continuous Integration. Today I spent a large amount of time migrating us to use the new CocoaPods caching system in Travis CI. To make up for my lost time I’m passing on what I’ve learned and also showing how we do CI at Artsy with Objective-C apps. If you’re interested in how we do it in Swift, you can just check <a href="https://github.com/artsy/eidolon">Eidolon</a>.</p>
+
+<!-- more -->
+
+<p>First and foremost, this only works if you are paying for Travis CI.</p>
+
+<p>Travis CI recently merged in support for <a href="http://docs.travis-ci.com/user/caching/">Caching of CocoaPods</a> - this is great! By using this, we’ve reduced our build times from an average of about 10 minutes, to about 7 minutes. It works by using your <code class="language-plaintext highlighter-rouge">Podfile.lock</code> as a key to cache your <code class="language-plaintext highlighter-rouge">Pods</code> directory, if the lock hasn’t changed then there’s no need to update the Cache and so <code class="language-plaintext highlighter-rouge">pod install</code> is not called on your project. This caused me an issue as the <code class="language-plaintext highlighter-rouge">[Project].xcworkspace</code> file that CocoaPods generates was not in source control, and the app wouldn’t build. Useful note, if you’re using <a href="http://guides.cocoapods.org/syntax/podfile.html#pod">development pods</a> in your build you probably shouldn’t use this as your Pods directory can get out of sync with the cached version.</p>
+
+<p>We use a <a href="https://github.com/artsy/eidolon/blob/master/Makefile">Makefile</a> to separate the tasks required to build, test and deploy an app. The general structure of our Makefile is:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Action</th>
+      <th>Reason</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Constants</td>
+      <td>A collection of constants that get resued by different make tasks.</td>
+    </tr>
+    <tr>
+      <td>CI Tasks</td>
+      <td>Separate commands necessary for running Xcode projects from the terminal.</td>
+    </tr>
+    <tr>
+      <td>Actions</td>
+      <td>Commands that manipulate your project state, or maintainance commands.</td>
+    </tr>
+    <tr>
+      <td>Deployment</td>
+      <td>Commands to get your app ready for the App Store, or Hockey.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>If you don’t know the syntax for Make, essentially if it’s on the same line you’re either setting constants or calling other make commands. If it’s on a separate line then you are running a shell command.</p>
+
+<p>This is the <a href="http://orta.io/#folio-header-unit">Artsy Folio</a> Makefile in full:</p>
+
+<div class="language-make highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Constants
+</span>
+<span class="nv">WORKSPACE</span> <span class="o">=</span> Artsy Folio.xcworkspace
+<span class="nv">XCPROJECT</span> <span class="o">=</span> Artsy<span class="se">\ </span>Folio.xcodeproj
+<span class="nv">SCHEME</span> <span class="o">=</span> ArtsyFolio
+<span class="nv">CONFIGURATION</span> <span class="o">=</span> Beta
+<span class="nv">APP_PLIST</span> <span class="o">=</span> Info.plist
+<span class="nv">PLIST_BUDDY</span> <span class="o">=</span> /usr/libexec/PlistBuddy
+<span class="nv">TARGETED_DEVICE_FAMILY</span> <span class="o">=</span> <span class="se">\"</span>1,2<span class="se">\"</span>
+
+<span class="nv">BUNDLE_VERSION</span> <span class="o">=</span> <span class="p">$(</span>shell <span class="p">$(</span>PLIST_BUDDY<span class="p">)</span> <span class="nt">-c</span> <span class="s2">"Print CFBundleVersion"</span> <span class="p">$(</span>APP_PLIST<span class="p">))</span>
+<span class="nv">GIT_COMMIT</span> <span class="o">=</span> <span class="p">$(</span>shell git log <span class="nt">-n1</span> <span class="nt">--format</span><span class="o">=</span><span class="s1">'%h'</span><span class="p">)</span>
+<span class="nv">ALPHA_VERSION</span> <span class="o">=</span> <span class="p">$(</span>BUNDLE_VERSION<span class="p">)</span>-<span class="p">$(</span>BUILD_NUMBER<span class="p">)</span>-<span class="p">$(</span>GIT_COMMIT<span class="p">)</span>
+
+<span class="nv">GIT_COMMIT_REV</span> <span class="o">=</span> <span class="p">$(</span>shell git log <span class="nt">-n1</span> <span class="nt">--format</span><span class="o">=</span><span class="s1">'%h'</span><span class="p">)</span>
+<span class="nv">GIT_COMMIT_SHA</span> <span class="o">=</span> <span class="p">$(</span>shell git log <span class="nt">-n1</span> <span class="nt">--format</span><span class="o">=</span><span class="s1">'%H'</span><span class="p">)</span>
+<span class="nv">GIT_REMOTE_ORIGIN_URL</span> <span class="o">=</span> <span class="p">$(</span>shell git config <span class="nt">--get</span> remote.origin.url<span class="p">)</span>
+
+<span class="nv">DATE_MONTH</span> <span class="o">=</span> <span class="p">$(</span>shell <span class="nb">date</span> <span class="s2">"+%e %h"</span><span class="p">)</span>
+<span class="nv">DATE_VERSION</span> <span class="o">=</span> <span class="p">$(</span>shell <span class="nb">date</span> <span class="s2">"+%Y.%m.%d"</span><span class="p">)</span>
+
+<span class="nv">CHANGELOG</span> <span class="o">=</span> CHANGELOG.md
+<span class="nv">CHANGELOG_SHORT</span> <span class="o">=</span> CHANGELOG_SHORT.md
+
+<span class="nv">IPA</span> <span class="o">=</span> ArtsyFolio.ipa
+<span class="nv">DSYM</span> <span class="o">=</span> ArtsyFolio.app.dSYM.zip
+
+<span class="c"># Phony tasks are tasks that could potentially have a file with the same name in the current folder
+</span><span class="nl">.PHONY</span><span class="o">:</span> <span class="nf">build clean test ci</span>
+
+<span class="c"># CI Tasks
+</span>
+<span class="nl">ci</span><span class="o">:</span> <span class="nf">CONFIGURATION = Debug</span>
+<span class="nl">ci</span><span class="o">:</span> <span class="nf">pods build</span>
+
+<span class="nl">build</span><span class="o">:</span>
+	<span class="nb">set</span> <span class="nt">-o</span> pipefail <span class="o">&amp;&amp;</span> xcodebuild <span class="nt">-workspace</span> <span class="s2">"</span><span class="p">$(</span><span class="s2">WORKSPACE</span><span class="p">)</span><span class="s2">"</span> <span class="nt">-scheme</span> <span class="s2">"</span><span class="p">$(</span><span class="s2">SCHEME</span><span class="p">)</span><span class="s2">"</span> <span class="nt">-sdk</span> iphonesimulator <span class="nt">-destination</span> <span class="s1">'name=iPad Retina'</span> build | xcpretty <span class="nt">-c</span>
+
+<span class="nl">clean</span><span class="o">:</span>
+	xctool <span class="nt">-workspace</span> <span class="s2">"</span><span class="p">$(</span><span class="s2">WORKSPACE</span><span class="p">)</span><span class="s2">"</span> <span class="nt">-scheme</span> <span class="s2">"</span><span class="p">$(</span><span class="s2">SCHEME</span><span class="p">)</span><span class="s2">"</span> <span class="nt">-configuration</span> <span class="s2">"</span><span class="p">$(</span><span class="s2">CONFIGURATION</span><span class="p">)</span><span class="s2">"</span> clean
+
+<span class="nl">test</span><span class="o">:</span>
+	<span class="nb">set</span> <span class="nt">-o</span> pipefail <span class="o">&amp;&amp;</span> xcodebuild <span class="nt">-workspace</span> <span class="s2">"</span><span class="p">$(</span><span class="s2">WORKSPACE</span><span class="p">)</span><span class="s2">"</span> <span class="nt">-scheme</span> <span class="s2">"</span><span class="p">$(</span><span class="s2">SCHEME</span><span class="p">)</span><span class="s2">"</span> <span class="nt">-configuration</span> Debug <span class="nb">test</span> <span class="nt">-sdk</span> iphonesimulator <span class="nt">-destination</span> <span class="s1">'name=iPad Retina'</span> | second_curtain | xcpretty <span class="nt">-c</span> <span class="nt">--test</span>
+
+<span class="nl">lint</span><span class="o">:</span>
+	bundle <span class="nb">exec </span>fui <span class="nt">--path</span> Classes find
+
+	<span class="err">bundle</span> <span class="err">exec</span> <span class="err">obcd</span> <span class="err">--path</span> <span class="err">Classes</span> <span class="err">find</span> <span class="err">HeaderStyle</span>
+	<span class="err">bundle</span> <span class="err">exec</span> <span class="err">obcd</span> <span class="err">--path</span> <span class="s2">"ArtsyFolio Tests"</span> <span class="err">find</span> <span class="err">HeaderStyle</span>
+
+<span class="c"># Actions
+</span>
+<span class="nl">ipa</span><span class="o">:</span>
+	<span class="p">$(</span>PLIST_BUDDY<span class="p">)</span> <span class="nt">-c</span> <span class="s2">"Set CFBundleDisplayName </span><span class="p">$(</span><span class="s2">BUNDLE_NAME</span><span class="p">)</span><span class="s2">"</span> <span class="p">$(</span>APP_PLIST<span class="p">)</span>
+	<span class="p">$(</span>PLIST_BUDDY<span class="p">)</span> <span class="nt">-c</span> <span class="s2">"Set CFBundleVersion </span><span class="p">$(</span><span class="s2">DATE_VERSION</span><span class="p">)</span><span class="s2">"</span> <span class="p">$(</span>APP_PLIST<span class="p">)</span>
+	ipa build <span class="nt">--scheme</span> <span class="p">$(</span>SCHEME<span class="p">)</span> <span class="nt">--configuration</span> <span class="p">$(</span>CONFIGURATION<span class="p">)</span> <span class="nt">-t</span>
+
+<span class="nl">alpha_version</span><span class="o">:</span>
+	<span class="p">$(</span>PLIST_BUDDY<span class="p">)</span> <span class="nt">-c</span> <span class="s2">"Set CFBundleVersion </span><span class="p">$(</span><span class="s2">ALPHA_VERSION</span><span class="p">)</span><span class="s2">"</span> <span class="p">$(</span>APP_PLIST<span class="p">)</span>
+
+<span class="nl">change_version_to_date</span><span class="o">:</span>
+	<span class="p">$(</span>PLIST_BUDDY<span class="p">)</span> <span class="nt">-c</span> <span class="s2">"Set CFBundleVersion </span><span class="p">$(</span><span class="s2">DATE_VERSION</span><span class="p">)</span><span class="s2">"</span> <span class="p">$(</span>APP_PLIST<span class="p">)</span>
+
+<span class="nl">set_git_properties</span><span class="o">:</span>
+	<span class="p">$(</span>PLIST_BUDDY<span class="p">)</span> <span class="nt">-c</span> <span class="s2">"Set GITCommitRev </span><span class="p">$(</span><span class="s2">GIT_COMMIT_REV</span><span class="p">)</span><span class="s2">"</span> <span class="p">$(</span>APP_PLIST<span class="p">)</span>
+	<span class="p">$(</span>PLIST_BUDDY<span class="p">)</span> <span class="nt">-c</span> <span class="s2">"Set GITCommitSha </span><span class="p">$(</span><span class="s2">GIT_COMMIT_SHA</span><span class="p">)</span><span class="s2">"</span> <span class="p">$(</span>APP_PLIST<span class="p">)</span>
+	<span class="p">$(</span>PLIST_BUDDY<span class="p">)</span> <span class="nt">-c</span> <span class="s2">"Set GITRemoteOriginURL </span><span class="p">$(</span><span class="s2">GIT_REMOTE_ORIGIN_URL</span><span class="p">)</span><span class="s2">"</span> <span class="p">$(</span>APP_PLIST<span class="p">)</span>
+
+<span class="nl">pods</span><span class="o">:</span> <span class="nf">remove_debug_pods</span>
+<span class="nl">pods</span><span class="o">:</span>
+	<span class="nb">rm</span> <span class="nt">-rf</span> Pods
+	bundle <span class="nb">install</span>
+	bundle <span class="nb">exec </span>pod <span class="nb">install</span>
+
+<span class="nl">remove_debug_pods</span><span class="o">:</span>
+	perl <span class="nt">-pi</span> <span class="nt">-w</span> <span class="nt">-e</span> <span class="s2">"s{pod 'Reveal-iOS-SDK'}{}g"</span> Podfile
+
+<span class="nl">update_bundle_version</span><span class="o">:</span>
+	<span class="p">@</span><span class="nb">printf</span> <span class="s1">'What is the new human-readable release version? '</span><span class="p">;</span> <span class="se">\</span>
+		<span class="nb">read </span>HUMAN_VERSION<span class="p">;</span> <span class="se">\</span>
+		<span class="p">$(</span>PLIST_BUDDY<span class="p">)</span> <span class="nt">-c</span> <span class="s2">"Set CFBundleShortVersionString </span><span class="nv">$$</span><span class="s2">HUMAN_VERSION"</span> <span class="p">$(</span>APP_PLIST<span class="p">)</span>
+
+<span class="nl">mogenerate</span><span class="o">:</span>
+	<span class="p">@</span><span class="nb">printf</span> <span class="s1">'What is the new Core Data version? '</span><span class="p">;</span> <span class="se">\</span>
+		<span class="nb">read </span>CORE_DATA_VERSION<span class="p">;</span> <span class="se">\</span>
+		mogenerator <span class="nt">-m</span> <span class="s2">"Resources/CoreData/ArtsyPartner.xcdatamodeld/ArtsyFolio v</span><span class="nv">$$</span><span class="s2">CORE_DATA_VERSION.xcdatamodel/"</span> <span class="nt">--base-class</span> ARManagedObject <span class="nt">--template-path</span> config/mogenerator/artsy <span class="nt">--machine-dir</span> Classes/Models/Generated/ <span class="nt">--human-dir</span> /tmp/ <span class="nt">--template-var</span> <span class="nv">arc</span><span class="o">=</span><span class="nb">true</span>
+
+<span class="c"># Deployment
+</span>
+<span class="nl">deploy</span><span class="o">:</span> <span class="nf">ipa distribute</span>
+
+<span class="nl">alpha</span><span class="o">:</span> <span class="nf">BUNDLE_NAME = 'Folio α'</span>
+<span class="nl">alpha</span><span class="o">:</span> <span class="nf">NOTIFY = 0</span>
+<span class="nl">alpha</span><span class="o">:</span> <span class="nf">alpha_version deploy</span>
+
+<span class="nl">appstore</span><span class="o">:</span> <span class="nf">BUNDLE_NAME = 'Artsy Folio'</span>
+<span class="nl">appstore</span><span class="o">:</span> <span class="nf">TARGETED_DEVICE_FAMILY = 2</span>
+<span class="nl">appstore</span><span class="o">:</span> <span class="nf">remove_debug_pods update_bundle_version set_git_properties change_version_to_date</span>
+
+<span class="nl">next</span><span class="o">:</span> <span class="nf">TARGETED_DEVICE_FAMILY = </span>\"<span class="nf">1</span><span class="p">,</span><span class="nf">2</span>\"
+<span class="nl">next</span><span class="o">:</span> <span class="nf">update_bundle_version set_git_properties change_version_to_date</span>
+
+<span class="nl">distribute</span><span class="o">:</span>
+  <span class="err">cat</span> <span class="err">$(CHANGELOG)</span> <span class="err">|</span> <span class="err">head</span> <span class="err">-n</span> <span class="err">50</span> <span class="err">|</span> <span class="err">awk</span> <span class="s1">'{ print } END { print "..." }'</span> <span class="err">&gt;</span> <span class="err">$(CHANGELOG_SHORT)</span>
+  <span class="err">curl</span> <span class="err">\</span>
+   <span class="err">-F</span> <span class="nv">status</span><span class="o">=</span>2 <span class="se">\</span>
+   <span class="nt">-F</span> <span class="nv">notify</span><span class="o">=</span><span class="p">$(</span>NOTIFY<span class="p">)</span> <span class="se">\</span>
+   <span class="nt">-F</span> <span class="s2">"notes=&lt;</span><span class="p">$(</span><span class="s2">CHANGELOG_SHORT</span><span class="p">)</span><span class="s2">"</span> <span class="se">\</span>
+   <span class="nt">-F</span> <span class="nv">notes_type</span><span class="o">=</span>1 <span class="se">\</span>
+   <span class="nt">-F</span> <span class="nv">ipa</span><span class="o">=</span>@<span class="p">$(</span>IPA<span class="p">)</span> <span class="se">\</span>
+   <span class="nt">-F</span> <span class="nv">dsym</span><span class="o">=</span>@<span class="p">$(</span>DSYM<span class="p">)</span> <span class="se">\</span>
+   <span class="nt">-H</span> <span class="s1">'X-HockeyAppToken: </span><span class="p">$(</span><span class="s1">HOCKEYAPP_TOKEN</span><span class="p">)</span><span class="s1">'</span> <span class="se">\</span>
+   https://rink.hockeyapp.net/api/2/apps/upload <span class="se">\</span>
+   | <span class="nb">grep</span> <span class="nt">-v</span> <span class="s2">"errors"</span>
+
+</code></pre></div></div>
+
+<p>That gives you a sense of the commands that you can run from the terminal in our projects, next we need to look at the <code class="language-plaintext highlighter-rouge">.travis.yml</code> file.</p>
+
+<div class="language-make highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">language</span><span class="o">:</span> <span class="nf">objective-c</span>
+<span class="nl">cache</span><span class="o">:</span>
+  <span class="err">-</span> <span class="err">bundler</span>
+  <span class="err">-</span> <span class="err">cocoapods</span>
+
+<span class="nl">env</span><span class="o">:</span>
+  <span class="err">-</span> <span class="nv">UPLOAD_IOS_SNAPSHOT_BUCKET_NAME</span><span class="o">=</span>eigen-ci UPLOAD_IOS_SNAPSHOT_BUCKET_PR...
+
+<span class="nl">before_install</span><span class="o">:</span>
+  <span class="nl">- 'echo ''gem</span><span class="o">:</span> <span class="nf">--no-ri --no-rdoc'' &gt; ~/.gemrc'</span>
+  <span class="err">-</span> <span class="err">cp</span> <span class="err">.netrc</span> <span class="err">~</span>
+  <span class="err">-</span> <span class="err">chmod</span> <span class="err">600</span> <span class="err">.netrc</span>
+  <span class="nl">- pod repo add artsy https</span><span class="o">:</span><span class="nf">//github.com/artsy/Specs.git</span>
+
+<span class="nl">before_script</span><span class="o">:</span>
+  <span class="err">-</span> <span class="err">gem</span> <span class="err">install</span> <span class="err">second_curtain</span>
+  <span class="err">-</span> <span class="err">make</span> <span class="err">ci</span>
+
+<span class="nl">script</span><span class="o">:</span>
+  <span class="err">-</span> <span class="err">make</span> <span class="err">test</span>
+  <span class="err">-</span> <span class="err">make</span> <span class="err">lint</span>
+
+</code></pre></div></div>
+
+<p>This is nice and simple. It was built to use multiple travis build steps. This makes the CI output a lot more readable as an end user. Travis will by default collapse the shell output for different build stages leaving only the <code class="language-plaintext highlighter-rouge">script</code> stage defaulting to being exposed. Here is an example of what you see on a failing test:</p>
+
+<center>
+<img src="/images/2014-08-08-CocoaPods-Caching/failing_travis_screenshot.png" alt="Travis CI Failure" />
+</center>
+
+<p>We use a gem with a binary in <a href="https://github.com/AshFurrow/second_curtain/">second_curtain</a>, and this came with bundler caching issues in Travis. The solution was to ignore bundler and run <code class="language-plaintext highlighter-rouge">gem install second_curtain</code> each time. To increase the speed we also ensured that documentation is not being generated. If you are interested in what’s going on with the <code class="language-plaintext highlighter-rouge">.netrc</code>, read my blog post on <a href="http://artsy.github.io/blog/2014/06/20/artsys-first-closed-source-pod/">Artsy’s first Closed Source Pod</a>.</p>
+
+<p>We will continue pushing the state of the art in iOS deployment, in building our own tools and using everything available to increase developer happiness. If you’re into this we’re always looking to hire people with a good open source track record or street smarts. Here’s <a href="https://artsy.net/job/mobile-engineer">the jobs page</a>.</p>
+</div>
+    
+
+    <p class="meta-author">
+      
+
+
+
+
+<div class="meta">
+  Posted by
+
+
+  
+
+  
+    <span class="byline author vcard">
+
+      <div class="meta"><span class="fn"><a href="/author/orta">
+        Orta Therox
+      </a></span></div>
+
+      
+      <span class="fn">
+        <a href="http://orta.io">Site</a>
+      </span>
+      
+      
+      <span class="fn">
+        <a href="https://github.com/orta">GitHub</a>
+      </span>
+      
+      
+      <span class="fn">
+        <a href="https://twitter.com/orta">@orta</a>
+      </span>
+      
+    </span>
+
+  
+</div>
+
+
+
+
+    </p>
+    <p class="meta-categories">
+      Categories: 
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/continuous-integration/'>Continuous Integration</a>, <a class='category' href='/blog/categories/testing/'>Testing</a>, <a class='category' href='/blog/categories/travis/'>Travis</a>, <a class='category' href='/blog/categories/ios/'>iOS</a>
+  
+</span>
+
+
+    </p>
+    
+
+    
+
+    <p class="meta-paginate">
+      
+        <a class="previous" href="/blog/2014/08/07/taking-a-snapshot-with-second-curtain/" title="Previous Post: Taking a Snapshot with Second Curtain">&laquo; Taking a Snapshot with Second Curtain</a>
+      
+      
+        <a class="next" href="/blog/2014/09/05/we-open-sourced-our-isomorphic-javascript-website/" title="next Post: We open sourced our Isomorphic Javascript website">We open sourced our Isomorphic Javascript website &raquo;</a>
+      
+    </p>
+  </div>
+
+
+  <footer>
+  </footer>
+
+</div>
+
+
+  </article>
+</div>
+
+
+    </div>
+
+    <aside class="related-articles"></aside>
+
+  </div>
+  <footer id="main_footer"> <div class="footer-navigation">
+  <ul>
+    <li><a href="https://developers.artsy.net/">API</a></li>
+    <li><a href="https://www.artsy.net/jobs">Careers</a></li>
+    <li><a href="http://twitter.com/artsyopensource">@artsyopensource</a></li>
+    <li><a href="http://www.artsy.net/">Artsy.net</a></li>
+  </ul>
+</div>
+
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'blog';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+</footer>
+  <script type="text/javascript">
+  $(function() {
+    // TODO: Move this whole file to a javascript file that is included in the footer
+
+    // Main sticky header
+    if ($(window).width() >= 700) {
+      var sticky = new Waypoint.Sticky({
+        element: $("#banner"),
+        offset: -100
+      });
+    }
+
+    // Toggle hamburger menu
+    $('.header-hamburger').click(function() {
+      $('#banner, .cmn-toggle-switch').toggleClass('active');
+      if (location.pathname == '/open-source') {
+        $('#page-sidebar').toggle();
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

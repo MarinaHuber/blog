@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Conditional types in TypeScript - Blog Engineering</title>
+  <meta name="author" content="">
+
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://webfonts.artsy.net/all-webfonts.css"
+  />
+
+  
+  <meta name="description" content="This year TypeScript gained a new feature that punches far above its weight.
+
+
+  Working through our (enormous) backlog of unsorted TypeScript “Sug...">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:image" content="http://artsy.github.io/images/artsy_oss_image.png" />
+  <meta property="og:image:type" content="image/png" />
+
+  
+  <link rel="canonical" href="https://marinahuber.github.io/blog/2018/11/21/conditional-types-in-typescript/">
+  <link rel="alternate" type="application/rss+xml" title="Artsy Engineering Blog" href="/feed">
+  <link rel="alternate" type="application/atom+xml" title="Podcast Feed" href="/podcast.xml" />
+
+  <link href="/favicon.ico" rel="icon">
+  <link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+  <script src="/javascripts/jquery-1.11.3.min.js"> </script>
+  <script src="/javascripts/gradient-fade.js"></script>
+  <script src="/javascripts/noframework.waypoints.min.js"></script>
+  <script src="/javascripts/sticky.min.js"></script>
+  <script src="/javascripts/custom-element.min.js"></script>
+  <script src="/javascripts/g-emoji-element.js"></script>
+  <script src="/javascripts/related-articles.js"></script>
+
+  
+
+  <link href="/feed.xml" rel="alternate" title="Blog Engineering" type="application/atom+xml">
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-12450662-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<link href="/css/epic.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+
+
+<body>
+  <div>
+    <div id="bodywrapper">
+      <header>
+        <ul>
+          <li><a href="/">Artsy Engineering Blog</a></li>
+          <li><a href="https://www.artsy.net/jobs">Careers</a></li>
+          <li><a href="https://github.com/artsy">Github</a></li>
+        </ul>
+
+        <ul>
+          <li><a href="https://github.com/orgs/artsy/repositories?language=&q=&sort=&type=source">Our Open Source</a></li>
+          <li><a href="http://twitter.com/artsyopensource">@artsyopensource</a></li>
+          <li><a href="https://www.artsy.net">artsy.net</a></li>
+        </ul>
+      </header>
+
+      <section>
+        <header id="page">
+          <h1>Conditional types in TypeScript</h1>
+          <h3>
+          <!-- Yep, single line so the comma lines up right -->
+          By  David Sheldrick
+          </h3>
+          <time datetime="2018-11-21">Nov 21, 2018</time>
+        </header>
+
+        <article class='post'>
+          <p>This year TypeScript gained a new feature that punches far above its weight.</p>
+
+<blockquote>
+  <p>Working through our (enormous) backlog of unsorted TypeScript “Suggestions” and it’s remarkable how many of them
+are solved by conditional types.</p>
+</blockquote>
+
+<p>– <a href="https://twitter.com/SeaRyanC/status/1029846761718702081">Ryan Cavanaugh</a>, TypeScript maintainer</p>
+
+<p>Conditional types probably aren’t something you’ll write every day, but you might end up using them indirectly all
+the time. That’s because they’re great for ‘plumbing’ or ‘framework’ code, for dealing with API boundaries and
+other behind-the-scenes kinda stuff. So, dear reader, read on! It’s always good to learn how the sausage is made.
+Then you can make sausage of your own.</p>
+
+<p>Typewurst! 🌭</p>
+
+<!-- more -->
+
+<p><em>Note: This is a straightforward adaptation of a 35-minute presentation given at
+<a href="https://www.meetup.com/Futurice-London-Beer-Tech/events/255295412/">Futurice London’s TypeScript Night meetup</a>,
+and therefore provides more context than an ordinary blog post might. I hope a lot of that context is interesting
+and useful even for seasoned TypeScript developers. If you’d prefer a no-frills experience, check out the
+<a href="https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-8.html">TypeScript 2.8 Release notes</a> .</em></p>
+
+<h2 id="your-first-conditional-type">Your first conditional type</h2>
+
+<p>Here’s some plain JavaScript</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">process</span><span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">text</span> <span class="o">&amp;&amp;</span> <span class="nx">text</span><span class="p">.</span><span class="nf">replace</span><span class="p">(</span><span class="sr">/f/g</span><span class="p">,</span> <span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nf">process</span><span class="p">(</span><span class="dl">"</span><span class="s2">foo</span><span class="dl">"</span><span class="p">).</span><span class="nf">toUpperCase</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Reading the code, it’s clear to a human that the <code class="language-plaintext highlighter-rouge">.toUpperCase()</code> method call is safe. We can tell that whenever a
+string is passed in to <code class="language-plaintext highlighter-rouge">process</code>, a string will be returned.</p>
+
+<p>But notice that we could also pass something like <code class="language-plaintext highlighter-rouge">null</code> into the function, in which case <code class="language-plaintext highlighter-rouge">null</code> would be returned.
+Then calling <code class="language-plaintext highlighter-rouge">.toUpperCase()</code> on the result would be an error.</p>
+
+<p>Let’s add basic types to this function so we can let TypeScript worry about whether we are using it safely or not.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">process</span><span class="p">(</span><span class="nx">text</span><span class="p">:</span> <span class="kr">string</span> <span class="o">|</span> <span class="kc">null</span><span class="p">):</span> <span class="kr">string</span> <span class="o">|</span> <span class="kc">null</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">text</span> <span class="o">&amp;&amp;</span> <span class="nx">text</span><span class="p">.</span><span class="nf">replace</span><span class="p">(</span><span class="sr">/f/g</span><span class="p">,</span> <span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Seems sensible. What happens if we try to use it like before?</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//            ⌄ Type Error! :(</span>
+<span class="nf">process</span><span class="p">(</span><span class="dl">"</span><span class="s2">foo</span><span class="dl">"</span><span class="p">).</span><span class="nf">toUpperCase</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>TypeScript complains because it thinks that the result of <code class="language-plaintext highlighter-rouge">process("foo")</code> might be <code class="language-plaintext highlighter-rouge">null</code>, even though we clever
+humans know that it won’t be. It can’t figure out the runtime semantics of the function on its own.</p>
+
+<p>One way of helping TS understand the function better is to use ‘overloading’. Overloading involves providing
+multiple type signatures for a single function, and letting TypeScript figure out which one to use in any given
+context.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">process</span><span class="p">(</span><span class="nx">text</span><span class="p">:</span> <span class="kc">null</span><span class="p">):</span> <span class="kc">null</span><span class="p">;</span>
+<span class="kd">function</span> <span class="nf">process</span><span class="p">(</span><span class="nx">text</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="kr">string</span><span class="p">;</span>
+<span class="kd">function</span> <span class="nf">process</span><span class="p">(</span><span class="nx">text</span><span class="p">:</span> <span class="kr">any</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Here we’ve said that if we pass a <code class="language-plaintext highlighter-rouge">string</code>, it returns a <code class="language-plaintext highlighter-rouge">string</code>, and if we pass <code class="language-plaintext highlighter-rouge">null</code>, it returns <code class="language-plaintext highlighter-rouge">null</code>. <em>(The
+<code class="language-plaintext highlighter-rouge">any</code> type is ignored but still needs to be there for some reason</em> 🤷‍️<em>)</em></p>
+
+<p>That works nicely:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// All clear!</span>
+<span class="nf">process</span><span class="p">(</span><span class="dl">"</span><span class="s2">foo</span><span class="dl">"</span><span class="p">).</span><span class="nf">toUpperCase</span><span class="p">()</span>
+<span class="c1">//           ⌄ Type Error! :)</span>
+<span class="nf">process</span><span class="p">(</span><span class="kc">null</span><span class="p">).</span><span class="nf">toUpperCase</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>But there’s another use case that doesn’t work:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">declare</span> <span class="kd">const</span> <span class="nx">maybeFoo</span><span class="p">:</span> <span class="kr">string</span> <span class="o">|</span> <span class="kc">null</span>
+
+<span class="c1">//      ⌄ Type Error! :(</span>
+<span class="nf">process</span><span class="p">(</span><span class="nx">maybeFoo</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>TypeScript won’t let us pass something that is of type <code class="language-plaintext highlighter-rouge">string | null</code> because it’s not smart enough to collapse
+the overloaded signatures when that’s possible. So we can either add yet another overload signature for the
+<code class="language-plaintext highlighter-rouge">string | null</code> case, or we can be like <span style="white-space: nowrap; font-family: sans-serif;">(╯°□°)╯︵
+┻━┻</span> and switch to using <strong>conditional types</strong>.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">process</span><span class="o">&lt;</span><span class="nx">T</span> <span class="kd">extends</span> <span class="kr">string</span> <span class="o">|</span> <span class="kc">null</span><span class="o">&gt;</span><span class="p">(</span>
+  <span class="nx">text</span><span class="p">:</span> <span class="nx">T</span>
+<span class="p">):</span> <span class="nx">T</span> <span class="kd">extends</span> <span class="kr">string</span> <span class="p">?</span> <span class="kr">string</span> <span class="p">:</span> <span class="kc">null</span> <span class="p">{</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Here we’ve introduced a type variable <code class="language-plaintext highlighter-rouge">T</code> for the <code class="language-plaintext highlighter-rouge">text</code> parameter. We can then use <code class="language-plaintext highlighter-rouge">T</code> as part of a conditional
+return type: <code class="language-plaintext highlighter-rouge">T extends string ? string : null</code>. You probably noticed that this looks just like a ternary
+expression! Indeed, it’s doing the same kind of thing, but within the type system at compile time.</p>
+
+<p>And that takes care of all our use cases:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typeof</span> <span class="nf">process</span><span class="p">(</span><span class="dl">"</span><span class="s2">foo</span><span class="dl">"</span><span class="p">)</span> <span class="c1">// =&gt; string</span>
+<span class="k">typeof</span> <span class="nf">process</span><span class="p">(</span><span class="kc">null</span><span class="p">)</span> <span class="c1">// =&gt; null</span>
+<span class="k">typeof</span> <span class="nf">process</span><span class="p">(</span><span class="nx">maybeFoo</span><span class="p">)</span> <span class="c1">// =&gt; string | null</span>
+</code></pre></div></div>
+
+<p>So that’s what a conditional type is! A kind of ternary type expression. It always has this form:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>A extends B ? C : D
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">A</code>, <code class="language-plaintext highlighter-rouge">B</code>, <code class="language-plaintext highlighter-rouge">C</code>, and <code class="language-plaintext highlighter-rouge">D</code> can be any old type expressions, but all the important stuff is happening on the left there.
+In the <code class="language-plaintext highlighter-rouge">A extends B</code> condition.</p>
+
+<h2 id="assignability">Assignability</h2>
+
+<p>This <code class="language-plaintext highlighter-rouge">extends</code> keyword is the heart of a conditional type. <code class="language-plaintext highlighter-rouge">A extends B</code> means precisely that any value of type <code class="language-plaintext highlighter-rouge">A</code>
+can safely be assigned to a variable of type <code class="language-plaintext highlighter-rouge">B</code>. In type system jargon we can say that “A is <em>assignable</em> to B”.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">declare</span> <span class="kd">const</span> <span class="nx">a</span><span class="p">:</span> <span class="nx">A</span>
+<span class="kd">const</span> <span class="nx">b</span><span class="p">:</span> <span class="nx">B</span> <span class="o">=</span> <span class="nx">a</span>
+<span class="c1">// type check succeeds only if A is assignable to B</span>
+</code></pre></div></div>
+
+<p>TypeScript decides which types are assignable to each other using an approach called ‘structural typing’. This kind
+of type system started appearing in mainstream languages relatively recently (in the last 10 years or so), and
+might be a little counterintuitive if you come from a Java or C# background.</p>
+
+<p>You may have heard of ‘duck typing’ in relation to dynamically-typed languages. The phrase ‘duck typing’ comes from
+the proverb</p>
+
+<blockquote>
+  <p>If it looks like a duck, swims like a duck, and quacks like a duck, then it probably is a duck.</p>
+</blockquote>
+
+<p>In duck typing, you judge a thing by how it behaves, rather than what it is called or who its parents are. It’s a
+kind of meritocracy. Structural typing is a way of applying that same idea to a static compile-time type system.</p>
+
+<p>So TypeScript only cares about what types can do, not what they are called or where they exist in a type hierarchy.</p>
+
+<p>Take this simple example:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">A</span> <span class="p">{}</span>
+<span class="kd">class</span> <span class="nc">B</span> <span class="p">{}</span>
+
+<span class="kd">const</span> <span class="nx">b</span><span class="p">:</span> <span class="nx">B</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">A</span><span class="p">()</span> <span class="c1">// ✔ all good</span>
+<span class="kd">const</span> <span class="nx">a</span><span class="p">:</span> <span class="nx">A</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">B</span><span class="p">()</span> <span class="c1">// ✔ all good</span>
+
+<span class="k">new</span> <span class="nc">A</span><span class="p">()</span> <span class="k">instanceof</span> <span class="nx">B</span> <span class="c1">// =&gt; false</span>
+</code></pre></div></div>
+
+<p>TypeScript is happy treating two completely unrelated classes as equivalent because they have the same <em>structure</em>
+and the same <em>capabilities</em>. Meanwhile, when checking the types at runtime, we discover that they are actually not
+equivalent.</p>
+
+<p>This is a notable example of where the semantics of TypeScript are at odds with JavaScript. It might seem like a
+problem, but in practice structural typing is a lot more flexible than Java-esque ‘nominal’ typing, where names and
+hierarchy matter. The two aren’t mutually exclusive, however. Some languages, like Scala and Flow, allow you to mix
+and match to suit particular problems.</p>
+
+<p>Aside from that, the way that assignability works with structural typing is very intuitive.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">interface</span> <span class="nx">Shape</span> <span class="p">{</span>
+  <span class="nl">color</span><span class="p">:</span> <span class="kr">string</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">Circle</span> <span class="p">{</span>
+  <span class="nl">color</span><span class="p">:</span> <span class="kr">string</span>
+  <span class="nx">radius</span><span class="p">:</span> <span class="kr">number</span>
+<span class="p">}</span>
+
+<span class="c1">// ✔ All good! Circles have a color</span>
+<span class="kd">const</span> <span class="nx">shape</span><span class="p">:</span> <span class="nx">Shape</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Circle</span><span class="p">()</span>
+<span class="c1">// ✘ Type error! Not all shapes have a radius!</span>
+<span class="kd">const</span> <span class="nx">circle</span><span class="p">:</span> <span class="nx">Circle</span> <span class="o">=</span> <span class="nx">shape</span>
+</code></pre></div></div>
+
+<p>Speaking structurally we can say that <code class="language-plaintext highlighter-rouge">A extends B</code> is a lot like ‘<code class="language-plaintext highlighter-rouge">A</code> is a superset of <code class="language-plaintext highlighter-rouge">B</code>’, or, to be more
+verbose, ‘<code class="language-plaintext highlighter-rouge">A</code> has all of <code class="language-plaintext highlighter-rouge">B</code>’s properties, <em>and maybe some more</em>’.</p>
+
+<p>There’s one minor caveat though, and that’s with ‘literal’ types. In TypeScript you can use literal values of
+primitive types as types themselves.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="nx">fruit</span><span class="p">:</span> <span class="dl">"</span><span class="s2">banana</span><span class="dl">"</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">banana</span><span class="dl">"</span>
+
+<span class="c1">// Type Error! "apple" is not assignable to "banana"</span>
+<span class="nx">fruit</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">apple</span><span class="dl">"</span>
+</code></pre></div></div>
+
+<p>The string <code class="language-plaintext highlighter-rouge">"banana"</code> doesn’t have more properties than any other <code class="language-plaintext highlighter-rouge">string</code>. But the type <code class="language-plaintext highlighter-rouge">"banana"</code> is still more
+<em>specific</em> than the type <code class="language-plaintext highlighter-rouge">string</code>.</p>
+
+<p>So another way to think of <code class="language-plaintext highlighter-rouge">A extends B</code> is like ‘<code class="language-plaintext highlighter-rouge">A</code> is a possibly-more-specific version of <code class="language-plaintext highlighter-rouge">B</code>’.</p>
+
+<p>Which brings us to ‘top’ and ‘bottom’ types: the <em>least</em> and <em>most</em> specific types, respectively.</p>
+
+<p>In type theory a ‘top’ type is one which all other types are assignable to. It is the type you use to say “I have
+absolutely no information about what this value is”. Think of it as the union of all possible types:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Top</span> <span class="o">=</span> <span class="kr">string</span> <span class="o">|</span> <span class="kr">number</span> <span class="o">|</span> <span class="p">{</span><span class="na">foo</span><span class="p">:</span> <span class="nx">Bar</span><span class="p">}</span> <span class="o">|</span> <span class="nx">Baz</span><span class="p">[]</span> <span class="o">|</span> <span class="p">...</span> <span class="o">|</span> <span class="err">∞</span>
+</code></pre></div></div>
+
+<p>TypeScript has two top types: <code class="language-plaintext highlighter-rouge">any</code> and <code class="language-plaintext highlighter-rouge">unknown</code>.</p>
+
+<ul>
+  <li>Using <code class="language-plaintext highlighter-rouge">any</code> is like saying “I have no idea what this value looks like. So, TypeScript, please assume I’m using it
+correctly, and don’t complain if anything I do seems dangerous”.</li>
+  <li>Using <code class="language-plaintext highlighter-rouge">unknown</code> is like saying “I have no idea what this value looks like. So, TypeScript, please make sure I
+check what it is capable of at run time.”</li>
+</ul>
+
+<p>A ‘bottom’ type is one which no other types are assignable to, and that no values can be an instance of. Think of
+it as the empty union type:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Bottom</span> <span class="o">=</span> <span class="err">∅</span>
+</code></pre></div></div>
+
+<p>TypeScript has one bottom type: <code class="language-plaintext highlighter-rouge">never</code>. That’s a nice descriptive name because it literally means <em>this can never
+happen</em>.</p>
+
+<p>Top and bottom types are useful to know about when working with conditional types. <code class="language-plaintext highlighter-rouge">never</code> is especially useful
+when using conditional types to refine unions…</p>
+
+<h2 id="refining-unions-with-distributive-conditional-types">Refining unions with distributive conditional types</h2>
+
+<p>Conditional types let you filter out particular members of a union type. To illustrate, let’s say we have a union
+type called <code class="language-plaintext highlighter-rouge">Animal</code>:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Animal</span> <span class="o">=</span> <span class="nx">Lion</span> <span class="o">|</span> <span class="nx">Zebra</span> <span class="o">|</span> <span class="nx">Tiger</span> <span class="o">|</span> <span class="nx">Shark</span>
+</code></pre></div></div>
+
+<p>And imagine that we needed to write a function that used only those animals which are also cats. We might write
+some helper type called <code class="language-plaintext highlighter-rouge">ExtractCat</code> to do that:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">ExtractCat</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">A</span> <span class="kd">extends</span> <span class="p">{</span> <span class="nf">meow</span><span class="p">():</span> <span class="k">void</span> <span class="p">}</span> <span class="p">?</span> <span class="nx">A</span> <span class="p">:</span> <span class="nx">never</span>
+
+<span class="kd">type</span> <span class="nx">Cat</span> <span class="o">=</span> <span class="nx">ExtractCat</span><span class="o">&lt;</span><span class="nx">Animal</span><span class="o">&gt;</span>
+<span class="c1">// =&gt; Lion | Tiger</span>
+</code></pre></div></div>
+
+<p><em>I know lions and tigers don’t meow, but how cute would it be if they did</em> ^_^</p>
+
+<p>This seemed vague and magical to me at first. Let’s see what TypeScript is doing under the hood when it evaluates
+<code class="language-plaintext highlighter-rouge">ExtractCat&lt;Animal&gt;</code>.</p>
+
+<p>First, it applies <code class="language-plaintext highlighter-rouge">ExtractCat</code> recursively to all the members of <code class="language-plaintext highlighter-rouge">Animal</code>:</p>
+
+<!-- prettier-ignore -->
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Cat</span> <span class="o">=</span>
+  <span class="o">|</span> <span class="nx">ExtractCat</span><span class="o">&lt;</span><span class="nx">Lion</span><span class="o">&gt;</span>
+  <span class="o">|</span> <span class="nx">ExtractCat</span><span class="o">&lt;</span><span class="nx">Zebra</span><span class="o">&gt;</span>
+  <span class="o">|</span> <span class="nx">ExtractCat</span><span class="o">&lt;</span><span class="nx">Tiger</span><span class="o">&gt;</span>
+  <span class="o">|</span> <span class="nx">ExtractCat</span><span class="o">&lt;</span><span class="nx">Shark</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<p>Then it evaluates the conditional types:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Cat</span> <span class="o">=</span> <span class="nx">Lion</span> <span class="o">|</span> <span class="nx">never</span> <span class="o">|</span> <span class="nx">Tiger</span> <span class="o">|</span> <span class="nx">never</span>
+</code></pre></div></div>
+
+<p>And then something fun happens… Remember that no values can ever be of type <code class="language-plaintext highlighter-rouge">never</code>? That makes it totally
+meaningless to include <code class="language-plaintext highlighter-rouge">never</code> in a union type, so TypeScript just gets rid of it.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Cat</span> <span class="o">=</span> <span class="nx">Lion</span> <span class="o">|</span> <span class="nx">Tiger</span>
+</code></pre></div></div>
+
+<p>The TypeScript jargon for this kind of conditional type is <strong>distributive conditional type</strong>.</p>
+
+<p>That ‘distribution’, where the union is unrolled recursively, only happens when the thing on the left of the
+<code class="language-plaintext highlighter-rouge">extends</code> keyword is a plain type variable. We’ll see what that means and how to work around it in the next
+section.</p>
+
+<h2 id="a-real-use-case-for-distributive-conditional-types">A real use-case for distributive conditional types.</h2>
+
+<p>A while ago I was building a Chrome extension. It had a ‘background’ script and a ‘view’ script that ran in
+different execution contexts. They needed to communicate and share state, and the only way to do that is via
+serializable message passing. I took inspiration from Redux and defined a global union of interfaces called
+<code class="language-plaintext highlighter-rouge">Action</code> to model the messages that I wanted to be able to pass between the contexts.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Action</span> <span class="o">=</span>
+  <span class="o">|</span> <span class="p">{</span>
+      <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">INIT</span><span class="dl">"</span>
+    <span class="p">}</span>
+  <span class="o">|</span> <span class="p">{</span>
+      <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">SYNC</span><span class="dl">"</span>
+    <span class="p">}</span>
+  <span class="o">|</span> <span class="p">{</span>
+      <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">LOG_IN</span><span class="dl">"</span>
+      <span class="na">emailAddress</span><span class="p">:</span> <span class="kr">string</span>
+    <span class="p">}</span>
+  <span class="o">|</span> <span class="p">{</span>
+      <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">LOG_IN_SUCCESS</span><span class="dl">"</span>
+      <span class="na">accessToken</span><span class="p">:</span> <span class="kr">string</span>
+    <span class="p">}</span>
+<span class="c1">// ...</span>
+</code></pre></div></div>
+
+<p>And then there was a global <code class="language-plaintext highlighter-rouge">dispatch</code> function that I could use directly to broadcast messages across contexts</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">declare</span> <span class="kd">function</span> <span class="nf">dispatch</span><span class="p">(</span><span class="nx">action</span><span class="p">:</span> <span class="nx">Action</span><span class="p">):</span> <span class="k">void</span>
+
+<span class="c1">// ...</span>
+
+<span class="nf">dispatch</span><span class="p">({</span>
+  <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">INIT</span><span class="dl">"</span>
+<span class="p">})</span>
+
+<span class="c1">// ...</span>
+
+<span class="nf">dispatch</span><span class="p">({</span>
+  <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">LOG_IN</span><span class="dl">"</span><span class="p">,</span>
+  <span class="na">emailAddress</span><span class="p">:</span> <span class="dl">"</span><span class="s2">david.sheldrick@artsy.net</span><span class="dl">"</span>
+<span class="p">})</span>
+
+<span class="c1">// ...</span>
+
+<span class="nf">dispatch</span><span class="p">({</span>
+  <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">LOG_IN_SUCCESS</span><span class="dl">"</span><span class="p">,</span>
+  <span class="na">accessToken</span><span class="p">:</span> <span class="dl">"</span><span class="s2">038fh239h923908h</span><span class="dl">"</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p><a target="_blank" style="font-size: 0.8em" href="https://www.typescriptlang.org/play/#src=type%20Action%20%3D%0D%0A%20%20%7C%20%7B%0D%0A%20%20%20%20%20%20type%3A%20%22INIT%22%0D%0A%20%20%20%20%7D%0D%0A%20%20%7C%20%7B%0D%0A%20%20%20%20%20%20type%3A%20%22SYNC%22%0D%0A%20%20%20%20%7D%0D%0A%20%20%7C%20%7B%0D%0A%20%20%20%20%20%20type%3A%20%22LOG_IN%22%0D%0A%20%20%20%20%20%20emailAddress%3A%20string%0D%0A%20%20%20%20%7D%0D%0A%20%20%7C%20%7B%0D%0A%20%20%20%20%20%20type%3A%20%22LOG_IN_SUCCESS%22%0D%0A%20%20%20%20%20%20accessToken%3A%20string%0D%0A%20%20%20%20%7D%0D%0A%0D%0Adeclare%20function%20dispatch(action%3A%20Action)%3A%20void%0D%0A%0D%0Adispatch(%7B%0D%0A%20%20type%3A%20%22INIT%22%0D%0A%7D)%0D%0A%0D%0Adispatch(%7B%0D%0A%20%20type%3A%20%22LOG_IN%22%2C%0D%0A%20%20emailAddress%3A%20%22david.sheldrick%40artsy.net%22%0D%0A%7D)%0D%0A%0D%0Adispatch(%7B%0D%0A%20%20type%3A%20%22LOG_IN_SUCCESS%22%2C%0D%0A%20%20accessToken%3A%20%22038fh239h923908h%22%0D%0A%7D)">
+<em>Try it in the TypeScript playground</em> </a></p>
+
+<p>This API is typesafe and it plays well with my IDE’s autocomplete and I could have left it there. I could have
+moved on to other things.</p>
+
+<p>But there’s this little voice inside my head. I think most developers have this voice.</p>
+
+<pre style="background: transparent; color: #333; border: 0; box-shadow: none; padding: 0;">
+INT. HIPSTER CO-WORKING SPACE - DAY
+
+DAVID sits on an oddly-shaped orange chair.
+His MacBook rests askew on a lumpy reclaimed
+wood desk. He stares at colorful text on a
+dark screen.
+
+A tiny whisper.
+
+              VOICE (V.O.)
+    Psst!
+
+David looks around for a moment and then
+stares back at the laptop.
+
+              VOICE (V.O.)
+    Psst! Hey!
+
+Startled this time, David looks around
+again. He speaks to nobody in particular.
+
+              DAVID
+    Is someone there?
+
+              VOICE (V.O.)
+    It's me, the DRY devil.
+
+David heaves a painful sigh of recognition.
+
+              DAVID
+    Not you again! Leave me alone!
+
+              DRY DEVIL (V.O.)
+    DRY stands for "Don't Repeat Yourself"
+
+              DAVID
+    I know, you say that every time! Now
+    get lost!
+
+              DRY DEVIL (V.O.)
+    I've noticed an issue with your code.
+
+              DAVID
+    Seriously, go away! I'm busy solving
+    user problems to create business value.
+
+              DRY DEVIL (V.O.)
+    Every time you call `dispatch` you
+    are typing 6 redundant characters.
+
+              DAVID
+    Oh snap! You're right! I must fix this.
+
+MONTAGE
+
+David spends the next 2 hours wrestling
+with TypeScript, accumulating a pile of
+empty coffee cups and protein ball wrappers.
+</pre>
+
+<p>We’ve all been there.</p>
+
+<p>I wanted the dispatch function to work like this:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// first argument is the 'type'</span>
+<span class="c1">// second is any extra parameters</span>
+<span class="nf">dispatch</span><span class="p">(</span><span class="dl">"</span><span class="s2">LOG_IN_SUCCESS</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">accessToken</span><span class="p">:</span> <span class="dl">"</span><span class="s2">038fh239h923908h</span><span class="dl">"</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p>Deriving the type for that first argument is easy enough.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">ActionType</span> <span class="o">=</span> <span class="nx">Action</span><span class="p">[</span><span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">]</span>
+<span class="c1">// =&gt; "INIT" | "SYNC" | "LOG_IN" | "LOG_IN_SUCCESS"</span>
+</code></pre></div></div>
+
+<p>But the type of the second argument <em>depends on</em> the first argument. We can use a type variable to model that
+dependency.</p>
+
+<!-- prettier-ignore -->
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">declare</span> <span class="kd">function</span> <span class="nf">dispatch</span><span class="o">&lt;</span><span class="nx">T</span> <span class="kd">extends</span> <span class="nx">ActionType</span><span class="o">&gt;</span><span class="p">(</span>
+  <span class="kd">type</span><span class="p">:</span> <span class="nx">T</span><span class="p">,</span>
+  <span class="nx">args</span><span class="p">:</span> <span class="nx">ExtractActionParameters</span><span class="o">&lt;</span><span class="nx">Action</span><span class="p">,</span> <span class="nx">T</span><span class="o">&gt;</span>
+<span class="p">):</span> <span class="k">void</span>
+</code></pre></div></div>
+
+<p><em>Woah woah woah, what’s this</em> <code class="language-plaintext highlighter-rouge">ExtractActionParameters</code> <em>voodoo?</em></p>
+
+<p>It’s a conditional type of course! Here’s a first attempt at implementing it:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">ExtractActionParameters</span><span class="o">&lt;</span><span class="nx">A</span><span class="p">,</span> <span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">A</span> <span class="kd">extends</span> <span class="p">{</span> <span class="na">type</span><span class="p">:</span> <span class="nx">T</span> <span class="p">}</span> <span class="p">?</span> <span class="nx">A</span> <span class="p">:</span> <span class="nx">never</span>
+</code></pre></div></div>
+
+<p>This is a lot like the <code class="language-plaintext highlighter-rouge">ExtractCat</code> example from before, where we were were refining the <code class="language-plaintext highlighter-rouge">Animals</code> union by
+searching for something that can <code class="language-plaintext highlighter-rouge">meow()</code>. Here, we’re refining the <code class="language-plaintext highlighter-rouge">Action</code> union type by searching for an
+interface with a particular <code class="language-plaintext highlighter-rouge">type</code> property. Let’s see if it works:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Test</span> <span class="o">=</span> <span class="nx">ExtractActionParameters</span><span class="o">&lt;</span><span class="nx">Action</span><span class="p">,</span> <span class="dl">"</span><span class="s2">LOG_IN</span><span class="dl">"</span><span class="o">&gt;</span>
+<span class="c1">// =&gt; { type: "LOG_IN", emailAddress: string }</span>
+</code></pre></div></div>
+
+<p>Almost there! We don’t want to keep the <code class="language-plaintext highlighter-rouge">type</code> field after extraction because then we would still have to specify
+it when calling <code class="language-plaintext highlighter-rouge">dispatch</code>. And that would somewhat defeat the purpose of this entire exercise.</p>
+
+<p>We can omit the <code class="language-plaintext highlighter-rouge">type</code> field by combining a <strong>mapped type</strong> with a conditional type and the <code class="language-plaintext highlighter-rouge">keyof</code> operator.</p>
+
+<p>A <strong>mapped type</strong> lets you create a new interface by ‘mapping’ over a union of keys. You can get a union of keys
+from an existing interface by using the <code class="language-plaintext highlighter-rouge">keyof</code> operator. And finally, you can remove things from a union using a
+conditional type. Here’s how they play together (with some inline test cases for illustration):</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">ExcludeTypeKey</span><span class="o">&lt;</span><span class="nx">K</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">K</span> <span class="kd">extends</span> <span class="dl">"</span><span class="s2">type</span><span class="dl">"</span> <span class="p">?</span> <span class="nx">never</span> <span class="p">:</span> <span class="nx">K</span>
+
+<span class="kd">type</span> <span class="nx">Test</span> <span class="o">=</span> <span class="nx">ExcludeTypeKey</span><span class="o">&lt;</span><span class="dl">"</span><span class="s2">emailAddress</span><span class="dl">"</span> <span class="o">|</span> <span class="dl">"</span><span class="s2">type</span><span class="dl">"</span> <span class="o">|</span> <span class="dl">"</span><span class="s2">foo</span><span class="dl">"</span><span class="o">&gt;</span>
+<span class="c1">// =&gt; "emailAddress" | "foo"</span>
+
+<span class="c1">// here's the mapped type</span>
+<span class="kd">type</span> <span class="nx">ExcludeTypeField</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">{</span> <span class="p">[</span><span class="nx">K</span> <span class="k">in</span> <span class="nx">ExcludeTypeKey</span><span class="o">&lt;</span><span class="kr">keyof</span> <span class="nx">A</span><span class="o">&gt;</span><span class="p">]:</span> <span class="nx">A</span><span class="p">[</span><span class="nx">K</span><span class="p">]</span> <span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">Test</span> <span class="o">=</span> <span class="nx">ExcludeTypeField</span><span class="o">&lt;</span><span class="p">{</span> <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">LOG_IN</span><span class="dl">"</span><span class="p">;</span> <span class="nl">emailAddress</span><span class="p">:</span> <span class="kr">string</span> <span class="p">}</span><span class="o">&gt;</span>
+<span class="c1">// =&gt; { emailAddress: string }</span>
+</code></pre></div></div>
+
+<p>Then we can use <code class="language-plaintext highlighter-rouge">ExcludeTypeField</code> to redefine <code class="language-plaintext highlighter-rouge">ExtractActionParameters</code>.</p>
+
+<!-- prettier-ignore -->
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">ExtractActionParameters</span><span class="o">&lt;</span><span class="nx">A</span><span class="p">,</span> <span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">A</span> <span class="kd">extends</span> <span class="p">{</span> <span class="na">type</span><span class="p">:</span> <span class="nx">T</span> <span class="p">}</span>
+  <span class="p">?</span> <span class="nx">ExcludeTypeField</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span>
+  <span class="p">:</span> <span class="nx">never</span>
+</code></pre></div></div>
+
+<p>And now the new version of <code class="language-plaintext highlighter-rouge">dipsatch</code> is typesafe!</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// All clear! :)</span>
+<span class="nf">dispatch</span><span class="p">(</span><span class="dl">"</span><span class="s2">LOG_IN_SUCCESS</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">accessToken</span><span class="p">:</span> <span class="dl">"</span><span class="s2">038fh239h923908h</span><span class="dl">"</span>
+<span class="p">})</span>
+
+<span class="nf">dispatch</span><span class="p">(</span><span class="dl">"</span><span class="s2">LOG_IN_SUCCESS</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span>
+  <span class="c1">// Type Error! :)</span>
+  <span class="na">badKey</span><span class="p">:</span> <span class="dl">"</span><span class="s2">038fh239h923908h</span><span class="dl">"</span>
+<span class="p">})</span>
+
+<span class="c1">// Type Error! :)</span>
+<span class="nf">dispatch</span><span class="p">(</span><span class="dl">"</span><span class="s2">BAD_TYPE</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">accessToken</span><span class="p">:</span> <span class="dl">"</span><span class="s2">038fh239h923908h</span><span class="dl">"</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p><a target="_blank" style="font-size: 0.8em" href="https://www.typescriptlang.org/play/#src=type%20Action%20%3D%0D%0A%20%20%7C%20%7B%0D%0A%20%20%20%20%20%20type%3A%20%22INIT%22%0D%0A%20%20%20%20%7D%0D%0A%20%20%7C%20%7B%0D%0A%20%20%20%20%20%20type%3A%20%22SYNC%22%0D%0A%20%20%20%20%7D%0D%0A%20%20%7C%20%7B%0D%0A%20%20%20%20%20%20type%3A%20%22LOG_IN%22%0D%0A%20%20%20%20%20%20emailAddress%3A%20string%0D%0A%20%20%20%20%7D%0D%0A%20%20%7C%20%7B%0D%0A%20%20%20%20%20%20type%3A%20%22LOG_IN_SUCCESS%22%0D%0A%20%20%20%20%20%20accessToken%3A%20string%0D%0A%20%20%20%20%7D%0D%0A%0D%0Atype%20ActionType%20%3D%20Action%5B%22type%22%5D%0D%0A%0D%0Adeclare%20function%20dispatch%3CT%20extends%20ActionType%3E(%0D%0A%20%20%20%20type%3A%20T%2C%0D%0A%20%20%20%20args%3A%20ExtractActionParameters%3CAction%2C%20T%3E%0D%0A)%3A%20void%0D%0A%0D%0Atype%20ExcludeTypeKey%3CK%3E%20%3D%20K%20extends%20%22type%22%20%3F%20never%20%3A%20K%0D%0A%0D%0Atype%20ExcludeTypeField%3CA%3E%20%3D%20%7B%20%5BK%20in%20ExcludeTypeKey%3Ckeyof%20A%3E%5D%3A%20A%5BK%5D%20%7D%0D%0A%0D%0Atype%20ExtractActionParameters%3CA%2C%20T%3E%20%3D%20A%20extends%20%7B%20type%3A%20T%20%7D%0D%0A%20%20%20%20%3F%20ExcludeTypeField%3CA%3E%0D%0A%20%20%20%20%3A%20never%0D%0A%20%20%0D%0A%2F%2F%20All%20clear!%20%3A)%0D%0Adispatch(%22LOG_IN_SUCCESS%22%2C%20%7B%0D%0A%20%20%20%20accessToken%3A%20%22038fh239h923908h%22%0D%0A%7D)%0D%0A%0D%0Adispatch(%22LOG_IN_SUCCESS%22%2C%20%7B%0D%0A%20%20%20%20%2F%2F%20Type%20Error!%20%3A)%0D%0A%20%20%20%20badKey%3A%20%22038fh239h923908h%22%0D%0A%7D)%0D%0A%0D%0A%2F%2F%20Type%20Error!%20%3A)%0D%0Adispatch(%22BAD_TYPE%22%2C%20%7B%0D%0A%20%20%20%20accessToken%3A%20%22038fh239h923908h%22%0D%0A%7D)">
+<em>Try it in the TypeScript playground</em> </a></p>
+
+<p>But there’s one more very serious problem to address: If the action has no extra parameters, I still have to pass a
+second empty argument.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">dispatch</span><span class="p">(</span><span class="dl">"</span><span class="s2">INIT</span><span class="dl">"</span><span class="p">,</span> <span class="p">{})</span>
+</code></pre></div></div>
+
+<p>That’s four whole wasted characters! Cancel my meetings and tell my partner not to wait up tonight! We need to
+<em>fix. this</em>.</p>
+
+<p>The naïve thing to do would be to make the second argument optional. That would be unsafe because, e.g. it would
+allow us to dispatch a <code class="language-plaintext highlighter-rouge">"LOG_IN"</code> action without specifying an <code class="language-plaintext highlighter-rouge">emailAddress</code>.</p>
+
+<p>Instead, let’s overload the <code class="language-plaintext highlighter-rouge">dispatch</code> function.</p>
+
+<!-- prettier-ignore -->
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// And let's say that any actions that don't require</span>
+<span class="c1">// extra parameters are 'simple' actions.</span>
+<span class="kr">declare</span> <span class="kd">function</span> <span class="nf">dispatch</span><span class="p">(</span><span class="kd">type</span><span class="p">:</span> <span class="nx">SimpleActionType</span><span class="p">):</span> <span class="k">void</span>
+<span class="c1">// this signature is just like before</span>
+<span class="kr">declare</span> <span class="kd">function</span> <span class="nf">dispatch</span><span class="o">&lt;</span><span class="nx">T</span> <span class="kd">extends</span> <span class="nx">ActionType</span><span class="o">&gt;</span><span class="p">(</span>
+  <span class="kd">type</span><span class="p">:</span> <span class="nx">T</span><span class="p">,</span>
+  <span class="nx">args</span><span class="p">:</span> <span class="nx">ExtractActionParameters</span><span class="o">&lt;</span><span class="nx">Action</span><span class="p">,</span> <span class="nx">T</span><span class="o">&gt;</span>
+<span class="p">):</span> <span class="k">void</span>
+
+<span class="kd">type</span> <span class="nx">SimpleActionType</span> <span class="o">=</span> <span class="nx">ExtractSimpleAction</span><span class="o">&lt;</span><span class="nx">Action</span><span class="o">&gt;</span><span class="p">[</span><span class="dl">'</span><span class="s1">type</span><span class="dl">'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>How can we define this <code class="language-plaintext highlighter-rouge">ExtractSimpleAction</code> conditional type? We know that if we remove the <code class="language-plaintext highlighter-rouge">type</code> field from an
+action and the result is an empty interface, then that is a simple action. So something like this might work</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">ExtractSimpleAction</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">ExcludeTypeField</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="p">{}</span> <span class="p">?</span> <span class="nx">A</span> <span class="p">:</span> <span class="nx">never</span>
+</code></pre></div></div>
+
+<p>Except that doesn’t work. <code class="language-plaintext highlighter-rouge">ExcludeTypeField&lt;A&gt; extends {}</code> is always going to be true, because <code class="language-plaintext highlighter-rouge">{}</code> is like a top
+type for interfaces. <em>Pretty much everything</em> is more specific than <code class="language-plaintext highlighter-rouge">{}</code>.</p>
+
+<p>We need to swap the arguments around:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">ExtractSimpleAction</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">{}</span> <span class="kd">extends</span> <span class="nx">ExcludeTypeField</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span> <span class="p">?</span> <span class="nx">A</span> <span class="p">:</span> <span class="nx">never</span>
+</code></pre></div></div>
+
+<p>Now if <code class="language-plaintext highlighter-rouge">ExcludeTypeField&lt;A&gt;</code> is empty, the condition will be true, otherwise it will be false.</p>
+
+<p>But this still doesn’t work! On-the-ball readers might remember this:</p>
+
+<blockquote>
+  <p>That ‘distribution’, where the union is unrolled recursively, only happens when the thing on the left of the
+<code class="language-plaintext highlighter-rouge">extends</code> keyword is a plain type variable. We’ll see what that means and how to work around it in the next
+section.</p>
+</blockquote>
+
+<p>– Me, in the previous section</p>
+
+<p>Type variables are always defined in a generic parameter list, delimited by <code class="language-plaintext highlighter-rouge">&lt;</code> and <code class="language-plaintext highlighter-rouge">&gt;</code>. e.g.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Blah</span><span class="o">&lt;</span><span class="nx">These</span><span class="p">,</span> <span class="nx">Are</span><span class="p">,</span> <span class="nx">Type</span><span class="p">,</span> <span class="nx">Variables</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">...</span>
+
+<span class="kd">function</span> <span class="nf">blah</span><span class="o">&lt;</span><span class="nx">And</span><span class="p">,</span> <span class="nx">So</span><span class="p">,</span> <span class="nx">Are</span><span class="p">,</span> <span class="nx">These</span><span class="o">&gt;</span><span class="p">()</span> <span class="p">{</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>And if you want a conditional type to distribute over a union, the union a) needs to have been bound to a type
+variable, and b) that variable needs to appear alone to the left of the <code class="language-plaintext highlighter-rouge">extends</code> keyword.</p>
+
+<p>e.g. this is a distributive conditional type:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Blah</span><span class="o">&lt;</span><span class="nx">Var</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">Var</span> <span class="kd">extends</span> <span class="nx">Whatever</span> <span class="p">?</span> <span class="nx">A</span> <span class="p">:</span> <span class="nx">B</span>
+</code></pre></div></div>
+
+<p>and these are not:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Blah</span><span class="o">&lt;</span><span class="nx">Var</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">Foo</span><span class="o">&lt;</span><span class="nx">Var</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="nx">Whatever</span> <span class="p">?</span> <span class="nx">A</span> <span class="p">:</span> <span class="nx">B</span>
+<span class="kd">type</span> <span class="nx">Blah</span><span class="o">&lt;</span><span class="nx">Var</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">Whatever</span> <span class="kd">extends</span> <span class="nx">Var</span> <span class="p">?</span> <span class="nx">A</span> <span class="p">:</span> <span class="nx">B</span>
+</code></pre></div></div>
+
+<p>When I discovered this limitation I thought that it exposed a fundamental shortcoming in the way distributive
+conditional types work under the hood. I thought it might be some kind of concession to algorithmic complexity. I
+thought that my use case was too advanced, and that TypeScript had just thrown its hands up in the air and said,
+“Sorry mate, you’re on your own”.</p>
+
+<p>But it turns out I was wrong. It is just a pragmatic language design decision to avoid extra syntax, and you can
+work around it easily:</p>
+
+<!-- prettier-ignore -->
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">ExtractSimpleAction</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">A</span> <span class="kd">extends</span> <span class="kr">any</span>
+  <span class="p">?</span> <span class="p">{}</span> <span class="kd">extends</span> <span class="nx">ExcludeTypeField</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span>
+    <span class="p">?</span> <span class="nx">A</span>
+    <span class="p">:</span> <span class="nx">never</span>
+  <span class="p">:</span> <span class="nx">never</span>
+</code></pre></div></div>
+
+<p>All we did is wrap the meat of our logic in a flimsy tortilla of inevitability, since the outer condition
+<code class="language-plaintext highlighter-rouge">A extends any</code> will, of course, always be true.</p>
+
+<p>And finally we can delete those four characters 🎉🕺🏼💃🏽🎈</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">dispatch</span><span class="p">(</span><span class="dl">"</span><span class="s2">INIT</span><span class="dl">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>That’s one yak successfully shaved ✔</p>
+
+<hr />
+
+<p>TypeScript provides a couple of built-in types that we could have used in this section:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Exclude from U those types that are assignable to T</span>
+<span class="kd">type</span> <span class="nb">Exclude</span><span class="o">&lt;</span><span class="nx">U</span><span class="p">,</span> <span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">U</span> <span class="kd">extends</span> <span class="nx">T</span> <span class="p">?</span> <span class="nx">never</span> <span class="p">:</span> <span class="nx">U</span>
+
+<span class="c1">// Extract from U those types that are assignable to T</span>
+<span class="kd">type</span> <span class="nb">Extract</span><span class="o">&lt;</span><span class="nx">U</span><span class="p">,</span> <span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">U</span> <span class="kd">extends</span> <span class="nx">T</span> <span class="p">?</span> <span class="nx">U</span> <span class="p">:</span> <span class="nx">never</span>
+</code></pre></div></div>
+
+<p>e.g. instead of defining <code class="language-plaintext highlighter-rouge">ExcludeTypeField</code> like this:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">ExcludeTypeField</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">{</span> <span class="p">[</span><span class="nx">K</span> <span class="k">in</span> <span class="nx">ExcludeTypeKey</span><span class="o">&lt;</span><span class="kr">keyof</span> <span class="nx">A</span><span class="o">&gt;</span><span class="p">]:</span> <span class="nx">A</span><span class="p">[</span><span class="nx">K</span><span class="p">]</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>we could have done this:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">ExcludeTypeField</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">{</span> <span class="p">[</span><span class="nx">K</span> <span class="k">in</span> <span class="nb">Exclude</span><span class="o">&lt;</span><span class="kr">keyof</span> <span class="nx">A</span><span class="p">,</span> <span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="o">&gt;</span><span class="p">]:</span> <span class="nx">A</span><span class="p">[</span><span class="nx">K</span><span class="p">]</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>And instead of defining <code class="language-plaintext highlighter-rouge">ExtractActionParameters</code> like this:</p>
+
+<!-- prettier-ignore -->
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">ExtractActionParameters</span><span class="o">&lt;</span><span class="nx">A</span><span class="p">,</span> <span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">A</span> <span class="kd">extends</span> <span class="p">{</span> <span class="na">type</span><span class="p">:</span> <span class="nx">T</span> <span class="p">}</span>
+  <span class="p">?</span> <span class="nx">ExcludeTypeField</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span>
+  <span class="p">:</span> <span class="nx">never</span>
+</code></pre></div></div>
+
+<p>we could have done this:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">ExtractActionParameters</span><span class="o">&lt;</span><span class="nx">A</span><span class="p">,</span> <span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">ExcludeTypeField</span><span class="o">&lt;</span><span class="nb">Extract</span><span class="o">&lt;</span><span class="nx">A</span><span class="p">,</span> <span class="p">{</span> <span class="na">type</span><span class="p">:</span> <span class="nx">T</span> <span class="p">}</span><span class="o">&gt;&gt;</span>
+</code></pre></div></div>
+
+<h2 id="-exercise-for-the-intrepid-reader">💡 Exercise for the intrepid reader</h2>
+
+<p>Notice that this still works.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">dispatch</span><span class="p">(</span><span class="dl">"</span><span class="s2">INIT</span><span class="dl">"</span><span class="p">,</span> <span class="p">{})</span>
+</code></pre></div></div>
+
+<p>Use what you’ve learned so far to make it an error to supply a second argument for ‘simple’ actions.</p>
+
+<h2 id="destructuring-types-with-infer">Destructuring types with <code class="language-plaintext highlighter-rouge">infer</code></h2>
+
+<p>Conditional types have another trick up their sleeve: the <code class="language-plaintext highlighter-rouge">infer</code> keyword. It can be used anywhere in the type
+expression to the right of the <code class="language-plaintext highlighter-rouge">extends</code> keyword. It gives a name to whichever type would appear in that place.
+e.g.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Unpack</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">A</span> <span class="kd">extends</span> <span class="nb">Array</span><span class="o">&lt;</span><span class="nx">infer</span> <span class="nx">E</span><span class="o">&gt;</span> <span class="p">?</span> <span class="nx">E</span> <span class="p">:</span> <span class="nx">A</span>
+
+<span class="kd">type</span> <span class="nx">Test</span> <span class="o">=</span> <span class="nx">Unpack</span><span class="o">&lt;</span><span class="nx">Apple</span><span class="p">[]</span><span class="o">&gt;</span>
+<span class="c1">// =&gt; Apple</span>
+<span class="kd">type</span> <span class="nx">Test</span> <span class="o">=</span> <span class="nx">Unpack</span><span class="o">&lt;</span><span class="nx">Apple</span><span class="o">&gt;</span>
+<span class="c1">// =&gt; Apple</span>
+</code></pre></div></div>
+
+<p>It handles ambiguity gracefully:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Stairs</span> <span class="o">=</span> <span class="nx">Unpack</span><span class="o">&lt;</span><span class="nx">Apple</span><span class="p">[]</span> <span class="o">|</span> <span class="nx">Pear</span><span class="p">[]</span><span class="o">&gt;</span>
+<span class="c1">// =&gt; Apple | Pear</span>
+</code></pre></div></div>
+
+<p>You can even use <code class="language-plaintext highlighter-rouge">infer</code> multiple times.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Flip</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">T</span> <span class="kd">extends</span> <span class="p">[</span><span class="nx">infer</span> <span class="nx">A</span><span class="p">,</span> <span class="nx">infer</span> <span class="nx">B</span><span class="p">]</span> <span class="p">?</span> <span class="p">[</span><span class="nx">B</span><span class="p">,</span> <span class="nx">A</span><span class="p">]</span> <span class="p">:</span> <span class="nx">never</span>
+<span class="kd">type</span> <span class="nx">Stairs</span> <span class="o">=</span> <span class="nx">Flip</span><span class="o">&lt;</span><span class="p">[</span><span class="nx">Pear</span><span class="p">,</span> <span class="nx">Apple</span><span class="p">]</span><span class="o">&gt;</span>
+<span class="c1">// =&gt; [Apple, Pear]</span>
+
+<span class="kd">type</span> <span class="nx">Union</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">T</span> <span class="kd">extends</span> <span class="p">[</span><span class="nx">infer</span> <span class="nx">A</span><span class="p">,</span> <span class="nx">infer</span> <span class="nx">A</span><span class="p">]</span> <span class="p">?</span> <span class="nx">A</span> <span class="p">:</span> <span class="nx">never</span>
+<span class="kd">type</span> <span class="nx">Stairs</span> <span class="o">=</span> <span class="nx">Union</span><span class="o">&lt;</span><span class="p">[</span><span class="nx">Apple</span><span class="p">,</span> <span class="nx">Pear</span><span class="p">]</span><span class="o">&gt;</span>
+<span class="c1">// =&gt; Apple | Pear</span>
+</code></pre></div></div>
+
+<h2 id="other-built-in-conditional-types">Other built-in conditional types</h2>
+
+<p>We’ve already seen <code class="language-plaintext highlighter-rouge">Exclude</code> and <code class="language-plaintext highlighter-rouge">Extract</code>, and TypeScript provides a few other conditional types out of the box.</p>
+
+<!-- prettier-ignore -->
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Exclude null and undefined from T</span>
+<span class="kd">type</span> <span class="nb">NonNullable</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span>
+  <span class="nx">T</span> <span class="kd">extends</span> <span class="kc">null</span> <span class="o">|</span> <span class="kc">undefined</span> <span class="p">?</span> <span class="nx">never</span> <span class="p">:</span> <span class="nx">T</span>
+
+<span class="c1">// Obtain the parameters of a function type in a tuple</span>
+<span class="kd">type</span> <span class="nb">Parameters</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span>
+  <span class="nx">T</span> <span class="nf">extends </span><span class="p">(...</span><span class="nx">args</span><span class="p">:</span> <span class="nx">infer</span> <span class="nx">P</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="kr">any</span> <span class="p">?</span> <span class="nx">P</span> <span class="p">:</span> <span class="nx">never</span>
+
+<span class="c1">// Obtain the parameters of a constructor function type in a tuple</span>
+<span class="kd">type</span> <span class="nb">ConstructorParameters</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span>
+  <span class="nx">T</span> <span class="kd">extends</span> <span class="k">new </span><span class="p">(...</span><span class="nx">args</span><span class="p">:</span> <span class="nx">infer</span> <span class="nx">P</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="kr">any</span> <span class="p">?</span> <span class="nx">P</span> <span class="p">:</span> <span class="nx">never</span>
+
+<span class="c1">// Obtain the return type of a function type</span>
+<span class="kd">type</span> <span class="nb">ReturnType</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span>
+  <span class="nx">T</span> <span class="nf">extends </span><span class="p">(...</span><span class="nx">args</span><span class="p">:</span> <span class="kr">any</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="nx">infer</span> <span class="nx">R</span> <span class="p">?</span> <span class="nx">R</span> <span class="p">:</span> <span class="kr">any</span>
+
+<span class="c1">// Obtain the return type of a constructor function type</span>
+<span class="kd">type</span> <span class="nb">InstanceType</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span>
+  <span class="nx">T</span> <span class="kd">extends</span> <span class="k">new </span><span class="p">(...</span><span class="nx">args</span><span class="p">:</span> <span class="kr">any</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="nx">infer</span> <span class="nx">R</span> <span class="p">?</span> <span class="nx">R</span> <span class="p">:</span> <span class="kr">any</span>
+</code></pre></div></div>
+
+<h2 id="further-reading">Further reading</h2>
+
+<ul>
+  <li><a href="https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-8.html">TypeScript 2.8 release notes</a></li>
+  <li><a href="https://github.com/Microsoft/TypeScript/pull/21316">Microsoft/Typescript#21316</a> Conditional types pull request</li>
+  <li><a href="https://github.com/Microsoft/TypeScript/pull/21496">Microsoft/Typescript#21496</a> <code class="language-plaintext highlighter-rouge">infer</code> pull request</li>
+  <li><a href="https://github.com/Microsoft/TypeScript/blob/a2205ad53d8f65a129a552b752d1e06fee3d41fc/lib/lib.es5.d.ts#L1446">lib.es5.d.ts#L1446</a>
+built-in conditional type definitions</li>
+</ul>
+
+        </article>
+
+        <article class='post'>
+          <p style="padding-bottom: 0; margin-bottom:0;">
+            <a href="https://www.artsy.net/" style="background-image: none;">
+              <svg viewBox="0 0 510 510" width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+                <path transform="scale(1, -1) translate(0, -480)" d="M0 -32h512v512h-512v-512v0zM464 16h-80v80h-48v-80h-288v416h416v-416v0zM194 384h-40l-74 -186h38l20 52h72l19 -52h39l-74 186v0zM149 282l25 66l24 -66h-49v0z"></path>
+              </svg>
+            </a>
+          <p/>
+        </article>
+
+        <aside class="related-articles"></aside>
+
+      
+        <article class='post'>
+          <section id="comments" />
+
+<script type="text/javascript">
+  // Comes from https://stackoverflow.com/questions/3177836/how-to-format-time-since-xxx-e-g-4-minutes-ago-similar-to-stack-exchange-site
+  function timeSince(date) {
+    var seconds = Math.floor((new Date() - date) / 1000)
+    var interval = Math.floor(seconds / 31536000)
+
+    if (interval > 1) {
+      return interval + " years"
+    }
+    interval = Math.floor(seconds / 2592000)
+    if (interval > 1) {
+      return interval + " months"
+    }
+    interval = Math.floor(seconds / 86400)
+    if (interval > 1) {
+      return interval + " days"
+    }
+    interval = Math.floor(seconds / 3600)
+    if (interval > 1) {
+      return interval + " hours"
+    }
+    interval = Math.floor(seconds / 60)
+    if (interval > 1) {
+      return interval + " minutes"
+    }
+    return Math.floor(seconds) + " seconds"
+  }
+
+  var writeToComment = function (element, html) {
+    var element = document.createElement(element)
+    element.innerHTML = html
+    document.getElementById("comments").appendChild(element)
+  }
+
+  var addReactions = function (reactions, link) {
+    var returnString = ""
+    var emojiCode = {
+      '+1': "<g-emoji alias='+1' fallback-src='https://assets-cdn.github.com/images/icons/emoji/unicode/1f44d.png' class='emoji'>👍</g-emoji>",
+      '-1': "<g-emoji alias='-1' fallback-src='https://assets-cdn.github.com/images/icons/emoji/unicode/1f44e.png' class='emoji'>👎</g-emoji>",
+      laugh: "<g-emoji alias='smile' fallback-src='https://assets-cdn.github.com/images/icons/emoji/unicode/1f604.png' class='emoji'>😄</g-emoji>",
+      hooray: "<g-emoji alias='tada' fallback-src='https://assets-cdn.github.com/images/icons/emoji/unicode/1f389.png' class='emoji'>🎉</g-emoji>",
+      confused: "<g-emoji alias='thinking_face' fallback-src='https://assets-cdn.github.com/images/icons/emoji/unicode/1f615.png' class='emoji'>😕</g-emoji>",
+      heart: "<g-emoji alias='framed_picture' fallback-src='https://assets-cdn.github.com/images/icons/emoji/unicode/1f5bc.png' class='emoji'>🖼</g-emoji>"
+    }
+
+    if (reactions.total_count > 0) {
+      returnString += "<div class='comment-reactions'>"
+      for (var key in reactions) {
+        if (reactions.hasOwnProperty(key)) {
+          if (reactions[key] > 0 && key !== "total_count") {
+            returnString += "<a href='" + link + "' class='emoji-wrapper'>" + emojiCode[key] + reactions[key] + "</a>"
+          }
+        }
+      }
+      returnString += "</div>"
+      return returnString
+    } else {
+      return "<div></div>"
+    }
+  }
+
+  // Based on http://ivanzuzak.info/2011/02/18/github-hosted-comments-for-github-hosted-blogs.html
+  // And http://donw.io/post/github-comments/
+
+  var loadComments = function (data) {
+    writeToComment("h2", "Comments")
+    for (var i = 0; i < data.length; i++) {
+      var cuser = data[i].user.login
+      var cuserlink = data[i].user.html_url
+      var clink = data[i].html_url
+      var cbody = data[i].body_html
+      var cavatarlink = data[i].user.avatar_url
+      var cdate = new Date(data[i].created_at)
+      var creactions = addReactions(data[i].reactions, clink)
+
+      var commentHTML =
+        "<div class='comment'>" +
+        "<div class='comment-header'>" +
+        "<a class='comment-username' href=\"" + cuserlink + '">' +
+        '<img src="' + cavatarlink + '" alt="" width="40" height="40">' +
+        cuser +
+        "</a>" + " commented " +
+        "<a class='comment-date' href=\"" + clink + '">' +
+        timeSince(cdate) + " ago" +
+        "</a>" +
+        "</div>" +
+        "<div class='comment-body'>"
+        + cbody +
+        "</div>" +
+        creactions +
+        "</div>"
+      writeToComment("div", commentHTML)
+    }
+
+    var callToAction =
+      "<hr/>" +
+      "<p>" +
+      "Our comments are using GitHub Issues on the Artsy Blog repo. You can post by replying to <a href='https://github.com/artsy/artsy.github.io/issues/500'>issue #500</a>." +
+      "</p>"
+    writeToComment("div", callToAction)
+  }
+
+  var writeFirstComment = function () {
+    var callToAction =
+      "<hr/>" +
+      "<p>" +
+      "This post has no comments, yet, you could be the first. Our comments are using GitHub Issues on the Artsy Blog repo. You can post by replying to <a href='https://github.com/artsy/artsy.github.io/issues/500'>issue #500</a>." +
+      "</p>"
+    writeToComment("div", callToAction)
+  }
+
+  if (window.fetch) {
+    var url =
+      "https://artsy-blog-gh-commentify.herokuapp.com/repos/artsy/artsy.github.io/issues/500/comments"
+    window
+      .fetch(url, { Accept: "application/vnd.github.v3.html+json" })
+      .then(function (response) {
+        return response.json()
+      })
+      .then(function (json) {
+        if (json.length) {
+          loadComments(json)
+        } else {
+          writeFirstComment()
+        }
+      })
+  }
+
+</script>
+        </article>
+      
+
+      </section>
+
+      <footer>
+        <article>
+
+          <section>
+            <h4>Author</h4>
+            <p> <a href="/author/david">David Sheldrick</a></p>
+            <p></a></p>
+          </section>
+
+          <section>
+            <h4>Post Meta</h4>
+            <p>Nov 21, 2018</p>
+            <p>Tagged: <a class='category' href='/blog/categories/programming/'>programming</a>, <a class='category' href='/blog/categories/typescript/'>typescript</a></p>
+          </section>
+          <br/>
+          <section>
+            <h4>Artsy OSS</h4>
+            <ul>
+              <li><a href='https://www.artsy.net'>Artsy.net</a></li>
+              <li><a href='https://github.com/artsy'>Github</a></li>
+              <li><a href='https://github.com/orgs/artsy/repositories?language=&q=&sort=&type=source'>Open Source</a></li>
+              <li><a href='https://www.artsy.net/jobs'>Careers</a></li>
+            </ul>
+          </section>
+
+          <section>
+            <h4>Blog</h4>
+            <ul>
+              <li><a href='http://artsy.github.io/blog/archives/'>Archives</a></li>
+              <!-- TODO: bring back a different version of site search  -->
+              <!-- <li><a href='http://artsy.github.io/search/'>Search</a></li> -->
+              <li><a href='https://github.com/artsy/artsy.github.io'>Code on GitHub</a></li>
+              <li><a href='https://github.com/artsy/artsy.github.io/edit/source/_posts/2018-11-21-conditional-types-in-typescript.markdown'>Fix typos in this post</a></li>
+            </ul>
+          </section>
+
+        </article>
+
+        <article>
+          <section>
+            <h4>Post Series on the Blog</h4>
+            <ul>
+              
+              <li><a href='/series/react-native-at-artsy/'>React Native at Artsy</a></li>
+              
+              <li><a href='/series/javascriptures/'>JavaScriptures</a></li>
+              
+              <li><a href='/series/stages-of-professional-growth/'>Stages of Professional Growth</a></li>
+              
+              <li><a href='/series/artsy-tech-stack/'>Artsy Tech Stack</a></li>
+              
+              <li><a href='/series/open-source-by-default/'>Open Source by Default</a></li>
+              
+            </ul>
+          </section>
+
+          <section>
+          
+          <p class="meta-series" style="padding-bottom:0;">More from <strong>Omakase</strong></p>
+          <ul>
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+                
+                <li><a href='/blog/2019/04/05/omakase-typescript/'>What is TypeScript?</a></li>
+                
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+                
+                <li><a href='/blog/2019/01/29/from-tslint-to-eslint/'>From TSLint to ESLint, or How I Learned to Lint GraphQL Code</a></li>
+                
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+                
+                <li><a href='/blog/2018/12/11/GraphQL-Stitching/'>GraphQL Stitching 101</a></li>
+                
+              
+            
+              
+            
+              
+            
+              
+            
+              
+                
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+                
+                <li><a href='/blog/2018/10/04/artsy-frontend-history/'>A History of Artsy's Web Frontend</a></li>
+                
+              
+            
+              
+            
+              
+                
+                <li><a href='/blog/2018/08/24/How-to-debug-jest-tests/'>How To Debug Jest Tests</a></li>
+                
+              
+            
+              
+            
+              
+            
+              
+            
+              
+                
+                <li><a href='/blog/2018/07/25/Relay-Networking-Deep-Dive/'>The Relay Network Deep Dive</a></li>
+                
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+                
+                <li><a href='/blog/2016/11/02/improving-page-speed-with-graphql/'>Improving Page Speed with GraphQL</a></li>
+                
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+                
+                <li><a href='/blog/2016/08/15/vscode/'>Using VS Code for JavaScript</a></li>
+                
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          </ul>
+          
+          </section>
+        </article>
+
+      </footer>
+    </div>
+  </div>
+</body>

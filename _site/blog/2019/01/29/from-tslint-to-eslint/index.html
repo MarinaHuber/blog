@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>From TSLint to ESLint, or How I Learned to Lint GraphQL Code - Blog Engineering</title>
+  <meta name="author" content="">
+
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://webfonts.artsy.net/all-webfonts.css"
+  />
+
+  
+  <meta name="description" content="At the beginning of January we discovered an interesting note in TypeScript’s roadmap about linting:
+
+
+  In a survey we ran in VS Code a few months...">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:image" content="http://artsy.github.io/images/artsy_oss_image.png" />
+  <meta property="og:image:type" content="image/png" />
+
+  
+  <link rel="canonical" href="https://marinahuber.github.io/blog/2019/01/29/from-tslint-to-eslint/">
+  <link rel="alternate" type="application/rss+xml" title="Artsy Engineering Blog" href="/feed">
+  <link rel="alternate" type="application/atom+xml" title="Podcast Feed" href="/podcast.xml" />
+
+  <link href="/favicon.ico" rel="icon">
+  <link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+  <script src="/javascripts/jquery-1.11.3.min.js"> </script>
+  <script src="/javascripts/gradient-fade.js"></script>
+  <script src="/javascripts/noframework.waypoints.min.js"></script>
+  <script src="/javascripts/sticky.min.js"></script>
+  <script src="/javascripts/custom-element.min.js"></script>
+  <script src="/javascripts/g-emoji-element.js"></script>
+  <script src="/javascripts/related-articles.js"></script>
+
+  
+
+  <link href="/feed.xml" rel="alternate" title="Blog Engineering" type="application/atom+xml">
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-12450662-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<link href="/css/epic.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+
+
+<body>
+  <div>
+    <div id="bodywrapper">
+      <header>
+        <ul>
+          <li><a href="/">Artsy Engineering Blog</a></li>
+          <li><a href="https://www.artsy.net/jobs">Careers</a></li>
+          <li><a href="https://github.com/artsy">Github</a></li>
+        </ul>
+
+        <ul>
+          <li><a href="https://github.com/orgs/artsy/repositories?language=&q=&sort=&type=source">Our Open Source</a></li>
+          <li><a href="http://twitter.com/artsyopensource">@artsyopensource</a></li>
+          <li><a href="https://www.artsy.net">artsy.net</a></li>
+        </ul>
+      </header>
+
+      <section>
+        <header id="page">
+          <h1>From TSLint to ESLint, or How I Learned to Lint GraphQL Code</h1>
+          <h3>
+          <!-- Yep, single line so the comma lines up right -->
+          By  Christopher Pappas
+          </h3>
+          <time datetime="2019-01-29">Jan 29, 2019</time>
+        </header>
+
+        <article class='post'>
+          <p>At the beginning of January we discovered an interesting note in <a href="https://github.com/Microsoft/TypeScript/issues/29288">TypeScript’s roadmap</a> about linting:</p>
+
+<blockquote>
+  <p>In a survey we ran in VS Code a few months back, the most frequent theme we heard from users was that the linting
+experience left much to be desired. Since part of our team is dedicated to editing experiences in JavaScript, our
+editor team set out to add support for both TSLint and ESLint. However, we noticed that there were a few
+architectural issues with the way TSLint rules operate that impacted performance. Fixing TSLint to operate more
+efficiently would require a different API which would break existing rules (unless an interop API was built like
+what wotan provides).</p>
+</blockquote>
+
+<blockquote>
+  <p>Meanwhile, ESLint already has the more-performant architecture we’re looking for from a linter. Additionally,
+different communities of users often have lint rules (e.g. rules for React Hooks or Vue) that are built for
+ESLint, but not TSLint.</p>
+</blockquote>
+
+<blockquote>
+  <p>Given this, our editor team will be focusing on leveraging ESLint rather than duplicating work. For scenarios
+that ESLint currently doesn’t cover (e.g. semantic linting or program-wide linting), we’ll be working on sending
+contributions to bring ESLint’s TypeScript support to parity with TSLint. As an initial testbed of how this works
+in practice, we’ll be switching the TypeScript repository over to using ESLint, and sending any new rules
+upstream.</p>
+</blockquote>
+
+<p>At Artsy we’ve been using TSLint for a few years now; it’s worked well for us, and we’ve even written our own
+<a href="https://github.com/relay-tools/tslint-plugin-relay">custom rules</a>. However, given the vastness of the JS ecosystem
+and how fast it moves, it’s easy to recognize this announcement as an exciting moment for tooling simplicity.</p>
+
+<!-- more -->
+
+<p>To give an example, anyone who has built a culture around Airbnb’s
+<a href="https://github.com/airbnb/javascript">JavaScript style guide</a> will instantly recognize the conundrum they’re in
+when migrating to TypeScript:</p>
+
+<p><img width="100%" alt="a reddit user discovers their linting rules no longer work" src="https://user-images.githubusercontent.com/236943/51884369-d845b380-233b-11e9-9d2f-102cc8a3a78b.png" /></p>
+
+<p>This means that teams maintaining legacy JavaScript codebases will no longer have to <em>also</em> maintain
+<a href="https://github.com/palantir/tslint-react">two</a> <a href="https://github.com/yannickcr/eslint-plugin-react">versions</a> of often nearly <a href="https://github.com/prettier/tslint-plugin-prettier">identical</a>
+<a href="https://github.com/prettier/prettier-eslint">rule-sets</a>. All of the aggregate culture that builds up around linting can now be shared in a
+forward and backward facing way, making the often-daunting process of migrating a codebase from JavaScript to
+TypeScript a much easier sell.</p>
+
+<p>With this in mind we wanted to give the new officially-sanctioned <a href="https://github.com/typescript-eslint/typescript-eslint">typescript-eslint</a> project a
+spin and document our findings.</p>
+
+<h3 id="setup">Setup</h3>
+
+<p>To get started, install the necessary dependencies:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>yarn <span class="nb">install</span> <span class="nt">-D</span> eslint typescript @typescript-eslint/eslint-plugin
+</code></pre></div></div>
+
+<p>Then create a new <code class="language-plaintext highlighter-rouge">.eslintrc.js</code> and add a bit of setup:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">parser</span><span class="p">:</span> <span class="dl">"</span><span class="s2">@typescript-eslint/parser</span><span class="dl">"</span><span class="p">,</span>
+  <span class="na">plugins</span><span class="p">:</span> <span class="p">[</span><span class="dl">"</span><span class="s2">@typescript-eslint</span><span class="dl">"</span><span class="p">],</span>
+  <span class="na">extends</span><span class="p">:</span> <span class="p">[</span><span class="dl">"</span><span class="s2">eslint:recommended</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">plugin:@typescript-eslint/recommended</span><span class="dl">"</span><span class="p">],</span>
+  <span class="na">parserOptions</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">ecmaVersion</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="na">project</span><span class="p">:</span> <span class="dl">"</span><span class="s2">./tsconfig.json</span><span class="dl">"</span><span class="p">,</span>
+    <span class="na">sourceType</span><span class="p">:</span> <span class="dl">"</span><span class="s2">module</span><span class="dl">"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Note that <code class="language-plaintext highlighter-rouge">parserOptions.project</code> points to your <code class="language-plaintext highlighter-rouge">tsconfig.json</code> file:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"compilerOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Next, add a bit of TypeScript to a file</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"export const foo: any = 'bar'"</span> <span class="o">&gt;</span> index.ts
+</code></pre></div></div>
+
+<p>and run the linter:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>yarn eslint <span class="nb">.</span> <span class="nt">--ext</span> .ts,.tsx
+
+~/index.ts
+  1:12  warning  Unexpected any. Specify a different <span class="nb">type</span>  @typescript-eslint/no-explicit-any
+
+✖ 1 problem <span class="o">(</span>0 errors, 1 warnings<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Very nice!</p>
+
+<p>Now lets expand the example a bit and add something more sophisticated, which in Artsy’s use-case is commonly
+GraphQL:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>yarn add <span class="nt">-D</span> eslint-plugin-graphql graphql-tag apollo
+</code></pre></div></div>
+
+<p>Update <code class="language-plaintext highlighter-rouge">tsconfig.json</code> and let it know we’ll be using <code class="language-plaintext highlighter-rouge">node</code> for imports:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"compilerOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"moduleResolution"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>In <code class="language-plaintext highlighter-rouge">.eslintrc.js</code> add these rules (while noting the addition of <code class="language-plaintext highlighter-rouge">graphql</code> to <code class="language-plaintext highlighter-rouge">plugins</code> and
+<code class="language-plaintext highlighter-rouge">graphql/template-strings</code> under <code class="language-plaintext highlighter-rouge">rules</code>):</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nf">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">path</span><span class="dl">"</span><span class="p">)</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">parser</span><span class="p">:</span> <span class="dl">"</span><span class="s2">@typescript-eslint/parser</span><span class="dl">"</span><span class="p">,</span>
+  <span class="na">plugins</span><span class="p">:</span> <span class="p">[</span><span class="dl">"</span><span class="s2">@typescript-eslint</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">graphql</span><span class="dl">"</span><span class="p">],</span>
+  <span class="na">extends</span><span class="p">:</span> <span class="p">[</span><span class="dl">"</span><span class="s2">eslint:recommended</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">plugin:@typescript-eslint/recommended</span><span class="dl">"</span><span class="p">],</span>
+  <span class="na">parserOptions</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">ecmaVersion</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="na">project</span><span class="p">:</span> <span class="dl">"</span><span class="s2">./tsconfig.json</span><span class="dl">"</span><span class="p">,</span>
+    <span class="na">sourceType</span><span class="p">:</span> <span class="dl">"</span><span class="s2">module</span><span class="dl">"</span>
+  <span class="p">},</span>
+  <span class="na">rules</span><span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">graphql/template-strings</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
+      <span class="dl">"</span><span class="s2">error</span><span class="dl">"</span><span class="p">,</span>
+      <span class="p">{</span>
+        <span class="na">schemaJsonFilepath</span><span class="p">:</span> <span class="nx">path</span><span class="p">.</span><span class="nf">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="dl">"</span><span class="s2">./schema.json</span><span class="dl">"</span><span class="p">),</span>
+        <span class="na">tagName</span><span class="p">:</span> <span class="dl">"</span><span class="s2">graphql</span><span class="dl">"</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>For GraphQL to know what to lint, we’ll need a schema. Thankfully the
+<a href="https://etmdb.com/graphql">Ethiopian Movie Database</a> has our back :)</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>yarn apollo service:download <span class="nt">--endpoint</span> https://etmdb.com/graphql
+  ✔ Loading Apollo Project
+  ✔ Saving schema to schema.json
+✨  Done <span class="k">in </span>2.18s.
+</code></pre></div></div>
+
+<p>Back in <code class="language-plaintext highlighter-rouge">index.ts</code>, add this bit of code:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">graphql</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">graphql-tag</span><span class="dl">"</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">MovieQuery</span> <span class="o">=</span> <span class="nx">graphql</span><span class="s2">`
+  query MoveQuery {
+    allCinemaDetails(before: "2017-10-04", after: "2010-01-01") {
+      edges {
+        nodez {
+          slug
+          hallName
+        }
+      }
+    }
+  }
+`</span>
+</code></pre></div></div>
+
+<p>And run the linter:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>yarn eslint <span class="nb">.</span> <span class="nt">--ext</span> .ts,.tsx
+
+~/index.ts
+  7:9  error  Cannot query field <span class="s2">"nodez"</span> on <span class="nb">type</span> <span class="s2">"CinemaDetailNodeEdge"</span><span class="nb">.</span> Did you mean <span class="s2">"node"</span>?  graphql/template-strings
+
+✖ 1 problem <span class="o">(</span>1 error, 0 warnings<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Ahh yes, I meant <a href="https://i.redd.it/tfugj4n3l6ez.png"><code class="language-plaintext highlighter-rouge">node</code></a>.</p>
+
+<h3 id="bonus-vscode-integration">Bonus: VSCode Integration</h3>
+
+<p>As developers, we like our tools to work for us, and in 2019 the tool that <em>seems</em> to do that best just happens to
+be a brilliant open source product from Microsoft. There were a couple unexpected configuration issues when we were
+setting this up, but thankfully they’re easy fixes.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">mkdir</span> .vscode <span class="o">&amp;&amp;</span> <span class="nb">touch</span> .vscode/settings.json
+</code></pre></div></div>
+
+<p>Then add a couple settings:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"editor.formatOnSave"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"eslint.autoFixOnSave"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"eslint.validate"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"language"</span><span class="p">:</span><span class="w"> </span><span class="s2">"javascript"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"autoFix"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"language"</span><span class="p">:</span><span class="w"> </span><span class="s2">"javascriptreact"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"autoFix"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"language"</span><span class="p">:</span><span class="w"> </span><span class="s2">"typescript"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"autoFix"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"language"</span><span class="p">:</span><span class="w"> </span><span class="s2">"typescriptreact"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"autoFix"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"tslint.enable"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Format on save, fix on save, <em>autofix</em> on save, tell ESLint to recognize <code class="language-plaintext highlighter-rouge">.ts</code> (and <code class="language-plaintext highlighter-rouge">.tsx</code>, for the React folks)
+then disable <code class="language-plaintext highlighter-rouge">tslint</code> so that <code class="language-plaintext highlighter-rouge">eslint</code> can do its thing:</p>
+
+<p><img width="698" alt="eslint displaying graphql error in VSCode IDE" src="https://user-images.githubusercontent.com/236943/51884366-d380ff80-233b-11e9-8128-6c39e210dd31.png" /></p>
+
+<p>Now ESLint will show you right where your GraphQL error is from within VSCode. Pretty sweet.</p>
+
+<p>Be sure to read <a href="https://eslint.org/blog/2019/01/future-typescript-eslint">The future of TypeScript on ESLint</a> for more details.</p>
+
+
+        </article>
+
+        <article class='post'>
+          <p style="padding-bottom: 0; margin-bottom:0;">
+            <a href="https://www.artsy.net/" style="background-image: none;">
+              <svg viewBox="0 0 510 510" width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+                <path transform="scale(1, -1) translate(0, -480)" d="M0 -32h512v512h-512v-512v0zM464 16h-80v80h-48v-80h-288v416h416v-416v0zM194 384h-40l-74 -186h38l20 52h72l19 -52h39l-74 186v0zM149 282l25 66l24 -66h-49v0z"></path>
+              </svg>
+            </a>
+          <p/>
+        </article>
+
+        <aside class="related-articles"></aside>
+
+      
+
+      </section>
+
+      <footer>
+        <article>
+
+          <section>
+            <h4>Author</h4>
+            <p> <a href="/author/chris">Christopher Pappas</a></p>
+            <p></a></p>
+          </section>
+
+          <section>
+            <h4>Post Meta</h4>
+            <p>Jan 29, 2019</p>
+            <p>Tagged: <a class='category' href='/blog/categories/eslint/'>eslint</a>, <a class='category' href='/blog/categories/graphql/'>graphql</a>, <a class='category' href='/blog/categories/tslint/'>tslint</a>, <a class='category' href='/blog/categories/typescript/'>typescript</a></p>
+          </section>
+          <br/>
+          <section>
+            <h4>Artsy OSS</h4>
+            <ul>
+              <li><a href='https://www.artsy.net'>Artsy.net</a></li>
+              <li><a href='https://github.com/artsy'>Github</a></li>
+              <li><a href='https://github.com/orgs/artsy/repositories?language=&q=&sort=&type=source'>Open Source</a></li>
+              <li><a href='https://www.artsy.net/jobs'>Careers</a></li>
+            </ul>
+          </section>
+
+          <section>
+            <h4>Blog</h4>
+            <ul>
+              <li><a href='http://artsy.github.io/blog/archives/'>Archives</a></li>
+              <!-- TODO: bring back a different version of site search  -->
+              <!-- <li><a href='http://artsy.github.io/search/'>Search</a></li> -->
+              <li><a href='https://github.com/artsy/artsy.github.io'>Code on GitHub</a></li>
+              <li><a href='https://github.com/artsy/artsy.github.io/edit/source/_posts/2019-01-28-from-tslint-to-eslint.md'>Fix typos in this post</a></li>
+            </ul>
+          </section>
+
+        </article>
+
+        <article>
+          <section>
+            <h4>Post Series on the Blog</h4>
+            <ul>
+              
+              <li><a href='/series/react-native-at-artsy/'>React Native at Artsy</a></li>
+              
+              <li><a href='/series/javascriptures/'>JavaScriptures</a></li>
+              
+              <li><a href='/series/stages-of-professional-growth/'>Stages of Professional Growth</a></li>
+              
+              <li><a href='/series/artsy-tech-stack/'>Artsy Tech Stack</a></li>
+              
+              <li><a href='/series/open-source-by-default/'>Open Source by Default</a></li>
+              
+            </ul>
+          </section>
+
+          <section>
+          
+          <p class="meta-series" style="padding-bottom:0;">More from <strong>Omakase</strong></p>
+          <ul>
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+                
+                <li><a href='/blog/2019/04/05/omakase-typescript/'>What is TypeScript?</a></li>
+                
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+                
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+                
+                <li><a href='/blog/2018/12/11/GraphQL-Stitching/'>GraphQL Stitching 101</a></li>
+                
+              
+            
+              
+            
+              
+            
+              
+            
+              
+                
+                <li><a href='/blog/2018/11/21/conditional-types-in-typescript/'>Conditional types in TypeScript</a></li>
+                
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+                
+                <li><a href='/blog/2018/10/04/artsy-frontend-history/'>A History of Artsy's Web Frontend</a></li>
+                
+              
+            
+              
+            
+              
+                
+                <li><a href='/blog/2018/08/24/How-to-debug-jest-tests/'>How To Debug Jest Tests</a></li>
+                
+              
+            
+              
+            
+              
+            
+              
+            
+              
+                
+                <li><a href='/blog/2018/07/25/Relay-Networking-Deep-Dive/'>The Relay Network Deep Dive</a></li>
+                
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+                
+                <li><a href='/blog/2016/11/02/improving-page-speed-with-graphql/'>Improving Page Speed with GraphQL</a></li>
+                
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+                
+                <li><a href='/blog/2016/08/15/vscode/'>Using VS Code for JavaScript</a></li>
+                
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          </ul>
+          
+          </section>
+        </article>
+
+      </footer>
+    </div>
+  </div>
+</body>

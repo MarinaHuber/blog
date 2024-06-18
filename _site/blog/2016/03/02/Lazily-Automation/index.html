@@ -1,0 +1,386 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Being a Better Programmer When You're Actually Lazy. - Blog Engineering</title>
+  <meta name="author" content="">
+
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://webfonts.artsy.net/all-webfonts.css"
+  />
+
+  
+  <meta name="description" content="
+  
+
+    
+
+  
+    
+      
+        
+          
+        
+        
+          Being a Better Programmer When You're Actually Lazy.
+        
+        Mar...">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:image" content="http://artsy.github.io/images/artsy_oss_image.png" />
+  <meta property="og:image:type" content="image/png" />
+
+  
+  <link rel="canonical" href="https://marinahuber.github.io/blog/2016/03/02/Lazily-Automation/">
+  <link rel="alternate" type="application/rss+xml" title="Artsy Engineering Blog" href="/feed">
+  <link rel="alternate" type="application/atom+xml" title="Podcast Feed" href="/podcast.xml" />
+
+  <link href="/favicon.ico" rel="icon">
+  <link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+  <script src="/javascripts/jquery-1.11.3.min.js"> </script>
+  <script src="/javascripts/gradient-fade.js"></script>
+  <script src="/javascripts/noframework.waypoints.min.js"></script>
+  <script src="/javascripts/sticky.min.js"></script>
+  <script src="/javascripts/custom-element.min.js"></script>
+  <script src="/javascripts/g-emoji-element.js"></script>
+  <script src="/javascripts/related-articles.js"></script>
+
+  
+
+  <link href="/feed.xml" rel="alternate" title="Blog Engineering" type="application/atom+xml">
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-12450662-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+  <div id="logo-container">
+    <a id="lrg-mark" href="https://www.artsy.net/">
+      <svg viewBox="0 0 510 510" width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+        <path transform="scale(1, -1) translate(0, -480)" d="M0 -32h512v512h-512v-512v0zM464 16h-80v80h-48v-80h-288v416h416v-416v0zM194 384h-40l-74 -186h38l20 52h72l19 -52h39l-74 186v0zM149 282l25 66l24 -66h-49v0z"/>
+      </svg>
+    </a>
+  </div>
+  <header id="banner"><div id="header">
+  <div class="header-navigation">
+    <ul>
+      <li><a href="https://developers.artsy.net/">API</a></li>
+      <li><a href="https://www.artsy.net/jobs">Careers</a></li>
+      <li><a href="http://twitter.com/artsyopensource">@artsyopensource</a></li>
+      <li><a href="http://www.artsy.net/">Artsy.net</a></li>
+    </ul>
+    <span class="header-section-title">
+      
+        <a href="/open-source">Open Source</a>
+      
+    </span>
+  </div>
+
+  <div class="header-sticky-container">
+    <div class="header-logo">
+      <h2><a href="https://marinahuber.github.io">Artsy</a></h2>
+    </div>
+    <div class="header-search">
+      
+        <h2><a href="/">Engineering Blog</a></h2>
+      
+    </div>
+  </div>
+</div>
+</header>
+  <div class="header-hamburger">
+    <button class="cmn-toggle-switch cmn-toggle-switch__htx">
+      <span>toggle menu</span>
+    </button>
+  </div>
+  <div id="main">
+    <div id="content">
+
+      <div>
+  <article class="hentry" role="article">
+
+    <div class="article-container-single ">
+
+  
+    <div class="meta-container">
+      <header>
+        
+          <a href="">
+        
+        
+          <h2 class="entry-title">Being a Better Programmer When You're Actually Lazy.</h2>
+        
+        <time datetime="2016-03-02">Mar 2, 2016</time>
+          <p class="meta-author">
+
+
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="/author/orta">Orta Therox<a/></span>
+      
+      <p class="fn">
+        <a href="https://twitter.com/orta">@orta</a>
+      </p>
+      
+
+    </div>
+  
+
+</p>
+          </a>
+      </header>
+    </div>
+  
+
+  <div class="content-container">
+    
+      <div class="entry-content"><p>I juggle a bunch of projects, both in Artsy and in the Open Source community. If you don’t work with me directly, you’d be mistaken for believing that I was an organized person. I’m pretty far from that, and <a href="https://github.com/artsy/mobile/issues/68">don’t really</a> plan on changing that.</p>
+
+<p>However, I work with other people and very strongly believe that programming is mostly a social problem once you’re good enough at writing code. It’d be hypocritical of me to not improve the people process side, so I try to automate processes that makes me a better team-mate.</p>
+
+<p>I’m going to cover four things I’ve worked on lately to improve this: <a href="https://github.com/danger/danger/">Danger</a>, <a href="https://github.com/orta/github-clippers">GitHub-Clippers</a> and improving how I write commits and prefixing my name on branches.</p>
+
+<!-- more -->
+
+<h3 id="danger">Danger</h3>
+
+<p><a href="https://github.com/danger/danger/">Danger</a> is a tool I co-created with a friend (<a href="https://github.com/krausefx/">Felix Krause</a>), and it’s namesake, <a href="https://github.com/dangermcshane">Gem “Danger” McShane</a>. It came out of frustration that we couldn’t easily hold ourselves accountable to better team processes. Requiring a code-reviewer to  also remember details like “Add a CHANGELOG Entry” isn’t much to ask, but it is “Yet Another Thing To Remember” for both the submitter and reviewer.</p>
+
+<p>It’s turning into a really important part of our code-review, and the ideas it generates once we had it in place make it fun to add new rules. It means we can fail fast, and not have to think about process so much. Danger will tell us if we’ve missed something.</p>
+
+<p><img src="/images/2016-03-02-Lazily-Automation/danger.png" alt="Danger Example" /></p>
+
+<p>I expect to write a more serious post on <a href="https://github.com/danger/danger/">Danger</a> once it’s more fleshed out. For now though, the README covers what it does well.</p>
+
+<h3 id="clippers">Clippers</h3>
+
+<p>In every big team I operate in, other people care about keeping the repo clean of merged branches. I totally respect their opinion, but it’s so low on things I care about that I just don’t register the “Delete Branch” button on a GitHub pull request. I’d rather be finding a <a href="https://github.com/orta/gifs">good response GIF</a>.</p>
+
+<p>So I created <a href="https://github.com/orta/github-clippers">a Safari Extension</a> that handles automatically deleting branches on specific repos for me. It’s not a biggie, it’s not fancy, it’s under a <a href="https://github.com/orta/github-clippers/blob/master/GitHub-Clippers.safariextension/github_clippers.js">hundred lines of code</a> - but it automates something that annoyed others about my behavior. That counts for something.</p>
+
+<h3 id="commit-automation">Commit Automation</h3>
+
+<p>I write <em>reasonable</em> commit messages, they’re not <a href="http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html">amazing</a>, they’re <a href="http://www.whatthecommit.com">not terrible</a>. They’re just, <a href="https://github.com/artsy/energy/commits/master?author=orta">alright</a>. I wanted to start trying to hold everyone accountable for doing better, so I advocated for copying the person with the <a href="https://github.com/artsy/eigen/commits/master?author=alloy">best commit style</a> on our team.</p>
+
+<p>Their style is to have commits in a format like <code class="language-plaintext highlighter-rouge">[Context] Thing I did.</code> - it is much better that <code class="language-plaintext highlighter-rouge">Thing I did.</code>. So I looked into how I could automate this, because I would very quickly forget to do this. Here’s what I did:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+// Helper <span class="k">function </span>to get the branch info
+<span class="k">function </span>git_branch_info<span class="o">()</span> <span class="o">{</span>
+  <span class="nv">ref</span><span class="o">=</span><span class="si">$(</span><span class="nb">command </span>git symbolic-ref HEAD 2&gt; /dev/null<span class="si">)</span> <span class="o">||</span> <span class="se">\</span>
+  <span class="nv">ref</span><span class="o">=</span><span class="si">$(</span><span class="nb">command </span>git rev-parse <span class="nt">--short</span> HEAD 2&gt; /dev/null<span class="si">)</span> <span class="o">||</span> <span class="k">return
+  </span><span class="nb">echo</span> <span class="s2">"</span><span class="k">${</span><span class="nv">ref</span><span class="p">#refs/heads/</span><span class="k">}</span><span class="s2">"</span>
+<span class="o">}</span>
+
+<span class="k">function </span>branch<span class="o">()</span> <span class="o">{</span>
+  git checkout master<span class="p">;</span>
+  git pull upstream master<span class="p">;</span>
+  git checkout <span class="nt">-b</span> <span class="nv">$1</span>
+  git config branch.<span class="nv">$1</span>.description <span class="nv">$2</span>
+<span class="o">}</span>
+
+<span class="k">function </span>commit<span class="o">()</span> <span class="o">{</span>
+  <span class="nb">local </span><span class="nv">BRANCH</span><span class="o">=</span><span class="si">$(</span>git_branch_info<span class="si">)</span>
+  <span class="nb">local </span><span class="nv">INFO</span><span class="o">=</span><span class="si">$(</span>git config branch.<span class="si">$(</span><span class="nb">echo</span> <span class="nv">$BRANCH</span><span class="si">)</span>.description<span class="si">)</span>
+  git commit <span class="nt">-m</span> <span class="s2">"[</span><span class="si">$(</span><span class="nb">echo</span> <span class="nv">$INFO</span><span class="si">)</span><span class="s2">] </span><span class="nv">$argv</span><span class="s2">"</span>
+<span class="o">}</span>
+
+// And <span class="k">if </span>I forget to <span class="nb">set </span>my context
+<span class="k">function </span>context<span class="o">()</span> <span class="o">{</span>
+  <span class="nb">local </span><span class="nv">BRANCH</span><span class="o">=</span><span class="si">$(</span>git_branch_info<span class="si">)</span>
+  git config branch.<span class="si">$(</span><span class="nb">echo</span> <span class="nv">$BRANCH</span><span class="si">)</span>.description <span class="nv">$1</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Or if you’re a fish user like me, <a href="https://gist.github.com/orta/902d8e576a2b75afe2df">this gist</a>.</p>
+
+<p>I created two shell functions, one that makes a branch that includes a context type. So for example, say I’m working on artwork notifications, I’d start a new branch with <code class="language-plaintext highlighter-rouge">$ branch artwork_notifications Notifications</code>. This saves the context as <code class="language-plaintext highlighter-rouge">Notifications</code> on the git branch metadata. Then everytime I want to commit my changes, I use <code class="language-plaintext highlighter-rouge">$ commit This is the thing I changed.</code> - and it will be prefixed with <code class="language-plaintext highlighter-rouge">[Notifications]</code>. It makes it easier for someone looking through the history to have an idea about the context, and makes me feel like I’m improving my process without remembering the context.</p>
+
+<h3 id="branch-prefixes">Branch Prefixes</h3>
+
+<p>We use a Makefile in all our projects to try and help automate per-project simple tasks like running <a href="https://github.com/artsy/energy/blob/e5db035225490fb53c65c74a6c1bdd660f305ab6/Makefile#L44">mogenerator</a>, updating <a href="https://github.com/artsy/energy/blob/e5db035225490fb53c65c74a6c1bdd660f305ab6/Makefile#L49">storyboard identifiers</a> and updating <a href="https://github.com/artsy/eigen/blob/12fe9de4d927eea27f4942d15e74b89016a6345f/Makefile#L102-L103">embedded resources</a>.</p>
+
+<p>I also applied some standard make commands in our projects so that I can prefix my <a href="https://github.com/artsy/eigen/blob/10106210196f096a27412a70af61dcae7fda285c/Makefile#L110-L117">branches with my name</a>.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>LOCAL_BRANCH <span class="o">=</span> <span class="si">$(</span>shell git rev-parse <span class="nt">--abbrev-ref</span> HEAD<span class="si">)</span>
+BRANCH <span class="o">=</span> <span class="si">$(</span>shell <span class="nb">echo </span><span class="nv">host</span><span class="o">=</span>github.com | git credential fill | <span class="nb">sed</span> <span class="nt">-E</span> <span class="s1">'N; s/.*username=(.+)\n?.*/\1/'</span><span class="si">)</span>-<span class="si">$(</span>shell git rev-parse <span class="nt">--abbrev-ref</span> HEAD<span class="si">)</span>
+
+<span class="nb">pr</span>:
+	<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="si">$(</span>LOCAL_BRANCH<span class="si">)</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"master"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then </span><span class="nb">echo</span> <span class="s2">"In master, not PRing"</span><span class="p">;</span> <span class="k">else </span>git push upstream <span class="s2">"</span><span class="si">$(</span>LOCAL_BRANCH<span class="si">)</span><span class="s2">:</span><span class="si">$(</span>BRANCH<span class="si">)</span><span class="s2">"</span><span class="p">;</span> open <span class="s2">"https://github.com/artsy/eigen/pull/new/artsy:master...</span><span class="si">$(</span>BRANCH<span class="si">)</span><span class="s2">"</span><span class="p">;</span> <span class="k">fi
+
+</span>push:
+	<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="si">$(</span>LOCAL_BRANCH<span class="si">)</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"master"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then </span><span class="nb">echo</span> <span class="s2">"In master, not pushing"</span><span class="p">;</span> <span class="k">else </span>git push upstream <span class="si">$(</span>LOCAL_BRANCH<span class="si">)</span>:<span class="si">$(</span>BRANCH<span class="si">)</span><span class="p">;</span> <span class="k">fi
+
+</span>fpush:
+	<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="si">$(</span>LOCAL_BRANCH<span class="si">)</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"master"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then </span><span class="nb">echo</span> <span class="s2">"In master, not pushing"</span><span class="p">;</span> <span class="k">else </span>git push upstream <span class="si">$(</span>LOCAL_BRANCH<span class="si">)</span>:<span class="si">$(</span>BRANCH<span class="si">)</span> <span class="nt">--force</span><span class="p">;</span> <span class="k">fi</span>
+</code></pre></div></div>
+
+<p>This works by some funky shell work to pull out your current branch into <code class="language-plaintext highlighter-rouge">LOCAL_BRANCH</code>, then to do the same thing but prefixed with your login name for <code class="language-plaintext highlighter-rouge">BRANCH</code>. Then the make commands handle pushing to the server. This means that everyone in the team can provide have logically named branches without having to have their local repo filled with <code class="language-plaintext highlighter-rouge">[my_name]-thing</code> branches.</p>
+
+<h2 id="on-going">On-going</h2>
+
+<p>This is a work in progress, as the mobile team grows, we need to add more process when it’s appropriate. This <em>doesn’t</em> mean that we have to sacrifice speed, and we can continue thinking about the problem at hand rather than devoting energy to process.</p>
+
+<p>It’s a time trade-off that has worked out well for me so far, and I’d love to know other people’s hacks for having useful process, but automating it so that it’s not considered overhead.</p>
+</div>
+    
+
+    <p class="meta-author">
+      
+
+
+
+
+<div class="meta">
+  Posted by
+
+
+  
+
+  
+    <span class="byline author vcard">
+
+      <div class="meta"><span class="fn"><a href="/author/orta">
+        Orta Therox
+      </a></span></div>
+
+      
+      <span class="fn">
+        <a href="http://orta.io">Site</a>
+      </span>
+      
+      
+      <span class="fn">
+        <a href="https://github.com/orta">GitHub</a>
+      </span>
+      
+      
+      <span class="fn">
+        <a href="https://twitter.com/orta">@orta</a>
+      </span>
+      
+    </span>
+
+  
+</div>
+
+
+
+
+    </p>
+    <p class="meta-categories">
+      Categories: 
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/automation/'>automation</a>, <a class='category' href='/blog/categories/culture/'>culture</a>, <a class='category' href='/blog/categories/teams/'>teams</a>
+  
+</span>
+
+
+    </p>
+    
+
+    
+
+    <p class="meta-paginate">
+      
+        <a class="previous" href="/blog/2016/02/12/Code-Review-Energy-Sync/" title="Previous Post: Code Review: Energy Sync">&laquo; Code Review: Energy Sync</a>
+      
+      
+        <a class="next" href="/blog/2016/03/05/iOS-Code-Injection/" title="next Post: Code Injection for Xcode">Code Injection for Xcode &raquo;</a>
+      
+    </p>
+  </div>
+
+
+  <footer>
+  </footer>
+
+</div>
+
+
+  </article>
+</div>
+
+
+    </div>
+
+    <aside class="related-articles"></aside>
+
+  </div>
+  <footer id="main_footer"> <div class="footer-navigation">
+  <ul>
+    <li><a href="https://developers.artsy.net/">API</a></li>
+    <li><a href="https://www.artsy.net/jobs">Careers</a></li>
+    <li><a href="http://twitter.com/artsyopensource">@artsyopensource</a></li>
+    <li><a href="http://www.artsy.net/">Artsy.net</a></li>
+  </ul>
+</div>
+
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'blog';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+</footer>
+  <script type="text/javascript">
+  $(function() {
+    // TODO: Move this whole file to a javascript file that is included in the footer
+
+    // Main sticky header
+    if ($(window).width() >= 700) {
+      var sticky = new Waypoint.Sticky({
+        element: $("#banner"),
+        offset: -100
+      });
+    }
+
+    // Toggle hamburger menu
+    $('.header-hamburger').click(function() {
+      $('#banner, .cmn-toggle-switch').toggleClass('active');
+      if (location.pathname == '/open-source') {
+        $('#page-sidebar').toggle();
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

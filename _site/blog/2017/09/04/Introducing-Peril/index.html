@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Introducing Peril to the Artsy Org - Blog Engineering</title>
+  <meta name="author" content="">
+
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://webfonts.artsy.net/all-webfonts.css"
+  />
+
+  
+  <meta name="description" content="Once Danger Ruby was stable enough for everyday use in 2015, it became obvious that running Danger on CI was both a 
+positive and a negative. On th...">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:image" content="http://artsy.github.io/images/artsy_oss_image.png" />
+  <meta property="og:image:type" content="image/png" />
+
+  
+  <link rel="canonical" href="https://marinahuber.github.io/blog/2017/09/04/Introducing-Peril/">
+  <link rel="alternate" type="application/rss+xml" title="Artsy Engineering Blog" href="/feed">
+  <link rel="alternate" type="application/atom+xml" title="Podcast Feed" href="/podcast.xml" />
+
+  <link href="/favicon.ico" rel="icon">
+  <link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+  <script src="/javascripts/jquery-1.11.3.min.js"> </script>
+  <script src="/javascripts/gradient-fade.js"></script>
+  <script src="/javascripts/noframework.waypoints.min.js"></script>
+  <script src="/javascripts/sticky.min.js"></script>
+  <script src="/javascripts/custom-element.min.js"></script>
+  <script src="/javascripts/g-emoji-element.js"></script>
+  <script src="/javascripts/related-articles.js"></script>
+
+  
+
+  <link href="/feed.xml" rel="alternate" title="Blog Engineering" type="application/atom+xml">
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-12450662-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<link href="/css/epic.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+
+
+<body>
+  <div>
+    <div id="bodywrapper">
+      <header>
+        <ul>
+          <li><a href="/">Artsy Engineering Blog</a></li>
+          <li><a href="https://www.artsy.net/jobs">Careers</a></li>
+          <li><a href="https://github.com/artsy">Github</a></li>
+        </ul>
+
+        <ul>
+          <li><a href="https://github.com/orgs/artsy/repositories?language=&q=&sort=&type=source">Our Open Source</a></li>
+          <li><a href="http://twitter.com/artsyopensource">@artsyopensource</a></li>
+          <li><a href="https://www.artsy.net">artsy.net</a></li>
+        </ul>
+      </header>
+
+      <section>
+        <header id="page">
+          <h1>Introducing Peril to the Artsy Org</h1>
+          <h3>
+          <!-- Yep, single line so the comma lines up right -->
+          By  Orta Therox
+          </h3>
+          <time datetime="2017-09-04">Sep 4, 2017</time>
+        </header>
+
+        <article class='post'>
+          <p>Once Danger Ruby was stable enough for everyday use in 2015, it became obvious that running Danger on CI was both a 
+positive and a negative. On the positive side, Danger has access to all artifacts created during testing - and on the negative 
+side it takes a long time to get feedback. It was obvious that Danger could <a href="https://github.com/danger/danger/issues/42">run on a server</a>, but it was a big unknown what that could look like.</p>
+
+<p>Eventually, <a href="/blog/2017/06/30/danger-one-oh-again/">I came to the conclusion</a> that we would need a JavaScript replacement of Danger - and so I applied
+constraints to Danger JS that made a server-side version of Danger a possibility. It was a stroke of luck that around the 
+time Danger JS became usable for day to day usage, that GitHub introduced <a href="https://developer.github.com/changes/2016-09-14-Integrations-Early-Access/">GitHub Apps</a> - so I started work on Peril. Peril is server-side Danger. The rest of this post talks about how we use it Artsy today, how you can use it yourself and where it’s heading.</p>
+
+<!-- more -->
+
+<p>In December 2016, I built out Peril in a sandbox org: <a href="https://github.com/PerilTest">PerilTest</a>, this gave me the chance to get a lot of things wrong safely. My biggest worry around Peril was leaking data though someone abusing the ability to evaluate a Dangerfile.</p>
+
+<p>In May 2017, I introduced Peril into Artsy’s org, GitHub apps have the ability to pick and choose which repos to work with. 
+I scoped the repos to existing open source projects which I was familiar with (<a href="https://github.com/artsy/emission">Emission</a>, <a href="https://github.com/artsy/reaction">Reaction</a> and <a href="https://github.com/artsy/positron">Positron</a>)
+which gave a space to ensure stability and handle production edge-cases.</p>
+
+<p>In August 2017, I created a new Peril instance for CocoaPods. I then finally flipped the switch to turn Peril on for all 
+repos on the Artsy org and formalized the RFC process for changes. This is where we are now.</p>
+
+<h2 id="getting-set-up">Getting Set Up</h2>
+
+<p>For our Artsy org, I followed and improved the guide: <a href="https://github.com/danger/peril/blob/master/docs/setup_for_org.md">Setup for Org</a>. There are three key components:</p>
+
+<ul>
+  <li>Creating a GitHub app for your Org</li>
+  <li>Hosting a Peril server</li>
+  <li>Making up a Peril settings repo</li>
+</ul>
+
+<p>The guide covers the initial setup, but I’d like to cover the third part of our setup.</p>
+
+<h2 id="how-artsys-peril-works">How Artsy’s Peril works</h2>
+
+<p>The Artsy Peril settings are all on <a href="https://github.com/artsy/artsy-danger">artsy/artsy-danger</a>. The Artsy Peril heroku instance has the ENV var
+<code class="language-plaintext highlighter-rouge">"DATABASE_JSON_FILE"</code> set to <code class="language-plaintext highlighter-rouge">"artsy/artsy-danger@peril.settings.json"</code>, so Peril will use <a href="https://github.com/artsy/artsy-danger/blob/master/peril.settings.json">that file</a> as the source of truth for all config. Here’s what it is today:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"modules"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"danger-plugin-spellcheck"</span><span class="p">,</span><span class="w"> 
+      </span><span class="s2">"danger-plugin-yarn"</span><span class="p">,</span><span class="w"> 
+      </span><span class="s2">"@slack/client"</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"env_vars"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"SLACK_RFC_WEBHOOK_URL"</span><span class="p">]</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"rules"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"pull_request"</span><span class="p">:</span><span class="w"> </span><span class="s2">"artsy/artsy-danger@org/all-prs.ts"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"repos"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"artsy/reaction"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"pull_request"</span><span class="p">:</span><span class="w"> </span><span class="s2">"danger/pr.ts"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"artsy/positron"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"pull_request"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dangerfile.ts"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"artsy/artsy-danger"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"issues.opened"</span><span class="p">:</span><span class="w"> </span><span class="s2">"artsy/artsy-danger@danger/new_rfc.ts"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code>"settings":</code> These settings which conform to today's <a href="https://github.com/danger/peril/blob/752afeb37e3c1fdec512eb91687747d9a8a29337/source/db/index.ts#L26-L31">GitHubInstallationSettings</a>, here's the <a href="https://github.com/danger/peril/blob/master/source/db/index.ts">current version</a>. These are org-wide settings
+that require a new deploy of the server to re-create.</p>
+
+<p><code>"rules":</code> These are rules which are applied to every repo that Peril has access to. So in this case, every Pull Request in the org will make Peril run the Dangerfile at <code>"artsy/artsy-danger@org/all-prs.ts"</code>.</p>
+
+<p><code>"repos":</code> These are repo-specific overrides, so a Pull Request to artsy/reaction would trigger both the org-wide Dangerfile, and one on the reaction repo.</p>
+
+<h2 id="events">Events</h2>
+
+<p>A Dangerfile evaluation occurs once a GitHub webhook is sent. In the above examples there are two events that Danger supports: 
+<code class="language-plaintext highlighter-rouge">"pull_request"</code> and <code class="language-plaintext highlighter-rouge">"issues.opened"</code>. These are qualifiers that GitHub provide as a <a href="https://developer.github.com/v3/activity/events/types/events">Webhook EventTypes</a>.</p>
+
+<p>There’s a lot of them: <code class="language-plaintext highlighter-rouge">commit_comment</code>, <code class="language-plaintext highlighter-rouge">create</code>, <code class="language-plaintext highlighter-rouge">delete</code>, <code class="language-plaintext highlighter-rouge">deployment</code>, <code class="language-plaintext highlighter-rouge">deployment_status</code>, <code class="language-plaintext highlighter-rouge">fork</code>, <code class="language-plaintext highlighter-rouge">gollum</code>, <code class="language-plaintext highlighter-rouge">installation</code>, <code class="language-plaintext highlighter-rouge">installation_repositories</code>, <code class="language-plaintext highlighter-rouge">issue_comment</code>, <code class="language-plaintext highlighter-rouge">issues</code>, <code class="language-plaintext highlighter-rouge">label</code>, <code class="language-plaintext highlighter-rouge">marketplace_purchase</code>, <code class="language-plaintext highlighter-rouge">member</code>, <code class="language-plaintext highlighter-rouge">membership</code>, <code class="language-plaintext highlighter-rouge">milestone</code>, <code class="language-plaintext highlighter-rouge">organization</code>, <code class="language-plaintext highlighter-rouge">org_block</code>, <code class="language-plaintext highlighter-rouge">page_build</code>, <code class="language-plaintext highlighter-rouge">project_card</code>, <code class="language-plaintext highlighter-rouge">project_column</code>, <code class="language-plaintext highlighter-rouge">project</code>, <code class="language-plaintext highlighter-rouge">public</code>, <code class="language-plaintext highlighter-rouge">pull_request</code>, <code class="language-plaintext highlighter-rouge">pull_request_review</code>, <code class="language-plaintext highlighter-rouge">pull_request_review_comment</code>, <code class="language-plaintext highlighter-rouge">push</code>, <code class="language-plaintext highlighter-rouge">release</code>, <code class="language-plaintext highlighter-rouge">repository</code>, <code class="language-plaintext highlighter-rouge">status</code>, <code class="language-plaintext highlighter-rouge">team</code>, <code class="language-plaintext highlighter-rouge">team_add</code>, <code class="language-plaintext highlighter-rouge">watch</code>.</p>
+
+<p>Some of these events also have unique sub-actions too:</p>
+
+<ul>
+  <li>
+    <p>For an <code class="language-plaintext highlighter-rouge">issue</code> event there is: <code class="language-plaintext highlighter-rouge">assigned</code>, <code class="language-plaintext highlighter-rouge">unassigned</code>, <code class="language-plaintext highlighter-rouge">labeled</code>, <code class="language-plaintext highlighter-rouge">unlabeled</code>, <code class="language-plaintext highlighter-rouge">opened</code>, <code class="language-plaintext highlighter-rouge">edited</code>,  <code class="language-plaintext highlighter-rouge">milestoned</code>, <code class="language-plaintext highlighter-rouge">demilestoned</code>, <code class="language-plaintext highlighter-rouge">closed</code>, or <code class="language-plaintext highlighter-rouge">reopened</code></p>
+  </li>
+  <li>
+    <p>For a <code class="language-plaintext highlighter-rouge">pull_request</code> event there is: <code class="language-plaintext highlighter-rouge">assigned</code>, <code class="language-plaintext highlighter-rouge">unassigned</code>, <code class="language-plaintext highlighter-rouge">review_requested</code>, <code class="language-plaintext highlighter-rouge">review_request_removed</code>, <code class="language-plaintext highlighter-rouge">labeled</code>, <code class="language-plaintext highlighter-rouge">unlabeled</code>, <code class="language-plaintext highlighter-rouge">opened</code>, <code class="language-plaintext highlighter-rouge">edited</code>, <code class="language-plaintext highlighter-rouge">closed</code>, or <code class="language-plaintext highlighter-rouge">reopened</code></p>
+  </li>
+</ul>
+
+<p>The way that you define rules in Peril gives you the ability to either focus on one action for an event type: <code class="language-plaintext highlighter-rouge">"issues.opened"</code> or all actions
+on an event: <code class="language-plaintext highlighter-rouge">"pull_request"</code>. Once you get your head around this, you start to get a sense of the scope of Peril. At Artsy, we’ve barely scratched the surface.</p>
+
+<h3 id="growth">Growth</h3>
+
+<p>I’ve always advocated that Danger, and Peril should be <a href="http://danger.systems/js/usage/culture.html">applied incrementally</a>. This applies even more when you’re
+making org changes that affect every developer - at least with Danger you can see the Pull Request that changes 
+the Dangerfile. With Peril you get none of that.</p>
+
+<p>So, we introduced <a href="https://github.com/artsy/artsy-danger/#rfcs">an RFC process for Peril changes</a>. There’s not much to it, if you want to add a rule that 
+affects everyone then you need to make an issue following a template and then wait a week. If you make a new issue that
+includes the title <code class="language-plaintext highlighter-rouge">RFC:</code> then Peril sends a slack message to our developer Channel</p>
+
+<p><img src="/images/peril/peril-rfc.png" alt="/images/peril/peril-rfc.png" /></p>
+
+<p>This was simple to build via Peril, I first added the npm module: <code class="language-plaintext highlighter-rouge">"@slack/client"</code> to the <code class="language-plaintext highlighter-rouge">"modules"</code> array, making it available to a Dangerfile. Then I added an environment variable to Peril for a newly minted Slack Incoming Webhook URL, and exposed it to Dangerfiles via: <code class="language-plaintext highlighter-rouge">"env_vars": ["SLACK_RFC_WEBHOOK_URL"]</code>.</p>
+
+<p>Then I added a per-repo rule:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">    </span><span class="nl">"artsy/artsy-danger"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"issues.opened"</span><span class="p">:</span><span class="w"> </span><span class="s2">"artsy/artsy-danger@danger/new_rfc.ts"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This means the Dangerfile is only ran on <code class="language-plaintext highlighter-rouge">"issues"</code> with an <code class="language-plaintext highlighter-rouge">"opened"</code> action. I didn’t want the discussion around a rule spamming our slack with webhooks from the other actions. The file <code class="language-plaintext highlighter-rouge">danger/new_rfc.ts</code> looks like this:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">schedule</span><span class="p">,</span> <span class="nx">danger</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">danger</span><span class="dl">"</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">IncomingWebhook</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@slack/client</span><span class="dl">"</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Issues</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">github-webhook-event-types</span><span class="dl">"</span>
+
+<span class="kr">declare</span> <span class="kd">const</span> <span class="nx">peril</span><span class="p">:</span> <span class="kr">any</span> <span class="c1">// danger/danger#351</span>
+
+<span class="kd">const</span> <span class="nx">gh</span> <span class="o">=</span> <span class="nx">danger</span><span class="p">.</span><span class="nx">github</span> <span class="kd">as </span><span class="kr">any</span> <span class="kd">as </span><span class="nx">Issues</span>
+<span class="kd">const</span> <span class="nx">issue</span> <span class="o">=</span> <span class="nx">gh</span><span class="p">.</span><span class="nx">issue</span>
+
+<span class="k">if </span><span class="p">(</span><span class="nx">issue</span><span class="p">.</span><span class="nx">title</span><span class="p">.</span><span class="nf">includes</span><span class="p">(</span><span class="dl">"</span><span class="s2">RFC:</span><span class="dl">"</span><span class="p">))</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">peril</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">SLACK_RFC_WEBHOOK_URL</span> <span class="o">||</span> <span class="dl">""</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">webhook</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">IncomingWebhook</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
+  <span class="nf">schedule</span><span class="p">(</span> <span class="k">async </span><span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+   <span class="k">await</span> <span class="nx">webhook</span><span class="p">.</span><span class="nf">send</span><span class="p">({</span>
+      <span class="na">unfurl_links</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+      <span class="na">attachments</span><span class="p">:</span> <span class="p">[{</span>
+        <span class="na">pretext</span><span class="p">:</span> <span class="dl">"</span><span class="s2">🎉 A new Peril RFC has been published.</span><span class="dl">"</span><span class="p">,</span>
+        <span class="na">color</span><span class="p">:</span> <span class="dl">"</span><span class="s2">good</span><span class="dl">"</span><span class="p">,</span>
+        <span class="na">title</span><span class="p">:</span> <span class="nx">issue</span><span class="p">.</span><span class="nx">title</span><span class="p">,</span>
+        <span class="na">title_link</span><span class="p">:</span> <span class="nx">issue</span><span class="p">.</span><span class="nx">html_url</span><span class="p">,</span>
+        <span class="na">author_name</span><span class="p">:</span> <span class="nx">issue</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">login</span><span class="p">,</span>
+        <span class="na">author_icon</span><span class="p">:</span> <span class="nx">issue</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">avatar_url</span>
+      <span class="p">}]</span>
+    <span class="p">})</span>
+  <span class="p">})</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>For events that are not a <code class="language-plaintext highlighter-rouge">"pull_request"</code> the <code class="language-plaintext highlighter-rouge">danger.github</code> object is the JSON for the event.  You can get TypeScript types available for every GitHub event via the NPM module <a href="https://www.npmjs.com/package/github-webhook-event-types">github-webhook-event-types</a> which makes it much easier to work with.</p>
+
+<h2 id="where-to-go-from-here">Where to go from here?</h2>
+
+<p>Right now we have <a href="https://github.com/artsy/artsy-danger/issues?utf8=✓&amp;q=is%3Aissue%20RFC">a few RFCs</a>, and I don’t spend all day making Peril rules, I’ve gotta <a href="https://github.com/artsy/emission/pulls?utf8=✓&amp;q=consignments%20">do work y’know</a>. We’re going to slowly build out our Peril infrastructure.</p>
+
+<p>I’m interested in exploring two ideas big for peril at the moment:</p>
+
+<ul>
+  <li>
+    <p>What a Peril plugin system looks like: You can include modules which can listen to events and react themselves. An org-wide spellcheck on markdown files could be as easy as including <code class="language-plaintext highlighter-rouge">"modules": ["peril-plugin-spellcheck"]</code>.</p>
+  </li>
+  <li>
+    <p>What <a href="https://github.com/danger/peril/issues/138">scheduled jobs</a> could look like for Peril: We have a bunch of checks I’d like to make on a a regular occasion, and then passing back feedback via slack or making an issue on the repo.</p>
+  </li>
+</ul>
+
+<p>For example if a repo has an owner who isn’t in Artsy anymore, we should highlight that it needs a new owner.</p>
+
+<p>If you’re interested in using Peril in large OSS projects, take a look at how Peril is used in CocoaPods via <a href="https://github.com/CocoaPods/peril-settings">CocoaPods/peril-settings</a>.</p>
+
+<p>If you’re interested in using Peril in your org, run through the <a href="https://github.com/danger/peril/blob/master/docs/setup_for_org.md">Setup for Org</a> guide and help improve it when you inevitably have some weird issues.</p>
+
+
+        </article>
+
+        <article class='post'>
+          <p style="padding-bottom: 0; margin-bottom:0;">
+            <a href="https://www.artsy.net/" style="background-image: none;">
+              <svg viewBox="0 0 510 510" width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+                <path transform="scale(1, -1) translate(0, -480)" d="M0 -32h512v512h-512v-512v0zM464 16h-80v80h-48v-80h-288v416h416v-416v0zM194 384h-40l-74 -186h38l20 52h72l19 -52h39l-74 186v0zM149 282l25 66l24 -66h-49v0z"></path>
+              </svg>
+            </a>
+          <p/>
+        </article>
+
+        <aside class="related-articles"></aside>
+
+      
+
+      </section>
+
+      <footer>
+        <article>
+
+          <section>
+            <h4>Author</h4>
+            <p> <a href="/author/orta">Orta Therox</a></p>
+            <p>Code Janitor at Artsy, thinking about JS tooling.</a></p>
+          </section>
+
+          <section>
+            <h4>Post Meta</h4>
+            <p>Sep 4, 2017</p>
+            <p>Tagged: <a class='category' href='/blog/categories/culture/'>culture</a>, <a class='category' href='/blog/categories/danger/'>danger</a>, <a class='category' href='/blog/categories/javascript/'>javascript</a>, <a class='category' href='/blog/categories/peril/'>peril</a>, <a class='category' href='/blog/categories/typescript/'>typescript</a></p>
+          </section>
+          <br/>
+          <section>
+            <h4>Artsy OSS</h4>
+            <ul>
+              <li><a href='https://www.artsy.net'>Artsy.net</a></li>
+              <li><a href='https://github.com/artsy'>Github</a></li>
+              <li><a href='https://github.com/orgs/artsy/repositories?language=&q=&sort=&type=source'>Open Source</a></li>
+              <li><a href='https://www.artsy.net/jobs'>Careers</a></li>
+            </ul>
+          </section>
+
+          <section>
+            <h4>Blog</h4>
+            <ul>
+              <li><a href='http://artsy.github.io/blog/archives/'>Archives</a></li>
+              <!-- TODO: bring back a different version of site search  -->
+              <!-- <li><a href='http://artsy.github.io/search/'>Search</a></li> -->
+              <li><a href='https://github.com/artsy/artsy.github.io'>Code on GitHub</a></li>
+              <li><a href='https://github.com/artsy/artsy.github.io/edit/source/_posts/2017-09-04-Introducing-Peril.markdown'>Fix typos in this post</a></li>
+            </ul>
+          </section>
+
+        </article>
+
+        <article>
+          <section>
+            <h4>Post Series on the Blog</h4>
+            <ul>
+              
+              <li><a href='/series/react-native-at-artsy/'>React Native at Artsy</a></li>
+              
+              <li><a href='/series/javascriptures/'>JavaScriptures</a></li>
+              
+              <li><a href='/series/stages-of-professional-growth/'>Stages of Professional Growth</a></li>
+              
+              <li><a href='/series/artsy-tech-stack/'>Artsy Tech Stack</a></li>
+              
+              <li><a href='/series/open-source-by-default/'>Open Source by Default</a></li>
+              
+            </ul>
+          </section>
+
+          <section>
+          
+          </section>
+        </article>
+
+      </footer>
+    </div>
+  </div>
+</body>

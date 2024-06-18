@@ -1,0 +1,390 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Ruby Helper to Group Artworks into a Pinterest-style Layout for Email - Blog Engineering</title>
+  <meta name="author" content="">
+
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://webfonts.artsy.net/all-webfonts.css"
+  />
+
+  
+  <meta name="description" content="
+  
+
+    
+
+  
+    
+      
+        
+          
+        
+        
+          Ruby Helper to Group Artworks into a Pinterest-style Layout for Email
+   ...">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:image" content="http://artsy.github.io/images/artsy_oss_image.png" />
+  <meta property="og:image:type" content="image/png" />
+
+  
+  <link rel="canonical" href="https://marinahuber.github.io/blog/2014/03/17/ruby-helper-to-group-artworks-into-a-pinterest-style-layout-for-email/">
+  <link rel="alternate" type="application/rss+xml" title="Artsy Engineering Blog" href="/feed">
+  <link rel="alternate" type="application/atom+xml" title="Podcast Feed" href="/podcast.xml" />
+
+  <link href="/favicon.ico" rel="icon">
+  <link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+  <script src="/javascripts/jquery-1.11.3.min.js"> </script>
+  <script src="/javascripts/gradient-fade.js"></script>
+  <script src="/javascripts/noframework.waypoints.min.js"></script>
+  <script src="/javascripts/sticky.min.js"></script>
+  <script src="/javascripts/custom-element.min.js"></script>
+  <script src="/javascripts/g-emoji-element.js"></script>
+  <script src="/javascripts/related-articles.js"></script>
+
+  
+
+  <link href="/feed.xml" rel="alternate" title="Blog Engineering" type="application/atom+xml">
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-12450662-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+  <div id="logo-container">
+    <a id="lrg-mark" href="https://www.artsy.net/">
+      <svg viewBox="0 0 510 510" width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+        <path transform="scale(1, -1) translate(0, -480)" d="M0 -32h512v512h-512v-512v0zM464 16h-80v80h-48v-80h-288v416h416v-416v0zM194 384h-40l-74 -186h38l20 52h72l19 -52h39l-74 186v0zM149 282l25 66l24 -66h-49v0z"/>
+      </svg>
+    </a>
+  </div>
+  <header id="banner"><div id="header">
+  <div class="header-navigation">
+    <ul>
+      <li><a href="https://developers.artsy.net/">API</a></li>
+      <li><a href="https://www.artsy.net/jobs">Careers</a></li>
+      <li><a href="http://twitter.com/artsyopensource">@artsyopensource</a></li>
+      <li><a href="http://www.artsy.net/">Artsy.net</a></li>
+    </ul>
+    <span class="header-section-title">
+      
+        <a href="/open-source">Open Source</a>
+      
+    </span>
+  </div>
+
+  <div class="header-sticky-container">
+    <div class="header-logo">
+      <h2><a href="https://marinahuber.github.io">Artsy</a></h2>
+    </div>
+    <div class="header-search">
+      
+        <h2><a href="/">Engineering Blog</a></h2>
+      
+    </div>
+  </div>
+</div>
+</header>
+  <div class="header-hamburger">
+    <button class="cmn-toggle-switch cmn-toggle-switch__htx">
+      <span>toggle menu</span>
+    </button>
+  </div>
+  <div id="main">
+    <div id="content">
+
+      <div>
+  <article class="hentry" role="article">
+
+    <div class="article-container-single ">
+
+  
+    <div class="meta-container">
+      <header>
+        
+          <a href="">
+        
+        
+          <h2 class="entry-title">Ruby Helper to Group Artworks into a Pinterest-style Layout for Email</h2>
+        
+        <time datetime="2014-03-17">Mar 17, 2014</time>
+          <p class="meta-author">
+
+
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="/author/matt">Matt Zikherman<a/></span>
+      
+      <p class="fn">
+        <a href="https://twitter.com/mzikherman">@mzikherman</a>
+      </p>
+      
+
+    </div>
+  
+
+</p>
+          </a>
+      </header>
+    </div>
+  
+
+  <div class="content-container">
+    
+      <div class="entry-content"><p><img src="/images/2014-03-17-ruby-helper-to-group-artworks-into-a-pinterest-style-layout-for-email/two-column-layout.png" alt="Example of two column layout" /></p>
+
+<p>Something we’d like to do is email our users some suggested artworks as part of their personalized emails. The layout of those suggestions should look something like our newly re-designed <a href="https://artsy.net/browse/artworks?price_range=-1%3A1000000000000">Browse</a> page, with a ‘salon’ style layout. Here’s some simple Ruby code that can group artworks into columns for you, that can then be directly rendered in an email (via <a href="http://haml.info/">Haml</a>, <a href="http://mustache.github.io/">Mustache</a>, <a href="http://jade-lang.com/">Jade</a>, or your templating language of choice.)</p>
+
+<!-- more -->
+
+<h2 id="the-code">The code</h2>
+
+<p>First let’s look at the code, and then I’ll describe it:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">ArtworkColumns</span>
+  <span class="c1"># Return an array of artworks grouped together in sub arrays by being added to the shortest 'column'</span>
+  <span class="c1"># based on a fixed width and aspect ratios.</span>
+  <span class="c1">#</span>
+  <span class="c1"># @param {Array} artworks The array of artworks to group into columns</span>
+  <span class="c1"># @param {Number} num_columns The number of columns to group them into</span>
+  <span class="c1"># @param {Number} width The width the images will be displayed at</span>
+  <span class="c1">#</span>
+  <span class="c1"># @return {Array} An array of artworks grouped into sub arrays by being added to the shortest one.</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">artwork_columns</span><span class="p">(</span><span class="n">artworks</span><span class="p">,</span> <span class="n">num_columns</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+    <span class="n">artwork_cols</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Initialize columns</span>
+    <span class="n">num_columns</span><span class="p">.</span><span class="nf">times</span> <span class="k">do</span>
+      <span class="n">artwork_cols</span> <span class="o">&lt;&lt;</span> <span class="p">[]</span>
+    <span class="k">end</span>
+
+    <span class="n">artworks</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">artwork</span><span class="o">|</span>
+      <span class="n">add_to_shortest_column!</span><span class="p">(</span><span class="n">artwork_cols</span><span class="p">,</span> <span class="n">artwork</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="n">artwork_cols</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+
+  <span class="c1"># Adds artwork to shortest column</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">add_to_shortest_column!</span><span class="p">(</span><span class="n">artwork_cols</span><span class="p">,</span> <span class="n">artwork</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+    <span class="n">min_height</span> <span class="o">=</span> <span class="n">column_height</span><span class="p">(</span><span class="n">artwork_cols</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">width</span><span class="p">)</span>
+    <span class="n">min_column_idx</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">artwork_cols</span><span class="p">.</span><span class="nf">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">column</span><span class="p">,</span> <span class="n">idx</span><span class="o">|</span>
+      <span class="n">height</span> <span class="o">=</span> <span class="n">column_height</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">height</span> <span class="o">&lt;</span> <span class="n">min_height</span>
+        <span class="n">min_height</span> <span class="o">=</span> <span class="n">height</span>
+        <span class="n">min_column_idx</span> <span class="o">=</span> <span class="n">idx</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="n">artwork_cols</span><span class="p">[</span><span class="n">min_column_idx</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">artwork</span>
+  <span class="k">end</span>
+
+  <span class="c1"># Calculate sum of heights of artworks in column</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">column_height</span><span class="p">(</span><span class="n">artwork_col</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">artwork_col</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">artwork</span><span class="o">|</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">aspect_ratio</span> <span class="o">=</span> <span class="n">artwork</span><span class="p">.</span><span class="nf">default_image</span><span class="p">.</span><span class="nf">aspect_ratio</span><span class="p">)</span>
+        <span class="n">height</span> <span class="o">+=</span> <span class="p">(</span><span class="n">width</span> <span class="o">/</span> <span class="n">aspect_ratio</span><span class="p">).</span><span class="nf">floor</span>
+      <span class="k">else</span>
+        <span class="n">height</span> <span class="o">+=</span> <span class="n">width</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="n">height</span>
+  <span class="k">end</span>
+</code></pre></div></div>
+
+<p>The algorithm is quite simple (original JS idea and implementation courtesy of Artsy’s <a href="https://github.com/gib">Gib</a>). The inputs are fairly obvious, an array of artworks to be grouped, the number of columns to group them into, and the width of each column.</p>
+
+<p>We then simply iterate over all our artworks, and add them to whichever column is shortest. This way we end up with several columns that are for the most part equally sized in height, and as they all have different aspect ratios, when they are rendered in a table, you wind up with a nice looking ‘dynamic’ layout. The height of each column is calculated as the sum of the heights of the artworks in each column. The heights are derived from the inputted widths and aspect ratios of the images.</p>
+
+<p>Here’s how you might iterate over the returned column groupings and render a layout similar to the above:</p>
+
+<div class="language-haml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">-</span> <span class="n">artwork_suggestions</span><span class="p">.</span><span class="nf">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">artwork_arr</span><span class="p">,</span> <span class="n">idx</span><span class="o">|</span>
+  <span class="nt">%td</span><span class="p">{</span> <span class="ss">id: </span><span class="s1">'artwork-column'</span><span class="p">,</span> <span class="ss">style: </span><span class="s2">"width: 290px;padding-top:20px;text-align:left;"</span> <span class="p">}</span>
+    <span class="p">-</span> <span class="n">artwork_array</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">artwork</span><span class="o">|</span>
+      <span class="nt">%a</span><span class="p">{</span> <span class="ss">href: </span><span class="s2">"#{canonical_url}/artwork/#{artwork.slug}?#{@utm_params}"</span> <span class="p">}</span><span class="nt">&lt;</span>
+        <span class="nt">%img</span><span class="p">{</span> <span class="ss">id: </span><span class="s1">'artwork'</span><span class="p">,</span> <span class="ss">src: </span><span class="s2">"#{artwork.default_image.image_url(:large)}"</span><span class="p">,</span> <span class="ss">style: </span><span class="s2">"width: 290px;"</span> <span class="p">}</span>
+      <span class="nt">%br</span>
+      <span class="err">&lt;!</span><span class="na">--</span> <span class="na">additional</span> <span class="na">artwork</span> <span class="na">details</span><span class="err">,</span> <span class="na">title</span><span class="err">,</span> <span class="na">artist</span><span class="err">,</span> <span class="na">etc.</span> <span class="na">--</span><span class="nt">&gt;</span>
+</code></pre></div></div>
+
+<p>These few lines of Ruby code have allowed us to move logic out of Haml (yuck!) and into Ruby (yay!) and allow <a href="http://haml.info/">Haml</a> to just focus on rendering the objects passed in (certainly via loops and conditionals, etc.)</p>
+
+<p>That’s all for now! In my next post I’ll talk about how I use the Presenter pattern and memoization to move even more logic out of templates (and save some database calls while we’re at it!)</p>
+
+<p>Thanks again! Post any comments or tips of your own here, and <a href="https://github.com/artsy">follow us on Github</a>!</p>
+</div>
+    
+
+    <p class="meta-author">
+      
+
+
+
+
+<div class="meta">
+  Posted by
+
+
+  
+
+  
+    <span class="byline author vcard">
+
+      <div class="meta"><span class="fn"><a href="/author/matt">
+        Matt Zikherman
+      </a></span></div>
+
+      
+      
+      <span class="fn">
+        <a href="https://github.com/mzikherman">GitHub</a>
+      </span>
+      
+      
+      <span class="fn">
+        <a href="https://twitter.com/mzikherman">@mzikherman</a>
+      </span>
+      
+    </span>
+
+  
+</div>
+
+
+
+
+    </p>
+    <p class="meta-categories">
+      Categories: 
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/css/'>CSS</a>, <a class='category' href='/blog/categories/email/'>Email</a>, <a class='category' href='/blog/categories/ruby/'>Ruby</a>
+  
+</span>
+
+
+    </p>
+    
+
+    
+      <hr/>
+      <section class="comments">
+        <h1>Comments</h1>
+        <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+      </section>
+      <hr/>
+    
+
+    <p class="meta-paginate">
+      
+        <a class="previous" href="/blog/2014/03/17/some-tips-for-email-layout-and-responsiveness/" title="Previous Post: Some Tips for Email Layout and Responsiveness">&laquo; Some Tips for Email Layout and Responsiveness</a>
+      
+      
+        <a class="next" href="/blog/2014/03/18/presenters-and-memoization-moving-logic-out-of-templates/" title="next Post: Presenters and Memoization: Moving Logic out of Templates">Presenters and Memoization: Moving Logic out of Templates &raquo;</a>
+      
+    </p>
+  </div>
+
+
+  <footer>
+  </footer>
+
+</div>
+
+
+  </article>
+</div>
+
+
+    </div>
+
+    <aside class="related-articles"></aside>
+
+  </div>
+  <footer id="main_footer"> <div class="footer-navigation">
+  <ul>
+    <li><a href="https://developers.artsy.net/">API</a></li>
+    <li><a href="https://www.artsy.net/jobs">Careers</a></li>
+    <li><a href="http://twitter.com/artsyopensource">@artsyopensource</a></li>
+    <li><a href="http://www.artsy.net/">Artsy.net</a></li>
+  </ul>
+</div>
+
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'blog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'https://marinahuber.github.io/blog/2014/03/17/ruby-helper-to-group-artworks-into-a-pinterest-style-layout-for-email/';
+        var disqus_url = 'https://marinahuber.github.io/blog/2014/03/17/ruby-helper-to-group-artworks-into-a-pinterest-style-layout-for-email/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+</footer>
+  <script type="text/javascript">
+  $(function() {
+    // TODO: Move this whole file to a javascript file that is included in the footer
+
+    // Main sticky header
+    if ($(window).width() >= 700) {
+      var sticky = new Waypoint.Sticky({
+        element: $("#banner"),
+        offset: -100
+      });
+    }
+
+    // Toggle hamburger menu
+    $('.header-hamburger').click(function() {
+      $('#banner, .cmn-toggle-switch').toggleClass('active');
+      if (location.pathname == '/open-source') {
+        $('#page-sidebar').toggle();
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

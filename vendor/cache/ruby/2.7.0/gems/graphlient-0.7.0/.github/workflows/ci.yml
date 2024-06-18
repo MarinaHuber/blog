@@ -1,0 +1,29 @@
+name: CI
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        entry:
+          - { ruby: 2.7.2 }
+          - { ruby: 3.0.0 }
+          - { ruby: 3.1.2 }
+          - { ruby: "ruby-head", ignore: true }
+          - { ruby: "jruby-9.1.17", ignore: true }
+          - { ruby: "jruby-head", ignore: true }
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.entry.ruby }}
+        bundler-cache: true
+    - name: Run tests
+      continue-on-error: ${{ matrix.entry.ignore || false }}
+      run: bundle exec rspec spec/

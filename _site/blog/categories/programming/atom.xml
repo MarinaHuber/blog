@@ -1,0 +1,1824 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: programming | Blog Engineering]]></title>
+  <link href="https://marinahuber.github.io/blog/categories/programming/atom.xml" rel="self"/>
+  <link href="https://marinahuber.github.io/"/>
+  <updated>2024-06-18T15:01:35+02:00</updated>
+  <id>https://marinahuber.github.io/</id>
+  <author>
+    <name><![CDATA[]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Conditional types in TypeScript]]></title>
+    <link href="https://marinahuber.github.io/blog/2018/11/21/conditional-types-in-typescript/"/>
+    <updated>2018-11-21T00:00:00+01:00</updated>
+    <id>https://marinahuber.github.io/blog/2018/11/21/conditional-types-in-typescript</id>
+    <content type="html"><![CDATA[<p>This year TypeScript gained a new feature that punches far above its weight.</p>
+
+<blockquote>
+  <p>Working through our (enormous) backlog of unsorted TypeScript “Suggestions” and it’s remarkable how many of them
+are solved by conditional types.</p>
+</blockquote>
+
+<p>– <a href="https://twitter.com/SeaRyanC/status/1029846761718702081">Ryan Cavanaugh</a>, TypeScript maintainer</p>
+
+<p>Conditional types probably aren’t something you’ll write every day, but you might end up using them indirectly all
+the time. That’s because they’re great for ‘plumbing’ or ‘framework’ code, for dealing with API boundaries and
+other behind-the-scenes kinda stuff. So, dear reader, read on! It’s always good to learn how the sausage is made.
+Then you can make sausage of your own.</p>
+
+<p>Typewurst! 🌭</p>
+
+<!-- more -->
+
+<p><em>Note: This is a straightforward adaptation of a 35-minute presentation given at
+<a href="https://www.meetup.com/Futurice-London-Beer-Tech/events/255295412/">Futurice London’s TypeScript Night meetup</a>,
+and therefore provides more context than an ordinary blog post might. I hope a lot of that context is interesting
+and useful even for seasoned TypeScript developers. If you’d prefer a no-frills experience, check out the
+<a href="https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-8.html">TypeScript 2.8 Release notes</a> .</em></p>
+
+<h2 id="your-first-conditional-type">Your first conditional type</h2>
+
+<p>Here’s some plain JavaScript</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">process</span><span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">text</span> <span class="o">&amp;&amp;</span> <span class="nx">text</span><span class="p">.</span><span class="nf">replace</span><span class="p">(</span><span class="sr">/f/g</span><span class="p">,</span> <span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nf">process</span><span class="p">(</span><span class="dl">"</span><span class="s2">foo</span><span class="dl">"</span><span class="p">).</span><span class="nf">toUpperCase</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Reading the code, it’s clear to a human that the <code class="language-plaintext highlighter-rouge">.toUpperCase()</code> method call is safe. We can tell that whenever a
+string is passed in to <code class="language-plaintext highlighter-rouge">process</code>, a string will be returned.</p>
+
+<p>But notice that we could also pass something like <code class="language-plaintext highlighter-rouge">null</code> into the function, in which case <code class="language-plaintext highlighter-rouge">null</code> would be returned.
+Then calling <code class="language-plaintext highlighter-rouge">.toUpperCase()</code> on the result would be an error.</p>
+
+<p>Let’s add basic types to this function so we can let TypeScript worry about whether we are using it safely or not.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">process</span><span class="p">(</span><span class="nx">text</span><span class="p">:</span> <span class="kr">string</span> <span class="o">|</span> <span class="kc">null</span><span class="p">):</span> <span class="kr">string</span> <span class="o">|</span> <span class="kc">null</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">text</span> <span class="o">&amp;&amp;</span> <span class="nx">text</span><span class="p">.</span><span class="nf">replace</span><span class="p">(</span><span class="sr">/f/g</span><span class="p">,</span> <span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Seems sensible. What happens if we try to use it like before?</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//            ⌄ Type Error! :(</span>
+<span class="nf">process</span><span class="p">(</span><span class="dl">"</span><span class="s2">foo</span><span class="dl">"</span><span class="p">).</span><span class="nf">toUpperCase</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>TypeScript complains because it thinks that the result of <code class="language-plaintext highlighter-rouge">process("foo")</code> might be <code class="language-plaintext highlighter-rouge">null</code>, even though we clever
+humans know that it won’t be. It can’t figure out the runtime semantics of the function on its own.</p>
+
+<p>One way of helping TS understand the function better is to use ‘overloading’. Overloading involves providing
+multiple type signatures for a single function, and letting TypeScript figure out which one to use in any given
+context.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">process</span><span class="p">(</span><span class="nx">text</span><span class="p">:</span> <span class="kc">null</span><span class="p">):</span> <span class="kc">null</span><span class="p">;</span>
+<span class="kd">function</span> <span class="nf">process</span><span class="p">(</span><span class="nx">text</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="kr">string</span><span class="p">;</span>
+<span class="kd">function</span> <span class="nf">process</span><span class="p">(</span><span class="nx">text</span><span class="p">:</span> <span class="kr">any</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Here we’ve said that if we pass a <code class="language-plaintext highlighter-rouge">string</code>, it returns a <code class="language-plaintext highlighter-rouge">string</code>, and if we pass <code class="language-plaintext highlighter-rouge">null</code>, it returns <code class="language-plaintext highlighter-rouge">null</code>. <em>(The
+<code class="language-plaintext highlighter-rouge">any</code> type is ignored but still needs to be there for some reason</em> 🤷‍️<em>)</em></p>
+
+<p>That works nicely:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// All clear!</span>
+<span class="nf">process</span><span class="p">(</span><span class="dl">"</span><span class="s2">foo</span><span class="dl">"</span><span class="p">).</span><span class="nf">toUpperCase</span><span class="p">()</span>
+<span class="c1">//           ⌄ Type Error! :)</span>
+<span class="nf">process</span><span class="p">(</span><span class="kc">null</span><span class="p">).</span><span class="nf">toUpperCase</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>But there’s another use case that doesn’t work:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">declare</span> <span class="kd">const</span> <span class="nx">maybeFoo</span><span class="p">:</span> <span class="kr">string</span> <span class="o">|</span> <span class="kc">null</span>
+
+<span class="c1">//      ⌄ Type Error! :(</span>
+<span class="nf">process</span><span class="p">(</span><span class="nx">maybeFoo</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>TypeScript won’t let us pass something that is of type <code class="language-plaintext highlighter-rouge">string | null</code> because it’s not smart enough to collapse
+the overloaded signatures when that’s possible. So we can either add yet another overload signature for the
+<code class="language-plaintext highlighter-rouge">string | null</code> case, or we can be like <span style="white-space: nowrap; font-family: sans-serif;">(╯°□°)╯︵
+┻━┻</span> and switch to using <strong>conditional types</strong>.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">process</span><span class="o">&lt;</span><span class="nx">T</span> <span class="kd">extends</span> <span class="kr">string</span> <span class="o">|</span> <span class="kc">null</span><span class="o">&gt;</span><span class="p">(</span>
+  <span class="nx">text</span><span class="p">:</span> <span class="nx">T</span>
+<span class="p">):</span> <span class="nx">T</span> <span class="kd">extends</span> <span class="kr">string</span> <span class="p">?</span> <span class="kr">string</span> <span class="p">:</span> <span class="kc">null</span> <span class="p">{</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Here we’ve introduced a type variable <code class="language-plaintext highlighter-rouge">T</code> for the <code class="language-plaintext highlighter-rouge">text</code> parameter. We can then use <code class="language-plaintext highlighter-rouge">T</code> as part of a conditional
+return type: <code class="language-plaintext highlighter-rouge">T extends string ? string : null</code>. You probably noticed that this looks just like a ternary
+expression! Indeed, it’s doing the same kind of thing, but within the type system at compile time.</p>
+
+<p>And that takes care of all our use cases:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typeof</span> <span class="nf">process</span><span class="p">(</span><span class="dl">"</span><span class="s2">foo</span><span class="dl">"</span><span class="p">)</span> <span class="c1">// =&gt; string</span>
+<span class="k">typeof</span> <span class="nf">process</span><span class="p">(</span><span class="kc">null</span><span class="p">)</span> <span class="c1">// =&gt; null</span>
+<span class="k">typeof</span> <span class="nf">process</span><span class="p">(</span><span class="nx">maybeFoo</span><span class="p">)</span> <span class="c1">// =&gt; string | null</span>
+</code></pre></div></div>
+
+<p>So that’s what a conditional type is! A kind of ternary type expression. It always has this form:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>A extends B ? C : D
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">A</code>, <code class="language-plaintext highlighter-rouge">B</code>, <code class="language-plaintext highlighter-rouge">C</code>, and <code class="language-plaintext highlighter-rouge">D</code> can be any old type expressions, but all the important stuff is happening on the left there.
+In the <code class="language-plaintext highlighter-rouge">A extends B</code> condition.</p>
+
+<h2 id="assignability">Assignability</h2>
+
+<p>This <code class="language-plaintext highlighter-rouge">extends</code> keyword is the heart of a conditional type. <code class="language-plaintext highlighter-rouge">A extends B</code> means precisely that any value of type <code class="language-plaintext highlighter-rouge">A</code>
+can safely be assigned to a variable of type <code class="language-plaintext highlighter-rouge">B</code>. In type system jargon we can say that “A is <em>assignable</em> to B”.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">declare</span> <span class="kd">const</span> <span class="nx">a</span><span class="p">:</span> <span class="nx">A</span>
+<span class="kd">const</span> <span class="nx">b</span><span class="p">:</span> <span class="nx">B</span> <span class="o">=</span> <span class="nx">a</span>
+<span class="c1">// type check succeeds only if A is assignable to B</span>
+</code></pre></div></div>
+
+<p>TypeScript decides which types are assignable to each other using an approach called ‘structural typing’. This kind
+of type system started appearing in mainstream languages relatively recently (in the last 10 years or so), and
+might be a little counterintuitive if you come from a Java or C# background.</p>
+
+<p>You may have heard of ‘duck typing’ in relation to dynamically-typed languages. The phrase ‘duck typing’ comes from
+the proverb</p>
+
+<blockquote>
+  <p>If it looks like a duck, swims like a duck, and quacks like a duck, then it probably is a duck.</p>
+</blockquote>
+
+<p>In duck typing, you judge a thing by how it behaves, rather than what it is called or who its parents are. It’s a
+kind of meritocracy. Structural typing is a way of applying that same idea to a static compile-time type system.</p>
+
+<p>So TypeScript only cares about what types can do, not what they are called or where they exist in a type hierarchy.</p>
+
+<p>Take this simple example:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">A</span> <span class="p">{}</span>
+<span class="kd">class</span> <span class="nc">B</span> <span class="p">{}</span>
+
+<span class="kd">const</span> <span class="nx">b</span><span class="p">:</span> <span class="nx">B</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">A</span><span class="p">()</span> <span class="c1">// ✔ all good</span>
+<span class="kd">const</span> <span class="nx">a</span><span class="p">:</span> <span class="nx">A</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">B</span><span class="p">()</span> <span class="c1">// ✔ all good</span>
+
+<span class="k">new</span> <span class="nc">A</span><span class="p">()</span> <span class="k">instanceof</span> <span class="nx">B</span> <span class="c1">// =&gt; false</span>
+</code></pre></div></div>
+
+<p>TypeScript is happy treating two completely unrelated classes as equivalent because they have the same <em>structure</em>
+and the same <em>capabilities</em>. Meanwhile, when checking the types at runtime, we discover that they are actually not
+equivalent.</p>
+
+<p>This is a notable example of where the semantics of TypeScript are at odds with JavaScript. It might seem like a
+problem, but in practice structural typing is a lot more flexible than Java-esque ‘nominal’ typing, where names and
+hierarchy matter. The two aren’t mutually exclusive, however. Some languages, like Scala and Flow, allow you to mix
+and match to suit particular problems.</p>
+
+<p>Aside from that, the way that assignability works with structural typing is very intuitive.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">interface</span> <span class="nx">Shape</span> <span class="p">{</span>
+  <span class="nl">color</span><span class="p">:</span> <span class="kr">string</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">Circle</span> <span class="p">{</span>
+  <span class="nl">color</span><span class="p">:</span> <span class="kr">string</span>
+  <span class="nx">radius</span><span class="p">:</span> <span class="kr">number</span>
+<span class="p">}</span>
+
+<span class="c1">// ✔ All good! Circles have a color</span>
+<span class="kd">const</span> <span class="nx">shape</span><span class="p">:</span> <span class="nx">Shape</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Circle</span><span class="p">()</span>
+<span class="c1">// ✘ Type error! Not all shapes have a radius!</span>
+<span class="kd">const</span> <span class="nx">circle</span><span class="p">:</span> <span class="nx">Circle</span> <span class="o">=</span> <span class="nx">shape</span>
+</code></pre></div></div>
+
+<p>Speaking structurally we can say that <code class="language-plaintext highlighter-rouge">A extends B</code> is a lot like ‘<code class="language-plaintext highlighter-rouge">A</code> is a superset of <code class="language-plaintext highlighter-rouge">B</code>’, or, to be more
+verbose, ‘<code class="language-plaintext highlighter-rouge">A</code> has all of <code class="language-plaintext highlighter-rouge">B</code>’s properties, <em>and maybe some more</em>’.</p>
+
+<p>There’s one minor caveat though, and that’s with ‘literal’ types. In TypeScript you can use literal values of
+primitive types as types themselves.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="nx">fruit</span><span class="p">:</span> <span class="dl">"</span><span class="s2">banana</span><span class="dl">"</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">banana</span><span class="dl">"</span>
+
+<span class="c1">// Type Error! "apple" is not assignable to "banana"</span>
+<span class="nx">fruit</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">apple</span><span class="dl">"</span>
+</code></pre></div></div>
+
+<p>The string <code class="language-plaintext highlighter-rouge">"banana"</code> doesn’t have more properties than any other <code class="language-plaintext highlighter-rouge">string</code>. But the type <code class="language-plaintext highlighter-rouge">"banana"</code> is still more
+<em>specific</em> than the type <code class="language-plaintext highlighter-rouge">string</code>.</p>
+
+<p>So another way to think of <code class="language-plaintext highlighter-rouge">A extends B</code> is like ‘<code class="language-plaintext highlighter-rouge">A</code> is a possibly-more-specific version of <code class="language-plaintext highlighter-rouge">B</code>’.</p>
+
+<p>Which brings us to ‘top’ and ‘bottom’ types: the <em>least</em> and <em>most</em> specific types, respectively.</p>
+
+<p>In type theory a ‘top’ type is one which all other types are assignable to. It is the type you use to say “I have
+absolutely no information about what this value is”. Think of it as the union of all possible types:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Top</span> <span class="o">=</span> <span class="kr">string</span> <span class="o">|</span> <span class="kr">number</span> <span class="o">|</span> <span class="p">{</span><span class="na">foo</span><span class="p">:</span> <span class="nx">Bar</span><span class="p">}</span> <span class="o">|</span> <span class="nx">Baz</span><span class="p">[]</span> <span class="o">|</span> <span class="p">...</span> <span class="o">|</span> <span class="err">∞</span>
+</code></pre></div></div>
+
+<p>TypeScript has two top types: <code class="language-plaintext highlighter-rouge">any</code> and <code class="language-plaintext highlighter-rouge">unknown</code>.</p>
+
+<ul>
+  <li>Using <code class="language-plaintext highlighter-rouge">any</code> is like saying “I have no idea what this value looks like. So, TypeScript, please assume I’m using it
+correctly, and don’t complain if anything I do seems dangerous”.</li>
+  <li>Using <code class="language-plaintext highlighter-rouge">unknown</code> is like saying “I have no idea what this value looks like. So, TypeScript, please make sure I
+check what it is capable of at run time.”</li>
+</ul>
+
+<p>A ‘bottom’ type is one which no other types are assignable to, and that no values can be an instance of. Think of
+it as the empty union type:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Bottom</span> <span class="o">=</span> <span class="err">∅</span>
+</code></pre></div></div>
+
+<p>TypeScript has one bottom type: <code class="language-plaintext highlighter-rouge">never</code>. That’s a nice descriptive name because it literally means <em>this can never
+happen</em>.</p>
+
+<p>Top and bottom types are useful to know about when working with conditional types. <code class="language-plaintext highlighter-rouge">never</code> is especially useful
+when using conditional types to refine unions…</p>
+
+<h2 id="refining-unions-with-distributive-conditional-types">Refining unions with distributive conditional types</h2>
+
+<p>Conditional types let you filter out particular members of a union type. To illustrate, let’s say we have a union
+type called <code class="language-plaintext highlighter-rouge">Animal</code>:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Animal</span> <span class="o">=</span> <span class="nx">Lion</span> <span class="o">|</span> <span class="nx">Zebra</span> <span class="o">|</span> <span class="nx">Tiger</span> <span class="o">|</span> <span class="nx">Shark</span>
+</code></pre></div></div>
+
+<p>And imagine that we needed to write a function that used only those animals which are also cats. We might write
+some helper type called <code class="language-plaintext highlighter-rouge">ExtractCat</code> to do that:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">ExtractCat</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">A</span> <span class="kd">extends</span> <span class="p">{</span> <span class="nf">meow</span><span class="p">():</span> <span class="k">void</span> <span class="p">}</span> <span class="p">?</span> <span class="nx">A</span> <span class="p">:</span> <span class="nx">never</span>
+
+<span class="kd">type</span> <span class="nx">Cat</span> <span class="o">=</span> <span class="nx">ExtractCat</span><span class="o">&lt;</span><span class="nx">Animal</span><span class="o">&gt;</span>
+<span class="c1">// =&gt; Lion | Tiger</span>
+</code></pre></div></div>
+
+<p><em>I know lions and tigers don’t meow, but how cute would it be if they did</em> ^_^</p>
+
+<p>This seemed vague and magical to me at first. Let’s see what TypeScript is doing under the hood when it evaluates
+<code class="language-plaintext highlighter-rouge">ExtractCat&lt;Animal&gt;</code>.</p>
+
+<p>First, it applies <code class="language-plaintext highlighter-rouge">ExtractCat</code> recursively to all the members of <code class="language-plaintext highlighter-rouge">Animal</code>:</p>
+
+<!-- prettier-ignore -->
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Cat</span> <span class="o">=</span>
+  <span class="o">|</span> <span class="nx">ExtractCat</span><span class="o">&lt;</span><span class="nx">Lion</span><span class="o">&gt;</span>
+  <span class="o">|</span> <span class="nx">ExtractCat</span><span class="o">&lt;</span><span class="nx">Zebra</span><span class="o">&gt;</span>
+  <span class="o">|</span> <span class="nx">ExtractCat</span><span class="o">&lt;</span><span class="nx">Tiger</span><span class="o">&gt;</span>
+  <span class="o">|</span> <span class="nx">ExtractCat</span><span class="o">&lt;</span><span class="nx">Shark</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<p>Then it evaluates the conditional types:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Cat</span> <span class="o">=</span> <span class="nx">Lion</span> <span class="o">|</span> <span class="nx">never</span> <span class="o">|</span> <span class="nx">Tiger</span> <span class="o">|</span> <span class="nx">never</span>
+</code></pre></div></div>
+
+<p>And then something fun happens… Remember that no values can ever be of type <code class="language-plaintext highlighter-rouge">never</code>? That makes it totally
+meaningless to include <code class="language-plaintext highlighter-rouge">never</code> in a union type, so TypeScript just gets rid of it.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Cat</span> <span class="o">=</span> <span class="nx">Lion</span> <span class="o">|</span> <span class="nx">Tiger</span>
+</code></pre></div></div>
+
+<p>The TypeScript jargon for this kind of conditional type is <strong>distributive conditional type</strong>.</p>
+
+<p>That ‘distribution’, where the union is unrolled recursively, only happens when the thing on the left of the
+<code class="language-plaintext highlighter-rouge">extends</code> keyword is a plain type variable. We’ll see what that means and how to work around it in the next
+section.</p>
+
+<h2 id="a-real-use-case-for-distributive-conditional-types">A real use-case for distributive conditional types.</h2>
+
+<p>A while ago I was building a Chrome extension. It had a ‘background’ script and a ‘view’ script that ran in
+different execution contexts. They needed to communicate and share state, and the only way to do that is via
+serializable message passing. I took inspiration from Redux and defined a global union of interfaces called
+<code class="language-plaintext highlighter-rouge">Action</code> to model the messages that I wanted to be able to pass between the contexts.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Action</span> <span class="o">=</span>
+  <span class="o">|</span> <span class="p">{</span>
+      <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">INIT</span><span class="dl">"</span>
+    <span class="p">}</span>
+  <span class="o">|</span> <span class="p">{</span>
+      <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">SYNC</span><span class="dl">"</span>
+    <span class="p">}</span>
+  <span class="o">|</span> <span class="p">{</span>
+      <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">LOG_IN</span><span class="dl">"</span>
+      <span class="na">emailAddress</span><span class="p">:</span> <span class="kr">string</span>
+    <span class="p">}</span>
+  <span class="o">|</span> <span class="p">{</span>
+      <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">LOG_IN_SUCCESS</span><span class="dl">"</span>
+      <span class="na">accessToken</span><span class="p">:</span> <span class="kr">string</span>
+    <span class="p">}</span>
+<span class="c1">// ...</span>
+</code></pre></div></div>
+
+<p>And then there was a global <code class="language-plaintext highlighter-rouge">dispatch</code> function that I could use directly to broadcast messages across contexts</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">declare</span> <span class="kd">function</span> <span class="nf">dispatch</span><span class="p">(</span><span class="nx">action</span><span class="p">:</span> <span class="nx">Action</span><span class="p">):</span> <span class="k">void</span>
+
+<span class="c1">// ...</span>
+
+<span class="nf">dispatch</span><span class="p">({</span>
+  <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">INIT</span><span class="dl">"</span>
+<span class="p">})</span>
+
+<span class="c1">// ...</span>
+
+<span class="nf">dispatch</span><span class="p">({</span>
+  <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">LOG_IN</span><span class="dl">"</span><span class="p">,</span>
+  <span class="na">emailAddress</span><span class="p">:</span> <span class="dl">"</span><span class="s2">david.sheldrick@artsy.net</span><span class="dl">"</span>
+<span class="p">})</span>
+
+<span class="c1">// ...</span>
+
+<span class="nf">dispatch</span><span class="p">({</span>
+  <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">LOG_IN_SUCCESS</span><span class="dl">"</span><span class="p">,</span>
+  <span class="na">accessToken</span><span class="p">:</span> <span class="dl">"</span><span class="s2">038fh239h923908h</span><span class="dl">"</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p><a target="_blank" style="font-size: 0.8em" href="https://www.typescriptlang.org/play/#src=type%20Action%20%3D%0D%0A%20%20%7C%20%7B%0D%0A%20%20%20%20%20%20type%3A%20%22INIT%22%0D%0A%20%20%20%20%7D%0D%0A%20%20%7C%20%7B%0D%0A%20%20%20%20%20%20type%3A%20%22SYNC%22%0D%0A%20%20%20%20%7D%0D%0A%20%20%7C%20%7B%0D%0A%20%20%20%20%20%20type%3A%20%22LOG_IN%22%0D%0A%20%20%20%20%20%20emailAddress%3A%20string%0D%0A%20%20%20%20%7D%0D%0A%20%20%7C%20%7B%0D%0A%20%20%20%20%20%20type%3A%20%22LOG_IN_SUCCESS%22%0D%0A%20%20%20%20%20%20accessToken%3A%20string%0D%0A%20%20%20%20%7D%0D%0A%0D%0Adeclare%20function%20dispatch(action%3A%20Action)%3A%20void%0D%0A%0D%0Adispatch(%7B%0D%0A%20%20type%3A%20%22INIT%22%0D%0A%7D)%0D%0A%0D%0Adispatch(%7B%0D%0A%20%20type%3A%20%22LOG_IN%22%2C%0D%0A%20%20emailAddress%3A%20%22david.sheldrick%40artsy.net%22%0D%0A%7D)%0D%0A%0D%0Adispatch(%7B%0D%0A%20%20type%3A%20%22LOG_IN_SUCCESS%22%2C%0D%0A%20%20accessToken%3A%20%22038fh239h923908h%22%0D%0A%7D)">
+<em>Try it in the TypeScript playground</em> </a></p>
+
+<p>This API is typesafe and it plays well with my IDE’s autocomplete and I could have left it there. I could have
+moved on to other things.</p>
+
+<p>But there’s this little voice inside my head. I think most developers have this voice.</p>
+
+<pre style="background: transparent; color: #333; border: 0; box-shadow: none; padding: 0;">
+INT. HIPSTER CO-WORKING SPACE - DAY
+
+DAVID sits on an oddly-shaped orange chair.
+His MacBook rests askew on a lumpy reclaimed
+wood desk. He stares at colorful text on a
+dark screen.
+
+A tiny whisper.
+
+              VOICE (V.O.)
+    Psst!
+
+David looks around for a moment and then
+stares back at the laptop.
+
+              VOICE (V.O.)
+    Psst! Hey!
+
+Startled this time, David looks around
+again. He speaks to nobody in particular.
+
+              DAVID
+    Is someone there?
+
+              VOICE (V.O.)
+    It's me, the DRY devil.
+
+David heaves a painful sigh of recognition.
+
+              DAVID
+    Not you again! Leave me alone!
+
+              DRY DEVIL (V.O.)
+    DRY stands for "Don't Repeat Yourself"
+
+              DAVID
+    I know, you say that every time! Now
+    get lost!
+
+              DRY DEVIL (V.O.)
+    I've noticed an issue with your code.
+
+              DAVID
+    Seriously, go away! I'm busy solving
+    user problems to create business value.
+
+              DRY DEVIL (V.O.)
+    Every time you call `dispatch` you
+    are typing 6 redundant characters.
+
+              DAVID
+    Oh snap! You're right! I must fix this.
+
+MONTAGE
+
+David spends the next 2 hours wrestling
+with TypeScript, accumulating a pile of
+empty coffee cups and protein ball wrappers.
+</pre>
+
+<p>We’ve all been there.</p>
+
+<p>I wanted the dispatch function to work like this:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// first argument is the 'type'</span>
+<span class="c1">// second is any extra parameters</span>
+<span class="nf">dispatch</span><span class="p">(</span><span class="dl">"</span><span class="s2">LOG_IN_SUCCESS</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">accessToken</span><span class="p">:</span> <span class="dl">"</span><span class="s2">038fh239h923908h</span><span class="dl">"</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p>Deriving the type for that first argument is easy enough.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">ActionType</span> <span class="o">=</span> <span class="nx">Action</span><span class="p">[</span><span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">]</span>
+<span class="c1">// =&gt; "INIT" | "SYNC" | "LOG_IN" | "LOG_IN_SUCCESS"</span>
+</code></pre></div></div>
+
+<p>But the type of the second argument <em>depends on</em> the first argument. We can use a type variable to model that
+dependency.</p>
+
+<!-- prettier-ignore -->
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">declare</span> <span class="kd">function</span> <span class="nf">dispatch</span><span class="o">&lt;</span><span class="nx">T</span> <span class="kd">extends</span> <span class="nx">ActionType</span><span class="o">&gt;</span><span class="p">(</span>
+  <span class="kd">type</span><span class="p">:</span> <span class="nx">T</span><span class="p">,</span>
+  <span class="nx">args</span><span class="p">:</span> <span class="nx">ExtractActionParameters</span><span class="o">&lt;</span><span class="nx">Action</span><span class="p">,</span> <span class="nx">T</span><span class="o">&gt;</span>
+<span class="p">):</span> <span class="k">void</span>
+</code></pre></div></div>
+
+<p><em>Woah woah woah, what’s this</em> <code class="language-plaintext highlighter-rouge">ExtractActionParameters</code> <em>voodoo?</em></p>
+
+<p>It’s a conditional type of course! Here’s a first attempt at implementing it:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">ExtractActionParameters</span><span class="o">&lt;</span><span class="nx">A</span><span class="p">,</span> <span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">A</span> <span class="kd">extends</span> <span class="p">{</span> <span class="na">type</span><span class="p">:</span> <span class="nx">T</span> <span class="p">}</span> <span class="p">?</span> <span class="nx">A</span> <span class="p">:</span> <span class="nx">never</span>
+</code></pre></div></div>
+
+<p>This is a lot like the <code class="language-plaintext highlighter-rouge">ExtractCat</code> example from before, where we were were refining the <code class="language-plaintext highlighter-rouge">Animals</code> union by
+searching for something that can <code class="language-plaintext highlighter-rouge">meow()</code>. Here, we’re refining the <code class="language-plaintext highlighter-rouge">Action</code> union type by searching for an
+interface with a particular <code class="language-plaintext highlighter-rouge">type</code> property. Let’s see if it works:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Test</span> <span class="o">=</span> <span class="nx">ExtractActionParameters</span><span class="o">&lt;</span><span class="nx">Action</span><span class="p">,</span> <span class="dl">"</span><span class="s2">LOG_IN</span><span class="dl">"</span><span class="o">&gt;</span>
+<span class="c1">// =&gt; { type: "LOG_IN", emailAddress: string }</span>
+</code></pre></div></div>
+
+<p>Almost there! We don’t want to keep the <code class="language-plaintext highlighter-rouge">type</code> field after extraction because then we would still have to specify
+it when calling <code class="language-plaintext highlighter-rouge">dispatch</code>. And that would somewhat defeat the purpose of this entire exercise.</p>
+
+<p>We can omit the <code class="language-plaintext highlighter-rouge">type</code> field by combining a <strong>mapped type</strong> with a conditional type and the <code class="language-plaintext highlighter-rouge">keyof</code> operator.</p>
+
+<p>A <strong>mapped type</strong> lets you create a new interface by ‘mapping’ over a union of keys. You can get a union of keys
+from an existing interface by using the <code class="language-plaintext highlighter-rouge">keyof</code> operator. And finally, you can remove things from a union using a
+conditional type. Here’s how they play together (with some inline test cases for illustration):</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">ExcludeTypeKey</span><span class="o">&lt;</span><span class="nx">K</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">K</span> <span class="kd">extends</span> <span class="dl">"</span><span class="s2">type</span><span class="dl">"</span> <span class="p">?</span> <span class="nx">never</span> <span class="p">:</span> <span class="nx">K</span>
+
+<span class="kd">type</span> <span class="nx">Test</span> <span class="o">=</span> <span class="nx">ExcludeTypeKey</span><span class="o">&lt;</span><span class="dl">"</span><span class="s2">emailAddress</span><span class="dl">"</span> <span class="o">|</span> <span class="dl">"</span><span class="s2">type</span><span class="dl">"</span> <span class="o">|</span> <span class="dl">"</span><span class="s2">foo</span><span class="dl">"</span><span class="o">&gt;</span>
+<span class="c1">// =&gt; "emailAddress" | "foo"</span>
+
+<span class="c1">// here's the mapped type</span>
+<span class="kd">type</span> <span class="nx">ExcludeTypeField</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">{</span> <span class="p">[</span><span class="nx">K</span> <span class="k">in</span> <span class="nx">ExcludeTypeKey</span><span class="o">&lt;</span><span class="kr">keyof</span> <span class="nx">A</span><span class="o">&gt;</span><span class="p">]:</span> <span class="nx">A</span><span class="p">[</span><span class="nx">K</span><span class="p">]</span> <span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">Test</span> <span class="o">=</span> <span class="nx">ExcludeTypeField</span><span class="o">&lt;</span><span class="p">{</span> <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">LOG_IN</span><span class="dl">"</span><span class="p">;</span> <span class="nl">emailAddress</span><span class="p">:</span> <span class="kr">string</span> <span class="p">}</span><span class="o">&gt;</span>
+<span class="c1">// =&gt; { emailAddress: string }</span>
+</code></pre></div></div>
+
+<p>Then we can use <code class="language-plaintext highlighter-rouge">ExcludeTypeField</code> to redefine <code class="language-plaintext highlighter-rouge">ExtractActionParameters</code>.</p>
+
+<!-- prettier-ignore -->
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">ExtractActionParameters</span><span class="o">&lt;</span><span class="nx">A</span><span class="p">,</span> <span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">A</span> <span class="kd">extends</span> <span class="p">{</span> <span class="na">type</span><span class="p">:</span> <span class="nx">T</span> <span class="p">}</span>
+  <span class="p">?</span> <span class="nx">ExcludeTypeField</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span>
+  <span class="p">:</span> <span class="nx">never</span>
+</code></pre></div></div>
+
+<p>And now the new version of <code class="language-plaintext highlighter-rouge">dipsatch</code> is typesafe!</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// All clear! :)</span>
+<span class="nf">dispatch</span><span class="p">(</span><span class="dl">"</span><span class="s2">LOG_IN_SUCCESS</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">accessToken</span><span class="p">:</span> <span class="dl">"</span><span class="s2">038fh239h923908h</span><span class="dl">"</span>
+<span class="p">})</span>
+
+<span class="nf">dispatch</span><span class="p">(</span><span class="dl">"</span><span class="s2">LOG_IN_SUCCESS</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span>
+  <span class="c1">// Type Error! :)</span>
+  <span class="na">badKey</span><span class="p">:</span> <span class="dl">"</span><span class="s2">038fh239h923908h</span><span class="dl">"</span>
+<span class="p">})</span>
+
+<span class="c1">// Type Error! :)</span>
+<span class="nf">dispatch</span><span class="p">(</span><span class="dl">"</span><span class="s2">BAD_TYPE</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">accessToken</span><span class="p">:</span> <span class="dl">"</span><span class="s2">038fh239h923908h</span><span class="dl">"</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p><a target="_blank" style="font-size: 0.8em" href="https://www.typescriptlang.org/play/#src=type%20Action%20%3D%0D%0A%20%20%7C%20%7B%0D%0A%20%20%20%20%20%20type%3A%20%22INIT%22%0D%0A%20%20%20%20%7D%0D%0A%20%20%7C%20%7B%0D%0A%20%20%20%20%20%20type%3A%20%22SYNC%22%0D%0A%20%20%20%20%7D%0D%0A%20%20%7C%20%7B%0D%0A%20%20%20%20%20%20type%3A%20%22LOG_IN%22%0D%0A%20%20%20%20%20%20emailAddress%3A%20string%0D%0A%20%20%20%20%7D%0D%0A%20%20%7C%20%7B%0D%0A%20%20%20%20%20%20type%3A%20%22LOG_IN_SUCCESS%22%0D%0A%20%20%20%20%20%20accessToken%3A%20string%0D%0A%20%20%20%20%7D%0D%0A%0D%0Atype%20ActionType%20%3D%20Action%5B%22type%22%5D%0D%0A%0D%0Adeclare%20function%20dispatch%3CT%20extends%20ActionType%3E(%0D%0A%20%20%20%20type%3A%20T%2C%0D%0A%20%20%20%20args%3A%20ExtractActionParameters%3CAction%2C%20T%3E%0D%0A)%3A%20void%0D%0A%0D%0Atype%20ExcludeTypeKey%3CK%3E%20%3D%20K%20extends%20%22type%22%20%3F%20never%20%3A%20K%0D%0A%0D%0Atype%20ExcludeTypeField%3CA%3E%20%3D%20%7B%20%5BK%20in%20ExcludeTypeKey%3Ckeyof%20A%3E%5D%3A%20A%5BK%5D%20%7D%0D%0A%0D%0Atype%20ExtractActionParameters%3CA%2C%20T%3E%20%3D%20A%20extends%20%7B%20type%3A%20T%20%7D%0D%0A%20%20%20%20%3F%20ExcludeTypeField%3CA%3E%0D%0A%20%20%20%20%3A%20never%0D%0A%20%20%0D%0A%2F%2F%20All%20clear!%20%3A)%0D%0Adispatch(%22LOG_IN_SUCCESS%22%2C%20%7B%0D%0A%20%20%20%20accessToken%3A%20%22038fh239h923908h%22%0D%0A%7D)%0D%0A%0D%0Adispatch(%22LOG_IN_SUCCESS%22%2C%20%7B%0D%0A%20%20%20%20%2F%2F%20Type%20Error!%20%3A)%0D%0A%20%20%20%20badKey%3A%20%22038fh239h923908h%22%0D%0A%7D)%0D%0A%0D%0A%2F%2F%20Type%20Error!%20%3A)%0D%0Adispatch(%22BAD_TYPE%22%2C%20%7B%0D%0A%20%20%20%20accessToken%3A%20%22038fh239h923908h%22%0D%0A%7D)">
+<em>Try it in the TypeScript playground</em> </a></p>
+
+<p>But there’s one more very serious problem to address: If the action has no extra parameters, I still have to pass a
+second empty argument.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">dispatch</span><span class="p">(</span><span class="dl">"</span><span class="s2">INIT</span><span class="dl">"</span><span class="p">,</span> <span class="p">{})</span>
+</code></pre></div></div>
+
+<p>That’s four whole wasted characters! Cancel my meetings and tell my partner not to wait up tonight! We need to
+<em>fix. this</em>.</p>
+
+<p>The naïve thing to do would be to make the second argument optional. That would be unsafe because, e.g. it would
+allow us to dispatch a <code class="language-plaintext highlighter-rouge">"LOG_IN"</code> action without specifying an <code class="language-plaintext highlighter-rouge">emailAddress</code>.</p>
+
+<p>Instead, let’s overload the <code class="language-plaintext highlighter-rouge">dispatch</code> function.</p>
+
+<!-- prettier-ignore -->
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// And let's say that any actions that don't require</span>
+<span class="c1">// extra parameters are 'simple' actions.</span>
+<span class="kr">declare</span> <span class="kd">function</span> <span class="nf">dispatch</span><span class="p">(</span><span class="kd">type</span><span class="p">:</span> <span class="nx">SimpleActionType</span><span class="p">):</span> <span class="k">void</span>
+<span class="c1">// this signature is just like before</span>
+<span class="kr">declare</span> <span class="kd">function</span> <span class="nf">dispatch</span><span class="o">&lt;</span><span class="nx">T</span> <span class="kd">extends</span> <span class="nx">ActionType</span><span class="o">&gt;</span><span class="p">(</span>
+  <span class="kd">type</span><span class="p">:</span> <span class="nx">T</span><span class="p">,</span>
+  <span class="nx">args</span><span class="p">:</span> <span class="nx">ExtractActionParameters</span><span class="o">&lt;</span><span class="nx">Action</span><span class="p">,</span> <span class="nx">T</span><span class="o">&gt;</span>
+<span class="p">):</span> <span class="k">void</span>
+
+<span class="kd">type</span> <span class="nx">SimpleActionType</span> <span class="o">=</span> <span class="nx">ExtractSimpleAction</span><span class="o">&lt;</span><span class="nx">Action</span><span class="o">&gt;</span><span class="p">[</span><span class="dl">'</span><span class="s1">type</span><span class="dl">'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>How can we define this <code class="language-plaintext highlighter-rouge">ExtractSimpleAction</code> conditional type? We know that if we remove the <code class="language-plaintext highlighter-rouge">type</code> field from an
+action and the result is an empty interface, then that is a simple action. So something like this might work</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">ExtractSimpleAction</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">ExcludeTypeField</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="p">{}</span> <span class="p">?</span> <span class="nx">A</span> <span class="p">:</span> <span class="nx">never</span>
+</code></pre></div></div>
+
+<p>Except that doesn’t work. <code class="language-plaintext highlighter-rouge">ExcludeTypeField&lt;A&gt; extends {}</code> is always going to be true, because <code class="language-plaintext highlighter-rouge">{}</code> is like a top
+type for interfaces. <em>Pretty much everything</em> is more specific than <code class="language-plaintext highlighter-rouge">{}</code>.</p>
+
+<p>We need to swap the arguments around:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">ExtractSimpleAction</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">{}</span> <span class="kd">extends</span> <span class="nx">ExcludeTypeField</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span> <span class="p">?</span> <span class="nx">A</span> <span class="p">:</span> <span class="nx">never</span>
+</code></pre></div></div>
+
+<p>Now if <code class="language-plaintext highlighter-rouge">ExcludeTypeField&lt;A&gt;</code> is empty, the condition will be true, otherwise it will be false.</p>
+
+<p>But this still doesn’t work! On-the-ball readers might remember this:</p>
+
+<blockquote>
+  <p>That ‘distribution’, where the union is unrolled recursively, only happens when the thing on the left of the
+<code class="language-plaintext highlighter-rouge">extends</code> keyword is a plain type variable. We’ll see what that means and how to work around it in the next
+section.</p>
+</blockquote>
+
+<p>– Me, in the previous section</p>
+
+<p>Type variables are always defined in a generic parameter list, delimited by <code class="language-plaintext highlighter-rouge">&lt;</code> and <code class="language-plaintext highlighter-rouge">&gt;</code>. e.g.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Blah</span><span class="o">&lt;</span><span class="nx">These</span><span class="p">,</span> <span class="nx">Are</span><span class="p">,</span> <span class="nx">Type</span><span class="p">,</span> <span class="nx">Variables</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">...</span>
+
+<span class="kd">function</span> <span class="nf">blah</span><span class="o">&lt;</span><span class="nx">And</span><span class="p">,</span> <span class="nx">So</span><span class="p">,</span> <span class="nx">Are</span><span class="p">,</span> <span class="nx">These</span><span class="o">&gt;</span><span class="p">()</span> <span class="p">{</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>And if you want a conditional type to distribute over a union, the union a) needs to have been bound to a type
+variable, and b) that variable needs to appear alone to the left of the <code class="language-plaintext highlighter-rouge">extends</code> keyword.</p>
+
+<p>e.g. this is a distributive conditional type:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Blah</span><span class="o">&lt;</span><span class="nx">Var</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">Var</span> <span class="kd">extends</span> <span class="nx">Whatever</span> <span class="p">?</span> <span class="nx">A</span> <span class="p">:</span> <span class="nx">B</span>
+</code></pre></div></div>
+
+<p>and these are not:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Blah</span><span class="o">&lt;</span><span class="nx">Var</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">Foo</span><span class="o">&lt;</span><span class="nx">Var</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="nx">Whatever</span> <span class="p">?</span> <span class="nx">A</span> <span class="p">:</span> <span class="nx">B</span>
+<span class="kd">type</span> <span class="nx">Blah</span><span class="o">&lt;</span><span class="nx">Var</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">Whatever</span> <span class="kd">extends</span> <span class="nx">Var</span> <span class="p">?</span> <span class="nx">A</span> <span class="p">:</span> <span class="nx">B</span>
+</code></pre></div></div>
+
+<p>When I discovered this limitation I thought that it exposed a fundamental shortcoming in the way distributive
+conditional types work under the hood. I thought it might be some kind of concession to algorithmic complexity. I
+thought that my use case was too advanced, and that TypeScript had just thrown its hands up in the air and said,
+“Sorry mate, you’re on your own”.</p>
+
+<p>But it turns out I was wrong. It is just a pragmatic language design decision to avoid extra syntax, and you can
+work around it easily:</p>
+
+<!-- prettier-ignore -->
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">ExtractSimpleAction</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">A</span> <span class="kd">extends</span> <span class="kr">any</span>
+  <span class="p">?</span> <span class="p">{}</span> <span class="kd">extends</span> <span class="nx">ExcludeTypeField</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span>
+    <span class="p">?</span> <span class="nx">A</span>
+    <span class="p">:</span> <span class="nx">never</span>
+  <span class="p">:</span> <span class="nx">never</span>
+</code></pre></div></div>
+
+<p>All we did is wrap the meat of our logic in a flimsy tortilla of inevitability, since the outer condition
+<code class="language-plaintext highlighter-rouge">A extends any</code> will, of course, always be true.</p>
+
+<p>And finally we can delete those four characters 🎉🕺🏼💃🏽🎈</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">dispatch</span><span class="p">(</span><span class="dl">"</span><span class="s2">INIT</span><span class="dl">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>That’s one yak successfully shaved ✔</p>
+
+<hr />
+
+<p>TypeScript provides a couple of built-in types that we could have used in this section:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Exclude from U those types that are assignable to T</span>
+<span class="kd">type</span> <span class="nb">Exclude</span><span class="o">&lt;</span><span class="nx">U</span><span class="p">,</span> <span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">U</span> <span class="kd">extends</span> <span class="nx">T</span> <span class="p">?</span> <span class="nx">never</span> <span class="p">:</span> <span class="nx">U</span>
+
+<span class="c1">// Extract from U those types that are assignable to T</span>
+<span class="kd">type</span> <span class="nb">Extract</span><span class="o">&lt;</span><span class="nx">U</span><span class="p">,</span> <span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">U</span> <span class="kd">extends</span> <span class="nx">T</span> <span class="p">?</span> <span class="nx">U</span> <span class="p">:</span> <span class="nx">never</span>
+</code></pre></div></div>
+
+<p>e.g. instead of defining <code class="language-plaintext highlighter-rouge">ExcludeTypeField</code> like this:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">ExcludeTypeField</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">{</span> <span class="p">[</span><span class="nx">K</span> <span class="k">in</span> <span class="nx">ExcludeTypeKey</span><span class="o">&lt;</span><span class="kr">keyof</span> <span class="nx">A</span><span class="o">&gt;</span><span class="p">]:</span> <span class="nx">A</span><span class="p">[</span><span class="nx">K</span><span class="p">]</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>we could have done this:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">ExcludeTypeField</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">{</span> <span class="p">[</span><span class="nx">K</span> <span class="k">in</span> <span class="nb">Exclude</span><span class="o">&lt;</span><span class="kr">keyof</span> <span class="nx">A</span><span class="p">,</span> <span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="o">&gt;</span><span class="p">]:</span> <span class="nx">A</span><span class="p">[</span><span class="nx">K</span><span class="p">]</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>And instead of defining <code class="language-plaintext highlighter-rouge">ExtractActionParameters</code> like this:</p>
+
+<!-- prettier-ignore -->
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">ExtractActionParameters</span><span class="o">&lt;</span><span class="nx">A</span><span class="p">,</span> <span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">A</span> <span class="kd">extends</span> <span class="p">{</span> <span class="na">type</span><span class="p">:</span> <span class="nx">T</span> <span class="p">}</span>
+  <span class="p">?</span> <span class="nx">ExcludeTypeField</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span>
+  <span class="p">:</span> <span class="nx">never</span>
+</code></pre></div></div>
+
+<p>we could have done this:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">ExtractActionParameters</span><span class="o">&lt;</span><span class="nx">A</span><span class="p">,</span> <span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">ExcludeTypeField</span><span class="o">&lt;</span><span class="nb">Extract</span><span class="o">&lt;</span><span class="nx">A</span><span class="p">,</span> <span class="p">{</span> <span class="na">type</span><span class="p">:</span> <span class="nx">T</span> <span class="p">}</span><span class="o">&gt;&gt;</span>
+</code></pre></div></div>
+
+<h2 id="-exercise-for-the-intrepid-reader">💡 Exercise for the intrepid reader</h2>
+
+<p>Notice that this still works.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">dispatch</span><span class="p">(</span><span class="dl">"</span><span class="s2">INIT</span><span class="dl">"</span><span class="p">,</span> <span class="p">{})</span>
+</code></pre></div></div>
+
+<p>Use what you’ve learned so far to make it an error to supply a second argument for ‘simple’ actions.</p>
+
+<h2 id="destructuring-types-with-infer">Destructuring types with <code class="language-plaintext highlighter-rouge">infer</code></h2>
+
+<p>Conditional types have another trick up their sleeve: the <code class="language-plaintext highlighter-rouge">infer</code> keyword. It can be used anywhere in the type
+expression to the right of the <code class="language-plaintext highlighter-rouge">extends</code> keyword. It gives a name to whichever type would appear in that place.
+e.g.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Unpack</span><span class="o">&lt;</span><span class="nx">A</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">A</span> <span class="kd">extends</span> <span class="nb">Array</span><span class="o">&lt;</span><span class="nx">infer</span> <span class="nx">E</span><span class="o">&gt;</span> <span class="p">?</span> <span class="nx">E</span> <span class="p">:</span> <span class="nx">A</span>
+
+<span class="kd">type</span> <span class="nx">Test</span> <span class="o">=</span> <span class="nx">Unpack</span><span class="o">&lt;</span><span class="nx">Apple</span><span class="p">[]</span><span class="o">&gt;</span>
+<span class="c1">// =&gt; Apple</span>
+<span class="kd">type</span> <span class="nx">Test</span> <span class="o">=</span> <span class="nx">Unpack</span><span class="o">&lt;</span><span class="nx">Apple</span><span class="o">&gt;</span>
+<span class="c1">// =&gt; Apple</span>
+</code></pre></div></div>
+
+<p>It handles ambiguity gracefully:</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Stairs</span> <span class="o">=</span> <span class="nx">Unpack</span><span class="o">&lt;</span><span class="nx">Apple</span><span class="p">[]</span> <span class="o">|</span> <span class="nx">Pear</span><span class="p">[]</span><span class="o">&gt;</span>
+<span class="c1">// =&gt; Apple | Pear</span>
+</code></pre></div></div>
+
+<p>You can even use <code class="language-plaintext highlighter-rouge">infer</code> multiple times.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">Flip</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">T</span> <span class="kd">extends</span> <span class="p">[</span><span class="nx">infer</span> <span class="nx">A</span><span class="p">,</span> <span class="nx">infer</span> <span class="nx">B</span><span class="p">]</span> <span class="p">?</span> <span class="p">[</span><span class="nx">B</span><span class="p">,</span> <span class="nx">A</span><span class="p">]</span> <span class="p">:</span> <span class="nx">never</span>
+<span class="kd">type</span> <span class="nx">Stairs</span> <span class="o">=</span> <span class="nx">Flip</span><span class="o">&lt;</span><span class="p">[</span><span class="nx">Pear</span><span class="p">,</span> <span class="nx">Apple</span><span class="p">]</span><span class="o">&gt;</span>
+<span class="c1">// =&gt; [Apple, Pear]</span>
+
+<span class="kd">type</span> <span class="nx">Union</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">T</span> <span class="kd">extends</span> <span class="p">[</span><span class="nx">infer</span> <span class="nx">A</span><span class="p">,</span> <span class="nx">infer</span> <span class="nx">A</span><span class="p">]</span> <span class="p">?</span> <span class="nx">A</span> <span class="p">:</span> <span class="nx">never</span>
+<span class="kd">type</span> <span class="nx">Stairs</span> <span class="o">=</span> <span class="nx">Union</span><span class="o">&lt;</span><span class="p">[</span><span class="nx">Apple</span><span class="p">,</span> <span class="nx">Pear</span><span class="p">]</span><span class="o">&gt;</span>
+<span class="c1">// =&gt; Apple | Pear</span>
+</code></pre></div></div>
+
+<h2 id="other-built-in-conditional-types">Other built-in conditional types</h2>
+
+<p>We’ve already seen <code class="language-plaintext highlighter-rouge">Exclude</code> and <code class="language-plaintext highlighter-rouge">Extract</code>, and TypeScript provides a few other conditional types out of the box.</p>
+
+<!-- prettier-ignore -->
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Exclude null and undefined from T</span>
+<span class="kd">type</span> <span class="nb">NonNullable</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span>
+  <span class="nx">T</span> <span class="kd">extends</span> <span class="kc">null</span> <span class="o">|</span> <span class="kc">undefined</span> <span class="p">?</span> <span class="nx">never</span> <span class="p">:</span> <span class="nx">T</span>
+
+<span class="c1">// Obtain the parameters of a function type in a tuple</span>
+<span class="kd">type</span> <span class="nb">Parameters</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span>
+  <span class="nx">T</span> <span class="nf">extends </span><span class="p">(...</span><span class="nx">args</span><span class="p">:</span> <span class="nx">infer</span> <span class="nx">P</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="kr">any</span> <span class="p">?</span> <span class="nx">P</span> <span class="p">:</span> <span class="nx">never</span>
+
+<span class="c1">// Obtain the parameters of a constructor function type in a tuple</span>
+<span class="kd">type</span> <span class="nb">ConstructorParameters</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span>
+  <span class="nx">T</span> <span class="kd">extends</span> <span class="k">new </span><span class="p">(...</span><span class="nx">args</span><span class="p">:</span> <span class="nx">infer</span> <span class="nx">P</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="kr">any</span> <span class="p">?</span> <span class="nx">P</span> <span class="p">:</span> <span class="nx">never</span>
+
+<span class="c1">// Obtain the return type of a function type</span>
+<span class="kd">type</span> <span class="nb">ReturnType</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span>
+  <span class="nx">T</span> <span class="nf">extends </span><span class="p">(...</span><span class="nx">args</span><span class="p">:</span> <span class="kr">any</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="nx">infer</span> <span class="nx">R</span> <span class="p">?</span> <span class="nx">R</span> <span class="p">:</span> <span class="kr">any</span>
+
+<span class="c1">// Obtain the return type of a constructor function type</span>
+<span class="kd">type</span> <span class="nb">InstanceType</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span>
+  <span class="nx">T</span> <span class="kd">extends</span> <span class="k">new </span><span class="p">(...</span><span class="nx">args</span><span class="p">:</span> <span class="kr">any</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="nx">infer</span> <span class="nx">R</span> <span class="p">?</span> <span class="nx">R</span> <span class="p">:</span> <span class="kr">any</span>
+</code></pre></div></div>
+
+<h2 id="further-reading">Further reading</h2>
+
+<ul>
+  <li><a href="https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-8.html">TypeScript 2.8 release notes</a></li>
+  <li><a href="https://github.com/Microsoft/TypeScript/pull/21316">Microsoft/Typescript#21316</a> Conditional types pull request</li>
+  <li><a href="https://github.com/Microsoft/TypeScript/pull/21496">Microsoft/Typescript#21496</a> <code class="language-plaintext highlighter-rouge">infer</code> pull request</li>
+  <li><a href="https://github.com/Microsoft/TypeScript/blob/a2205ad53d8f65a129a552b752d1e06fee3d41fc/lib/lib.es5.d.ts#L1446">lib.es5.d.ts#L1446</a>
+built-in conditional type definitions</li>
+</ul>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Where art thou, my error?]]></title>
+    <link href="https://marinahuber.github.io/blog/2018/10/19/where-art-thou-my-error/"/>
+    <updated>2018-10-19T00:00:00+02:00</updated>
+    <id>https://marinahuber.github.io/blog/2018/10/19/where-art-thou-my-error</id>
+    <content type="html"><![CDATA[<p><em>Note: This is the text of a presentation given at <a href="https://graphql-finland.fi">GraphQL Finland 2018</a>, as such the
+language may in some cases be slightly awkward for a blog post. You can find those slides on
+<a href="https://speakerdeck.com/alloy/where-art-thou-my-error">Speaker Deck</a>.</em></p>
+
+<p>GraphQL is still in its early stages and thus these are very exciting times, indeed! Traditionally the GraphQL team
+has taken the approach of defining the bare minimum in the specification that was deemed needed and otherwise
+letting the community come-up with defining problems and experimenting with solutions for those. One such example
+is how metadata about the location in the graph where errors occurred during execution were <a href="https://github.com/facebook/graphql/pull/230">added to the
+specification</a>.</p>
+
+<p>This is great in the sense that we still have the ability, as a community, to shape the future of a GraphQL
+specification that we all <em>want</em> to use, but on the other hand it also means that we may need to spend significant
+amounts of time on thinking about these problems and iterating. Seeing as we all strive to have backwards
+compatible schemas, it’s of great importance that we know of the various iterations that people have experimented
+with and what the outcome was.</p>
+
+<p>This is our story of thinking about and working with errors, thus far.</p>
+
+<!-- more -->
+
+<p>NOTE: Throughout this talk I’ll use ‘query execution’ to indicate executing a GraphQL document, be it a query or
+mutation operation. I have a hard time relating to ‘document execution’, mostly because I don’t see others using
+it, but perhaps I’ve just missed it. Come at me, at the bar, and set me straight!</p>
+
+<h2 id="errors-vs-errors">Errors vs errors</h2>
+
+<p>First of all, I want to take a step back and talk about errors in general. The nomenclature around these can get
+confusing, suffice to say that during this session we’ll talk about these two types:</p>
+
+<ul>
+  <li>
+    <p>Errors that occur during query execution, that were unexpected, and <em>could</em> lead to corrupted data. We’ll refer
+to these as (top-level) ‘GraphQL errors’, going forward.</p>
+
+    <p>These could be due to hardware failures, such as running out of memory or disk space, network failures, or
+unexpected upstream data etc.</p>
+
+    <p>When these occur, <code class="language-plaintext highlighter-rouge">graphql-js</code> will return <code class="language-plaintext highlighter-rouge">null</code> for the field that triggered the error and serialize the error
+into the top-level <code class="language-plaintext highlighter-rouge">errors</code> list, next to the successful response <code class="language-plaintext highlighter-rouge">data</code>. (Presumably other implementations
+follow this reference implementation.)</p>
+  </li>
+</ul>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"artwork"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"artist"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Vincent van Gogh"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"leftEarSize"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"errors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"An unexpected error occurred"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"path"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"artwork"</span><span class="p">,</span><span class="w"> </span><span class="s2">"artist"</span><span class="p">,</span><span class="w"> </span><span class="s2">"leftEarSize"</span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<ul>
+  <li>
+    <p>Exceptions to these are errors that are <em>known</em> to occur and are expected to be handled by the user of an API.
+We’ll refer to these as ‘exceptions’, going forward.</p>
+
+    <p>By default these are treated equally by <code class="language-plaintext highlighter-rouge">graphql-js</code> to top-level GraphQL errors, if uncaught.</p>
+  </li>
+</ul>
+
+<p>We will <strong>not</strong> be speaking about errors that occur <em>outside</em> of query execution, such as network failures reaching
+the GraphQL server, parsing a syntactically incorrect document, or passing variables that don’t satisfy the
+type-system; as these will all lead to a query being rejected wholesale and are solve-able using traditional means,
+such as a <code class="language-plaintext highlighter-rouge">4xx</code> HTTP status code or <code class="language-plaintext highlighter-rouge">5xx</code> in some cases.</p>
+
+<h2 id="what-is-the-problem-were-trying-to-solve">What is the problem we’re trying to solve?</h2>
+
+<p>Because with GraphQL we’re usually requesting data for multiple resources, there may be a situation where some
+fields resolve successfully and some may fail. This is also why, when using an HTTP transport layer, the advice is
+to always respond with a HTTP 200 (ok) status. Determining how to process the response is left up to the client.</p>
+
+<p>So how <em>do</em> we model errors in such a way that they can be meaningful and in context of their origin?</p>
+
+<ul>
+  <li>
+    <p>What if you want to render partial data?</p>
+
+    <ul>
+      <li>
+        <p>Maybe the failed data is unrelated to other components that you were also requesting data for.</p>
+
+        <p><img src="/images/2018-10-19-where-art-thou-my-error/partial-data-unrelated-annotated.png" alt="Unrelated component" /></p>
+      </li>
+      <li>
+        <p>Or the data that failed was part of a list and other entries can still be rendered just fine.</p>
+
+        <p><img src="/images/2018-10-19-where-art-thou-my-error/partial-data-list-annotated.png" alt="Partial list data" /></p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Or what if you’d (additionally) like to communicate the error in your interface?</p>
+
+    <ul>
+      <li>
+        <p>When the query is in response to a mutation and you’d like to communicate input validation failures.</p>
+
+        <p><img src="/images/2018-10-19-where-art-thou-my-error/mutation-validation-error.png" alt="Surface validation error" /></p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="possible-solutions">Possible solutions</h2>
+
+<h3 id="top-level-graphql-errors-and-treating-an-entire-response-as-unusable-when-such-errors-exist">Top-level GraphQL errors and treating an entire response as unusable when such errors exist</h3>
+
+<p>Some clients, such as Apollo and Relay Classic, have made the decision to reject a response entirely, by default,
+if any top-level GraphQL errors exist. This is because clients can really only fully assume that the response data
+is incomplete, not whether or not your application could handle that case.</p>
+
+<p>This may be an ok solution when you’re starting out or all the requested data is part of a single holistic view,
+but it quickly breaks down when you want a little more than that.</p>
+
+<h3 id="top-level-graphql-errors-with-extra-metadata">Top-level GraphQL errors with extra metadata</h3>
+
+<p>GraphQL errors only have a single field in <a href="https://facebook.github.io/graphql/draft/#sec-Errors">the specification</a> to provide context around the cause of
+the error, which is the <code class="language-plaintext highlighter-rouge">message</code> field. However, <a href="https://facebook.github.io/graphql/draft/#sec-Response-Format">the specification</a> also defines a top-level
+<code class="language-plaintext highlighter-rouge">extensions</code> key, which may hold a map of freeform data for the schema implementors to extend the protocol however
+they see fit.</p>
+
+<p>Apollo Server 2.0, for instance, <a href="https://blog.apollographql.com/full-stack-error-handling-with-graphql-apollo-5c12da407210">introduced standardized errors</a> you can throw from your
+resolvers, which end up being serialized into the <code class="language-plaintext highlighter-rouge">extensions</code> map. An example they give is for bad user input:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">UserInputError</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">apollo-server</span><span class="dl">"</span>
+
+<span class="kd">const</span> <span class="nx">resolvers</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">Query</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nf">events</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="p">{</span> <span class="nx">zipCode</span> <span class="p">})</span> <span class="p">{</span>
+      <span class="c1">// do custom validation for user inputs</span>
+      <span class="kd">const</span> <span class="nx">validationErrors</span> <span class="o">=</span> <span class="p">{}</span>
+      <span class="k">if </span><span class="p">(</span><span class="o">!</span><span class="nf">isValidZipCode</span><span class="p">(</span><span class="nx">zipCode</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nx">validationErrors</span><span class="p">.</span><span class="nx">zipCode</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">This is not a valid zipcode</span><span class="dl">"</span>
+      <span class="p">}</span>
+      <span class="k">if </span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nf">keys</span><span class="p">(</span><span class="nx">validationErrors</span><span class="p">).</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nc">UserInputError</span><span class="p">(</span><span class="dl">"</span><span class="s2">Failed to get events due to validation errors</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span> <span class="nx">validationErrors</span> <span class="p">})</span>
+      <span class="p">}</span>
+      <span class="c1">// actually query events here and return successfully</span>
+      <span class="k">return</span> <span class="nf">getEventsByZipcode</span><span class="p">(</span><span class="nx">zipCode</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Seeing as these extensions are freeform, however, this builds an <strong>implicit</strong> contract between the server and
+client that then needs to be abstracted away by additional client code. This is unfortunate, when you think about
+it, because GraphQL is meant to explicitly express shapes of data.</p>
+
+<p>The Apollo team acknowledges this by adding:</p>
+
+<blockquote>
+  <p>While convenient, the weakness of this approach is that the format of the validation error messages is not
+captured by your schema, making it brittle to changes. Unless you maintain tight control of both server and
+client, you should keep the error responses as simple as possible.</p>
+
+  <p>For mutations, it can be worthwhile defining these validation errors as first class citizens within your schema.</p>
+</blockquote>
+
+<p>(Which we’ll address next.)</p>
+
+<h3 id="make-mutation-error-metadata-part-of-schema-as-separate-fields">Make (mutation) error metadata part of schema as separate fields</h3>
+
+<p>One <a href="https://www.apollographql.com/docs/guides/schema-design.html#mutation-responses">commonly suggested approach</a> around mutations is to define status metadata on the
+response type next to the field of the affected entity. For example, a response type could look like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>type UpdateArtworkMutationResponse {
+  success: Boolean!
+  message: String!
+  artwork: Artwork
+}
+</code></pre></div></div>
+
+<p>Here there’s a boolean that indicates success, an extra message that sheds context on the situation when a failure
+occurs, and finally the <code class="language-plaintext highlighter-rouge">artwork</code> that an update was attempted to be made to.</p>
+
+<p>Adding these fields to the same namespace makes sense when we’re thinking of the failure case, but what about the
+success case? Do we really need a <code class="language-plaintext highlighter-rouge">success</code> boolean to indicate that updates to the <code class="language-plaintext highlighter-rouge">artwork</code> were made? What
+purpose serves the <code class="language-plaintext highlighter-rouge">message</code> field, other than possibly being a sign of an overly positive schema that sends you
+happy messages?</p>
+
+<p>Finally, this approach only really works for mutations, as their return type acts as a distinct root type to start
+a query from. It would be hard to imagine how to apply this to queries.</p>
+
+<h3 id="make-error-metadata-part-of-schema-as-separate-field">Make error metadata part of schema as separate field</h3>
+
+<p>Similarly, <a href="https://itnext.io/the-definitive-guide-to-handling-graphql-errors-e0c58b52b5e1">another suggested approach</a> is to add an additional <code class="language-plaintext highlighter-rouge">error</code> field to the type in
+question, which then describes the error that occurred. The previous example could be rewritten like so:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>type GenericError {
+  message: String!
+}
+
+type UpdateArtworkMutationResponse {
+  error: GenericError
+  artwork: Artwork
+}
+</code></pre></div></div>
+
+<p>If <code class="language-plaintext highlighter-rouge">error</code> is not <code class="language-plaintext highlighter-rouge">null</code>, something went wrong. This cleans up the namespace a bit, but more importantly this
+approach can be applied to queries too:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>type PublishedArtworkNotification {
+  artwork: Artwork
+}
+
+type PublishedArtworkNotificationsPayload {
+  error: GenericError
+  notifications: [PublishedArtworkNotification]
+}
+
+type Query {
+  publishedArtworkNotificationsPayload: PublishedArtworkNotificationsPayload!
+}
+</code></pre></div></div>
+
+<p>Neat.</p>
+
+<p>However, and this may just be our use-case, we don’t have partial data at these stages. We’ve either resolved the
+data or we have an error. Hence, this approach would mean we’d always have an unneeded <code class="language-plaintext highlighter-rouge">null</code> field, which pollutes
+the namespace of the type unnecessarily.</p>
+
+<p>Side-note: if you don’t control the server schema, and are using a client that can extend a server schema on the
+client, you could try to retrofit top-level GraphQL errors to these suggested error fields into the schema where
+they occurred based on the error <code class="language-plaintext highlighter-rouge">path</code>, as shown <a href="https://github.com/facebook/relay/issues/1913#issuecomment-358636018">here</a>.</p>
+
+<h2 id="recap">Recap</h2>
+
+<p>So to quickly recap, ideally we want a solution to:</p>
+
+<ul>
+  <li>Use GraphQL: Utilize GraphQL to explicitly describe the error data.</li>
+  <li>In context: Present the error data exactly where the error occurred in the schema.</li>
+  <li>All operations: Work for both mutations and queries.</li>
+  <li>Explicit status: Be concise and encourage ‘clean’ types; that is, no pollution of namespaces with fields only
+needed in some cases.</li>
+</ul>
+
+<h3 id="make-exceptions-first-class-citizens-of-your-schema">Make exceptions first-class citizens of your schema</h3>
+
+<p>To that end, the final approach we’ll be discussing, and the one that we at Artsy have started adopting, is to give
+exceptions their own type and return those instead of the success type, when they occur. To do this we make use of
+a union of both the success and the exception type (or multiples thereof) and then query for those.</p>
+
+<p>The benefits are:</p>
+
+<ul>
+  <li>
+    <p>You can further model the exception in an explicit and introspect-able way.</p>
+
+    <p>For example, in the case of an HTTP failure to an upstream service, your exception type could include an integer
+status-code field and document it as such.</p>
+  </li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>type Artwork {
+  title: String!
+}
+
+type HTTPError {
+  message: String!
+  statusCode: Int!
+}
+
+union ArtworkOrError = Artwork | HTTPError
+
+type Query {
+  artworkOrError(id: ID!): ArtworkOrError
+}
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>query {
+  artworkOrError("mona-lisa") {
+    ... on Artwork {
+      title
+    }
+    ... on HTTPError {
+      statusCode
+    }
+  }
+}
+</code></pre></div></div>
+
+<ul>
+  <li>You know exactly where the exception occurred in the graph.</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>type Artist {
+  artworksOrErrors: [ArtworkOrError]
+}
+
+type Query {
+  artist(id: ID!): Artist
+}
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>query {
+  artist("leonardo-da-vinci") {
+    artworksOrErrors {
+      ... on Artwork {
+        title
+      }
+      ... on HTTPError {
+        statusCode
+      }
+    }
+  }
+}
+</code></pre></div></div>
+
+<ul>
+  <li>You can use it for both mutations and queries.</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>type UpdateArtworkMutationResponse {
+  artworkOrError: ArtworkOrError
+}
+</code></pre></div></div>
+
+<ul>
+  <li>All fields will always be captured in the single <code class="language-plaintext highlighter-rouge">artworkOrError</code> field <em>or</em>, if no information about the error
+is needed, you simply don’t query for it and get back <code class="language-plaintext highlighter-rouge">null</code> instead.</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>query {
+  artworkOrError("mona-lisa") {
+    ... on Artwork {
+      title
+    }
+  }
+}
+</code></pre></div></div>
+
+<h2 id="how-we-encode-it-into-our-schema">How we encode it into our schema</h2>
+
+<p>I should preface this by clearly stating that while have been thinking about this problem for a while now, only
+recently have we started rolling these changes out into our schema, so some of these are not yet discoverable in
+<a href="http://github.com/artsy/metaphysics">our open-source GraphQL service</a>.</p>
+
+<h3 id="types">Types</h3>
+
+<p>As shown before, we define a union of the actual result type <em>and</em> the error type. However, we additionally (will)
+define a set of error interfaces, which make it possible for clients to query for errors in a more generic way.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>interface Error {
+  message: String!
+}
+
+interface HTTPError {
+  message: String!
+  statusCode: Int!
+}
+
+type HTTPErrorType implements Error &amp; HTTPError {
+  message: String!
+  statusCode: Int!
+}
+
+type Artwork {
+  title: String!
+}
+
+union ArtworkOrError = Artwork | HTTPErrorType
+
+type Query {
+  artworkOrError(id: ID!): ArtworkOrError
+}
+</code></pre></div></div>
+
+<p>We can now still query as shown in the earlier examples:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>query {
+  artworkOrError("mona-lisa") {
+    ... on Artwork {
+      title
+    }
+    ... on HTTPError {
+      message
+      statusCode
+    }
+  }
+}
+</code></pre></div></div>
+
+<p>…but we can now also have generic error components that would query like so:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>query {
+  artworkOrError("mona-lisa") {
+    ... on Artwork {
+      title
+    }
+    ...GenericErrorComponent
+    ...GenericHTTPErrorComponent
+  }
+}
+
+fragment GenericErrorComponent on Error {
+  message
+}
+
+fragment GenericHTTPErrorComponent on HTTPError {
+  message
+  statusCode
+}
+</code></pre></div></div>
+
+<p>For the record, we have <em>not</em> yet put these interfaces into production, so the nomenclature is not set in stone yet
+and I’d love to hear your input on this. Is <code class="language-plaintext highlighter-rouge">Error</code> <em>too</em> generic to use as the base error type? Is there a nicer
+naming pattern that would allow us to avoid having to suffix concrete types of an error interface with <code class="language-plaintext highlighter-rouge">...Type</code>?</p>
+
+<p>Side-note: there’s <a href="https://github.com/facebook/graphql/pull/373">an RFC</a> to the GraphQL specification that would make it possible to
+have interfaces implement other interfaces, thus removing the need to keep repeating the fields of
+super-interfaces. This RFC has recently been moved to the draft stage, yay!</p>
+
+<h3 id="field-naming">Field naming</h3>
+
+<p>As you may have noticed, we’re calling these fields <code class="language-plaintext highlighter-rouge">something</code> <em>or</em> <code class="language-plaintext highlighter-rouge">error</code>. We are mostly doing this to stay
+backwards compatible with our existing schema. While we could certainly add exception types to existing union
+fields, we can’t change a single type field into a union type field without breaking compatibility.</p>
+
+<p>Instead we may now have 2 versions of a given field:</p>
+
+<ul>
+  <li>one with the single type field which is nullable, in case an exception occurred</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>query {
+  artwork("mona-lisa") {
+    title
+  }
+}
+</code></pre></div></div>
+
+<ul>
+  <li>and another that has the error union type</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>query {
+  artworkOrError("mona-lisa") {
+    ... on Artwork {
+      title
+    }
+    ... on HTTPError {
+      statusCode
+    }
+  }
+}
+</code></pre></div></div>
+
+<p>This duplication is slightly unfortunate, from a clean schema design perspective, but it’s similar to an existing
+pattern in the community. For instance, many schemas provide 2 ways to retrieve lists:</p>
+
+<ul>
+  <li>one as an immediate list:</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>type Query {
+  artworks: [Artwork]
+}
+</code></pre></div></div>
+
+<ul>
+  <li>and one as a ‘connection’ (as defined by the <a href="https://facebook.github.io/relay/graphql/connections.htm">Relay Connection specification</a>)</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>type ArtworkEdge {
+  node: Artwork
+}
+
+type ArtworksConnection {
+  edges: [ArtworkEdge]
+}
+
+type Query {
+  artworksConnection: ArtworksConnection
+}
+</code></pre></div></div>
+
+<p>So the jury is still out on whether or not that’s a bad way to name things. We’ll have to see after using this for a
+while.</p>
+
+<h3 id="downside-of-using-a-union">Downside of using a union</h3>
+
+<p>One notable downside is that GraphQL scalar types can <em>not</em> be included in unions. Thus, if you have scalar fields
+that could lead to exceptions, you will have to ‘box’ those in object types.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>type ArtworkPurchasableBox {
+  value: Boolean!
+}
+
+union ArtworkPurchasableOrError = ArtworkPurchasableBox | HTTPError
+
+type Artwork {
+  currentlyPurchasableOrError: ArtworkPurchasableOrError
+}
+</code></pre></div></div>
+
+<p>This is definitely a case where the pattern of defining 2 fields, one with and one without exception types, comes
+in handy. Having to always query through the box type is inelegant, to put it softly.</p>
+
+<p>Side-note: there actually is <a href="https://github.com/facebook/graphql/issues/215">an open RFC</a> to the specification to allow scalars in unions, but
+it’s still in stage 0 and is in need of a champion in order to proceed. We may end up trying to do so, based on our
+actual experiences with these cases where they may need to be boxed.</p>
+
+<h3 id="example-of-how-we-consume-query-errors">Example of how we consume query errors</h3>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">OrderStatus_order</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">__generated__/OrderStatus_order.graphql</span><span class="dl">"</span>
+<span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">createFragmentContainer</span><span class="p">,</span> <span class="nx">graphql</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react-relay</span><span class="dl">"</span>
+
+<span class="kr">interface</span> <span class="nx">Props</span> <span class="p">{</span>
+  <span class="nl">order</span><span class="p">:</span> <span class="nx">OrderStatus_order</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">OrderStatus</span><span class="p">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">SFC</span><span class="o">&lt;</span><span class="nx">Props</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">({</span> <span class="na">order</span><span class="p">:</span> <span class="nx">orderStatusOrError</span> <span class="p">})</span> <span class="o">=&gt;</span>
+  <span class="nx">orderStatusOrError</span><span class="p">.</span><span class="nx">__typename</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">OrderStatus</span><span class="dl">"</span> <span class="p">?</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+      <span class="p">{</span><span class="nx">orderStatusOrError</span><span class="p">.</span><span class="nx">deliveryDispatched</span>
+        <span class="p">?</span> <span class="dl">"</span><span class="s2">Your order has been dispatched.</span><span class="dl">"</span>
+        <span class="p">:</span> <span class="dl">"</span><span class="s2">Your order has not been dispatched yet.</span><span class="dl">"</span><span class="p">}</span>
+    <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>  <span class="p">)</span> <span class="p">:</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="dl">"</span><span class="s2">error</span><span class="dl">"</span><span class="o">&gt;</span>
+      <span class="p">{</span><span class="nx">orderStatusOrError</span><span class="p">.</span><span class="nx">code</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">unpublished</span><span class="dl">"</span>
+        <span class="p">?</span> <span class="dl">"</span><span class="s2">Please contact gallery services.</span><span class="dl">"</span>
+        <span class="p">:</span> <span class="s2">`An unexpected error occurred: </span><span class="p">${</span><span class="nx">orderStatusOrError</span><span class="p">.</span><span class="nx">message</span><span class="p">}</span><span class="s2">`</span><span class="p">}</span>
+    <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>  <span class="p">)</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">OrderStatusContainer</span> <span class="o">=</span> <span class="nf">createFragmentContainer</span><span class="p">(</span>
+  <span class="nx">OrderStatus</span><span class="p">,</span>
+  <span class="nx">graphql</span><span class="s2">`
+    fragment OrderStatus_order on Order {
+      orderStatusOrError {
+        __typename
+        ... on OrderStatus {
+          deliveryDispatched
+        }
+        ... on OrderError {
+          message
+          code
+        }
+      }
+    }
+  `</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="example-of-how-we-consume-mutation-errors">Example of how we consume mutation errors</h3>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">SubmitOrder_order</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">__generated__/SubmitOrder_order.graphql</span><span class="dl">"</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">SubmitOrderMutation</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">__generated__/SubmitOrderMutation.graphql</span><span class="dl">"</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Router</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">found-relay</span><span class="dl">"</span>
+<span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">commitMutation</span><span class="p">,</span> <span class="nx">createFragmentContainer</span><span class="p">,</span> <span class="nx">graphql</span><span class="p">,</span> <span class="nx">RelayProp</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react-relay</span><span class="dl">"</span>
+
+<span class="kr">interface</span> <span class="nx">Props</span> <span class="p">{</span>
+  <span class="nl">order</span><span class="p">:</span> <span class="nx">SubmitOrder_order</span>
+  <span class="nx">relay</span><span class="p">:</span> <span class="nx">RelayProp</span>
+  <span class="nx">router</span><span class="p">:</span> <span class="nx">Router</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">SubmitOrder</span><span class="p">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">SFC</span><span class="o">&lt;</span><span class="nx">Props</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">props</span> <span class="o">=&gt;</span> <span class="p">(</span>
+  <span class="o">&lt;</span><span class="nx">button</span>
+    <span class="nx">onClick</span><span class="o">=</span><span class="p">{()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="nx">commitMutation</span><span class="o">&lt;</span><span class="nx">SubmitOrderMutation</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">props</span><span class="p">.</span><span class="nx">relay</span><span class="p">.</span><span class="nx">environment</span><span class="p">,</span> <span class="p">{</span>
+        <span class="na">mutation</span><span class="p">:</span> <span class="nx">graphql</span><span class="s2">`
+          mutation SubmitOrderMutation($input: SubmitOrder!) {
+            submitOrder(input: $input) {
+              orderStatusOrError {
+                __typename
+                ... on OrderStatus {
+                  submitted
+                }
+                ... on OrderError {
+                  message
+                  code
+                }
+              }
+            }
+          }
+        `</span><span class="p">,</span>
+        <span class="na">variables</span><span class="p">:</span> <span class="p">{</span> <span class="na">input</span><span class="p">:</span> <span class="p">{</span> <span class="na">orderID</span><span class="p">:</span> <span class="nx">props</span><span class="p">.</span><span class="nx">order</span><span class="p">.</span><span class="nx">id</span> <span class="p">}</span> <span class="p">},</span>
+        <span class="na">onCompleted</span><span class="p">:</span> <span class="p">({</span> <span class="na">submitOrder</span><span class="p">:</span> <span class="p">{</span> <span class="nx">orderStatusOrError</span> <span class="p">}</span> <span class="p">},</span> <span class="nx">errors</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+          <span class="k">if </span><span class="p">(</span><span class="nx">orderStatusOrError</span><span class="p">.</span><span class="nx">__typename</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">OrderStatus</span><span class="dl">"</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">props</span><span class="p">.</span><span class="nx">router</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span>
+              <span class="s2">`/orders/</span><span class="p">${</span><span class="nx">props</span><span class="p">.</span><span class="nx">order</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="s2">/</span><span class="p">${</span><span class="nx">orderStatusOrError</span><span class="p">.</span><span class="nx">submitted</span> <span class="p">?</span> <span class="dl">"</span><span class="s2">submitted</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">pending</span><span class="dl">"</span><span class="p">}</span><span class="s2">`</span>
+            <span class="p">)</span>
+          <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nf">alert</span><span class="p">(</span>
+              <span class="nx">orderStatusOrError</span><span class="p">.</span><span class="nx">code</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">unpublished</span><span class="dl">"</span>
+                <span class="p">?</span> <span class="dl">"</span><span class="s2">Please contact gallery services.</span><span class="dl">"</span>
+                <span class="p">:</span> <span class="s2">`An unexpected error occurred: </span><span class="p">${</span><span class="nx">orderStatusOrError</span><span class="p">.</span><span class="nx">message</span><span class="p">}</span><span class="s2">`</span>
+            <span class="p">)</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">})</span>
+    <span class="p">}}</span>
+  <span class="sr">/</span><span class="err">&gt;
+</span><span class="p">)</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">SubmitOrderContainer</span> <span class="o">=</span> <span class="nf">createFragmentContainer</span><span class="p">(</span>
+  <span class="nx">SubmitOrder</span><span class="p">,</span>
+  <span class="nx">graphql</span><span class="s2">`
+    fragment SubmitOrder_order on Order {
+      id
+    }
+  `</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<!--
+
+### Show example of factory code that produces both single and union typed fields
+
+TODO
+
+-->
+
+<h2 id="final-thoughts">Final thoughts</h2>
+
+<p>As stated before, we having only recently begun rolling out these changes into our production schema. However, much
+thought and experimentation has gone into this to ensure we will be able to address all of <em>our</em> needs, at least.</p>
+
+<p>I would love to hear other people’s thoughts on this and definitely feedback if they try to adopt it themselves. As
+a community we should openly iterate together, as much as possible, as we try to make the future of GraphQL a great
+one and put legit questions to ‘REST’ ;)</p>
+
+<p>For now, I’ll leave you with this message from some internet ‘rando’:</p>
+
+<blockquote>
+  <p>@alloy That diff makes a lot of sense to me. I’ve also seen user errors as a field on the mutation result, but I
+like that union makes it explicit that there was either success or failure and in the case of failure provides
+rich information that’s in your app’s domain.</p>
+</blockquote>
+
+<p>– <a href="https://twitter.com/leeb/status/1020054709694943232">Lee Byron</a></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Is GraphQL The Future?]]></title>
+    <link href="https://marinahuber.github.io/blog/2018/05/08/is-graphql-the-future/"/>
+    <updated>2018-05-08T00:00:00+02:00</updated>
+    <id>https://marinahuber.github.io/blog/2018/05/08/is-graphql-the-future</id>
+    <content type="html"><![CDATA[<p>I have seen the future, and it looks a lot like GraphQL. Mark my words: in 5
+years, newly minted full-stack app developers won’t be debating <em>RESTfulness</em>
+anymore, because REST API design will be obsolete. By the end of this post, I
+hope you’ll see what I see in the promise of GraphQL as a new approach to
+client-server interaction.</p>
+
+<!-- more -->
+
+<p>GraphQL is taking the full-stack world by storm. In case you’re not familiar,
+GraphQL is a language-independent specification for client-server communication.
+It lets you model the resources and processes provided by a server as a
+<a href="https://en.wikipedia.org/wiki/Domain-specific_language">domain-specific language (DSL)</a>.
+Clients can use it to send scripts written in your DSL to the server to process
+and respond to as a batch.</p>
+
+<p>That’s…different from how GraphQL’s own page describes it. GraphQL is better
+known as a query language designed for clients to fetch exactly the data they
+need. While this is sort of true, I would argue that GraphQL actually fails this
+test in reality. It’s neither a query language, nor particularly graph-oriented.
+I argue that it’s <em>not</em> a query language because it comes with no native
+concepts of operators and expressions that build up to queries. <em>You</em> build
+whatever facilities for specifying and fulfilling queries on your own. Likewise,
+if your data is a graph, it’s on you to expose that structure. But your requests
+are, if anything, trees.</p>
+
+<p>I’m not trying to be pedantic. I believe GraphQL succeeds at something subtler
+and more important than literally being a graph query language. I’m writing this
+piece because I kept running into difficulties approaching GraphQL from the
+standpoints of REST, graph theory, or typical query languages. As I read blog
+posts, StackOverflow Q&amp;As, issues on the GraphQL repo and the GraphQL spec
+itself, I developed a much more nuanced understanding, which I outline below.</p>
+
+<p>For brevity, the following assumes a intermediate familiarity with GraphQL,
+including its type system, syntax, and server-side implementation. If you don’t
+have this level of familiarity, I recommend going through any tutorial that
+requires you to set up a GraphQL server, not just play with the query language
+(which is how I ended up with a lot of misconceptions).
+<a href="https://graphql.org/graphql-js/">The docs for the official JavaScript server library</a>
+are a good option. I’m going to start with the basics, but only so I can put my
+own spin on those concepts, not to really illustrate them with examples.</p>
+
+<h1 id="a-tree-of-fetches">A tree of fetches</h1>
+
+<p>Most applications are designed in the form of discrete pages, which are seeded
+with some tiny chunk of data—say, a key or slug for some domain object—and then
+perform a cascade of contingent fetches to get the data needed to populate the
+templates rendered to a user. This is the basis of designing applications driven
+by URL-based routing and it has been a mainstay of the MVC approach to web
+application architecture for the past decade.</p>
+
+<blockquote>
+  <p><strong>Example:</strong> At Artsy, the seed of data for rendering an artwork page could be
+the slug identifying some artwork. From this slug, we need a whole bunch more
+data: the metadata of the artwork, information about the artist(s), sales data
+if it’s available for purchase, information about the Artsy partner that owns
+it, and so on. In classic REST, this data is aggregated by a cascade of dozens
+of HTTP fetches to our backend API.</p>
+</blockquote>
+
+<p>I wasn’t in the room when GraphQL was invented, but it seems to me that the team
+that built it made a particularly crucial insight:</p>
+
+<blockquote>
+  <p>In most cases, all of this contingent fetching forms a tree, which is more or
+less <em>fixed</em> for a given page.</p>
+</blockquote>
+
+<p>Data from early responses contain the keys for subsequent requests, but the
+linkages between these requests are usually straightforward. So if it were
+possible to factor all this disparate fetching into one spot and encode it into
+one big “fetching tree” data structure ahead of time, this tree could be sent to
+the the server, and the server could fulfill all of the data requirements in one
+shot. This cuts out a tremendous amount of wasteful chatter between client and
+server. Even in today’s broadband world, bandwidth and latency matter,
+especially for mobile users.</p>
+
+<h1 id="graphql-anatomy">GraphQL anatomy</h1>
+
+<blockquote>
+  <p><strong>Editorial note</strong> I’m going to use the term “operation” pretty liberally
+here, but I mean it in the conceptual sense, not in the sense of the GraphQL
+spec, where it defines the semantics of an entire GraphQL request.</p>
+</blockquote>
+
+<p>A GraphQL request always starts with at least <em>one root API operation</em> and some
+finite number of follow-ups. Idiomatically, these follow-ups are queries,
+meaning that they just retrieve data, without changing the server state in
+observable ways. GraphQL models API operations as <strong>fields</strong>. How a field works
+in GraphQL depends on its <strong>type</strong>, which falls into one of two basic
+categories:</p>
+
+<ul>
+  <li><strong>Scalar</strong> types (<code class="language-plaintext highlighter-rouge">Int</code>, <code class="language-plaintext highlighter-rouge">Float</code>, <code class="language-plaintext highlighter-rouge">String</code>, <code class="language-plaintext highlighter-rouge">Boolean</code>, and <code class="language-plaintext highlighter-rouge">ID</code>, as well as
+application-defined <code class="language-plaintext highlighter-rouge">enum</code> and <code class="language-plaintext highlighter-rouge">scalar</code> types) represent the individual pieces
+of <em>data actually sent to the client</em>. Contrary how I think of the term scalar
+in other contexts, the data can be arbitrarily complex. As far as the GraphQL
+spec is concerned, scalars are just opaque blobs of data with validation and
+serialization rules. As an operation, a scalar field is terminal data fetch,
+with no follow-ups. They are the leaves of the request tree.</li>
+  <li><strong>Object</strong> types (<code class="language-plaintext highlighter-rouge">type</code>, <code class="language-plaintext highlighter-rouge">union</code> and <code class="language-plaintext highlighter-rouge">interface</code>) are collections of fields.
+As an operation, an object-typed field is an intermediate operation that
+serves as the junction point for follow-up operations. But, it doesn’t
+directly return any data. They are the branches of the request tree.</li>
+</ul>
+
+<p>The entire model for a given API is known as its <strong>schema</strong>. Every schema has a
+root query type, whose fields serve as the API’s entry points.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># The root query object type
+type Query {
+  artwork(id: ID): Artwork
+  artist(name: String)
+  # … a whole bunch more root fields
+}
+
+type Artwork {
+  title: String
+  artist: Artist
+}
+
+type Artist {
+  name: String
+}
+</code></pre></div></div>
+
+<p>A GraphQL query request begins by mentioning at least one of the fields of the
+root query object. This represents an initial query. And if that field is an
+object, <em>its</em> fields are used to specify any number of follow-up queries.
+Critically, <em>any</em> field in the request tree can take arguments, allowing a
+request to be parameterized at all depths.</p>
+
+<p>Take this query, for example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  artwork(id: "andy-warhol-campbells-soup-i-black-bean") {
+    title
+    artist {
+      name
+    }
+  }
+}
+</code></pre></div></div>
+
+<p>Here, we tell the server to look up an <code class="language-plaintext highlighter-rouge">Artwork</code> by its slug, and tell us the
+title. So far, this is just like REST. But we <em>also</em> tell it to find us the
+<code class="language-plaintext highlighter-rouge">Artist</code> for us. Importantly, object fields <em>must</em> be followed up with further
+queries, and scalar fields <em>cannot</em> be. With that in mind, it’s easy to see that
+<code class="language-plaintext highlighter-rouge">artwork</code> and <code class="language-plaintext highlighter-rouge">artist</code> are object fields, while <code class="language-plaintext highlighter-rouge">title</code> and <code class="language-plaintext highlighter-rouge">name</code> are scalar
+fields.</p>
+
+<p>Also note that the fact that there’s also an <code class="language-plaintext highlighter-rouge">artist</code> root query field actually
+has nothing to do with its presence under <code class="language-plaintext highlighter-rouge">Artwork</code>. There can be multiple paths
+to reach the same GraphQL type. This is defined explicitly by the schema.</p>
+
+<p>Usefully, the server’s response to a GraphQL request will directly mirror the
+shape of the request itself. The result of the request above looks like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "data": {
+    "artwork": {
+      "title": "Campbell's Soup I: Black Bean",
+      "artist": {
+        "name": "Andy Warhol"
+      }
+    }
+  }
+}
+</code></pre></div></div>
+
+<h1 id="graphql-as-a-meta-scripting-language">GraphQL as a (meta-)scripting language</h1>
+
+<p>Let’s dig a little deeper into the scripting language interpretation of GraphQL,
+because this is the crux of how I think people should think of GraphQL. If I
+were to guess, I think Facebook…</p>
+
+<ul>
+  <li>…knows this is true. After all, much of the spec is devoted to
+<a href="http://facebook.github.io/graphql/October2016/#sec-Execution">the execution model of GraphQL</a>.</li>
+  <li>…might have backed into this design. It’s well known that they think of their
+data as a graph, so I suspect GraphQL might have begun literally as a “graph
+query language”, analogous to <a href="https://en.wikipedia.org/wiki/SQL">SQL</a> for
+relational databases.</li>
+  <li>…thinks that this too difficult to explain, and thus, settled on the query
+language paradigm.</li>
+</ul>
+
+<p>There are a couple reasons GraphQL might not look like a scripting language to
+you. It didn’t to me, at first! After all, you don’t write your request as list
+of statements. It doesn’t have a concept of variables, other than parameters to
+the whole document. There are no looping constructs or recursion. But I think a
+closer look might shift your perspective.</p>
+
+<h2 id="control-flow">Control flow</h2>
+
+<p>It’s true that a GraphQL request doesn’t follow the same vertical sequence of
+steps model familiar to most programming languages. But sequencing <em>does</em> exist.
+It’s just represented by calling nested fields of object types, terminating in a
+scalar field. See this request:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  step1(arg: “something”) {
+    step2 {
+      step3(arg: "something else”) {
+        outputScalar
+      }
+    }
+  }
+</code></pre></div></div>
+
+<p>In a more traditional language, this would look more like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>step1(“something”)
+step2()
+return step3(“something else”)
+</code></pre></div></div>
+
+<p>So, sequencing got a bit more verbose, but it <em>is</em> there.</p>
+
+<p>Interestingly, GraphQL reserves vertical stacking for something that’s an
+afterthought in most languages: <em>concurrency</em>. (Granted, there’s no way to
+<a href="https://en.wikipedia.org/wiki/Synchronization_(computer_science)">synchronize</a>
+concurrent paths of execution.) I’m not going to quote
+<a href="https://facebook.github.io/graphql/October2016/">the spec</a>, but search it
+yourself, and you can find the word “parallel” in there several times. This
+design is intentional.</p>
+
+<h2 id="variables">Variables</h2>
+
+<p>One of the core aspects of programming is the ability to pass intermediate data
+around. The most basic way languages accomplish this is with named variables.
+Many languages allow variables to be reassigned; some don’t. GraphQL doesn’t
+have them at all! But that doesn’t mean data can’t be propagated.</p>
+
+<p>GraphQL supports one kind of propagation, which is the propagation of context
+down the sequence of resolvers. It happens implicitly and invisibly. Exactly
+what data is propagated and what that means is up to you.</p>
+
+<p>How does this work? Well, if you have worked on GraphQL server code, you know
+that every field has a <strong>resolver</strong>.</p>
+
+<ul>
+  <li>For scalar fields, the resolver is responsible for returning the actual data
+that the client sees.</li>
+  <li>For object fields, the resolver instead returns a hidden chunk of data that is
+forwarded along to the resolvers of the fields contained in the object. So
+these resolvers get their parent object’s hidden data, the global context, and
+any arguments, and they can use all of these values to produce their value.</li>
+</ul>
+
+<p>Often, we just resolve an object field to a domain object. Its scalar fields
+might correspond to properties of that domain object and its object fields might
+correspond to related objects. But the architecture is more powerful than this!
+A deeply nested field can potentially be the result of the resolved values of
+all its parents. It all depends on how you design your resolvers to work
+together.</p>
+
+<p>This pattern reminds me a bit of when <a href="https://api.jquery.com/">jQuery</a> first
+clicked for me. A lot of details are propagated invisibly within your <code class="language-plaintext highlighter-rouge">jquery</code>
+object as you chain method calls to refine your DOM selections.</p>
+
+<h2 id="looping-and-recursion">Looping and recursion</h2>
+
+<p>GraphQL doesn’t have them, plain and simple. Consequently, the GraphQL DSLs you
+design are not
+<a href="https://en.wikipedia.org/wiki/Turing_completeness">Turing-complete</a>–they will
+always halt in a finite amount of steps. This is really important, because it
+prevents clients from being able to send servers on errands that will never end.
+Of course, the <em>implementations</em> of field resolvers on the server are free to do
+whatever they want in full Turing-complete glory.</p>
+
+<h2 id="putting-it-together">Putting it together</h2>
+
+<p>My point here is that the execution model of GraphQL is in many ways just like a
+scripting language interpreter. The limitations of its model are strategic, to
+keep the technology focused on client-server interaction. What’s interesting is
+that you as a developer provide nearly all of the definition of what operations
+exist, what they mean, and how they compose. For this reason, I consider GraphQL
+to be a <em>meta-scripting language</em>, or, in other words, a toolkit for building
+scripting languages.</p>
+
+<h1 id="the-post-rest-world">The post-REST world</h1>
+
+<p>Subtly, this paradigm is a sharp step away from a whole body of knowledge that
+models APIs as resources with fixed verbs, which we know as REST. It’s more
+appropriate to think of GraphQL requests as a script of remote procedure calls
+(RPC). From this perspective, the design of the schema is a lot less about data
+modeling than it is a question of how you want your entire API to be traversed.
+This encourages a verb-oriented mindset.</p>
+
+<h2 id="verb-orientation">Verb orientation</h2>
+
+<p>Speaking of verbs, you can think of “fetch” as being the default verb in
+GraphQL. You model other verbs as <strong>mutations</strong>. I delayed learning about
+mutations, because I thought they must be way more complex than queries. Quite
+the opposite! They all sit in one big, flat bucket at the root of your schema,
+as the fields of the root <code class="language-plaintext highlighter-rouge">mutation</code> type. These fields have a type too, and if
+it is an object type, then you can issue effectively any number of follow-up
+queries after your mutation completes. Learning about mutations was when it
+really dawned on me that <em>fields are just function calls</em>.</p>
+
+<p>Mutations are a major break with REST. In GraphQL, your mutations are defined
+under root mutation object that is separate from your root query object.
+Therefore, you are immediately asked to accept that they don’t represent verbs
+on a resource, but verbs <em>on your entire service</em>. This eliminates one of REST’s
+key weak points, namely that complex operations that touch multiple parts of an
+application’s data model are difficult to model as a PUT, DELETE, POST, or PATCH
+on a single resource. In my experience, this “impedance mismatch” between API
+modeling and domain modeling has led to the worst aspects of my HTTP API
+designs.</p>
+
+<h2 id="rest-is-dead-long-live-rest">REST is dead. Long live REST!</h2>
+
+<p>It is borderline heresy in some circles to suggest that REST API design is dead.
+But I’m saying it. Don’t get me wrong, REST is still a great paradigm for
+serving static assets. It’s the <em>API</em> part I have an issue with.</p>
+
+<p>Ironically, I think there’s a strong argument that a GraphQL request document
+maps very nicely to the concept of a resource:</p>
+
+<ul>
+  <li>It doesn’t change that often, and you could PUT it to store it, perhaps using
+a hash of the request document to form the URL.</li>
+  <li>GraphQL queries map elegantly to GET operations on a stored query request
+document’s URL.</li>
+  <li>GraphQL mutations map decently to POST operations to a stored mutation request
+document’s URL.</li>
+  <li>The arguments of a GraphQL request map elegantly to HTTP query parameters.</li>
+</ul>
+
+<p>In other words, GraphQL is simply another formalization layer of HTTP-based API
+design. Think of it as being akin to the way JSON representation changed the way
+we think about client-server communication in full-stack apps. It’s not so much
+that REST will cease to exist, but that it will fade to the background, as an
+implementation detail of GraphQL application frameworks.</p>
+
+<h1 id="graphql-is-not-your-data-model">GraphQL is not your data model</h1>
+
+<p>Another realization I’ve had in learning to apply GraphQL is that the schema is
+<em>not</em> the actual data model, and therefore raw GraphQL responses cannot be
+directly used by the client. You <em>could</em> choose to think of it this way, but
+you’re likely to run into some conundrums:</p>
+
+<ul>
+  <li><a href="https://github.com/facebook/graphql/issues/101">There is no free-form map data structure</a>.
+There are only objects with fixed fields, scalars, and lists.</li>
+  <li>It is difficult to design abstractions over types.</li>
+  <li>The object tree you get in return from a query request is neither normalized
+nor is it an object graph (multiple copies of the same object may be
+returned).</li>
+  <li>Commonly used protocol patterns, like
+<a href="https://facebook.github.io/relay/docs/graphql-connections.html">the connection pattern</a>,
+require explicit modeling within your schema.</li>
+  <li>The limitations of GraphQL’s type system make certain modeling techniques
+difficult to directly model, such as
+<a href="https://stackoverflow.com/questions/47933512/representing-enum-object-variant-type-in-graphql">singletons within unions</a>.</li>
+  <li>Recursive data types can’t be queried to undefined depth in their nested form.
+Think of your comment board with nested replies.</li>
+</ul>
+
+<p>The upshot of this is that there likely needs to be some process of conversion
+from your native data model on your server to your GraphQL API, and then again
+from your client’s API consumption code to its internal data model.
+<a href="https://facebook.github.io/relay/">Relay</a> and
+<a href="https://www.apollographql.com/client">Apollo</a> serve this purpose. Their utility
+wasn’t immediately clear to me when I naively imagined GraphQL to literally be a
+system for reproducing a slice of server-side object graph. (Hmm, where might I
+have gotten that impression from?)</p>
+
+<p>A lot of discussion in the GraphQL space centers on data modeling—the nouns.
+There’s a lot of debate and worthwhile work to be done on that front, but one of
+my primary reasons for writing this piece is to think about the verbs. What
+happens when you think of GraphQL requests as not just verbs, but <em>chains</em> of
+verbs? My inkling is that you start to be able to represent services in a much
+more fluid way. Complex processes no longer have to be orchestrated by API
+clients or hidden behind unwieldy black-box POST endpoints. Instead, clients can
+compose processes from the easily inspectable building blocks that the server
+provides via its GraphQL schema. That’s a whole different approach to API
+design.</p>
+
+<h1 id="so-where-to-now">So, where to now?</h1>
+
+<p>I began by asserting that the future looks a lot <em>like</em> GraphQL. But I did not
+say that GraphQL <em>is the future</em>. I hedge because there are a lot of unanswered
+questions and some pain points within today’s GraphQL, even as it paints a
+compelling picture of the future. I may write a follow-up piece bringing up some
+of these gripes. At the moment, Facebook still largely controls the development
+of the technology and it has been slow to evolve. Arguably, this is a good
+thing, as the full-stack community continues to digest the basic concepts. But
+I’m sure impatient folks will attempt forks or create parallel technologies. How
+it all balances out is anybody’s guess.</p>
+
+<p>Nonetheless, today’s GraphQL is already a tremendous leap forward from REST API
+design. It much more directly models the sort of data traversals a client needs
+to perform in order to do its job. I expect significant refinement within this
+space over the next couple years. And after a couple more, the days before
+GraphQL will be just another source of lore for grizzled vets like us.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Programmer Misconceptions about Art]]></title>
+    <link href="https://marinahuber.github.io/blog/2018/04/18/programmer-misconceptions-about-art/"/>
+    <updated>2018-04-18T00:00:00+02:00</updated>
+    <id>https://marinahuber.github.io/blog/2018/04/18/programmer-misconceptions-about-art</id>
+    <content type="html"><![CDATA[<p>Our mission at Artsy has been to make a world where everyone is moved by art every day, and at a high level, the way that our engineering team supports that mission is through building software. We have built systems and databases and user interfaces that represent different facets of the art world, and throughout our work, we have… made some mistakes.</p>
+
+<p>That’s okay! Programmers make mistakes all the time. There is <a href="https://github.com/kdeldycke/awesome-falsehood">a large list of blog posts</a> describing various programmer misconceptions, from subjects you might expect would be simple to model in computers, like units of measurement and time, to subjects that are based more in the human condition, like postal addresses and marriage.</p>
+
+<p>In the interest of openness and sharing what we’ve learned, the Artsy Engineering team has come up with the following list of misconceptions programmers believe about art. Thank you to everyone at Artsy who contributed to this list.</p>
+
+<!-- more -->
+
+<ul>
+  <li>All artworks have an artist (some artworks are attributed to “cultural makers”, others have a manufacturer).</li>
+  <li>All artworks have exactly one artist (some artworks are collaborations).</li>
+  <li>All artworks are unique (there are editions, reproductions, and series of works, and modeling the relationships between them all is nontrivial).</li>
+  <li>All lots in an art auction are artworks (some lots are “experiential”, like a visit to an artist’s studio).</li>
+  <li>Only rich people buy art.</li>
+  <li>Only rich people can afford to buy art, and everyone else just buys posters of “real” art.</li>
+  <li>All artworks have a title (some are untitled).</li>
+  <li>“Untitled” signifies an artwork has no title (some artworks are titled “Untitled”).</li>
+  <li>All artwork titles can fit inside 512 characters (not true, <a href="https://www.artsy.net/artwork/matt-goerzen-sockpuppet-theatre-representing-the-techniques-tools-and-environments-whereby-hackers-and-other-info-warriors-might-seek-to-parse-through-elsewhere-distorted-informational-domains-to-make-sense-of-them-and-also-possibly-to-acquire-by-illicit-or-clever-means-good-information-that-can-then-be-communicated-in-a-way-that-sheds-light-on-deceptions-but-can-also-be-difficult-to-evaluate-on-their-own-terms-due-to-the-elite-requisites-of-interpreting-such-knowledge-or-more-generalized-uncertaintities-regarding">here is a counterexample</a>).</li>
+  <li>An artwork is associated with a natural, canonical category.</li>
+  <li>An artwork belongs to only one gallery/collector/auction house at a time (provenance of artworks is complicated, and there is no canonical source of truth).</li>
+  <li>Art should always be rendered at its maximum size (there are complex business constraints and art world norms that need to be considered).</li>
+  <li>People buy art mostly for its visual qualities (most people buy art because of a story, because they understand what the artwork is trying to say, or because they simply can’t stop thinking about it).</li>
+  <li>People don’t buy art from JPEGs (in fact, people buy art that hasn’t even been created yet).</li>
+  <li>“My kid can paint that” (<a href="https://twitter.com/ashfurrow/status/707273704640798720">but did they?</a>).</li>
+  <li>The art market needs technology because it’s inefficient (the art market needs technology because technology can help expand the entire art world).</li>
+  <li>Intermediaries in the art market are bad (eg. galleries: they enable artists to make works for years before they sell anything, they are the enabler, not the obstacle).</li>
+  <li>There is one “art world” (there are thousands of galleries around the world, specializing in everything from contemporary jewelry and emerging conceptual art to Chinese scroll painting and regional landscapes).</li>
+  <li>Your opinion on art doesn’t matter, the industry will independently determine value of an artwork (everyone has opinions, your appreciation of art is <em>all</em> about <em>you</em>).</li>
+  <li>The art world is hermetic and isn’t relevant to my life (in fact the arts contribute billions of dollars to the economy, employ thousands of people, have a ripple effect on urban life, and are often a major source of inspiration for the TV, movies, and books we all consume on a daily basis).</li>
+  <li>Gallerists are fancy people in a luxury business, living fancy lives (in fact, the average salary for a gallery owner is way lower than you think).</li>
+  <li>Art and engineering are orthogonal (nope, just look at us!).</li>
+</ul>
+
+<p>Do you have expertise in an area programmers often get wrong? Write a blog post and add it to <a href="https://github.com/kdeldycke/awesome-falsehood">the list of misconceptions</a>!</p>
+
+]]></content>
+  </entry>
+  
+</feed>

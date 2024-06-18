@@ -1,0 +1,10 @@
+current directory: /Users/marina/Desktop/Babies-repos/blog/vendor/cache/ruby/2.7.0/gems/sass-embedded-1.63.6/ext/sass
+/opt/homebrew/opt/ruby@2.7/bin/ruby -rrubygems /Users/marina/Desktop/Babies-repos/blog/vendor/cache/ruby/2.7.0/gems/rake-13.2.1/exe/rake RUBYARCHDIR\=/Users/marina/Desktop/Babies-repos/blog/vendor/cache/ruby/2.7.0/extensions/arm64-darwin-23/2.7.0/sass-embedded-1.63.6 RUBYLIBDIR\=/Users/marina/Desktop/Babies-repos/blog/vendor/cache/ruby/2.7.0/extensions/arm64-darwin-23/2.7.0/sass-embedded-1.63.6
+fetch https://github.com/sass/dart-sass/releases/download/1.63.6/dart-sass-1.63.6-macos-arm64.tar.gz
+mkdir -p .
+tar -vxC . -f dart-sass-1.63.6-macos-arm64.tar.gz --no-same-owner --no-same-permissions
+x dart-sass/src/LICENSE
+x dart-sass/src/dart
+x dart-sass/src/sass.snapshot
+x dart-sass/sass
+rm dart-sass-1.63.6-macos-arm64.tar.gz

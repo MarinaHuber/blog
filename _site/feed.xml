@@ -1,17 +1,1831 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-06-13T09:50:47+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Your awesome title</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/jekyll/update/2024/06/13/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2024-06-13T09:27:36+02:00</published><updated>2024-06-13T09:27:36+02:00</updated><id>http://localhost:4000/jekyll/update/2024/06/13/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2024/06/13/welcome-to-jekyll.html"><![CDATA[<p>You’ll find this post in your <code class="language-plaintext highlighter-rouge">_posts</code> directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run <code class="language-plaintext highlighter-rouge">jekyll serve</code>, which launches a web server and auto-regenerates your site when a file is updated.</p>
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blog Engineering</title>
+    <description></description>
+    <link>https://marinahuber.github.ioblog/</link>
+    <atom:link href="https://marinahuber.github.ioblog/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Tue, 18 Jun 2024 15:01:35 +0200</pubDate>
+    <lastBuildDate>Tue, 18 Jun 2024 15:01:35 +0200</lastBuildDate>
+    <generator>Jekyll v4.3.3</generator>
+    
+      <item>
+        <title>Two years of Next.js at Artsy: A Retrospective</title>
+        <description>&lt;p&gt;Where to begin! Where to begin…&lt;/p&gt;
 
-<p>Jekyll requires blog post files to be named according to the following format:</p>
+&lt;p&gt;Lets start with a good measure of success, one that I think most engineers could
+agree on: a from-scratch rebuild of a complex, internal tools app. Success with
+rebuilds is often fleeting, as many can attest. There’s risk involved. Extending
+the challenge further, lets assign (most) of the task to a team of platform
+engineers who aren’t too familiar with modern front-end technology – and then
+say that we succeeded.&lt;/p&gt;
 
-<p><code class="language-plaintext highlighter-rouge">YEAR-MONTH-DAY-title.MARKUP</code></p>
+&lt;p&gt;Is Artsy crazy? Or is Next.js (along with our team 🙂) just that good? Well,
+it’s a little of both. And it’s a little bittersweet, in a way. Here’s our tale.&lt;/p&gt;
 
-<p>Where <code class="language-plaintext highlighter-rouge">YEAR</code> is a four-digit number, <code class="language-plaintext highlighter-rouge">MONTH</code> and <code class="language-plaintext highlighter-rouge">DAY</code> are both two-digit numbers, and <code class="language-plaintext highlighter-rouge">MARKUP</code> is the file extension representing the format used in the file. After that, include the necessary front matter. Take a look at the source for this post to get an idea about how it works.</p>
+&lt;!-- more --&gt;
 
-<p>Jekyll also offers powerful support for code snippets:</p>
+&lt;h3 id=&quot;beginnings&quot;&gt;Beginnings&lt;/h3&gt;
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">print_hi</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
-  <span class="nb">puts</span> <span class="s2">"Hi, </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">"</span>
-<span class="k">end</span>
-<span class="n">print_hi</span><span class="p">(</span><span class="s1">'Tom'</span><span class="p">)</span>
-<span class="c1">#=&gt; prints 'Hi, Tom' to STDOUT.</span></code></pre></figure>
+&lt;p&gt;Our first formal use of Next came from a project spun up during Hackathon, two
+years ago. Hackathon’s are great opportunities to push technology forward, and
+Artsy has had a lot of success with them. We’d been talking about Next.js for a
+while, and experimenting here and there, but we were never able to find the
+proper intersection of product and purpose to take things further. With this in
+mind, one of our Engineers (Roop 👋) spun up a Next.js POC that allowed us to
+deduplicate artist records. On the surface, the effort was non-trivial. It
+involved authentication, DB communication, and more. Yet when presented during
+Hackathon, all of this was done and it also looked &lt;em&gt;beautiful&lt;/em&gt;.&lt;/p&gt;
 
-<p>Check out the <a href="https://jekyllrb.com/docs/home">Jekyll docs</a> for more info on how to get the most out of Jekyll. File all bugs/feature requests at <a href="https://github.com/jekyll/jekyll">Jekyll’s GitHub repo</a>. If you have questions, you can ask them on <a href="https://talk.jekyllrb.com/">Jekyll Talk</a>.</p>]]></content><author><name></name></author><category term="jekyll" /><category term="update" /><summary type="html"><![CDATA[You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated.]]></summary></entry></feed>
+&lt;p&gt;How could so much product work get completed in such a short period of time? A
+large part of that is due to Next.js’s framework design, and how it simply gets
+out of the way and allows one to start building product features. The defaults
+made sense; to create a new route, simply create a new folder or file in the
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pages&lt;/code&gt; directory, and Next takes care of the rest. And what about compilation,
+TypeScript, linting, and all of the other extraordinarily confusing JavaScript
+toolchain details that folks typically struggle over? (Most) of the setup was
+taken care of at the framework level, and the API side of things was light and
+easy to understand, thanks to great documentation.&lt;/p&gt;
+
+&lt;p&gt;There are omitted details of course, and there were things we needed to figure
+out (such as auth, via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;next-auth&lt;/code&gt;, and passing runtime ENV secrets to our
+Dockerized container), but in any case this gave us a lot of confidence to start
+discussing what it might take to seriously consider rebuilding our internal
+tools app. A few meetings later it was decided, and our platform team agreed to
+take it (with loose backup support from a couple other engineers). And a few
+short month’s later much of the core functionality was complete, executed by a
+team working amidst unfamiliar terrain.&lt;/p&gt;
+
+&lt;p&gt;That’s the definition of success, and the measure. With our internal tools app
+complete it was natural to start looking around for other opportunities – but
+first, a quick detour.&lt;/p&gt;
+
+&lt;h3 id=&quot;enter-next-13-aka-the-app-router&quot;&gt;Enter: Next 13 (aka, The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app&lt;/code&gt; Router)&lt;/h3&gt;
+
+&lt;p&gt;Many of the limitations of Next 12 are well known, with the most notable ones
+being the inability to (naturally) do page layouts along with quirks around
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getServerSideProps&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_app&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_document&lt;/code&gt; request fetching not being as
+flexible as one would like. These issues, however, were not &lt;em&gt;deal-breakers&lt;/em&gt;; and
+in fact, we hardly even noticed them. Our page layouts simply rendered a shared
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;Layout&amp;gt;&lt;/code&gt; component that accepted &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;children&lt;/code&gt;; and per-route data fetching
+requested data per-route, with globally shared data going in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_app&lt;/code&gt;. It got the
+job done.&lt;/p&gt;
+
+&lt;p&gt;With these things in mind (and a few things more), many of us were extremely
+excited when Next released its
+&lt;a href=&quot;https://nextjs.org/blog/layouts-rfc&quot;&gt;Layouts RFC&lt;/a&gt;, outlining the &lt;em&gt;next&lt;/em&gt; version
+of Next.js, which would be built on top of another long-anticipated React.js
+feature,
+&lt;a href=&quot;https://legacy.reactjs.org/blog/2020/12/21/data-fetching-with-react-server-components.html&quot;&gt;React Server Components&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In short, the Layouts RFC outlined what looked to be a beautifully obvious, yet
+performant architecture. Using Next’s preference for file-system based
+configuration, a typical “page” could soon look like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- app/
+---- layout.tsx
+---- page.tsx
+- app/artist
+---- layout.tsx
+---- page.tsx
+---- middleware.tsx
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And so on. “Global” SSR data could be fetched right there in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;layout&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;page&lt;/code&gt;
+and shared with its subtree; and likewise, for sub-sub-tree’s we could do the
+same in each individual app &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;layout&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;page&lt;/code&gt; component.&lt;/p&gt;
+
+&lt;p&gt;Additionally, with React Server Components, we would no longer need to use many
+Next.js-specific APIs. To fetch data on the server, you simply &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;await&lt;/code&gt; a promise
+and pass it right to your component as props. Next’s already minimal API
+footprint would diminish even further, and it became possible to glean a vision
+of “just vanilla JS” all the way down, and within that vision the possibility of
+true simplicity.&lt;/p&gt;
+
+&lt;p&gt;Little did we know, it wouldn’t take much to turn this beautiful vision into
+something of a dilemma, but that part of the story comes a bit later.&lt;/p&gt;
+
+&lt;h3 id=&quot;expanding-nextjs-at-artsy&quot;&gt;Expanding Next.js at Artsy&lt;/h3&gt;
+
+&lt;p&gt;Coming off of our success with the internal tools app rebuild, we wanted more.
+And we didn’t need to look far: right around the corner was a ~10 year old
+external CMS app that our partners use to manage their inventory.&lt;/p&gt;
+
+&lt;p&gt;We decided the path forward was Next, and like our internal tools app rebuild,
+for the most part it has been a success. We again went with the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pages&lt;/code&gt; router
+(as the new &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app&lt;/code&gt; router wasn’t yet released) and so far there’s been minimal
+confusion from the team. And buisness-wise, its been refreshing to defer
+framework design decisions, lib upgrades and more to Next, versus having to
+maintain &lt;a href=&quot;https://github.com/artsy/force&quot;&gt;all of these things in-house&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;It’s also worth mentioning that there &lt;em&gt;have&lt;/em&gt; been a few significant challenges
+involved (such as setting up performant SSR patterns for using Relay, our
+GraphQL client – thats another blog post), but on the whole Next has served our
+needs well. Team performance was unlocked, and we’ve been able to quickly get to
+building and rebuilding CMS pages in this new application. And our engineers
+have loved working in it.&lt;/p&gt;
+
+&lt;h3 id=&quot;back-to-next-13&quot;&gt;Back to Next 13&lt;/h3&gt;
+
+&lt;p&gt;In the meantime, Next 13 was released. Imagine our excitement! Just as this new
+app is spinning up we receive a little gift from the stars. Carlos and I are the
+first ones to bite; lets see what migrating our work over to the new framework
+might look like, what kind of effort.&lt;/p&gt;
+
+&lt;p&gt;From the start, it was immediately obvious that the Next.js team released an
+alpha-quality (or less) product, marked as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;stable&lt;/code&gt;. Not a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;beta&lt;/code&gt;, not an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RC&lt;/code&gt;
+to peruse and experiment with, but rather an&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;next
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;package that comes with an application scaffold generator that suggests using
+the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app&lt;/code&gt; router over &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pages&lt;/code&gt; – marked as &lt;em&gt;“Recommended”&lt;/em&gt;. In other words,
+highly polished. And what’s the first thing one experiences?
+&lt;a href=&quot;https://www.google.com/search?q=next+13+hot+reloading+broken+site:github.com&amp;amp;sca_esv=b6c25dbec4ffd71b&amp;amp;sa=X&amp;amp;ved=2ahUKEwjlmtTR_eKEAxW4CjQIHTqPAJYQrQIoBHoECBgQBQ&amp;amp;biw=1512&amp;amp;bih=829&amp;amp;dpr=2#ip=1&quot;&gt;Hot Reloading is broken&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;And what’s the next thing? Styles are broken. It turns out that RSC (React
+Server Components) doesn’t fully support pre-existing CSS-in-JS patterns. Or
+rather,
+&lt;a href=&quot;https://nextjs.org/docs/app/building-your-application/styling/css-in-js#styled-components&quot;&gt;they do, kind of&lt;/a&gt;,
+but they can only be used inside &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;use client&lt;/code&gt; components (which, in Next.js,
+actually means a server-side rendered component environment that’s &lt;em&gt;separate
+from&lt;/em&gt; a RSC rendered “server-only” environment – aka the old pages router
+model). And we certainly weren’t about to throw out our Design System component
+library &lt;a href=&quot;https://github.com/artsy/palette&quot;&gt;Palette&lt;/a&gt;, which has been nothing but
+a runaway success (and a
+&lt;a href=&quot;https://github.com/artsy/palette-mobile&quot;&gt;highly portable one&lt;/a&gt; at that).&lt;/p&gt;
+
+&lt;p&gt;With this limitation, our ability to use React Server Components had been
+severely hampered. Excluding the root-most level of our component tree, we were
+now required to prepend &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;use client&lt;/code&gt; on the top of every component, lest we
+receive ambiguous errors about rendering a client component (which used to be
+server-side render safe) on the “RSC server”.&lt;/p&gt;
+
+&lt;p&gt;Things can be taught, however. So lets proceed from the assumption that through
+some kind of tooling / linting layer, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;use client&lt;/code&gt; is added to every new
+component. It &lt;em&gt;should&lt;/em&gt; behave at that point just like the old Next and now we
+get the best of both worlds. Nope: turns out that even with the CSS-in-JS setup
+instructions described in the the next docs above, we still run into issues.
+There are bugs.&lt;/p&gt;
+
+&lt;p&gt;(These are the two main red flags, but there are many others as well.)&lt;/p&gt;
+
+&lt;p&gt;At this point, we wisely back out. It’s only &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;next@13.0.0&lt;/code&gt;, and what they’re
+doing here is to a certain extent revolutionary. It’s a new way of thinking
+about React, yet an old way of thinking about page rendering. It’s like… PHP,
+or so they say. RSC is &lt;em&gt;interesting&lt;/em&gt;, there’s something to it. Lets give them
+the benefit of the doubt and return to things in a few months, after a few
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;minor&lt;/code&gt; version bumps; there are, after all, countless eyes on the project.&lt;/p&gt;
+
+&lt;h3 id=&quot;many-months-later&quot;&gt;Many Months Later&lt;/h3&gt;
+
+&lt;p&gt;We run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npx create-next-app@latest&lt;/code&gt; (this is around the time they release
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;13.4&lt;/code&gt;) and then add these two components inside the newly-created vanilla
+project:&lt;/p&gt;
+
+&lt;div class=&quot;language-tsx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// app/HelloClient.tsx&lt;/span&gt;
+&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;use client&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;HelloClient&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;div&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;Does this hot reload&lt;span class=&quot;p&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;div&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// app/layout.tsx&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;HelloClient&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;./HelloClient&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Layout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;HelloClient&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Everything renders. And then&lt;/p&gt;
+
+&lt;div class=&quot;language-tsx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;HelloClient&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;div&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;Does this hot reload... nope :(&lt;span class=&quot;p&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;div&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In the most basic project setup, the most obvious Next.js selling point –
+Developer Experience – failed to deliver. Vercel is really forcing us to
+question things. But we’re flexible, and we like to investigate at Artsy, so
+even though this definitely-required feature doesn’t quite work, maybe it will
+once we’re done with our migration spike, and maybe we can still take advantage
+of everything else that RSC has to offer.&lt;/p&gt;
+
+&lt;p&gt;So again, we start refactoring the project. Stuff from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pages&lt;/code&gt; directory
+starts getting copied over to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app&lt;/code&gt;. We update configuration. We setup styling
+(it seems to work better). Things are &lt;em&gt;almost&lt;/em&gt; there. But then the obscure
+framework errors start to arrive, and CSS still doesn’t quite work: it turns out
+that refactoring across RSC-&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;use client&lt;/code&gt; boundaries is harder than one thought.
+I.e., if any piece of “client” (remember, ‘use client’ actually means SSR-safe)
+code &lt;em&gt;anywhere in the dependency tree&lt;/em&gt; happens to intersect an RSC boundary, the
+whole thing will fail. And this includes any use of React’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;createContext&lt;/code&gt; –
+because React Contexts aren’t supported. Given an app of any reasonable size,
+you’re likely to rely on a context somewhere, as contexts are so critical within
+the react hooks model of behavior. Said contexts might come from within your
+app, and if not there they’ll certainly come from a 3rd party library.&lt;/p&gt;
+
+&lt;p&gt;One would expect the errors to be helpful in tracking this down – Next.js is
+all about DX – but no. Confusion reigns.&lt;/p&gt;
+
+&lt;p&gt;We’re experts though, and we eventually &lt;em&gt;do&lt;/em&gt; find the source of the violation,
+and we make sure to create a “safety wrapper” around the offender so that it
+doesn’t happen again. But it does happens again – and again, any time any piece
+of any complexity is added in the new RSC-intersected route. It’s rather
+unavoidable. And each time solvable, but at a great cost to the developer.
+Thankfully we know what we’re doing!&lt;/p&gt;
+
+&lt;p&gt;Another trivial yet annoying issue (thankfully fixed with some custom eslint
+config) is accidentally importing the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useRouter&lt;/code&gt; hook from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app&lt;/code&gt; router
+location, or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect&lt;/code&gt;, or any number of other new &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app&lt;/code&gt; router features,
+because all of these things don’t work in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pages&lt;/code&gt;, and will error out. The
+errors here are slightly less opaque, but what if you’re a backend dev who knows
+nothing about any of this? Googling “useRouter next” now yields two sets of
+docs. Figure it out.&lt;/p&gt;
+
+&lt;div style=&quot;text-align: center;&quot;&gt;
+  &lt;img src=&quot;https://miro.medium.com/v2/resize:fit:1400/0*Sce5egkhwWpCeqF0.jpg&quot; width=&quot;600&quot; /&gt;
+&lt;/div&gt;
+
+&lt;p&gt;At this point, we make a judgement call: this simply isn’t going to work at
+Artsy. We’re here to empower folks and unlock productivity. Remember the team of
+DevOps engineers on Platform who rebuilt a CMS in record time? In the new Next
+13 model, that would be unfathomable, impossible even. Paper cuts would kill
+motivation, and dishearten the already skeptical. And the front end already has
+a bad rap, for good reason: historically, everything that seems like it should
+be easy is hard and confusing for those who aren’t experts. And everything is
+always changing. And the tooling is always breaking. And everybody always has a
+bright new idea, one that will finally end this madness for good.&lt;/p&gt;
+
+&lt;p&gt;A certain amount of sadness is appropriate here, because Next’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pages&lt;/code&gt; router
+was very, very close to being the silver bullet for web applications that we’ve
+all been looking for. Even though the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pages&lt;/code&gt; router has its flaws, it showed us
+that it’s possible to get something out the door very quickly with little prior
+knowledge of Front End development. This is no small thing. Next 13’s fatal
+error is that its destiny, being coupled to RSC, now requires experts. And by
+‘expert’ I mean: those with many years of experience dealing with JavaScript’s
+whims, its complex eco-system, its changeover, as well as its problems. In
+short, folks who have become numb to it all. This is no way to work.
+&lt;a href=&quot;https://www.reddit.com/r/nextjs/comments/1abd6wm/hitler_tried_rsc_and_next_14/&quot;&gt;Thankfully the community is finally responding&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-quick-note-on-performance&quot;&gt;A Quick Note on Performance&lt;/h3&gt;
+
+&lt;p&gt;It’s worth remembering that Next 12 was industry-leading in terms of performance
+and pioneered many innovative solutions. Let me say it again: Next’s pages
+router IS fast. Next 13 combined with RSC &lt;em&gt;is&lt;/em&gt; faster, but at what point does an
+obsession with performance start negating other crucial factors? What’s good for
+the 90%? And what’s required for the other 10%? Most companies just need
+something that’s fast enough – and easy enough – to &lt;em&gt;move&lt;/em&gt; fast. And not much
+more.&lt;/p&gt;
+
+&lt;h3 id=&quot;back-at-artsy&quot;&gt;Back At Artsy…&lt;/h3&gt;
+
+&lt;p&gt;With all of this in mind, and with the uncertainty around long-term support for
+Next.js &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pages&lt;/code&gt; (amongst other things), we recently decided to hit pause on
+future development in our new external CMS app rebuild. Weighing a few different
+factors (many entirely unrelated to Next), including a team reorg that allowed
+us to look more closely (and fix) the DX in our old external CMS app, we took a
+step back and recognized that our needs are actually quite minimal:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Instant hot reloading&lt;/li&gt;
+  &lt;li&gt;Fast, SPA-like UX performance&lt;/li&gt;
+  &lt;li&gt;Simple, convention-based file organization&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;With these things covered, the “web framework” layer looks something like the
+following, minus a few underlying router lib details:&lt;/p&gt;
+
+&lt;div class=&quot;language-tsx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Router&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;createRouter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;history&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;browser&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;routes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;/foo&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;getComponent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;React&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;lazy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;import&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;./Foo&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;/bar&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;getComponent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;React&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;lazy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;import&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;./Bar&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We’re now required to manage our compiler config, but
+&lt;a href=&quot;https://github.com/shakacode/shakapacker&quot;&gt;that layer&lt;/a&gt; isn’t too complicated
+once its setup, and it works great. (If you’re using something like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Vite&lt;/code&gt;, it
+could be even simpler.)&lt;/p&gt;
+
+&lt;h3 id=&quot;final-thoughts&quot;&gt;Final Thoughts&lt;/h3&gt;
+
+&lt;p&gt;Next 13 and React Server Components are very intriguing; it’s a new model of
+thinking that folks are still trying to work out. Like other revolutionary
+technologies released by Meta, sometimes it takes a few years to catch on, and
+maybe RSC is firmly in that bucket. Vercel, however, would do well to remember
+Next’s original fundamental insight – that all good things follow from
+developer experience. Improvements there tend to improve things everywhere.&lt;/p&gt;
+
+&lt;p&gt;In addition to fixing some of the obvious rough edges in the new &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app&lt;/code&gt; router,
+it would be helpful if Next could provide an official response to
+&lt;a href=&quot;https://github.com/vercel/next.js/discussions/56655&quot;&gt;the question of long-term Pages support&lt;/a&gt;.
+There’s been quite a backlash in the community against Next 13, and that should
+give all developers pause. It’d also be great to get word on whether there will
+be any further development on the pages router – perhaps some of the features
+from the new &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app&lt;/code&gt; router can be migrated to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pages&lt;/code&gt; as well? – or if the pages
+router is officially deprecated and locked. All of this is currently ambiguous.&lt;/p&gt;
+
+&lt;p&gt;Another area where Next could improve is their willingness to ship buggy
+features, and to rely on patched versions of React in order to achieve certain
+ends. Even though Vercel employs many members of the React Core team, by
+releasing Next versions that rely on patched and augmented &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;canary&lt;/code&gt; builds of
+React, Vercel is effectively compromising some of React’s integrity, and forcing
+their hand. Once a neo-React feature is added to Next, it makes it hard to say
+no; Next has captured too much of the market-share.&lt;/p&gt;
+
+&lt;p&gt;All of this calls for sobriety and hesitation on the part of developers working
+with – and building companies on top of – Vercel’s products. Next is Open
+Source, yes, but it’s also a wildcard. Artsy has had some real success with
+Next, but sometimes that’s just not enough to avoid hitting pause, and looking
+at the bigger picture. Inclusivity should always win.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 07 Mar 2024 00:00:00 +0100</pubDate>
+        <link>https://marinahuber.github.ioblog/blog/2024/03/07/nextjs-at-artsy-retrospective/</link>
+        <guid isPermaLink="true">https://marinahuber.github.ioblog/blog/2024/03/07/nextjs-at-artsy-retrospective/</guid>
+        
+        
+        <category>Next.js</category>
+        
+        <category>React</category>
+        
+      </item>
+    
+      <item>
+        <title>The Checklist for Deploying a Scary Change</title>
+        <description>&lt;p&gt;Lately, I’ve been getting involved with some sketchy stuff. You know what I’m
+talking about–data migrations.&lt;/p&gt;
+
+&lt;p&gt;I’ve been rolling out changes that have a significant risk of breaking our
+production environment for mission-critical services. It’s been exciting work
+(keep your eyes out for more posts on the exact project, coming soon™️), but
+I’ve definitely caused a couple incidents along the way.&lt;/p&gt;
+
+&lt;p&gt;After accidentally taking down a key service for a couple hours, I decided I
+needed to have a better pre-deploy process for these changes. I did some
+thinking and came up with a short checklist to run through before I press the
+shiny green button.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;Here’s the checklist I came up with:&lt;/p&gt;
+
+&lt;ul class=&quot;task-list&quot;&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;What is your plan if something goes wrong?
+    &lt;ul class=&quot;task-list&quot;&gt;
+      &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Run through ramifications of rolling back. If there’s a reason you’re
+    worried about rolling back, then you’re not ready to deploy the change
+    yet!&lt;/li&gt;
+      &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Figure out exactly what command(s) you will need to run to roll back. At
+    Artsy, this is usually a
+    &lt;a href=&quot;https://github.com/artsy/hokusai/blob/main/docs/Command_Reference.md#how-to-do-a-rollback&quot;&gt;one-liner using Hokusai&lt;/a&gt;,
+    our command-line Docker/Kubernetes CLI&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;How will you tell if something is going wrong after you deploy?
+    &lt;ul class=&quot;task-list&quot;&gt;
+      &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Error rate (DataDog)&lt;/li&gt;
+      &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Specific error reporting (Sentry)&lt;/li&gt;
+      &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Latency (DataDog)&lt;/li&gt;
+      &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Logs (Papertrail)&lt;/li&gt;
+      &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Functionality (does it still work? Are people using it successfully?
+    Important for things where errors may not be bubbled up correctly or
+    reported immediately)&lt;/li&gt;
+      &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Sidekiq (are there lots of jobs queued to retry that are failing?)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;With this checklist in hand, I’m deploying more confidently and causing fewer
+incidents along the way.&lt;/p&gt;
+
+&lt;p&gt;Do you have something similar? Are there things you think this checklist should
+include? Let me know in the comments!&lt;/p&gt;
+</description>
+        <pubDate>Wed, 13 Sep 2023 00:00:00 +0200</pubDate>
+        <link>https://marinahuber.github.ioblog/blog/2023/09/13/deploying-a-scary-change/</link>
+        <guid isPermaLink="true">https://marinahuber.github.ioblog/blog/2023/09/13/deploying-a-scary-change/</guid>
+        
+        
+        <category>Ruby on Rails</category>
+        
+        <category>data migrations</category>
+        
+        <category>deploy process</category>
+        
+      </item>
+    
+      <item>
+        <title>TypeScript magic</title>
+        <description>&lt;p&gt;At Artsy, we love TypeScript. We use it in most of our node/web/mobile repos.
+Today, I want to talk about a specific case we found while trying to make our
+types more strict on &lt;a href=&quot;https://github.com/artsy/palette-mobile&quot;&gt;palette-mobile&lt;/a&gt;,
+which is our Design System for React Native.&lt;/p&gt;
+
+&lt;p&gt;Check this out:&lt;/p&gt;
+
+&lt;div class=&quot;language-ts highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;welp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;hello&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;world&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// `welp` is of type `string`.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Like the comment says, even though we have two specific strings, the fact that
+we do a union with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string&lt;/code&gt;, makes &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;welp&lt;/code&gt; have a type of just &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string&lt;/code&gt;. This is
+because both &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;hello&quot;&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;world&quot;&lt;/code&gt; are strings, and the union tends to go to
+the type that includes the most.&lt;/p&gt;
+
+&lt;p&gt;Think of set theory and bubbles.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;figure class=&quot;illustration&quot;&gt;
+  &lt;img src=&quot;/images/2023-02-20-typescript-magic/hello-world.png&quot; /&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;hello&quot;&lt;/code&gt; is a type by itself, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;world&quot;&lt;/code&gt; is a type by itself. Unioning them
+together gives us a new type, which is a bubble that contains both &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;hello&quot;&lt;/code&gt; and
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;world&quot;&lt;/code&gt;. In that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;hello&quot; | &quot;world&quot;&lt;/code&gt; union bubble, we see both &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;hello&quot;&lt;/code&gt; and
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;world&quot;&lt;/code&gt; types as subsets.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string&lt;/code&gt; bubble contains all strings, so it contains &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;hello&quot;&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;world&quot;&lt;/code&gt;
+and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;hello&quot; | &quot;world&quot;&lt;/code&gt;, so the union of them with string is string.&lt;/p&gt;
+
+&lt;figure class=&quot;illustration&quot;&gt;
+  &lt;img src=&quot;/images/2023-02-20-typescript-magic/string.png&quot; /&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;That is usually ok, but for our case, it didn’t work. Here is what we wanted to
+do.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-problem&quot;&gt;The problem&lt;/h2&gt;
+
+&lt;p&gt;In our Design System, we have certain color, named like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;black100&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;black80&lt;/code&gt;,
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;blue100&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;red150&lt;/code&gt; etc. We can have a type like&lt;/p&gt;
+
+&lt;div class=&quot;language-ts highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ColorDSValue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;black100&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;black80&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;blue100&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;red150&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// | etc&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;and that works great. We get to have autocomplete, typechecking, all the good
+stuff that TypeScript brings.&lt;/p&gt;
+
+&lt;p&gt;But we also want to support any other string, like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;#000000&quot;&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;#000&quot;&lt;/code&gt;,
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;rgb(0,0,0)&quot;&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;rgba(0,0,0,0.5)&quot;&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;hsl(0,0%,0%)&quot;&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;hsla(0,0%,0%,0.5)&quot;&lt;/code&gt;.
+Ok, you might say, just make more types like&lt;/p&gt;
+
+&lt;div class=&quot;language-ts highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ColorHexValue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`#&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ColorRGBValue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`rgb(&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;)`&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ColorRGBAValue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`rgba(&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;)`&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ColorHSLValue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`hsl(&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;%,&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;%)`&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;and so on. That’s great. So far, so good.&lt;/p&gt;
+
+&lt;p&gt;We also want to make sure CSS color names are accepted. So then we add something
+like&lt;/p&gt;
+
+&lt;div class=&quot;language-ts highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ColorCSSString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;red&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;blue&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;hotpink&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// | etc&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;and now we have a type with all the values. That seemed ok, but it also felt a
+bit too much. If CSS names change, we need to update. Also what we wanted to do
+is actually have autocomplete and typechecking for our DS values, and just leave
+it loose for all the rest.&lt;/p&gt;
+
+&lt;p&gt;So we tried&lt;/p&gt;
+
+&lt;div class=&quot;language-ts highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ColorDSValue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;black100&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;black80&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;blue100&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;red150&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// | etc&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ColorOtherString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;string&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Color&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ColorDSValue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ColorOtherString&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;but we ended up with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Color&lt;/code&gt; being just &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string&lt;/code&gt;, which automatically means no
+autocomplete and no typechecking.&lt;/p&gt;
+
+&lt;h2 id=&quot;now-check-this-out&quot;&gt;Now check this out!&lt;/h2&gt;
+
+&lt;div class=&quot;language-ts highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;wow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;hello&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;world&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{})&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// `wow` is of type `&quot;hello&quot;` or `&quot;world&quot;` or `string`.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This weird-looking intersection of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string &amp;amp; {}&lt;/code&gt; makes it so that the specific
+strings &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;hello&quot;&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;world&quot;&lt;/code&gt; are distinguished from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string&lt;/code&gt; as a whole type.&lt;/p&gt;
+
+&lt;p&gt;The way this works is this:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;the intersection of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;{}&lt;/code&gt; (which is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string &amp;amp; {}&lt;/code&gt;), is essentially
+the same as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string&lt;/code&gt;, but it is a new type, different from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;the union of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;hello&quot;&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;world&quot;&lt;/code&gt; is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;hello&quot; | &quot;world&quot;&lt;/code&gt;, which is a new
+type, different from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;hello&quot;&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;world&quot;&lt;/code&gt;. It contains both.&lt;/li&gt;
+  &lt;li&gt;the union of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;hello&quot; | &quot;world&quot;&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string&lt;/code&gt; expands the type to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string&lt;/code&gt;,
+since that is the common type. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;hello&quot;&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;world&quot;&lt;/code&gt;, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;hello&quot; | &quot;world&quot;&lt;/code&gt;,
+all inherit from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;the union of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;hello&quot; | &quot;world&quot;&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string &amp;amp; {}&lt;/code&gt; is
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;hello&quot; | &quot;world&quot; | (string &amp;amp; {})&lt;/code&gt;, which is a new type, different from just
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string&lt;/code&gt;. This is because &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;hello&quot;&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;world&quot;&lt;/code&gt; DO NOT inherit from
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string &amp;amp; {}&lt;/code&gt;, so they are distinguished from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string &amp;amp; {}&lt;/code&gt; as a whole type.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;With this type trick, essentially we can tell the type system that we want
+specific string, but also any other string.&lt;/p&gt;
+
+&lt;p&gt;Here is a complete view of the sets.&lt;/p&gt;
+
+&lt;figure class=&quot;illustration&quot;&gt;
+  &lt;img src=&quot;/images/2023-02-20-typescript-magic/everything.png&quot; /&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;It seems pretty funky that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string &amp;amp; {}&lt;/code&gt; are same in a way, but
+different in another way. They both tell the type system that any string is
+accepted. But one is inherited by every type that is a string (like
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;type Hi = &quot;hello&quot;&lt;/code&gt;), where as the other is not inherited, so they are
+distinguished from each other.&lt;/p&gt;
+
+&lt;p&gt;That is so cool to me! I wanted to do this and didn’t even have the words to
+describe it, I didn’t know how to google it. We kind of found it accidentally.&lt;/p&gt;
+
+&lt;p&gt;This is so so useful for types or props where you want the general type for
+support (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string&lt;/code&gt;), but you also want the specific type for autocomplete
+(&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;black100&quot;&lt;/code&gt;). It made my whole week when I figured that out and made that
+color type.&lt;/p&gt;
+
+&lt;p&gt;Here is the final type:&lt;/p&gt;
+
+&lt;div class=&quot;language-ts highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ColorDSValue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;black100&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;black80&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;blue100&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;red150&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// | etc&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ColorOtherString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Color&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ColorDSValue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ColorOtherString&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now we have autocomplete and typechecking.&lt;/p&gt;
+
+&lt;h2 id=&quot;final-thoughts&quot;&gt;Final thoughts&lt;/h2&gt;
+
+&lt;p&gt;This is such a useful little TypeScript trick. Thanks to
+&lt;a href=&quot;https://github.com/MrSltun&quot;&gt;Sultan&lt;/a&gt; for finding this. He found it in a
+&lt;a href=&quot;https://github.com/microsoft/TypeScript/issues/29729#issuecomment-567871939&quot;&gt;TypeScript issue&lt;/a&gt;.
+Then we tried it and figured out how to work with this, and how to make our type
+exactly what we wanted, for the best DX we can get.&lt;/p&gt;
+
+&lt;p&gt;Link to palette-mobile, where we use this type:
+&lt;a href=&quot;https://github.com/artsy/palette-mobile/blob/v11.0.0/src/types.ts#L17&quot;&gt;link&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Link to a TypeScript playground with the examples:
+&lt;a href=&quot;https://www.typescriptlang.org/play?#code/MYewdgzgLgBA7gUwDYAcBcMBEALZSSYwA+WcIATkgCaEnTkCWYA5jALxa5L6YBQvUAJ4oEMAMIh85ACIBlAGoBDJAFdRHTACMki4AGsAjAAYjtLNt16AHKeLnVCY7ZKZyCKgYCstgPQ+7CFDAAsKiAEKKVBJSAPJQuOSyUIws7DD0TMz8QiIwEVGSFGnRFHJKDnb5JeRxCUkpWbygkLCakdUYVYXkaTiKEDBgIDCKKlAgoAC2KEiBCHz8zdDwIHAYABQ4eAR2mGSUNACUdusZqQBkMADeAL7HGlw82aEwAOIgIAWx8QiJyZlpM6sS63Z65d6farFbplZRqOwQr4UWq-eqZRbgZbMD5I8gYRFQh79EZjCYgaazKAIAB0MGSgjpw2A2EULFE8QYAyBMAS7OGFn0TgAhHwgA&quot;&gt;link&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Wed, 01 Mar 2023 00:00:00 +0100</pubDate>
+        <link>https://marinahuber.github.ioblog/blog/2023/03/01/typescript-magic/</link>
+        <guid isPermaLink="true">https://marinahuber.github.ioblog/blog/2023/03/01/typescript-magic/</guid>
+        
+        
+        <category>Palette</category>
+        
+        <category>Tools</category>
+        
+        <category>TypeScript</category>
+        
+        <category>Types</category>
+        
+      </item>
+    
+      <item>
+        <title>Are you using the right Mongo geospatial query?</title>
+        <description>&lt;p&gt;We recently got a report from one of our galleries in the Los Angeles area that
+they weren’t showing up on our
+&lt;a href=&quot;https://www.artsy.net/shows/los-angeles-ca-usa&quot;&gt;Los Angeles exhibition listings&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I fielded the report and right away confirmed: when we asked our core API for
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/shows?near=&amp;lt;los angeles coordinates&amp;gt;&lt;/code&gt;, sure enough this gallery partner didn’t
+make the cut.&lt;/p&gt;
+
+&lt;p&gt;Turns out they are based in Santa Monica, a separate and neighboring
+municipality. They must not be within the 25km radius that we use by default for
+these sorts of queries.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Case closed&lt;/em&gt;. Or so I thought.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;After some back and forth with our partner I decided to investigate more
+thoroughly, this time using some tricks of the trade from
+&lt;a href=&quot;https://www.anandarooproy.com&quot;&gt;my other life&lt;/a&gt; outside of Artsy.&lt;/p&gt;
+
+&lt;h2 id=&quot;casting-a-wider-net&quot;&gt;Casting a wider net&lt;/h2&gt;
+
+&lt;p&gt;If there was something wrong with our 25km radius query, I wanted to start by
+casting a wider net and visualizing the results.&lt;/p&gt;
+
+&lt;p&gt;I consulted our Rails application code to find the query logic in question, and
+then issued the same query directly to MongoDB. Something like the following
+query (simplified for clarity):&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// a $geoWithin $center query&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;events&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;coordinates&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;$geoWithin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;$center&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;118.24&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;34.05&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;111.32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In the query above we are asking MongoDB to give us all events within a 25km
+radius around the point 34.05°N, 118.24°W which we have designated as a central
+point within Los Angeles. For our purposes in this post we can consider “events”
+≈ “exhibitions” ≈ “shows.”&lt;/p&gt;
+
+&lt;p&gt;We are not asking for the 25km radius directly, but rather converting it into an
+equivalent amount of geographic degrees by using a conversion factor of 1° ≈
+111.32 kilometers, a factor which is true at enough the equator.&lt;/p&gt;
+
+&lt;p&gt;I modified the above query to cast a 50km net in order to see if there were some
+edges cases that needed scrutiny. Taking the resulting JSON response, I fired up
+&lt;a href=&quot;https://www.placemark.io/&quot;&gt;Placemark&lt;/a&gt;, my favorite new tool for wrangling
+geospatial data.&lt;/p&gt;
+
+&lt;p&gt;(Incidentally I recommend reading Tom Macwright’s
+&lt;a href=&quot;https://macwright.com/2023/01/28/placemark.html&quot;&gt;recent reflection on creating Placemark&lt;/a&gt;
+as a bootstrapped indie developer.)&lt;/p&gt;
+
+&lt;figure class=&quot;illustration&quot;&gt;
+  &lt;img src=&quot;/images/2023-02-10-mongo-geospatial-queries/1.png&quot; alt=&quot;Screenshot of a visualization in Placemark showing Los Angeles area exhibitions within a 50km radius.&quot; /&gt;
+  &lt;figcaption&gt;All shows within a 50km radius&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&quot;ball-of-confusion&quot;&gt;Ball of confusion&lt;/h2&gt;
+
+&lt;p&gt;One nice feature of Placemark is that it lets us place geodesic circles on the
+map, that is, circles that represent a constant radius around a point, as
+plotted on a globe.&lt;/p&gt;
+
+&lt;p&gt;When I placed a 25km radius circle on the map, something stood out immediately.&lt;/p&gt;
+
+&lt;figure class=&quot;illustration&quot;&gt;
+  &lt;img src=&quot;/images/2023-02-10-mongo-geospatial-queries/2.png&quot; alt=&quot;Screenshot of a visualization in Placemark showing Los Angeles area exhibitions within a 50km radius, with a 25km radius superimposed.&quot; /&gt;
+  &lt;figcaption&gt;25km radius superimposed. &lt;a style=&quot;padding-bottom: 1px; border-bottom: solid 1px lightgray&quot; href=&quot;https://en.wikipedia.org/wiki/Ball_of_Confusion_%28That%27s_What_the_World_Is_Today%29&quot;&gt;Ball of Confusion&lt;/a&gt;, that's what the world was that day.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;The partner in question is highlighted in pink — and is clearly within the 25km
+radius. &lt;strong&gt;What gives?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;By spot-checking a few points on the map against our current geo query I found
+that edge cases near the top or bottom of the circle were likely to be evaluated
+correctly, while edges cases at the left and right were being incorrectly
+omitted, as our partner gallery was.&lt;/p&gt;
+
+&lt;p&gt;A fuller visualization of that finding would look like this:&lt;/p&gt;
+
+&lt;figure class=&quot;illustration&quot;&gt;
+  &lt;img src=&quot;/images/2023-02-10-mongo-geospatial-queries/3.png&quot; alt=&quot;Screenshot of a visualization in Placemark showing the results of a $geoWithin $center query&quot; /&gt;
+  &lt;figcaption&gt;Results of a &lt;code&gt;$geoWithin $center&lt;/code&gt; query around Los Angeles, evaluated against a grid of test points.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;A distinctly &lt;em&gt;non&lt;/em&gt;-circular circle — that rung a bell.&lt;/p&gt;
+
+&lt;h2 id=&quot;more-than-one-way-to-draw-a-circle-on-the-earth&quot;&gt;More than one way to draw a circle on the Earth&lt;/h2&gt;
+
+&lt;p&gt;It was at this point that I recalled the specific form of the geospatial query
+our code was performing, and consulted the
+&lt;a href=&quot;https://www.mongodb.com/docs/manual/reference/operator/query/geoWithin/&quot;&gt;MongoDB docs for the $geoWithin query&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Turns out that you can invoke this as a radius query in one of two ways, by
+specifying
+&lt;a href=&quot;https://www.mongodb.com/docs/manual/reference/operator/query/center/&quot;&gt;$center&lt;/a&gt;
+or
+&lt;a href=&quot;https://www.mongodb.com/docs/manual/reference/operator/query/centerSphere/&quot;&gt;$centerSphere&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Per the
+&lt;a href=&quot;https://www.mongodb.com/docs/manual/reference/operator/query/center/#behavior&quot;&gt;docs&lt;/a&gt;
+for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$center&lt;/code&gt;, this query…&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;calculates distances using flat (planar) geometry&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Let us pause for a moment to note that while only some maps are
+&lt;a href=&quot;https://press.uchicago.edu/ucp/books/book/chicago/H/bo27400568.html&quot;&gt;deceitful&lt;/a&gt;,
+&lt;em&gt;all&lt;/em&gt; maps are untruths. In the sense that they flatten three dimensions down to
+two, and inevitably distort the world in the process.&lt;/p&gt;
+
+&lt;p&gt;The surface of a three-dimensional globe cannot be flattened down to a
+two-dimensional plane without some stretching or tearing, any more than an
+orange peel can be. The mathematical algorithms for turning those three
+dimensions into two are what we know as map projections. (Ah, the good old days
+when “dimensionality reduction” meant &lt;em&gt;from three to two&lt;/em&gt;.)&lt;/p&gt;
+
+&lt;p&gt;If you do your distance calculations in such a flattened, projected coordinate
+system — as the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$geoWithin $center&lt;/code&gt; query does — then you are accepting
+whatever distortions are inherent to that projection.&lt;/p&gt;
+
+&lt;p&gt;That’s the situation we were in. We thought we were catching everything inside
+the green circle, but in fact we were only catching everything inside the red
+egg:&lt;/p&gt;
+
+&lt;figure class=&quot;illustration&quot;&gt;
+  &lt;img src=&quot;/images/2023-02-10-mongo-geospatial-queries/5.png&quot; alt=&quot;Screenshot of a visualization in Placemark showing the results of a $geoWithin $center query compared to the expected results&quot; /&gt;
+  &lt;figcaption&gt;Actual &lt;code&gt;$geoWithin $center&lt;/code&gt; results vs. expected results.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;And our unfortunate partner was &lt;em&gt;just&lt;/em&gt; outside the egg, thus being incorrectly
+omitted.&lt;/p&gt;
+
+&lt;h2 id=&quot;fixing-the-query&quot;&gt;Fixing the query&lt;/h2&gt;
+
+&lt;p&gt;Luckily the solution was simple.&lt;/p&gt;
+
+&lt;p&gt;As noted above MongoDB supports a second variant for radius queries using a
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$centerSphere&lt;/code&gt; operator instead of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$center&lt;/code&gt; that we were using.&lt;/p&gt;
+
+&lt;p&gt;Per the
+&lt;a href=&quot;https://www.mongodb.com/docs/manual/reference/operator/query/centerSphere/&quot;&gt;docs&lt;/a&gt;
+for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$centerSphere&lt;/code&gt;, this version…&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;defines a circle for a geospatial query that uses spherical geometry&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;In other words, this query effectively draws our circle on the three-dimensional
+globe rather than on the stretched and distorted two-dimensional map.&lt;/p&gt;
+
+&lt;p&gt;We just need to rewrite our query as follows:&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// a $geoWithin $centerSphere query&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;events&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;coordinates&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;$geoWithin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;// $center: [[-118.24, 34.05], 25 / 111.32],    /* BEFORE */&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;$centerSphere&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;118.24&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;34.05&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;6378.1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* AFTER */&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;There is a new conversion factor in play here, this time denoting that the
+radius of the earth is approximately 6378.1 km. In this &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$centerSphere&lt;/code&gt; flavor
+of the query we are working in unprojected
+&lt;a href=&quot;https://en.wikipedia.org/wiki/Spherical_coordinate_system&quot;&gt;spherical coordinates&lt;/a&gt;,
+measured in &lt;a href=&quot;https://en.wikipedia.org/wiki/Radian&quot;&gt;radians&lt;/a&gt;. Thus we need to
+account for the size of the sphere that we are calculating upon.&lt;/p&gt;
+
+&lt;p&gt;We can re-run
+&lt;a href=&quot;https://gist.github.com/anandaroop/a1b794559615b2bbdea097678321c93f&quot;&gt;our test&lt;/a&gt;
+with this version of the query, and now we see that the results are finally in
+line with what we were expecting:&lt;/p&gt;
+
+&lt;figure class=&quot;illustration&quot;&gt;
+  &lt;img src=&quot;/images/2023-02-10-mongo-geospatial-queries/4.png&quot; alt=&quot;Screenshot of a visualization in Placemark showing the results of a $geoWithin $centerSphere query&quot; /&gt;
+  &lt;figcaption&gt;Results of a &lt;code&gt;$geoWithin $centerSphere&lt;/code&gt; query around Los Angeles, evaluated against a grid of test points.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Having updated our API to use this variant of the query, we solved the problem
+and returned our partner gallery to its rightful place in our listings, as shown
+by the pink highlight above.&lt;/p&gt;
+
+&lt;p&gt;That was the happy ending we were looking for.&lt;/p&gt;
+
+&lt;h2 id=&quot;a-postscript-on-map-distortion&quot;&gt;A postscript on map distortion&lt;/h2&gt;
+
+&lt;p&gt;But if you’re curious to learn a little more about map distortion, let’s dig a
+bit deeper into the nature of the problem that we were encountering.&lt;/p&gt;
+
+&lt;p&gt;Returning to &lt;a href=&quot;https://www.placemark.io/&quot;&gt;Placemark&lt;/a&gt;’s ability to draw different
+kinds of circles on the map, let’s now place a &lt;em&gt;geographic&lt;/em&gt; circle on the map
+rather than a geodesic one. This one is computed in the simplest possible map
+projection — a geographic projection where we simply treat the longitude as the
+X coordinate and the latitude as the Y coordinate. (This projection goes by many
+names, such as “geographic”, “equirectangular”, “Plate Carrée” or even
+&lt;em&gt;“unprojected”&lt;/em&gt;, which is not quite accurate.)&lt;/p&gt;
+
+&lt;p&gt;This corresponds to what you get when you use MongoDB’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$geoWithin&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$center&lt;/code&gt;
+query on geospatial data:&lt;/p&gt;
+
+&lt;figure class=&quot;illustration&quot;&gt;
+  &lt;img src=&quot;/images/2023-02-10-mongo-geospatial-queries/6.gif&quot; alt=&quot;Animation showing the distortion a geographic circle encounters at various latitudes&quot; /&gt;
+  &lt;figcaption&gt;Animation showing the distortion a geographic circle encounters at various latitudes.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;As you can see, we get: a moderately oblong egg at the latitude of Los Angeles;
+a nice circle as we get close to the equator; and a very oblong egg as we
+approach the poles.&lt;/p&gt;
+
+&lt;p&gt;If you are wondering why you should trust my claims about the egginess of &lt;em&gt;this&lt;/em&gt;
+two-dimensional image after I just said that all such maps are lies — good
+question!&lt;/p&gt;
+
+&lt;p&gt;It just so happens that nearly all web-based interactive maps, including
+Placemark, use a variation of the Mercator projection, the one you might
+remember from schoolroom maps. Mercator is a so-called
+“&lt;a href=&quot;https://en.wikipedia.org/wiki/Conformal_map_projection&quot;&gt;conformal&lt;/a&gt;”
+projection, meaning that &lt;em&gt;its&lt;/em&gt; particular lie is to sacrifice area in favor of
+shape.&lt;/p&gt;
+
+&lt;p&gt;A shape drawn on a globe will be correctly maintained in a Mercator map, but the
+scale will vary across the map: true at the equator and very incorrect towards
+the poles. This is the reason for the common complaint that
+&lt;a href=&quot;https://www.nature.com/nature-index/news-blog/data-visualisation-animated-map-mercater-projection-true-size-countries&quot;&gt;Mercator maps show Greenland as about the same size as Africa&lt;/a&gt;,
+when in fact Africa is about 14 times larger.&lt;/p&gt;
+
+&lt;p&gt;The amount and nature of the distortion introduced by map projections is such an
+important topic that cartographers have long relied on a clever technique for
+communicating this distortion visually, known as
+“&lt;a href=&quot;https://en.wikipedia.org/wiki/Tissot%27s_indicatrix&quot;&gt;Tissot’s indicatrix&lt;/a&gt;.”&lt;/p&gt;
+
+&lt;p&gt;To give you a sense of the kind of distortion we encountered with the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$center&lt;/code&gt;
+query, here is what Tissot’s indicatrix looks like for the geographic
+projection. This shows essentially the inverse of the animation above — what
+does a true circle plotted on the globe look like at various locations on this
+map projection?&lt;/p&gt;
+
+&lt;figure class=&quot;illustration&quot;&gt;
+  &lt;img src=&quot;/images/2023-02-10-mongo-geospatial-queries/7.png&quot; alt=&quot;Tissot's indicatrix for equirectangular projection&quot; /&gt;
+  &lt;figcaption&gt;Tissot's indicatrix for equirectangular projection. Credit: Justin Kunimune, &lt;a href=&quot;https://creativecommons.org/licenses/by-sa/4.0&quot;&gt;CC BY-SA 4.0&lt;/a&gt;, via Wikimedia Commons&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Now, imagine the inverse operation of this ⤴︎, drawing &lt;em&gt;true&lt;/em&gt; circles on this
+planar space, in order to get a sense of how distorted your query results on a
+globe would be.&lt;/p&gt;
+
+&lt;p&gt;Finally, here is Tissot’s indicatrix for the Mercator projection, demonstrating
+its ability to preserve shapes at the expense of sizes.&lt;/p&gt;
+
+&lt;figure class=&quot;illustration&quot;&gt;
+  &lt;img src=&quot;/images/2023-02-10-mongo-geospatial-queries/8.png&quot; alt=&quot;Tissot's indicatrix for Mercator projection&quot; /&gt;
+  &lt;figcaption&gt;Tissot's indicatrix for Mercator projection. Credit: Eric Gaba, &lt;a href=&quot;http://creativecommons.org/licenses/by-sa/4.0/&quot;&gt;CC BY-SA 4.0&lt;/a&gt;, via Wikimedia Commons&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;An interesting recent development is that the web’s reliance on Mercator is
+changing, but only very slowly.
+&lt;a href=&quot;https://www.theverge.com/2018/8/5/17653122/google-maps-update-mercator-projection-earth-isnt-flat&quot;&gt;Google began to make this change&lt;/a&gt;
+a few years ago, and
+&lt;a href=&quot;https://www.mapbox.com/blog/adaptive-projections&quot;&gt;Mapbox has written about their approach&lt;/a&gt;
+as well.&lt;/p&gt;
+
+&lt;p&gt;Hopefully this digression into the display of geospatial data has been
+illuminating. There is much more to say on this topic, since geospatial is more
+or less one asterisk after another. For example, we haven’t mentioned that the
+Mercator projection above is incapable of depicting the north or south poles at
+all! Nor have we touched on MongoDB’s various geospatial
+&lt;a href=&quot;https://www.mongodb.com/docs/manual/geospatial-queries/#geospatial-data&quot;&gt;data formats&lt;/a&gt;,
+&lt;a href=&quot;https://www.mongodb.com/docs/manual/geospatial-queries/#geospatial-indexes&quot;&gt;indexes&lt;/a&gt;,
+or
+&lt;a href=&quot;https://www.mongodb.com/docs/manual/reference/operator/query/near/&quot;&gt;the $near query&lt;/a&gt;
+and its spherical sibling
+&lt;a href=&quot;https://www.mongodb.com/docs/manual/reference/operator/query/nearSphere/&quot;&gt;the $nearSphere query&lt;/a&gt;,
+all worthy topics.&lt;/p&gt;
+
+&lt;p&gt;But we hope that understanding this crucial distinction between planar
+(&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$center&lt;/code&gt;) and spherical (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$centerSphere&lt;/code&gt;) calculations will help you make the
+right choice when devising your own radius queries with MongoDB or other
+geospatial engines.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 10 Feb 2023 00:00:00 +0100</pubDate>
+        <link>https://marinahuber.github.ioblog/blog/2023/02/10/mongo-geospatial-queries/</link>
+        <guid isPermaLink="true">https://marinahuber.github.ioblog/blog/2023/02/10/mongo-geospatial-queries/</guid>
+        
+        
+        <category>MongoDB</category>
+        
+        <category>best practices</category>
+        
+        <category>debugging</category>
+        
+        <category>geospatial</category>
+        
+        <category>gravity</category>
+        
+      </item>
+    
+      <item>
+        <title>Parallelizing Jest and Cypress.io Tests on CircleCI</title>
+        <description>&lt;p&gt;At Artsy, exploring ways to improve the developer experience is part of our
+makeup. Whether it’s implementing &lt;a href=&quot;https://github.com/artsy/express-reloadable&quot;&gt;hot-swapping&lt;/a&gt; for Express.js or
+integrating the Rust-based &lt;a href=&quot;https://github.com/artsy/force/pull/10598&quot;&gt;SWC compiler&lt;/a&gt; into our front-end build
+pipeline, we’re always trying to reduce the amount of time it takes for a code
+cycle to take place. CI is no exception. When a developer opens a PR, we want to
+ensure they get timely feedback. Do their unit tests pass? Does the app build
+correctly? And how about smoke tests? Each of these jobs are complex processes
+that take time, and the more one can parallelize said tasks the less devs will
+need to wait. Scaled out to a whole engineering org, minor improvements to CI
+can be radical.&lt;/p&gt;
+
+&lt;p&gt;In this regard, two things came across our radar recently that we’d like to
+share: sharding via Jest, and a (free) way to parallelize Cypress.io integration
+tests via CircleCI’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;split&lt;/code&gt; command.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&quot;sharding-in-jest&quot;&gt;Sharding in Jest&lt;/h2&gt;
+
+&lt;p&gt;“What is sharding?” Good question! In short, it means “a small part of a whole”.
+The database community has employed sharding techniques for decades, where a
+large database is split up into smaller, more manageable chunks, usually to
+improve performance at scale. The same idea can be applied to any process or
+task involving a lot of data, including tests.&lt;/p&gt;
+
+&lt;p&gt;Think about it like this. Imagine an app that has thousands of tests. One can
+open up their terminal and run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;yarn test&lt;/code&gt; and execute all of the tests at once
+in a single process, or one can open two terminal tabs and run
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;yarn test src/utils&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;yarn test src/routes&lt;/code&gt;, and have both processes
+allocate a pool of memory to complete each (smaller) subset of tasks. Because
+each process has its own memory pool the performance characteristics are
+generally better, and thus the overall time required to run our tests is reduced
+/ decreased. Running each of these commands scoped to a particular folder is
+easy enough, but in a CI environment this is somewhat cumbersome; we’d need to
+define two new jobs and then the conditions in which they run, increasing the
+scope and complexity of our configuration file.&lt;/p&gt;
+
+&lt;p&gt;This is where &lt;a href=&quot;https://jestjs.io/blog/2022/04/25/jest-28#sharding-of-test-run&quot;&gt;Jest’s new sharding feature&lt;/a&gt; comes into play, which
+taps nicely into most modern CI runners. Using a hypothetical app containing 100
+tests, here’s a quick example of how it works:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yarn jest &lt;span class=&quot;nt&quot;&gt;--shard&lt;/span&gt; 1/5
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;What this says is: take the total number of tests (100), divide them into five
+buckets (containing 20 tests each), and execute the test runner against the
+first bucket (the first 20 tests). Continuing:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yarn jest &lt;span class=&quot;nt&quot;&gt;--shard&lt;/span&gt; 2/5
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now take the second bucket and execute the next 20 tests – and so on. Simple
+enough.&lt;/p&gt;
+
+&lt;p&gt;Taking this further, we could turn this into a bash loop, including an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;amp;&lt;/code&gt;
+symbol to run things in parallel and automating some of the redundancy away:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;BUCKETS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;5
+
+&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;i &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;1..&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;BUCKETS&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;do
+   &lt;/span&gt;yarn jest &lt;span class=&quot;nt&quot;&gt;--shard&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;/&lt;span class=&quot;nv&quot;&gt;$BUCKETS&lt;/span&gt; &amp;amp;
+&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;For many the above snippet should be sufficient to speed up your test suite, but
+who wants to write bash loops? Thankfully, most modern CI task runners contain
+the ability to split jobs into separate processes programatically and so this
+kind of logic is unnecessary.&lt;/p&gt;
+
+&lt;p&gt;Here’s how to do this in Circle CI:&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;parallelism&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;yarn test --shard=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Set a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;parallelism&lt;/code&gt; value, and drop the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jest&lt;/code&gt; command into a cool one-liner.
+The variable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CIRCLE_NODE_INDEX&lt;/code&gt; refers to which container index the job is
+running on, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CIRCLE_NODE_TOTAL&lt;/code&gt; points to the value of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;parallelism&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;On Artsy.net, we’ve been able to reduce the average time it takes to run our
+unit tests from around ~10 minutes per PR to just above 2m. A 4-5x performance
+improvement.&lt;/p&gt;
+
+&lt;h2 id=&quot;parallelizing-cypressio-integration-tests-for-free&quot;&gt;Parallelizing Cypress.io Integration Tests (For Free)&lt;/h2&gt;
+
+&lt;p&gt;For those who want robust integration test coverage, &lt;a href=&quot;https://www.cypress.io&quot;&gt;Cypress.io&lt;/a&gt; has
+been a game-changer due to its reliability and ease of use. Here at Artsy we use
+it in a number of apps, most notably
+&lt;a href=&quot;https://github.com/artsy/integrity&quot;&gt;Integrity&lt;/a&gt;. One complaint, however, is just
+how &lt;em&gt;slow&lt;/em&gt; it is. This is reasonable; Cypress is simulating a user browsing your
+website and sometimes a user needs to do &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;x&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;y&lt;/code&gt; (such as logging in) before
+they can do &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;z&lt;/code&gt;. At scale this can really slow things down and lead to
+bottlenecks, especially if deploys are dependent on all of your integration
+tests passing.&lt;/p&gt;
+
+&lt;p&gt;The Cypress.io team has recognized this bottleneck and released the
+&lt;a href=&quot;https://docs.cypress.io/guides/dashboard/introduction&quot;&gt;Cypress Dashboard&lt;/a&gt;, a
+paid product which includes the ability to unlock parallelized tests on your CI.
+For those willing to pay for another SAAS product this will get the job done
+well, but for those with leaner budgets there’s another way to accomplish this
+for free, and on CircleCI it’s very easy to setup via the
+&lt;a href=&quot;https://circleci.com/docs/parallelism-faster-jobs#using-the-circleci-cli-to-split-tests&quot;&gt;CircleCI CLI command &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;split&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;You can check out the
+&lt;a href=&quot;https://github.com/artsy/force/blob/main/.circleci/config.yml#L219-L235&quot;&gt;full example here&lt;/a&gt;,
+but in short:&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;integration&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;parallelism&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;|&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;TESTS=$(circleci tests glob &quot;cypress/integration&quot; | circleci tests split | paste -sd ',')&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;cypress run --spec $TESTS&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;circleci tests glob&lt;/code&gt; command to gather all of our tests, and then
+pipe that into the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;circleci tests split&lt;/code&gt; which will divide our tests into
+buckets, similar to how Jest’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--shard&lt;/code&gt; command works up above. We then assign
+that to a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$TESTS&lt;/code&gt; variable and pass it into &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cypress run --spec $TESTS&lt;/code&gt;.
+CircleCI sees the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;parallelism&lt;/code&gt; prop in the config and automatically divides our
+tests into 5 separate containers, each running a small subset of our integration
+tests in parallel.&lt;/p&gt;
+
+&lt;p&gt;On Artsy.net, our smoke tests times have gone from around ~7m on average down to
+~3m. A huge reduction for only a few lines of config!&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 07 Sep 2022 00:00:00 +0200</pubDate>
+        <link>https://marinahuber.github.ioblog/blog/2022/09/07/quick-tips-to-speed-up-ci/</link>
+        <guid isPermaLink="true">https://marinahuber.github.ioblog/blog/2022/09/07/quick-tips-to-speed-up-ci/</guid>
+        
+        
+        <category>CI</category>
+        
+        <category>CircleCI</category>
+        
+        <category>Cypress</category>
+        
+        <category>Jest</category>
+        
+        <category>Tests</category>
+        
+      </item>
+    
+      <item>
+        <title>Hacking Around Safari's 7-day Cookie Limit</title>
+        <description>&lt;p&gt;Amongst the many, many things that organizations have to contend with around
+cookie consent laws is Apple’s very own browser, Safari. Did you know that
+Safari will only retain a client-side cookie for 7 days? This is in support of
+Apple’s &lt;a href=&quot;https://clearcode.cc/blog/intelligent-tracking-prevention-faq&quot;&gt;Intelligent Tracking Prevention (ITP)&lt;/a&gt; feature, designed to
+protect a user’s privacy.&lt;/p&gt;
+
+&lt;p&gt;These privacy efforts are great but, in hand with laws like &lt;a href=&quot;https://gdpr-info.eu&quot;&gt;GDPR&lt;/a&gt; and
+&lt;a href=&quot;https://oag.ca.gov/privacy/ccpa&quot;&gt;CCPA&lt;/a&gt;, their rollout often creates a UX nightmare for users without some
+extra care. Here at Artsy, we’ve landed on a way to make things slightly less
+bad and want to share our approach.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;Scenario: Imagine that as a EU resident you visit artsy.net for the first time.
+A banner appears asking you to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Accept&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Deny&lt;/code&gt; tracking cookies from our
+site. You don’t like tracking cookies, so you click the “Deny” button and the
+banner disappears. All good, right? Nope! You visit Artsy a week later and
+again, a banner appears asking you to choose your preferences. This happens
+again and again until you switch browsers and realize that what you were
+experiencing was Apple’s ITP feature in action. After choosing your preferences,
+the cookie we use to store them is erased after 7 days, necessitating another
+interaction.&lt;/p&gt;
+
+&lt;p&gt;We thrashed around in this vicious cycle for months until we found a simple,
+elegant solution thanks to a WebKit engineer’s prompt (during Apple’s open lab
+calls at WWDC – &lt;a href=&quot;https://developer.apple.com/wwdc22/labs/&quot;&gt;which you too can schedule!&lt;/a&gt;) She mentioned that the
+7-day cookie limitation only applies to &lt;em&gt;client-side cookies&lt;/em&gt; and that
+&lt;strong&gt;same-domain, secure, server-side cookies&lt;/strong&gt; are not limited to these
+constraints.&lt;/p&gt;
+
+&lt;p&gt;This got us thinking. Our third-party cookie consent management service sets a
+client-side cookie, not a server-side cookie. Could we perhaps overwrite the
+client-side cookie with a server-side cookie &lt;em&gt;of the same name&lt;/em&gt; and trick Safari
+into persisting the user preferences beyond the 7-day limit?&lt;/p&gt;
+
+&lt;p&gt;We gave it a try and… Yes. We. Can! And this means that you can too (and it’s
+also real easy to implement).&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;First, define an API endpoint server-side:&lt;/p&gt;
+
+&lt;div class=&quot;language-tsx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;express&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/set-tracking-preferences&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;req&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;trackingPreferences&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;req&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;query&lt;/span&gt;
+
+  &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cookieConfig&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;maxAge&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10000000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;httpOnly&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;secure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// important!&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;trackingPreferences&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;undefined&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Overwrite client-side cookie with cloned, secure server-side version&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;cookie&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;trackingPreferences&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;trackingPreferences&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cookieConfig&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;nx&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Tracking preferences set.&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Next, call the endpoint from the client when your app boots or when preferences
+have been set by the user:&lt;/p&gt;
+
+&lt;div class=&quot;language-tsx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cookies&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;cookies-js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;App&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nf&quot;&gt;useEffect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;trackingPreferences&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;encodeURIComponent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cookies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;trackingPreferences&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+
+    &lt;span class=&quot;nf&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+      &lt;span class=&quot;s2&quot;&gt;`/set-tracking-preferences?trackingPreferences=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;trackingPreferences&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[])&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;CookieConsentBanner&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;onClick&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And that’s it. I’m not sure of the exact reason why we can overwrite cookies in
+this way, but I suspect it has to do with Safari’s assumption that a server we
+control will always take precedence and thus assumes things are safe. And in 7
+days, when Safari would otherwise erase the cookie, it will see that it’s now
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;secure&lt;/code&gt; and ignore it, preserving the user’s preferences.&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 23 Aug 2022 00:00:00 +0200</pubDate>
+        <link>https://marinahuber.github.ioblog/blog/2022/08/23/getting-around-7-day-cookie/</link>
+        <guid isPermaLink="true">https://marinahuber.github.ioblog/blog/2022/08/23/getting-around-7-day-cookie/</guid>
+        
+        
+        <category>CCPA</category>
+        
+        <category>Cookies</category>
+        
+        <category>GDPR</category>
+        
+        <category>Privacy</category>
+        
+      </item>
+    
+      <item>
+        <title>Third Time's the Charm: Deprecating KAWS</title>
+        <description>&lt;p&gt;How do you tell when it’s time to deprecate a system? If something mostly works OK, is it worth spending time and
+effort replacing its functionality?&lt;/p&gt;
+
+&lt;p&gt;At Artsy, we realized several years ago that we needed to be able to group a bunch of artworks together. If we
+wanted to have a page with all of the
+&lt;a href=&quot;https://www.artsy.net/collection/lucio-fontana-ceramics&quot;&gt;ceramics by Lucio Fontana&lt;/a&gt;, or
+&lt;a href=&quot;https://www.artsy.net/collection/buy-now-contemporary-prints-in-the-ifpda-fair-spring-2022&quot;&gt;contemporary prints from the IFPDA Fair Sprint 2022&lt;/a&gt;,
+or a &lt;a href=&quot;https://www.artsy.net/collection/antwaun-sargents-wishlist&quot;&gt;gift guide curated by Antwaun Sargent&lt;/a&gt;, we needed
+to have a way to make that happen.&lt;/p&gt;
+
+&lt;p&gt;We decided to call these things “collections,” a reasonable name for a collection of artworks. In order to create
+them, we developed a service called KAWS, named after the artist (whose works we wanted to put in several of these
+collections).&lt;/p&gt;
+
+&lt;p&gt;Now, 4 years later, we’ve taken down the service and folded its functionality into Artsy’s main database and API,
+Gravity.&lt;/p&gt;
+
+&lt;p&gt;Let’s talk about why and what we learned along the way.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&quot;a-little-context&quot;&gt;A little context&lt;/h2&gt;
+
+&lt;p&gt;KAWS has a somewhat unusual design. It’s a server, a Node.js app with its own Mongo database, and it serves up a
+GraphQL API. It also relies on &lt;a href=&quot;https://typeorm.io/#/&quot;&gt;TypeORM&lt;/a&gt; to map TypeScript models to database records and
+&lt;a href=&quot;https://typegraphql.com&quot;&gt;TypeGraphQL&lt;/a&gt; to keep TS and GraphQL types in sync.&lt;/p&gt;
+
+&lt;p&gt;This makes it a bit different from most services Artsy maintains. Most of our APIs are Ruby on Rails apps, and we
+don’t have any other uses of TypeORM and TypeGraphQL. When it was created, it was a cool experiment with a possible
+direction for future APIs - one we decided not to pursue for the time being.&lt;/p&gt;
+
+&lt;p&gt;KAWS doesn’t store any artworks - or even any artwork IDs. Instead, it just stores a “query”, a set of
+Elasticsearch criteria. This could be a list of artist IDs or gene IDs, a tag ID, a keyword, or any combination of
+those things.&lt;/p&gt;
+
+&lt;p&gt;In other words, a KAWS artwork collection could be defined in human-readable terms as something like
+“&lt;a href=&quot;https://www.artsy.net/collection/bridget-riley-black-and-white&quot;&gt;artworks with the ‘Black and White’ gene by the artist Bridget Riley&lt;/a&gt;”
+or
+“&lt;a href=&quot;https://www.artsy.net/collection/auguste-rodin-bronze-sculpture&quot;&gt;artworks by Auguste Rodin with the keyword ‘bronze’ and the gene ‘Sculpture’&lt;/a&gt;.”&lt;/p&gt;
+
+&lt;p&gt;This approach results in a somewhat odd flow for resolving collection requests. Let’s say a user requests the page
+&lt;a href=&quot;https://www.artsy.net/collection/kaws-toys&quot;&gt;KAWS: Toys&lt;/a&gt;. Our frontend, Force, sends a request to Metaphysics, our
+GraphQL API.&lt;/p&gt;
+
+&lt;p&gt;Metaphysics knows to route that request to KAWS - it asks KAWS “hey, what’s the Elasticsearch query for the
+collection with slug &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kaws-toys&lt;/code&gt;? Also, give me the title, the category, the header image, the description text,
+and [any other pieces of metadata about the collection itself].” But it can’t ask KAWS for the artworks!&lt;/p&gt;
+
+&lt;p&gt;Instead, it receives the query from KAWS and then turns around and sends another request to Gravity, which stores
+all of our artworks and indexes them in Elasticsearch so that we can filter them. “Hey Gravity, I got this query
+from KAWS (the service, not the artist): &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;{ artists: 'KAWS', genes: 'Sculpture' }&lt;/code&gt;. Can you return me all of the
+artworks that match that query?”&lt;/p&gt;
+
+&lt;p&gt;Gravity takes those parameters and passes them to its Elasticsearch cluster, fetching all artworks that match the
+criteria (and sorting/filtering them according to what the user has selected on the page).&lt;/p&gt;
+
+&lt;p&gt;Gravity returns those artworks to Metaphysics, which then packages them up with all of the collection metadata it
+received from KAWS and returns to the client that requested it. Whew!&lt;/p&gt;
+
+&lt;p&gt;Here’s a diagram showing what that looks like:&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt=&quot;Diagram depicting how requests for collections get resolved&quot; src=&quot;/images/2022-05-06-deprecating-kaws/kaws-diagram.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;why-did-we-decide-to-deprecate-it&quot;&gt;Why did we decide to deprecate it?&lt;/h2&gt;
+
+&lt;h3 id=&quot;idiosyncratic-stack&quot;&gt;Idiosyncratic stack&lt;/h3&gt;
+
+&lt;p&gt;As mentioned above, KAWS is an unusual app by Artsy standards. It’s neither a database-backed Rails/Ruby app, nor
+an API-consuming JavaScript/Node app. It was missing the typical Rails niceties (a dev console, background jobs,
+rake tasks, etc.), and inclusion of elements like TypeORM and TypeGraphQL that don’t exist in our other apps meant
+there was a bit of a learning curve for working with it.&lt;/p&gt;
+
+&lt;p&gt;While it’s not terrible to have some variety in our systems, it does make them harder to work in and keep
+up-to-date. And that also resulted in a high…&lt;/p&gt;
+
+&lt;h3 id=&quot;lottery-factor&quot;&gt;Lottery factor&lt;/h3&gt;
+
+&lt;p&gt;There are still people at Artsy who’ve worked in KAWS, but the top 4 contributors have moved on to other companies.
+That meant that any projects involving KAWS required extra effort to familiarize devs with the system.&lt;/p&gt;
+
+&lt;h3 id=&quot;lack-of-relationship-between-collections-and-artworks&quot;&gt;Lack of relationship between collections and artworks&lt;/h3&gt;
+
+&lt;p&gt;Any KAWS-backed artwork grid (e.g. any &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/collection/:slug&lt;/code&gt; page) is the ephemeral result of a canned search query.
+This has some advantages: collections stay evergreen &amp;amp; current, so long as artworks with appropriate metadata
+continue to land on the platform. But it also has some downsides: there is no modeled relationship between a
+collection and its artworks, so given an artwork, you &lt;em&gt;can’t&lt;/em&gt; tell what collections it’s in.&lt;/p&gt;
+
+&lt;h3 id=&quot;extra-hops-on-each-request&quot;&gt;Extra hops on each request&lt;/h3&gt;
+
+&lt;p&gt;Every &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/collection/:slug&lt;/code&gt; request has to go to → MP → Kaws→ MP → Gravity → ES. The diagram above illustrates this
+flow. And it’s worth noting that KAWS really doesn’t store that much. It’s a whole service that only stores a
+single data type.&lt;/p&gt;
+
+&lt;h3 id=&quot;lack-of-admin-ui&quot;&gt;Lack of admin UI&lt;/h3&gt;
+
+&lt;p&gt;Collections in KAWS were first created via a CSV import, then eventually a Google Sheets-driven workflow was added.
+To create or update a collection, an admin creates/modifies a row in the spreadsheet, then goes to our Jenkins UI
+and kicks off an “update collections” job, which causes KAWS to pull the new data from the Google Sheet.&lt;/p&gt;
+
+&lt;p&gt;This is a pretty rough workflow, and it means it’s very easy to accidentally modify or delete information from a
+collection (e.g. overwriting the text in the wrong cell).&lt;/p&gt;
+
+&lt;h2 id=&quot;how-did-we-go-about-planning-it&quot;&gt;How did we go about planning it?&lt;/h2&gt;
+
+&lt;p&gt;This actually wasn’t the first time we attempted to deprecate KAWS. It became something of a running joke: every
+October for 3 years running (2019, 2020, 2021), someone would say “hey we should probably deprecate this thing” and
+write a tech plan.&lt;/p&gt;
+
+&lt;figure class=&quot;illustration&quot;&gt;
+  &lt;img src=&quot;/images/2022-05-06-deprecating-kaws/Screen Shot 2022-05-06 at 12.49.55 PM.png&quot; alt=&quot;Screenshot of a
+comment on a previous tech plan. Text says 'I do like how this is becoming an Artsy autumnal tradition. Pumpkin
+Spice Kaws Deprecation 😆. That alone tells us something.'&quot; style=&quot;width: 300px;&quot; /&gt;
+  &lt;figcaption&gt;At least we're self-aware&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;This time, there were three key differences that allowed us to get it done:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;There was a business need to do it. We want to work on improving collections, bringing new features to them and
+making it easier for our admins to manage and use collections for important marketing campaigns. We took a look
+at collections as they existed and said “deprecating KAWS and moving its functionality into Gravity is a
+prerequisite for these projects.” We could have eventually completed them, but it would have been slower and
+more difficult - we were confident that investing time into this refactor now would save a lot of time and
+headaches later.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;We kept the plan very tightly scoped, focusing only on “maintain existing functionality and move it to Gravity.”
+Previous iterations of the tech plan had proposed broader changes, such as rethinking collections modeling
+entirely or breaking with our existing GraphQL schema. Any changes to fields currently being consumed by our
+frontend clients significantly increases scope, especially since our GraphQL schema is “baked in” to our app.
+That means that if we removed fields the app was currently relying on, some users who never upgrade their apps
+would see that functionality break.&lt;/p&gt;
+
+    &lt;p&gt;To be clear, the authors of those tech plans weren’t wrong to propose rethinking and improving how collections
+are modeled and served! We may very well end up implementing some of their ideas and suggestions. The learning
+this time around was mostly “we’re never going to get this done unless we really rein in the scope.”&lt;/p&gt;
+
+    &lt;p&gt;Our goal was 100% compatibility: all of the currently-used fields would still be available and could be
+successfully resolved by Gravity instead of KAWS. Even if we changed the type of those fields or updated how
+they were resolved, they still needed to exist. We did end up getting rid of lots of fields that were not being
+used by frontend clients (which meant a lot of spelunking through our code and trying to find out if fields like
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;showOnEditorial&lt;/code&gt; were still being used), so the schema is still significantly simpler and cleaner than it was.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Roop laid a really nice foundation by writing up a thorough document about what KAWS is, how it works, and the
+steps we might need to take in order to deprecate it. Much of this blog post comes almost verbatim from that
+document! It’s a testament to the power that well-organized documentation can have: being able to see and
+understand the problem gave us confidence to tackle it.&lt;/p&gt;
+
+    &lt;p&gt;Here’s the diagram he created that sketches out how we might go about deprecating KAWS:&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/images/2022-05-06-deprecating-kaws/kaws-tasks.png&quot; alt=&quot;Diagram with many different steps connected by arrows indicating which updates need to be made in what order to allow us to deprecate KAWS.&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;what-did-we-learn&quot;&gt;What did we learn?&lt;/h2&gt;
+
+&lt;h3 id=&quot;its-easy-for-scope-to-expand-without-you-noticing&quot;&gt;It’s easy for scope to expand without you noticing&lt;/h3&gt;
+
+&lt;p&gt;I mentioned that our goal was JUST moving KAWS functionality to Gravity, and that we wanted to avoid adding new
+functionality to keep the project focused. We mostly did that - but we &lt;em&gt;did&lt;/em&gt; get off track in one important way.&lt;/p&gt;
+
+&lt;p&gt;We’ve discussed how KAWS doesn’t include direct relationships between artworks and collections. As we worked on
+moving collections to Gravity, we had a baked-in assumption that there would be a join model between &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Artwork&lt;/code&gt; and
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MarketingCollection&lt;/code&gt; (the name of the model in Gravity). This was largely informed by the approach we took to
+moving &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ArtistSeries&lt;/code&gt; from KAWS to Gravity, a project we previously completed.&lt;/p&gt;
+
+&lt;p&gt;In that case, we created an explicit link between the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ArtistSeries&lt;/code&gt; model and the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Artwork&lt;/code&gt; model, and we updated
+those relationships with a daily recurring job. We would essentially run the query defined by the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ArtistSeries&lt;/code&gt;,
+see if there were any new artworks that matched, and if so, add them to the Series in question.&lt;/p&gt;
+
+&lt;p&gt;When we tried this same approach for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MarketingCollections&lt;/code&gt;, we noticed there was a problem: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ArtistSeries&lt;/code&gt; cap out
+at a few hundred works, but &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MarketingCollections&lt;/code&gt; could be as many as &lt;em&gt;several hundred thousand&lt;/em&gt; for collections
+like “&lt;a href=&quot;https://www.artsy.net/collection/contemporary&quot;&gt;Contemporary&lt;/a&gt;” that are based on very general criteria. The
+jobs to associate artworks with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MarketingCollections&lt;/code&gt; were taking so long that they ate up all of our Sidekiq
+resources and prevented other jobs from being executed in a timely manner.&lt;/p&gt;
+
+&lt;p&gt;When we took a step back and looked at the problem, we realized that we were getting ahead of ourselves. Yes, we
+will likely want to directly associate artworks with collections - but there actually wasn’t a clear business
+reason for doing so. We were just doing it because we were “pretty sure we might need it at some point.”&lt;/p&gt;
+
+&lt;p&gt;So to unblock the project, we removed the join models and instead kept a similar approach to what KAWS used
+initially: fetching artworks at request time using the Elasticsearch query stored on the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MarketingCollection&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;theres-a-reason-we-dont-name-our-projects-after-artists&quot;&gt;There’s a reason we don’t name our projects after artists!&lt;/h3&gt;
+
+&lt;p&gt;To quote a &lt;a href=&quot;https://artsy.github.io/blog/2019/05/10/why-projects-need-codenames/&quot;&gt;post&lt;/a&gt; about how we name our
+projects written by our Senior Director of Engineering, Joey:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Choose a code name scheme that isn’t directly related to your technology or business. A flower business using
+flower names is cute, but breaks down when you want to build a feature that &lt;em&gt;actually&lt;/em&gt; is about tulips.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Most of our systems at Artsy are named after scientific concepts. Force, Eigen, Fresnel. This can seem confusing at
+first, but it means there are not many opportunities for mistaking a system with its data. With a project like this
+one named after an artist, discussions get confusing quickly! “Yeah, we need to make sure we’re fetching all of the
+artworks from KAWS. Sorry, not the artworks &lt;em&gt;by&lt;/em&gt; KAWS, I actually meant the Warhol collection. But KAWS is the
+service. Right. Anyway…”&lt;/p&gt;
+
+&lt;h3 id=&quot;feature-flagging-a-graphql-service-with-a-schema-is-hard&quot;&gt;Feature flagging a GraphQL service with a schema is hard&lt;/h3&gt;
+
+&lt;p&gt;Our plan for launching this change was pretty simple: introduce a new environment variable to Metaphysics and
+toggle it when we wanted to QA or launch. Toggling the variable to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;true&lt;/code&gt; and restarting Metaphysics’ Kubernetes
+pods would result in a few updates to the schema (removal of all of the unused types that we got rid of) and would
+cause requests for collections to be routed to Gravity instead of KAWS.&lt;/p&gt;
+
+&lt;p&gt;We figured that we would flip this variable on staging, QA, resolve any issues, and release. We wouldn’t need to
+flip it off unless we had broken something big by accident; we wouldn’t be in danger of shipping these changes to
+production since they would exist only in our staging environment and were not checked in to version control.&lt;/p&gt;
+
+&lt;p&gt;However, we had forgotten something crucial: Metaphysics has a post-merge step in CI that creates PRs with any
+schema updates in client services like Force and Eigen, and the schema it ships to those services is &lt;em&gt;pulled
+directly from staging Metaphysics&lt;/em&gt;. It’s not the version of the schema that’s stored in GitHub (which we had
+carefully avoided changing by not flipping the feature flag), it’s the schema that exists in the staging
+environment.&lt;/p&gt;
+
+&lt;p&gt;In other words, Force (for example) received an updated &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MarketingCollection&lt;/code&gt; type in its schema, which didn’t
+exist (and wouldn’t exist until we finished QA and decided to launch) in production Metaphysics schema. Oops.&lt;/p&gt;
+
+&lt;p&gt;This also meant we accidentally blocked deploys for a while. Services like Force have a check before they can be
+deployed to production: “does my copy of Metaphysics’ schema have changes that are not present in production
+Metaphysics? If so, that probably means deploying me would break something, so go deploy Metaphysics first.”&lt;/p&gt;
+
+&lt;p&gt;Because the flag was still set to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;false&lt;/code&gt; on production, the schema updates would never move past staging. We
+eventually figured out the problem and flipped the flag to “off”, re-ran the “update client schemas” job, and
+deployed Force &lt;em&gt;without&lt;/em&gt; the updated schema. But it made for a pretty confusing few hours, and it could have been
+bad if we needed to ship an urgent bugfix. Lesson learned.&lt;/p&gt;
+
+&lt;p&gt;We ended up creating a Force review app that pointed at a Metaphysics review app with the flag set to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;true&lt;/code&gt; to
+avoid causing more issues. This is definitely what we would do next time.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Overall, we’re feeling pretty happy about how this project went. We hit a few snags along the way, but we launched
+the change earlier this week and haven’t seen any noticeable bugs or problems.&lt;/p&gt;
+
+&lt;p&gt;Of course, there’s still an important question: was it worth it? What did we gain by completing this refactor?&lt;/p&gt;
+
+&lt;p&gt;The answer will mostly depend on what happens next. We’re meeting with stakeholders next week to talk about what
+kind of features we can add or modifications we might want to make. But for now, we’re excited to have one less
+application to maintain and to have made it easier for future Artsy engineers to understand and iterate on our
+collections infrastructure.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 09 May 2022 00:00:00 +0200</pubDate>
+        <link>https://marinahuber.github.ioblog/blog/2022/05/09/deprecating-kaws/</link>
+        <guid isPermaLink="true">https://marinahuber.github.ioblog/blog/2022/05/09/deprecating-kaws/</guid>
+        
+        
+        <category>KAWS refactoring gravity</category>
+        
+      </item>
+    
+      <item>
+        <title>Stepping Out Of The Knowledge Zone</title>
+        <description>&lt;p&gt;As I am writing my first blog post for Artsy, here is a short introduction on who I am: My name is Kaja and I am an
+engineer in our Berlin entity. As a Ruby-born programmer I am calling myself a backend engineer, but that also may
+change and is more about emotional identification and less about what I actually do (as you will see in this blog
+post). My background is not in engineering at all. In university I graduated in philosophy and historical
+linguistics, both the most impractical but most beautifully theoretical subjects I can think of. I really love
+being in the world of ideas and thought experiments that challenge the current status of what &lt;em&gt;is&lt;/em&gt;, as opposed to
+what is &lt;em&gt;thinkable&lt;/em&gt;.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;At Artsy I am currently working in the PX (Partner Experience) Team and since I joined 1 year ago, most of my time
+in the PX team has been dedicated to the implementation of the Artsy Shipping feature. In the backend I helped
+tying the ties between the external ARTA-API (a white glove shipping company) and our own service that is managing
+the shipping and order statuses of the artworks that are ordered online. In the front end I implemented some forms
+for that feature and some so called hooks. I felt like a fish in the water with these tasks, because the company
+that I had worked at before was a shipping company and I did the same thing from the other side of the API
+relationship. In the same language (Ruby on Rails).&lt;/p&gt;
+
+&lt;p&gt;Here is another fact about me that is a premises for what comes next: I enjoy to be a learner of new things much
+more than being an expert about things that I already know. Of course being an expert is also flattering the ego,
+but after a while it can feel repetitive and make your soul feel old and tired. While the experience of being new
+to something and not an expert at all can give you a rejuvenating prickle. On the other side it can be scary to
+admit not knowing something and also the ego will feel small and hurt. But I learned that overcoming the hurt ego
+is my way to happiness in life and I am practicing every day to let go of the idea of me being the admirable expert
+and commit to the philosophical open mind of the “The only thing I know, is that I don’t know.”.&lt;/p&gt;
+
+&lt;p&gt;In the search of something new that I don’t know I stretched out my feelers* and wanted to continue my learnings
+in Elixir. At my previous job I had done quite some work in that new language and still felt non-experty enough in
+it to feel the prickle of learning it. It turned out to be a bit difficult since there were not many people around
+me able to pair and guide me through some problems and the actual work to be done there did not appear to have
+enough priority to be taking so much of my work time.&lt;/p&gt;
+
+&lt;p&gt;One thing I personally care a lot about is the general health of the code base and that the whole machine of a
+distributed system is well oiled and working in a way that makes it easy to contribute to. This is why I also
+really care about updating dependencies and feel personally in charge of doing that without anyone giving me this
+role. That care and my first rotation at Artsy has made me cross the paths with the velocity team several times. I
+understood that the care for the health of the code base is a shared emotion with the velocity team members and I
+felt heard when they picked up this urgent topic in a platform practice (an open somewhat informal meeting for all
+the devops/infrastructure things). My curiosity for the velocity team grew.&lt;/p&gt;
+
+&lt;p&gt;But did I reach out to the velocity team to ask for some collaboration on the dependency updates? No. You have the
+privilege of having a female perspective here in the blog post and I can give you some insights on the barriers for
+me as a woman in tech. While the PX team is well equipped with women engineers, the velocity team only consists of
+men. This plus the aura of tech-geniuses that usually surrounds the people who do devops from the perspective of an
+engineer made me feel nervous and shy to reach out to the velocity team members.&lt;/p&gt;
+
+&lt;p&gt;Another thing that happened was that during some of these beloved dependency updates I had to change the docker
+file of the project, because I needed a newer ruby image. The ruby image we used was a specific artsy ruby image
+and we did not have one for the ruby version that I needed, so here I had to go and change the whole docker file
+set up. I did not know much about docker and what all these funny &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RUN&lt;/code&gt; commands actually did and just tried and
+guessed and broke stuff as I went along and at some point got stuck. So naturally I reached out to our dev-help
+channel and was quickly having the help of Andre, our velocity team member in the German time zone. He paired with
+me and explained the docker commands on the go and made everything seem so simple and straight forward, while also
+being super nice and approachable talking about his cat and his favorite Brazilian food, that I had to question my
+own prejudice about the velocity team members and come to the conclusion that they might all be men and super good
+at what they did, but that at least one of them was really good at demystifying stuff and helping me out.&lt;/p&gt;
+
+&lt;p&gt;The new learnings about docker lit a fire in me: I wanted to learn more of this mysterious world of infrastructure.
+After letting the thoughts and feelings simmer for another week or so, I had a 1:1 with my manager Christian. He
+has some magical question asking powers that truly trigger introspection and I ended up hearing myself say to him:
+“I wish I could do something like an internship in the velocity team!”. Here it was. The actual wish had formed
+into something that is actionable and as I learned totally possible. My Manager did some magic managing and &lt;em&gt;piff
+paff&lt;/em&gt; here I was starting my 2 sprint (4 weeks) rotation in the velocity team!&lt;/p&gt;
+
+&lt;p&gt;At first I was still a bit scared and nervous. Would I be able to contribute anything or would I just be an
+annoyance to the team? Would I make a fool of myself and be branded as a stereotypical woman who doesn’t know
+anything about tech (this is coming from many years of being perceived as a person without any tech skills). I
+latched myself onto the thought, that Andre would be the person that I could talk to and that I knew he was not
+going to bite my head off. I also realized in the organizing process that there was Matt Jones, another velocity
+team member, who was reaching out to me and being super open and kind and having great communication skills and it
+made me feel less scared.&lt;/p&gt;
+
+&lt;p&gt;The first week came up and I found myself in meetings with the velocity team mostly listening at the beginning as I
+was lacking some context in the conversations, but not feeling super weird as I saw that there was nothing of the
+expected mysterious witch craft happening but a very straight forward Kanban board where the only unknowns where
+some names of tools that I had not used before. I was also glad to see some of the faces in the meetings showing
+signs of human struggle like tiredness, a very relatable thing. During my first week I didn’t really know what to
+do as some of the tasks suddenly got blocked or changed or appeared to be already solved and the only thing that
+kept popping up as a suggestion was to do some work on integrity, our little QA robot that automatically clicks
+through the staging interfaces and checks if it behaves as expected. The general reasoning of people in the team
+was “I don’t really know javascript and this cypress stuff, so it would be cool if you can take over some of the
+integrity tasks”. I was still too shy to loudly admit that I myself was also not knowing anything about JS or
+cypress. I felt that as a web developer coming to the velocity team they would think, but is there anything that
+she knows if she doesn’t know docker nor JS??&lt;/p&gt;
+
+&lt;p&gt;Matt Jones asked me for feedback on my first week as he wanted to make sure that this was a useful learning
+experience for me and I told him openly that I felt a bit confused on what my tasks were and that I also didn’t
+know how to fix these tests in integrity and that the only other task that was assigned to me was seeming like a
+dead end to me. That other task was to implement a new user role into something that is called the &lt;em&gt;old admin&lt;/em&gt;!
+Somehow this made my neck hair stand up. Implementing a new feature into a half way sunset service? I looked into
+the code to see if this would be simple and straight forward and saw myself confronted with somewhat outdated
+coffeescript and felt a cold shudder.&lt;/p&gt;
+
+&lt;p&gt;The second week began and as Matt had made me join some meetings on discussing how and if we should set up an
+Artsy.net local docker container for the development and what other services than force (our main service for
+Artsy.net) would be useful to the engineers that usually worked on force. It was an interesting learning experience
+especially because Elena, the engineering Manager on the velocity and data platform teams, was asking some really
+good critical questions that made me realize there was more to it than just a simple docker run for a single
+project. She mentioned problems with node and the usability of the development environment, talked about previous
+experiences with such aims and how it was not working as smoothly as imagined.&lt;/p&gt;
+
+&lt;p&gt;The second week in the velocity team also brought along some team building time. I joined a coffee call and it was
+super interesting to finally also feel like I was getting to know the other mysterious team members of velocity. We
+talked about our international backgrounds and it was great to hear so many stories about where people had come
+from and what languages they had grown up with. This finally was melting my heart for the team and I lost my last
+little bit of fear and shyness.&lt;/p&gt;
+
+&lt;p&gt;As I then started to look at integrity and list some of the tests in it that were flakey Joey, our director of
+engineering, was helping me out leaving meaningful hints and comments on my notes. This plus the recent successful
+coffee call with the team encouraged me to my next very risky step: In a meeting called “velocity mob session” I
+proposed to the team members to mob together on some problem of integrity actually not being able to run certain
+tests from two instances in the same time. It felt risky and scary driving a mob session in a repository that I
+wasn’t familiar with, reproducing a problem that I wasn’t fully understanding and trying to solve it in a
+language/framework that I was not an expert in. But the risk was totally worth it. It turned out to be a super
+interesting and fun and collaborative mob session and we actually figured stuff out together with the whole team.
+Nothing feels better than having a whole team figuring something out together. It really bonds to see stuff
+happening as a shared experience.&lt;/p&gt;
+
+&lt;p&gt;The third week started and in a standup I admitted that I had not been following up on implementing a new role into
+our &lt;em&gt;old-admin&lt;/em&gt; because I felt uneasy to add something new to a project that was stuck in a weird mid-deprecation
+state. The team reacted quickly with a super good idea: Instead of adding something to the &lt;em&gt;old-admin&lt;/em&gt; I should set
+up something that was going to be the new-admin in our environment so that people could contribute to it on the
+upcoming hackathon. I was thrilled! Never have I witnessed the birth of a new project at Artsy and now I was
+supposed to set the whole thing up and go through each step of putting it out there? Awesome! Also I had absolutely
+no idea what that meant. Did I need to do some dangerous mystic exploration into the far away field of our system
+being set up in kubernetes or something? I wasn’t sure. All I had in mind were these complex huge graphs of our
+system and how all the services were connected. How could I add another service into this huge spider web?&lt;/p&gt;
+
+&lt;p&gt;The first helpful thing was a little check list that Joey gave me of things that had to be done. Breaking the task
+down into smaller task definitely already demystified the whole thing a bit. It looked something like:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;get typical local development working&lt;/li&gt;
+  &lt;li&gt;get &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hokusai dev start&lt;/code&gt; working (i.e., local development on docker)&lt;/li&gt;
+  &lt;li&gt;create staging deployment(s) and get them working&lt;/li&gt;
+  &lt;li&gt;CircleCI&lt;/li&gt;
+  &lt;li&gt;create production deployment(s) and get them working&lt;/li&gt;
+  &lt;li&gt;set up the project in &lt;a href=&quot;https://github.com/artsy/horizon&quot;&gt;Horizon&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Also I knew that Roop was the point person for this project and had started setting up the github repo so I started
+to set up the project locally myself and then went to reach out to him for my questions that had come up. This is
+how I had my first ever pairing session with Roop and it was so much fun. After having the project working for me
+locally I was informed that Devon had already put a tutorial video out there on how to set up a new project with
+&lt;a href=&quot;https://github.com/artsy/hokusai&quot;&gt;hokusai&lt;/a&gt; in the artsy system. I watched the video and followed the steps along
+and when I got stuck reached out to Devon directly and there I was having another interesting and fun pairing
+session on setting up a new project with hokusai.&lt;/p&gt;
+
+&lt;p&gt;As you can see each step demystified this task further and further so that in the end after another bunch of fun
+pairing sessions with Jian and Joey I got the new admin deployed and ready just in time for my week four of the
+rotation: The hackathon week! During that week I was continuing my integrity work, pairing with different people
+from different product teams on the flakey cypress tests and in the same time doing my own personal favorite
+hackathon project: Updating dependencies in our code base. I will basically use every excuse I get to update our
+dependencies, because they just need that love and I believe that we can get the code base to a point where it is
+not so painful anymore to keep stuff up to date.&lt;/p&gt;
+
+&lt;p&gt;As the end of the fourth week came up, so did my end of the rotation with the velocity team and I was sad to leave.
+I asked the team members to give me some feedback and was hoping to be able to work on the new admin and on
+integrity and on the Artsy local docker stuff more in the future.&lt;/p&gt;
+
+&lt;p&gt;The following weeks some awesome feedback came in and I was glad to see that I was not the only one really enjoying
+all the nice pairing and good times on the velocity team. As much as I like the PX team and also missed them, I
+secretly hoped that some day in the future I could switch over to velocity in the long term. I knew now that I
+would be learning so much and that none of this was scary anymore. And then it came: An email from Elena saying
+that the velocity team was internally searching for a new member! Maybe the timing was just right, maybe the
+universe just loves me so much… I don’t know, but my wishes became true and I am now moving over to velocity. I
+guess sometimes it is really worth leaning into the scary unknowns and going all the way there to see if it is
+really so scary.&lt;/p&gt;
+
+&lt;p&gt;*“Die Fühler ausstrecken” = German &lt;em&gt;to stretch out your feelers&lt;/em&gt; stands for “to prudently try and see something
+that you don’t know” as a snail would do to find her way forward very slowly and retreat from something unpleasant.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 13 Apr 2022 00:00:00 +0200</pubDate>
+        <link>https://marinahuber.github.ioblog/blog/2022/04/13/stepping-out-of-the-knowledge-zone/</link>
+        <guid isPermaLink="true">https://marinahuber.github.ioblog/blog/2022/04/13/stepping-out-of-the-knowledge-zone/</guid>
+        
+        
+        <category>cypress</category>
+        
+        <category>forque</category>
+        
+        <category>horizon</category>
+        
+        <category>integrity</category>
+        
+        <category>teams</category>
+        
+        <category>velocity</category>
+        
+      </item>
+    
+      <item>
+        <title>Using Context to Simplify a VERY Large React Form</title>
+        <description>&lt;p&gt;For those unfamiliar, Artsy is a fine art marketplace. Knowing that, it follows logically to say that the form via
+which our partners list artworks for sale is an integral part of Artsy’s core systems. This form, known only as
+“The Artwork Form,” is whispered about in the halls of Arty’s New York headquarters. It is legendary. It is a
+colossus. It is old enough not only to predate React v16.8 hooks and context APIs, but Artsy’s use of React
+entirely. The first version of the Artwork Form was built in 2014 using ruby and haml, and began its refactoring
+into JS/JQuery/React a full 2 years later, after having expanded considerably from the original implementation.
+That process (at least what we’ve gleaned from our git excavation) was incremental, experimental, and passed
+through many hands before it landed in the lap of the current Partner Experience (PX) team.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;PX has since been tasked with the maintenance of this unwieldy kaiju, spending endless amounts of time on seemingly
+insignificant changes to behavior or UI, all while watching its performance degrade. Many of the people reading
+this are already familiar with the story we’re telling. Many have worked in their very own version of the tale, and
+borne witness to the fact that legacy code of this scale becomes a living, breathing entity. The developers that
+tend these beasts learn their patterns and idiosyncrasies, their little moans and groans, and for the sake of
+expediency work within those constraints to accomplish their tasks. But when is enough, enough? When does the
+developer time expended working within the constraints of an obsolete design begin to outweigh the time it would
+take to simply &lt;em&gt;fix&lt;/em&gt; &lt;em&gt;the code&lt;/em&gt;?&lt;/p&gt;
+
+&lt;p&gt;First, let’s be honest: there is no single right answer to this question. When working in software development we
+have to deal with certain realities: user experience vs. developer experience, lead time to the next release,
+buy-in from stakeholders, etc. These factors may weigh more or less depending on the shop and the product. At Artsy
+we’re very lucky, in that our engineering department is given the time to attend to our tech debt and to be
+deliberate about when and how we go about this. In the case of the Artwork Form, there were several issues that had
+become too glaring to ignore:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The data coming in, and subsequently being passed to individual components, was being completely obscured by the
+amount of prop drilling and spreading that existed within the composed form.&lt;/li&gt;
+  &lt;li&gt;The prolific use of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;any&lt;/code&gt; when typing data was disabling typescript and consequently removing its usefulness
+while still imposing all of its burdens.&lt;/li&gt;
+  &lt;li&gt;The components within the form were tightly coupled, the number and specificity of props needed for each
+disallowing reuse in other parts of the app.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;A few of us on the PX team decided to take matters into our own hands and address some of these key problems with
+the Artwork Form. We came up with a plan to incrementally convert the form to use values from the Formik context,
+use these values wherever possible to reduce prop-drilling, add much more complete types to the components to get
+rid of all the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;any&lt;/code&gt;’s, and update some of our testing strategies as needed.&lt;/p&gt;
+
+&lt;p&gt;Here are the steps we took to do this conversion:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Create a hook that allows us to use the Formik context throughout the form&lt;/p&gt;
+
+    &lt;p&gt;The hook wraps &lt;a href=&quot;https://formik.org/docs/api/useFormikContext&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useFormikContext&lt;/code&gt;&lt;/a&gt; to allow all of our components
+inside of Formik to access the values from Formik context. It looks like this:&lt;/p&gt;
+
+    &lt;div class=&quot;language-typescript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;useArtworkForm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;FormikContextType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ArtworkValues&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;formikContext&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;useFormikContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ArtworkValues&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;formikContext&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;We use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ArtworkValues&lt;/code&gt; as the generic type so that when we are accessing &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;values&lt;/code&gt; anywhere inside the component
+tree, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;values&lt;/code&gt; can be type-checked.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Convert all of the components in the form to functional components and to TypeScript. (Because the form is
+several years old, there were still many class components and many components that were not yet using
+TypeScript.) This step could be done in parallel with Step 1. One note here is that when converting files from
+JavaScript to TypeScript, we did not explicitly type the props in an interface. Once we can take advantage of
+our &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useArtworkForm&lt;/code&gt; hook, we will reduce the amount of props needed in each component, so we will hold off on
+typing the props until step 3.&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The bulk of the work was making use of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useArtworkForm&lt;/code&gt; hook in the Artwork Form components. Starting with
+the lowest leaves of the component tree and moving up, we removed the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;props&lt;/code&gt; from the component definition and
+destructured any values we needed in the component from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useArtworkForm&lt;/code&gt; hook. Once we used everything we
+could from the context, we added back in any additional props that we would still need to have passed down from
+the parent. In many cases, this was no props at all—a particularly satisfying case. If the component still
+needed props passed down, we explicitly typed the props at the top of each component in an interface because we
+now knew exactly which props we would need inside of the component. Another key step here was going into the
+parent component and getting rid of any prop spreading (this: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;...props&lt;/code&gt;) and instead explicitly passing down
+exactly the props needed in the component (if there were any).&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;A note on tests: Whenever we took advantage of the Formik context in a component, we were breaking that
+component’s tests, because the wrappers we were using in the tests did not have access to the Formik context
+and were being passed props that the component was no longer looking at. We created a helper test wrapper
+that we could use in all of our Artwork Form tests to wrap the test’s specific wrapper inside of a
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;Formik/&amp;gt;&lt;/code&gt; component and provide the specific &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;values&lt;/code&gt; to use as the initial values for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Formik&lt;/code&gt;. Many of
+our test cases involve passing different &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;values&lt;/code&gt; into the component, which we originally did via props but
+now will do via the Formik context through the wrapper. Here’s what the wrapper looks like:&lt;/li&gt;
+    &lt;/ol&gt;
+
+    &lt;div class=&quot;language-tsx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;TestFormikWrapper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;React&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;FC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;TestFormikWrapperProps&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;children&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;values&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;props&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;return &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Formik&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;initialValues&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;values&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;onSubmit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;jest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;si&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;children&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Formik&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;Here is an example of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TestFormikWrapper&lt;/code&gt; used in a test:&lt;/p&gt;
+
+    &lt;div class=&quot;language-tsx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nf&quot;&gt;describe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;TestComponent&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nf&quot;&gt;it&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;displays values&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;wrapper&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;mount&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;TestFormikWrapper&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;values&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Andy Warhol&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;TestComponent&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;/&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;TestFormikWrapper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;wrapper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;#name&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;html&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;nf&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;toInclude&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Andy Warhol&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Once we completed the conversion all the way up the tree to the root component, the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ArtworkForm&lt;/code&gt;, we typed that
+component as strictly as possible and made sure to get rid of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;any&lt;/code&gt;’s. There were quite a few when we started
+the process.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;So, where did we end up? Now all of the components in the Artwork Form are making use of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useArtworkForm&lt;/code&gt; hook
+if they were previously accessing any of the values from the Formik context from props. We have much less prop
+drilling between components and instead explicitly pass down the props needed from parent to child. It’s now much
+more clear for developers what data is passing between the components and what data is actually being used in the
+child. All of the components are also explicitly typed so we know exactly which props, if any, need to be passed
+down from the parent. If any of these props are removed, TypeScript helps us by failing loudly.&lt;/p&gt;
+
+&lt;p&gt;One of the main pain points of the Artwork Form is that it’s very difficult for new developers (whether new to
+Artsy or new to the Partner Experience team) to contribute and make changes to the form without breaking something
+or spending extra time figuring out how data is passed within the form. Hopefully, this change will make it easier
+for developers to understand the Artwork From.&lt;/p&gt;
+
+&lt;p&gt;How did the Artwork Form get so complicated? Well, as we shared, the Artwork Form is the key to achieving one of
+the PX team’s core goals: surfacing the most accurate and rich information about artworks to collectors. We have to
+allow partners to add more and increasingly specific pieces of metadata to artworks. The form has been growing and
+for better or worse, will need to keep growing. Even though we expect to grow the form to meet metadata needs, we
+do not put too much focus on the UX/UI of the Artwork Form in order to prioritize our collector-facing apps. (The
+Artwork Form is only used by a relatively small subset of users, mostly gallery partners.) Hopefully, this refactor
+will allow us to expand the form more seamlessly and will make it easier to navigate as it grows.&lt;/p&gt;
+
+&lt;p&gt;This refactor is still in its early days. The next steps for making the form easier to use (for both developers and
+our end users) will require larger changes. When we think about further progress on revamping the Artwork Form, our
+team is considering breaking the form up into smaller forms. Imagine, we are rendering several different top-level
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Formik&lt;/code&gt; components that include discrete sections of the form, instead of just one giant &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Formik&lt;/code&gt; tree as we have
+now. We would then combine these “mini forms” together, making better use of React’s core principle of composition.&lt;/p&gt;
+
+&lt;p&gt;Breaking up the form would be a big change for the developer experience (but hopefully made easier by this
+refactor). It could also involve big changes to the UI. The Artwork Form is not just hard to navigate for
+developers. It’s hard for users too. Over the next couple of months, our Product Manager will be working with one
+of Artsy’s user researchers to conduct user testing on the form. Feedback from galleries will help determine where
+we next take this project. We’re excited to have buy-in from our product team to work on a project that will
+elevate the user experience while allowing us to use that opportunity to improve the developer experience as well.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 01 Feb 2022 00:00:00 +0100</pubDate>
+        <link>https://marinahuber.github.ioblog/blog/2022/02/01/using-context-to-simplify-a-react-form/</link>
+        <guid isPermaLink="true">https://marinahuber.github.ioblog/blog/2022/02/01/using-context-to-simplify-a-react-form/</guid>
+        
+        
+        <category>context</category>
+        
+        <category>react</category>
+        
+        <category>refactoring</category>
+        
+        <category>typescript</category>
+        
+      </item>
+    
+      <item>
+        <title>A Year in Review: 2021</title>
+        <description>&lt;p&gt;Ufff, 2021 was a tough year. It was the second year of the Covid-19 pandemic. We tried our best to support each
+other through these challenging times and in that spirit, we feel like it’s important not to lose sight of our
+accomplishments. As we say goodbye to 2021 and hello to 2022, here are some Artsy Engineering wins from this past year.&lt;/p&gt;
+
+&lt;p&gt;What did you ship in 2021? We would love to hear about it and celebrate with you!&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Recorded and released 42 episodes of the &lt;a href=&quot;https://www.buzzsprout.com/1781859&quot;&gt;Artsy Engineering Radio&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Onboarded 23 engineers in Berlin, Germany&lt;/li&gt;
+  &lt;li&gt;Leveraged our investment in React Native to launch the &lt;a href=&quot;https://play.google.com/store/apps/details?id=net.artsy.app&quot;&gt;Artsy Android App&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;We &lt;a href=&quot;https://github.com/pulls?q=is%3Apr+user%3Aartsy+created%3A%3E%3D2021-01-01+-created%3A%3E%3D2022-01-01&quot;&gt;opened&lt;/a&gt; 13,368 pull requests! 12,054 were &lt;a href=&quot;https://github.com/pulls?q=is%3Apr+user%3Aartsy+created%3A%3E%3D2021-01-01+-created%3A%3E%3D2022-01-01+is%3Amerged+merged%3A%3C%3D2021-12-31&quot;&gt;merged&lt;/a&gt; and 1,050 were &lt;a href=&quot;https://github.com/pulls?q=is%3Apr+user%3Aartsy+created%3A%3E%3D2021-01-01+-created%3A%3E%3D2022-01-01+is%3Aclosed+is%3Aunmerged&quot;&gt;closed&lt;/a&gt;. (note: includes contributions in private repositories)&lt;/li&gt;
+  &lt;li&gt;Responded to and resolved 29 incidents&lt;/li&gt;
+  &lt;li&gt;Collaborated with &lt;a href=&quot;https://www.itechart.com&quot;&gt;iTechArt&lt;/a&gt; engineers on impactful projects&lt;/li&gt;
+  &lt;li&gt;Migrated more repositories to deploy continuously&lt;/li&gt;
+  &lt;li&gt;Significantly improved &lt;a href=&quot;https://web.dev/vitals&quot;&gt;Core Web Vitals&lt;/a&gt; across our web surfaces&lt;/li&gt;
+  &lt;li&gt;Answered a bunch of questions in our #dev-help Slack channel to help &lt;a href=&quot;https://youtu.be/3XscuivvUzI&quot;&gt;get each other unstuck&lt;/a&gt;!&lt;/li&gt;
+  &lt;li&gt;After many false starts, we finally agreed to pull the trigger on a full auction bidding engine rewrite&lt;/li&gt;
+  &lt;li&gt;More stable end-to-end automated testing tooling (codenamed “integrity”)&lt;/li&gt;
+  &lt;li&gt;Worked with &lt;a href=&quot;https://www.applause.com&quot;&gt;Applause&lt;/a&gt; to help us with external QA for our mobile apps&lt;/li&gt;
+  &lt;li&gt;Bootstrapped a new data engineering team&lt;/li&gt;
+  &lt;li&gt;Launched our a new recommendation model (codenamed “affinity score”)&lt;/li&gt;
+  &lt;li&gt;Developed an in-house auction results pipeline&lt;/li&gt;
+  &lt;li&gt;Launched improvements to our recommendations (New Works for You) for the first time in a while!&lt;/li&gt;
+  &lt;li&gt;Launched integrations with &lt;a href=&quot;https://arta.io&quot;&gt;Arta&lt;/a&gt; (shipping), &lt;a href=&quot;https://www.avalara.com&quot;&gt;Avalara&lt;/a&gt; (tax compliance), &lt;a href=&quot;https://algolia.com&quot;&gt;Algolia&lt;/a&gt; (search), &lt;a href=&quot;https://www.adjust.com&quot;&gt;Adjust&lt;/a&gt; (analytics), &lt;a href=&quot;https://www.braze.com&quot;&gt;Braze&lt;/a&gt; (marketing), and &lt;a href=&quot;https://postie.com&quot;&gt;Postie&lt;/a&gt; (marketing).&lt;/li&gt;
+  &lt;li&gt;Moved 38+ of &lt;a href=&quot;https://github.com/artsy/force&quot;&gt;Force&lt;/a&gt; (artsy.net) apps to a new and improved V2 setup&lt;/li&gt;
+  &lt;li&gt;Rebuilt our design system &lt;a href=&quot;https://github.com/artsy/palette&quot;&gt;Palette&lt;/a&gt;, updated its documentation, and migrated many web and mobile surfaces to the new look&lt;/li&gt;
+  &lt;li&gt;Rebuilt our artwork inquiry flow! Finally!&lt;/li&gt;
+  &lt;li&gt;Migrated to a new marketing email service provider without incident (described as a project “i wouldn’t wish on my worst enemy”)&lt;/li&gt;
+  &lt;li&gt;Added Make Offer support for artwork inquiries&lt;/li&gt;
+  &lt;li&gt;Hired our first agile coach!&lt;/li&gt;
+  &lt;li&gt;Tech leads are taking more ownership over the success of their teams&lt;/li&gt;
+  &lt;li&gt;Moved a bunch of projects off of Heroku and onto our Kubernetes infrastructure&lt;/li&gt;
+  &lt;li&gt;Invested in an improved turn-key set-up for new folks&lt;/li&gt;
+  &lt;li&gt;Integrated our API with more third-party art management systems like &lt;a href=&quot;https://www.artbase.com&quot;&gt;ArtBase&lt;/a&gt; and &lt;a href=&quot;https://www.applause.com&quot;&gt;Artsystems&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Spun up a trial integration with &lt;a href=&quot;https://www.split.io&quot;&gt;Split&lt;/a&gt; (experimentation and feature flagging vendor)&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Thu, 06 Jan 2022 00:00:00 +0100</pubDate>
+        <link>https://marinahuber.github.ioblog/blog/2022/01/06/a-year-in-review-2021/</link>
+        <guid isPermaLink="true">https://marinahuber.github.ioblog/blog/2022/01/06/a-year-in-review-2021/</guid>
+        
+        
+        <category>engineering</category>
+        
+        <category>team</category>
+        
+      </item>
+    
+  </channel>
+</rss>

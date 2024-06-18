@@ -1,0 +1,424 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Transparent Prerequisite Network Requests with Swift and ReactiveCocoa - Blog Engineering</title>
+  <meta name="author" content="">
+
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://webfonts.artsy.net/all-webfonts.css"
+  />
+
+  
+  <meta name="description" content="
+  
+
+    
+
+  
+    
+      
+        
+          
+        
+        
+          Transparent Prerequisite Network Requests with Swift and ReactiveCocoa
+  ...">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:image" content="http://artsy.github.io/images/artsy_oss_image.png" />
+  <meta property="og:image:type" content="image/png" />
+
+  
+  <link rel="canonical" href="https://marinahuber.github.io/blog/2014/09/22/transparent-prerequisite-network-requests/">
+  <link rel="alternate" type="application/rss+xml" title="Artsy Engineering Blog" href="/feed">
+  <link rel="alternate" type="application/atom+xml" title="Podcast Feed" href="/podcast.xml" />
+
+  <link href="/favicon.ico" rel="icon">
+  <link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+  <script src="/javascripts/jquery-1.11.3.min.js"> </script>
+  <script src="/javascripts/gradient-fade.js"></script>
+  <script src="/javascripts/noframework.waypoints.min.js"></script>
+  <script src="/javascripts/sticky.min.js"></script>
+  <script src="/javascripts/custom-element.min.js"></script>
+  <script src="/javascripts/g-emoji-element.js"></script>
+  <script src="/javascripts/related-articles.js"></script>
+
+  
+
+  <link href="/feed.xml" rel="alternate" title="Blog Engineering" type="application/atom+xml">
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-12450662-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+  <div id="logo-container">
+    <a id="lrg-mark" href="https://www.artsy.net/">
+      <svg viewBox="0 0 510 510" width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+        <path transform="scale(1, -1) translate(0, -480)" d="M0 -32h512v512h-512v-512v0zM464 16h-80v80h-48v-80h-288v416h416v-416v0zM194 384h-40l-74 -186h38l20 52h72l19 -52h39l-74 186v0zM149 282l25 66l24 -66h-49v0z"/>
+      </svg>
+    </a>
+  </div>
+  <header id="banner"><div id="header">
+  <div class="header-navigation">
+    <ul>
+      <li><a href="https://developers.artsy.net/">API</a></li>
+      <li><a href="https://www.artsy.net/jobs">Careers</a></li>
+      <li><a href="http://twitter.com/artsyopensource">@artsyopensource</a></li>
+      <li><a href="http://www.artsy.net/">Artsy.net</a></li>
+    </ul>
+    <span class="header-section-title">
+      
+        <a href="/open-source">Open Source</a>
+      
+    </span>
+  </div>
+
+  <div class="header-sticky-container">
+    <div class="header-logo">
+      <h2><a href="https://marinahuber.github.io">Artsy</a></h2>
+    </div>
+    <div class="header-search">
+      
+        <h2><a href="/">Engineering Blog</a></h2>
+      
+    </div>
+  </div>
+</div>
+</header>
+  <div class="header-hamburger">
+    <button class="cmn-toggle-switch cmn-toggle-switch__htx">
+      <span>toggle menu</span>
+    </button>
+  </div>
+  <div id="main">
+    <div id="content">
+
+      <div>
+  <article class="hentry" role="article">
+
+    <div class="article-container-single ">
+
+  
+    <div class="meta-container">
+      <header>
+        
+          <a href="">
+        
+        
+          <h2 class="entry-title">Transparent Prerequisite Network Requests with Swift and ReactiveCocoa</h2>
+        
+        <time datetime="2014-09-22">Sep 22, 2014</time>
+          <p class="meta-author">
+
+
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="/author/ash">Ash Furrow<a/></span>
+      
+      <p class="fn">
+        <a href="https://twitter.com/ashfurrow">@ashfurrow</a>
+      </p>
+      
+
+    </div>
+  
+
+</p>
+          </a>
+      </header>
+    </div>
+  
+
+  <div class="content-container">
+    
+      <div class="entry-content"><p>Artsy’s <a href="http://developers.artsy.net">API</a> requires something called an <a href="https://developers.artsy.net/docs/authentication">XApp
+token</a> in order to perform
+requests. The token comes back with an expiry date, after which the token will
+no longer work. A new token will have to be fetched.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+	</span><span class="nl">"xapp_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SOME_TOKEN"</span><span class="p">,</span><span class="w">
+	</span><span class="nl">"expires_in"</span><span class="p">:</span><span class="s2">"2014-09-19T12:22:21.570Z"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>In our previous iOS apps, tragically written in Objective-C, we have a lot of
+code that looks like the following. <code class="language-plaintext highlighter-rouge">getXappTokenWithCompletion:</code> checks to
+make sure that there is a valid token. If there is, it invokes the completion
+block immediately. Otherwise, it fetches a token, sets it in a static variable,
+and then invokes the completion block.</p>
+
+<div class="language-objc highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">ArtsyAPI</span> <span class="nf">getXappTokenWithCompletion</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="n">xappToken</span><span class="p">,</span> <span class="n">NSDate</span> <span class="o">*</span><span class="n">expirationDate</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">ArtsyAPI</span> <span class="nf">getSomething</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="n">results</span><span class="p">)</span> <span class="p">{</span>
+       <span class="c1">// do something</span>
+    <span class="p">}</span> <span class="nf">failure</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// handle herror</span>
+    <span class="p">}];</span>
+<span class="p">}];</span>
+</code></pre></div></div>
+
+<p>That’s kind of ugly. A better approach might be to embed the token-requesting
+logic within the <code class="language-plaintext highlighter-rouge">getSomething:</code> method. But that kind of sucks, since we’d have
+to reproduce that logic for <em>every</em> network-accessing method. If we have ten
+methods, that’s ten times we need to duplicate that logic.</p>
+
+<p>With our <a href="https://github.com/artsy/eidolon">new app</a> (written in Swift), we’re
+using a network abstraction layer we’ve created called <a href="https://github.com/AshFurrow/Moya">Moya</a>.
+Moya sits on top of <a href="https://github.com/Alamofire/Alamofire">Alamofire</a> and
+provides an abstraction for API endpoints. Instead of having ten different
+network-accessing methods, there is only <em>one</em> method to which you pass one of
+the ten different possible <code class="language-plaintext highlighter-rouge">enum</code> values. This means you have compile-time
+safety in your networking code, but that’s not really what we’re here to talk
+about.</p>
+
+<!-- more -->
+
+<p>Moya has this cool last-minute closure that it invokes to sign requests, so we
+can sign these requests like this.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var endpointsClosure = { (target: ArtsyAPI, method: Moya.Method, parameters: [String: AnyObject]) -&gt; Endpoint&lt;ArtsyAPI&gt; in
+        let endpoint: Endpoint&lt;ArtsyAPI&gt; = Endpoint&lt;ArtsyAPI&gt;(URL: url(target), sampleResponse: .Success(200, target.sampleData), method: method, parameters: parameters)
+
+        // Sign all non-XApp token requests
+        switch target {
+        case .XApp:
+            return endpoint
+        default:
+            return endpoint.endpointByAddingHTTPHeaderFields(["X-Xapp-Token": /* global XApp token */])
+        }
+    }
+</code></pre></div></div>
+
+<p>So that’s kind of cool.</p>
+
+<p>Since there is only <em>one</em> method for accessing the API, we can easily inject
+the token-checking method there. Something like</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public func XAppRequest(token: ArtsyAPI, completion: MoyaCompletion) {
+    if /* token is valid */ {
+        moyaProvider.sharedProvider.request(token, completion: completion)
+    } else {
+	    moyaProvider.request(ArtsyAPI.XApp, completion: { (data, statusCode, error) -&gt; () in
+	        /* store token somewhere */
+	        moyaProvider.sharedProvider.request(token, completion: completion)
+	    })
+	}
+}
+</code></pre></div></div>
+
+<p>That’s <em>better</em>, but it’s still kind of ugly. We’ve got duplicated code in
+there, and we’re just kind of abstracting away the callback mess; it still
+exists, we just don’t see if as often.</p>
+
+<p>OK, so what alternative is there? Well, Moya supports a <a href="https://github.com/ReactiveCocoa/ReactiveCocoa">ReactiveCocoa</a>
+extension that uses <em>signals</em> instead of callback closures. Super-cool. So we
+can rewrite our <code class="language-plaintext highlighter-rouge">XAppRequest</code> function to be the following.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>private func XAppTokenRequest() -&gt; RACSignal {
+    let newTokenSignal = moyaProvider.request(ArtsyAPI.XApp).filterSuccessfulStatusCodes().mapJSON().doNext({ (response) -&gt; Void in
+        /* store new token globally */
+    }).logError().ignoreValues()
+
+    let validTokenSignal = RACSignal.`return`(/* does the token exist and is valid? */)
+    return RACSignal.`if`(validTokenSignal, then: RACSignal.empty(), `else`: newTokenSignal)
+}
+
+public func XAppRequest(token: ArtsyAPI) -&gt; RACSignal {
+    return XAppTokenRequest().then({ () -&gt; RACSignal! in
+        return moyaProvider.request(token, method: method, parameters: parameters)
+    })
+}
+</code></pre></div></div>
+
+<p>Neato. So we have abstracted the “check if there is a valid token and get one if
+there isn’t” into its own private method called <code class="language-plaintext highlighter-rouge">XAppTokenRequest</code>. If the token
+exists and is valid, then the function returns <code class="language-plaintext highlighter-rouge">RACSignal.empty()</code>, a signal
+which completes immediately. Otherwise, we perform a fetch, which completes
+when the XApp token request is finished.</p>
+
+<p>Then we just need to use <code class="language-plaintext highlighter-rouge">then</code> on <code class="language-plaintext highlighter-rouge">RACSignal</code> to create a new signal that is
+generated once the <code class="language-plaintext highlighter-rouge">XAppTokenRequest</code> signal completes. Since the <code class="language-plaintext highlighter-rouge">then</code> closure
+is only invoked once the <code class="language-plaintext highlighter-rouge">XAppTokenRequest</code> signal completes, the newly created
+request signal will be generated after the token is set, which is ideal.</p>
+
+<p>All the code above is kind of simplified. That’s OK, since it’s just a proof of
+concept. If you want the full code, it’s all available <a href="https://github.com/artsy/eidolon/blob/1804044dfa8b22d9f765a621a5dbde357440146c/Kiosk/App/ArtsyAPI.swift#L87-L112">on GitHub</a>
+and the conversation surrounding this change is in a <a href="https://github.com/artsy/eidolon/pull/29">merged pull request</a>.</p>
+
+<p>If you have run into this problem and have a different solution, we’d love to
+hear from you.</p>
+</div>
+    
+
+    <p class="meta-author">
+      
+
+
+
+
+<div class="meta">
+  Posted by
+
+
+  
+
+  
+    <span class="byline author vcard">
+
+      <div class="meta"><span class="fn"><a href="/author/ash">
+        Ash Furrow
+      </a></span></div>
+
+      
+      <span class="fn">
+        <a href="http://ashfurrow.com">Site</a>
+      </span>
+      
+      
+      <span class="fn">
+        <a href="https://github.com/ashfurrow">GitHub</a>
+      </span>
+      
+      
+      <span class="fn">
+        <a href="https://twitter.com/ashfurrow">@ashfurrow</a>
+      </span>
+      
+    </span>
+
+  
+</div>
+
+
+
+
+    </p>
+    <p class="meta-categories">
+      Categories: 
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/open-source/'>Open-Source</a>, <a class='category' href='/blog/categories/ios/'>iOS</a>, <a class='category' href='/blog/categories/mobile/'>mobile</a>, <a class='category' href='/blog/categories/networking/'>networking</a>
+  
+</span>
+
+
+    </p>
+    
+
+    
+      <hr/>
+      <section class="comments">
+        <h1>Comments</h1>
+        <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+      </section>
+      <hr/>
+    
+
+    <p class="meta-paginate">
+      
+        <a class="previous" href="/blog/2014/09/12/designing-the-public-artsy-api/" title="Previous Post: Designing the Public Artsy API">&laquo; Designing the Public Artsy API</a>
+      
+      
+        <a class="next" href="/blog/2014/09/24/using-pattern-recognition-to-automatically-crop-framed-art/" title="next Post: Using Pattern Recognition to Automatically Crop Framed Art">Using Pattern Recognition to Automatically Crop Framed Art &raquo;</a>
+      
+    </p>
+  </div>
+
+
+  <footer>
+  </footer>
+
+</div>
+
+
+  </article>
+</div>
+
+
+    </div>
+
+    <aside class="related-articles"></aside>
+
+  </div>
+  <footer id="main_footer"> <div class="footer-navigation">
+  <ul>
+    <li><a href="https://developers.artsy.net/">API</a></li>
+    <li><a href="https://www.artsy.net/jobs">Careers</a></li>
+    <li><a href="http://twitter.com/artsyopensource">@artsyopensource</a></li>
+    <li><a href="http://www.artsy.net/">Artsy.net</a></li>
+  </ul>
+</div>
+
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'blog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'https://marinahuber.github.io/blog/2014/09/22/transparent-prerequisite-network-requests/';
+        var disqus_url = 'https://marinahuber.github.io/blog/2014/09/22/transparent-prerequisite-network-requests/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+</footer>
+  <script type="text/javascript">
+  $(function() {
+    // TODO: Move this whole file to a javascript file that is included in the footer
+
+    // Main sticky header
+    if ($(window).width() >= 700) {
+      var sticky = new Waypoint.Sticky({
+        element: $("#banner"),
+        offset: -100
+      });
+    }
+
+    // Toggle hamburger menu
+    $('.header-hamburger').click(function() {
+      $('#banner, .cmn-toggle-switch').toggleClass('active');
+      if (location.pathname == '/open-source') {
+        $('#page-sidebar').toggle();
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
