@@ -124,9 +124,9 @@ also real easy to implement).</p>
 
 <p>First, define an API endpoint server-side:</p>
 
-<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nf">express</span><span class="p">()</span>
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
 
-<span class="nx">app</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="dl">"</span><span class="s2">/set-tracking-preferences</span><span class="dl">"</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">app</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">"</span><span class="s2">/set-tracking-preferences</span><span class="dl">"</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="p">{</span> <span class="nx">trackingPreferences</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span>
 
   <span class="kd">const</span> <span class="nx">cookieConfig</span> <span class="o">=</span> <span class="p">{</span>
@@ -135,12 +135,12 @@ also real easy to implement).</p>
     <span class="na">secure</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="c1">// important!</span>
   <span class="p">}</span>
 
-  <span class="k">if </span><span class="p">(</span><span class="nx">trackingPreferences</span> <span class="o">!==</span> <span class="dl">"</span><span class="s2">undefined</span><span class="dl">"</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">trackingPreferences</span> <span class="o">!==</span> <span class="dl">"</span><span class="s2">undefined</span><span class="dl">"</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// Overwrite client-side cookie with cloned, secure server-side version</span>
-    <span class="nx">res</span><span class="p">.</span><span class="nf">cookie</span><span class="p">(</span><span class="dl">"</span><span class="s2">trackingPreferences</span><span class="dl">"</span><span class="p">,</span> <span class="nx">trackingPreferences</span><span class="p">,</span> <span class="nx">cookieConfig</span><span class="p">)</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">cookie</span><span class="p">(</span><span class="dl">"</span><span class="s2">trackingPreferences</span><span class="dl">"</span><span class="p">,</span> <span class="nx">trackingPreferences</span><span class="p">,</span> <span class="nx">cookieConfig</span><span class="p">)</span>
   <span class="p">}</span>
 
-  <span class="nx">res</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="dl">"</span><span class="s2">Tracking preferences set.</span><span class="dl">"</span><span class="p">)</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="dl">"</span><span class="s2">Tracking preferences set.</span><span class="dl">"</span><span class="p">)</span>
 <span class="p">})</span>
 </code></pre></div></div>
 
@@ -150,10 +150,10 @@ have been set by the user:</p>
 <div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">cookies</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">cookies-js</span><span class="dl">"</span>
 
 <span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nf">useEffect</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">trackingPreferences</span> <span class="o">=</span> <span class="nf">encodeURIComponent</span><span class="p">(</span><span class="nx">cookies</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="dl">"</span><span class="s2">trackingPreferences</span><span class="dl">"</span><span class="p">))</span>
+  <span class="nx">useEffect</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">trackingPreferences</span> <span class="o">=</span> <span class="nb">encodeURIComponent</span><span class="p">(</span><span class="nx">cookies</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">"</span><span class="s2">trackingPreferences</span><span class="dl">"</span><span class="p">))</span>
 
-    <span class="nf">fetch</span><span class="p">(</span>
+    <span class="nx">fetch</span><span class="p">(</span>
       <span class="s2">`/set-tracking-preferences?trackingPreferences=</span><span class="p">${</span><span class="nx">trackingPreferences</span><span class="p">}</span><span class="s2">`</span>
     <span class="p">)</span>
   <span class="p">},</span> <span class="p">[])</span>
@@ -199,7 +199,7 @@ days, when Safari would otherwise erase the cookie, it will see that it’s now
           <section>
             <h4>Post Meta</h4>
             <p>Aug 23, 2022</p>
-            <p>Tagged: <a class='category' href='/blog/categories/ccpa/'>CCPA</a>, <a class='category' href='/blog/categories/cookies/'>Cookies</a>, <a class='category' href='/blog/categories/gdpr/'>GDPR</a>, <a class='category' href='/blog/categories/privacy/'>Privacy</a></p>
+            <p>Tagged: PrivacyCookiesGDPRCCPA</p>
           </section>
           <br/>
           <section>

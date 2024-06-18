@@ -132,7 +132,7 @@ rid of all the <code class="language-plaintext highlighter-rouge">any</code>’s
     <p>The hook wraps <a href="https://formik.org/docs/api/useFormikContext"><code class="language-plaintext highlighter-rouge">useFormikContext</code></a> to allow all of our components
 inside of Formik to access the values from Formik context. It looks like this:</p>
 
-    <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">function</span> <span class="nf">useArtworkForm</span><span class="p">():</span> <span class="nx">FormikContextType</span><span class="o">&lt;</span><span class="nx">ArtworkValues</span><span class="o">&gt;</span> <span class="p">{</span>
+    <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">function</span> <span class="nx">useArtworkForm</span><span class="p">():</span> <span class="nx">FormikContextType</span><span class="o">&lt;</span><span class="nx">ArtworkValues</span><span class="o">&gt;</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">formikContext</span> <span class="o">=</span> <span class="nx">useFormikContext</span><span class="o">&lt;</span><span class="nx">ArtworkValues</span><span class="o">&gt;</span><span class="p">()</span>
   <span class="k">return</span> <span class="nx">formikContext</span>
 <span class="p">}</span>
@@ -171,8 +171,8 @@ now will do via the Formik context through the wrapper. Here’s what the wrappe
     <div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">const</span> <span class="nx">TestFormikWrapper</span><span class="p">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">FC</span><span class="o">&lt;</span><span class="nx">TestFormikWrapperProps</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="p">{</span> <span class="nx">children</span><span class="p">,</span> <span class="nx">values</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">props</span>
 
-  <span class="k">return </span><span class="p">(</span>
-    <span class="p">&lt;</span><span class="nc">Formik</span> <span class="na">initialValues</span><span class="p">=</span><span class="si">{</span><span class="nx">values</span><span class="si">}</span> <span class="na">onSubmit</span><span class="p">=</span><span class="si">{</span><span class="nx">jest</span><span class="p">.</span><span class="nf">fn</span><span class="p">()</span><span class="si">}</span><span class="p">&gt;</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">Formik</span> <span class="na">initialValues</span><span class="p">=</span><span class="si">{</span><span class="nx">values</span><span class="si">}</span> <span class="na">onSubmit</span><span class="p">=</span><span class="si">{</span><span class="nx">jest</span><span class="p">.</span><span class="nx">fn</span><span class="p">()</span><span class="si">}</span><span class="p">&gt;</span>
       <span class="si">{</span><span class="nx">children</span><span class="si">}</span>
     <span class="p">&lt;/</span><span class="nc">Formik</span><span class="p">&gt;</span>
   <span class="p">)</span>
@@ -181,16 +181,16 @@ now will do via the Formik context through the wrapper. Here’s what the wrappe
 
     <p>Here is an example of <code class="language-plaintext highlighter-rouge">TestFormikWrapper</code> used in a test:</p>
 
-    <div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">describe</span><span class="p">(</span><span class="dl">"</span><span class="s2">TestComponent</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nf">it</span><span class="p">(</span><span class="dl">"</span><span class="s2">displays values</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">wrapper</span> <span class="o">=</span> <span class="nf">mount</span><span class="p">(</span>
+    <div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">describe</span><span class="p">(</span><span class="dl">"</span><span class="s2">TestComponent</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">it</span><span class="p">(</span><span class="dl">"</span><span class="s2">displays values</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">wrapper</span> <span class="o">=</span> <span class="nx">mount</span><span class="p">(</span>
       <span class="p">&lt;</span><span class="nc">TestFormikWrapper</span> <span class="na">values</span><span class="p">=</span><span class="si">{</span><span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Andy Warhol</span><span class="dl">"</span> <span class="p">}</span><span class="si">}</span><span class="p">&gt;</span>
         <span class="p">&lt;</span><span class="nc">TestComponent</span> <span class="p">/&gt;</span>
       <span class="p">&lt;/</span><span class="nc">TestFormikWrapper</span><span class="p">&gt;</span>
     <span class="p">)</span>
 
-    <span class="kd">const</span> <span class="nx">name</span> <span class="o">=</span> <span class="nx">wrapper</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="dl">"</span><span class="s2">#name</span><span class="dl">"</span><span class="p">).</span><span class="nf">html</span><span class="p">()</span>
-    <span class="nf">expect</span><span class="p">(</span><span class="nx">name</span><span class="p">).</span><span class="nf">toInclude</span><span class="p">(</span><span class="dl">"</span><span class="s2">Andy Warhol</span><span class="dl">"</span><span class="p">)</span>
+    <span class="kd">const</span> <span class="nx">name</span> <span class="o">=</span> <span class="nx">wrapper</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="dl">"</span><span class="s2">#name</span><span class="dl">"</span><span class="p">).</span><span class="nx">html</span><span class="p">()</span>
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">name</span><span class="p">).</span><span class="nx">toInclude</span><span class="p">(</span><span class="dl">"</span><span class="s2">Andy Warhol</span><span class="dl">"</span><span class="p">)</span>
   <span class="p">})</span>
 <span class="p">})</span>
 </code></pre></div>    </div>
@@ -397,7 +397,7 @@ elevate the user experience while allowing us to use that opportunity to improve
           <section>
             <h4>Post Meta</h4>
             <p>Feb 1, 2022</p>
-            <p>Tagged: <a class='category' href='/blog/categories/context/'>context</a>, <a class='category' href='/blog/categories/react/'>react</a>, <a class='category' href='/blog/categories/refactoring/'>refactoring</a>, <a class='category' href='/blog/categories/typescript/'>typescript</a></p>
+            <p>Tagged: refactoringreactcontexttypescript</p>
           </section>
           <br/>
           <section>

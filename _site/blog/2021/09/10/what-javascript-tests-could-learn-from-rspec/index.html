@@ -233,32 +233,32 @@ And each block has very little noise to distract you.</p>
 
 <p>Here’s what I’d do in JavaScript/Jest to accomplish something similar:</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">describe</span><span class="p">(</span><span class="dl">"</span><span class="s2">Calculator</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">describe</span><span class="p">(</span><span class="dl">"</span><span class="s2">Calculator</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">let</span> <span class="nx">calculator</span>
-  <span class="nf">beforeEach</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">calculator</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Calculator</span><span class="p">()</span> <span class="p">})</span>
+  <span class="nx">beforeEach</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">calculator</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Calculator</span><span class="p">()</span> <span class="p">})</span>
 
-  <span class="nf">describe</span><span class="p">(</span><span class="dl">"</span><span class="s2">.multiply</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">describe</span><span class="p">(</span><span class="dl">"</span><span class="s2">.multiply</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kd">let</span> <span class="nx">first</span><span class="p">,</span> <span class="nx">second</span>
-    <span class="kd">function</span> <span class="nf">getResult</span><span class="p">()</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">calculator</span><span class="p">.</span><span class="nf">multiply</span><span class="p">(</span><span class="nx">first</span><span class="p">,</span> <span class="nx">second</span><span class="p">)</span>
+    <span class="kd">function</span> <span class="nx">getResult</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">calculator</span><span class="p">.</span><span class="nx">multiply</span><span class="p">(</span><span class="nx">first</span><span class="p">,</span> <span class="nx">second</span><span class="p">)</span>
     <span class="p">}</span>
 
-    <span class="nf">describe</span><span class="p">(</span><span class="dl">"</span><span class="s2">when the first value is negative</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-      <span class="nf">beforeEach</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">first</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="p">})</span>
+    <span class="nx">describe</span><span class="p">(</span><span class="dl">"</span><span class="s2">when the first value is negative</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="nx">beforeEach</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">first</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="p">})</span>
 
-      <span class="nf">describe</span><span class="p">(</span><span class="dl">"</span><span class="s2">when the second value is negative</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nf">beforeEach</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">second</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span> <span class="p">})</span>
+      <span class="nx">describe</span><span class="p">(</span><span class="dl">"</span><span class="s2">when the second value is negative</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">beforeEach</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">second</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span> <span class="p">})</span>
 
-        <span class="nf">it</span><span class="p">(</span><span class="dl">"</span><span class="s2">returns a positive number</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-          <span class="nf">expect</span><span class="p">(</span><span class="nf">getResult</span><span class="p">()).</span><span class="nf">toEqual</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="nx">it</span><span class="p">(</span><span class="dl">"</span><span class="s2">returns a positive number</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+          <span class="nx">expect</span><span class="p">(</span><span class="nx">getResult</span><span class="p">()).</span><span class="nx">toEqual</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
         <span class="p">})</span>
       <span class="p">})</span>
 
-      <span class="nf">describe</span><span class="p">(</span><span class="dl">"</span><span class="s2">when the second value is positive</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nf">beforeEach</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">second</span> <span class="o">=</span> <span class="mi">3</span> <span class="p">})</span>
+      <span class="nx">describe</span><span class="p">(</span><span class="dl">"</span><span class="s2">when the second value is positive</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">beforeEach</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">second</span> <span class="o">=</span> <span class="mi">3</span> <span class="p">})</span>
 
-        <span class="nf">it</span><span class="p">(</span><span class="dl">"</span><span class="s2">returns a negative number</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-          <span class="nf">expect</span><span class="p">(</span><span class="nf">getResult</span><span class="p">()).</span><span class="nf">toEqual</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span>
+        <span class="nx">it</span><span class="p">(</span><span class="dl">"</span><span class="s2">returns a negative number</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+          <span class="nx">expect</span><span class="p">(</span><span class="nx">getResult</span><span class="p">()).</span><span class="nx">toEqual</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span>
         <span class="p">})</span>
       <span class="p">})</span>
     <span class="p">})</span>
@@ -272,21 +272,21 @@ more noise, but it is definitely more noise.</p>
 <p>In real life I wouldn’t expect to find tests like the above JavaScript example. I’d expect to find the tests in
 JavaScript looking more like this:</p>
 
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">describe</span><span class="p">(</span><span class="dl">"</span><span class="s2">Calculator</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">describe</span><span class="p">(</span><span class="dl">"</span><span class="s2">Calculator</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">let</span> <span class="nx">calculator</span>
-  <span class="nf">beforeEach</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">calculator</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Calculator</span><span class="p">()</span> <span class="p">})</span>
+  <span class="nx">beforeEach</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">calculator</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Calculator</span><span class="p">()</span> <span class="p">})</span>
 
-  <span class="nf">describe</span><span class="p">(</span><span class="dl">"</span><span class="s2">.multiply</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nf">it</span><span class="p">(</span><span class="dl">"</span><span class="s2">returns a positive number when the first number is negative and the second number is negative</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-      <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">calculator</span><span class="p">.</span><span class="nf">multiply</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">)</span>
+  <span class="nx">describe</span><span class="p">(</span><span class="dl">"</span><span class="s2">.multiply</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">it</span><span class="p">(</span><span class="dl">"</span><span class="s2">returns a positive number when the first number is negative and the second number is negative</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">calculator</span><span class="p">.</span><span class="nx">multiply</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">)</span>
 
-      <span class="nf">expect</span><span class="p">(</span><span class="nx">result</span><span class="p">).</span><span class="nf">toEqual</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+      <span class="nx">expect</span><span class="p">(</span><span class="nx">result</span><span class="p">).</span><span class="nx">toEqual</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
     <span class="p">})</span>
 
-    <span class="nf">it</span><span class="p">(</span><span class="dl">"</span><span class="s2">returns a negative number when the first number is negative and the second number is positive</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-      <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">calculator</span><span class="p">.</span><span class="nf">multiply</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="nx">it</span><span class="p">(</span><span class="dl">"</span><span class="s2">returns a negative number when the first number is negative and the second number is positive</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">calculator</span><span class="p">.</span><span class="nx">multiply</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 
-      <span class="nf">expect</span><span class="p">(</span><span class="nx">result</span><span class="p">).</span><span class="nf">toEqual</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span>
+      <span class="nx">expect</span><span class="p">(</span><span class="nx">result</span><span class="p">).</span><span class="nx">toEqual</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span>
     <span class="p">})</span>
   <span class="p">})</span>
 <span class="p">})</span>
@@ -517,7 +517,7 @@ I’m in ❤️ ❤️ ❤️ ❤️ ❤️.</p>
           <section>
             <h4>Post Meta</h4>
             <p>Sep 10, 2021</p>
-            <p>Tagged: <a class='category' href='/blog/categories/jest/'>jest</a>, <a class='category' href='/blog/categories/rspec/'>rspec</a>, <a class='category' href='/blog/categories/testing/'>testing</a></p>
+            <p>Tagged: testingrspecjest</p>
           </section>
           <br/>
           <section>

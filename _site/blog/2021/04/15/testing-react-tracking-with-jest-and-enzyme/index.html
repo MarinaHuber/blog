@@ -123,13 +123,13 @@ be available to all of our React apps:</p>
 <span class="k">import</span> <span class="p">{</span> <span class="nx">track</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react-tracking</span><span class="dl">"</span>
 
 <span class="c1">// We're following the instructions from react-tracking's README on overriding the dispatch function</span>
-<span class="kd">const</span> <span class="nx">TrackerContextCohesion</span> <span class="o">=</span> <span class="nf">track</span><span class="p">(</span>
+<span class="kd">const</span> <span class="nx">TrackerContextCohesion</span> <span class="o">=</span> <span class="nx">track</span><span class="p">(</span>
   <span class="c1">// This is blank because we're not actually tracking a specific event here, just modifying dispatch</span>
   <span class="c1">// so that all components in the tree can use it</span>
   <span class="p">{},</span>
   <span class="p">{</span>
     <span class="na">dispatch</span><span class="p">:</span> <span class="p">({</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">callback</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
-      <span class="nf">trackEvent</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">analytics</span><span class="p">.</span><span class="nf">track</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">action</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">callback</span><span class="p">))</span>
+      <span class="nx">trackEvent</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">analytics</span><span class="p">.</span><span class="nx">track</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">action</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">callback</span><span class="p">))</span>
     <span class="p">},</span>
   <span class="p">}</span>
 <span class="p">)((</span><span class="nx">props</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -149,19 +149,19 @@ be available to all of our React apps:</p>
 <span class="c1">// Assumes that MyComponent is wrapped in &lt;BaseApp&gt; wherever it's used, giving</span>
 <span class="c1">// it access to tracking context</span>
 <span class="kd">const</span> <span class="nx">MyComponent</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="p">{</span> <span class="nx">trackEvent</span> <span class="p">}</span> <span class="o">=</span> <span class="nf">useTracking</span><span class="p">()</span>
+  <span class="kd">const</span> <span class="p">{</span> <span class="nx">trackEvent</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">useTracking</span><span class="p">()</span>
 
   <span class="kd">const</span> <span class="nx">handleClick</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nf">trackEvent</span><span class="p">({</span>
+    <span class="nx">trackEvent</span><span class="p">({</span>
       <span class="na">data</span><span class="p">:</span> <span class="p">{</span> <span class="na">action</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Click</span><span class="dl">"</span><span class="p">,</span> <span class="na">somePropToTrack</span><span class="p">:</span> <span class="dl">"</span><span class="s2">andy-warhol</span><span class="dl">"</span> <span class="p">},</span>
       <span class="na">options</span><span class="p">:</span> <span class="p">{},</span> <span class="c1">// Additional Segment options, e.g. integrations: { 'Intercom': false, }</span>
       <span class="na">callback</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nf">assign</span><span class="p">(</span><span class="dl">"</span><span class="s2">/artworks</span><span class="dl">"</span><span class="p">)</span>
+        <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="dl">"</span><span class="s2">/artworks</span><span class="dl">"</span><span class="p">)</span>
       <span class="p">},</span>
     <span class="p">})</span>
   <span class="p">}</span>
 
-  <span class="k">return </span><span class="p">(</span>
+  <span class="k">return</span> <span class="p">(</span>
     <span class="o">&lt;</span><span class="nx">Box</span><span class="o">&gt;</span>
       <span class="o">&lt;</span><span class="nx">Button</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="nx">handleClick</span><span class="p">}</span><span class="o">&gt;</span><span class="nx">Track</span> <span class="nx">and</span> <span class="nx">navigate</span><span class="o">&lt;</span><span class="sr">/Button</span><span class="err">&gt;
 </span>    <span class="o">&lt;</span><span class="sr">/Box</span><span class="err">&gt;
@@ -197,17 +197,17 @@ component was trying to execute a tracking call before navigating.</p>
 <span class="k">import</span> <span class="p">{</span> <span class="nx">MyComponent</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./MyComponent</span><span class="dl">"</span>
 <span class="k">import</span> <span class="p">{</span> <span class="nx">TestApp</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">testing/components/TestApp</span><span class="dl">"</span>
 
-<span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">assign</span> <span class="o">=</span> <span class="nx">jest</span><span class="p">.</span><span class="nf">fn</span><span class="p">()</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">assign</span> <span class="o">=</span> <span class="nx">jest</span><span class="p">.</span><span class="nx">fn</span><span class="p">()</span>
 
-<span class="nf">it</span><span class="p">(</span><span class="dl">"</span><span class="s2">Navigates to artworks page</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">wrapper</span> <span class="o">=</span> <span class="nf">mount</span><span class="p">(</span>
+<span class="nx">it</span><span class="p">(</span><span class="dl">"</span><span class="s2">Navigates to artworks page</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">wrapper</span> <span class="o">=</span> <span class="nx">mount</span><span class="p">(</span>
     <span class="o">&lt;</span><span class="nx">TestApp</span><span class="o">&gt;</span>
       <span class="o">&lt;</span><span class="nx">MyComponent</span> <span class="o">/&gt;</span>
     <span class="o">&lt;</span><span class="sr">/TestApp</span><span class="err">&gt;
 </span>  <span class="p">)</span>
 
-  <span class="nx">wrapper</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="dl">"</span><span class="s2">Button</span><span class="dl">"</span><span class="p">).</span><span class="nf">simulate</span><span class="p">(</span><span class="dl">"</span><span class="s2">click</span><span class="dl">"</span><span class="p">)</span>
-  <span class="nf">expect</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">assign</span><span class="p">).</span><span class="nf">toBeCalledWith</span><span class="p">(</span><span class="dl">"</span><span class="s2">/artworks</span><span class="dl">"</span><span class="p">)</span>
+  <span class="nx">wrapper</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="dl">"</span><span class="s2">Button</span><span class="dl">"</span><span class="p">).</span><span class="nx">simulate</span><span class="p">(</span><span class="dl">"</span><span class="s2">click</span><span class="dl">"</span><span class="p">)</span>
+  <span class="nx">expect</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">assign</span><span class="p">).</span><span class="nx">toBeCalledWith</span><span class="p">(</span><span class="dl">"</span><span class="s2">/artworks</span><span class="dl">"</span><span class="p">)</span>
 <span class="p">})</span>
 </code></pre></div></div>
 
@@ -219,19 +219,19 @@ call while still executing a passed callback?</p>
 <p>Our mock ended up looking like this:</p>
 
 <div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">window</span><span class="p">.</span><span class="nx">analytics</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="na">track</span><span class="p">:</span> <span class="nx">jest</span><span class="p">.</span><span class="nf">fn</span><span class="p">(),</span>
+  <span class="na">track</span><span class="p">:</span> <span class="nx">jest</span><span class="p">.</span><span class="nx">fn</span><span class="p">(),</span>
 <span class="p">}</span>
 
-<span class="nx">jest</span><span class="p">.</span><span class="nf">mock</span><span class="p">(</span><span class="dl">"</span><span class="s2">react-tracking</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">({</span>
-  <span class="na">useTracking</span><span class="p">:</span> <span class="nx">jest</span><span class="p">.</span><span class="nf">fn</span><span class="p">(),</span>
+<span class="nx">jest</span><span class="p">.</span><span class="nx">mock</span><span class="p">(</span><span class="dl">"</span><span class="s2">react-tracking</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">({</span>
+  <span class="na">useTracking</span><span class="p">:</span> <span class="nx">jest</span><span class="p">.</span><span class="nx">fn</span><span class="p">(),</span>
   <span class="na">track</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="nx">children</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">children</span><span class="p">,</span>
 <span class="p">}))</span>
 
-<span class="kd">const</span> <span class="nx">trackEvent</span> <span class="o">=</span> <span class="nx">jest</span><span class="p">.</span><span class="nf">fn</span><span class="p">((</span><span class="nx">args</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">args</span><span class="p">.</span><span class="nf">callback</span><span class="p">()</span>
+<span class="kd">const</span> <span class="nx">trackEvent</span> <span class="o">=</span> <span class="nx">jest</span><span class="p">.</span><span class="nx">fn</span><span class="p">((</span><span class="nx">args</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">args</span><span class="p">.</span><span class="nx">callback</span><span class="p">()</span>
 <span class="p">})</span>
 
-<span class="nx">useTracking</span><span class="p">.</span><span class="nf">mockImplementation</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">({</span>
+<span class="nx">useTracking</span><span class="p">.</span><span class="nx">mockImplementation</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">({</span>
   <span class="nx">trackEvent</span><span class="p">,</span>
 <span class="p">}))</span>
 </code></pre></div></div>
@@ -239,7 +239,7 @@ call while still executing a passed callback?</p>
 <p>Let’s break that down section by section. First:</p>
 
 <div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">window</span><span class="p">.</span><span class="nx">analytics</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="na">track</span><span class="p">:</span> <span class="nx">jest</span><span class="p">.</span><span class="nf">fn</span><span class="p">(),</span>
+  <span class="na">track</span><span class="p">:</span> <span class="nx">jest</span><span class="p">.</span><span class="nx">fn</span><span class="p">(),</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -248,8 +248,8 @@ started by mocking that setup.</p>
 
 <p>Next:</p>
 
-<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">jest</span><span class="p">.</span><span class="nf">mock</span><span class="p">(</span><span class="dl">"</span><span class="s2">react-tracking</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">({</span>
-  <span class="na">useTracking</span><span class="p">:</span> <span class="nx">jest</span><span class="p">.</span><span class="nf">fn</span><span class="p">(),</span>
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">jest</span><span class="p">.</span><span class="nx">mock</span><span class="p">(</span><span class="dl">"</span><span class="s2">react-tracking</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">({</span>
+  <span class="na">useTracking</span><span class="p">:</span> <span class="nx">jest</span><span class="p">.</span><span class="nx">fn</span><span class="p">(),</span>
   <span class="na">track</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="nx">children</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">children</span><span class="p">,</span>
 <span class="p">}))</span>
 </code></pre></div></div>
@@ -265,10 +265,10 @@ needed something that was the same shape as <code class="language-plaintext high
 
 <p>Last:</p>
 
-<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">trackEvent</span> <span class="o">=</span> <span class="nx">jest</span><span class="p">.</span><span class="nf">fn</span><span class="p">((</span><span class="nx">args</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">args</span><span class="p">.</span><span class="nf">callback</span><span class="p">()</span>
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">trackEvent</span> <span class="o">=</span> <span class="nx">jest</span><span class="p">.</span><span class="nx">fn</span><span class="p">((</span><span class="nx">args</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">args</span><span class="p">.</span><span class="nx">callback</span><span class="p">()</span>
 <span class="p">})</span>
-<span class="nx">useTracking</span><span class="p">.</span><span class="nf">mockImplementation</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">({</span>
+<span class="nx">useTracking</span><span class="p">.</span><span class="nx">mockImplementation</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">({</span>
   <span class="nx">trackEvent</span><span class="p">,</span>
 <span class="p">}))</span>
 </code></pre></div></div>
@@ -278,7 +278,7 @@ needed something that was the same shape as <code class="language-plaintext high
 mouthful! That sounds super confusing, but remember that we’re trying to mock something that we actually use like
 this:</p>
 
-<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="p">{</span> <span class="nx">trackEvent</span> <span class="p">}</span> <span class="o">=</span> <span class="nf">useTracking</span><span class="p">()</span>
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="p">{</span> <span class="nx">trackEvent</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">useTracking</span><span class="p">()</span>
 </code></pre></div></div>
 
 <p>So basically, our goal was to mock <code class="language-plaintext highlighter-rouge">trackEvent</code> and we needed to emulate the shape it has when it’s exported by
@@ -301,20 +301,20 @@ a tracking call in a component and didn’t explicitly mock the tracking calls i
 <span class="c1">// declare it because we want to check how many times it was called. Also, it</span>
 <span class="c1">// would break the rules of hooks (https://reactjs.org/docs/hooks-rules.html)</span>
 <span class="c1">// if it wasn't mocked. Tread cautiously!</span>
-<span class="kd">const</span> <span class="p">{</span> <span class="nx">trackEvent</span> <span class="p">}</span> <span class="o">=</span> <span class="nf">useTracking</span><span class="p">()</span>
+<span class="kd">const</span> <span class="p">{</span> <span class="nx">trackEvent</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">useTracking</span><span class="p">()</span>
 
-<span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">assign</span> <span class="o">=</span> <span class="nx">jest</span><span class="p">.</span><span class="nf">fn</span><span class="p">()</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">assign</span> <span class="o">=</span> <span class="nx">jest</span><span class="p">.</span><span class="nx">fn</span><span class="p">()</span>
 
-<span class="nf">it</span><span class="p">(</span><span class="dl">"</span><span class="s2">Calls tracking and navigates to artworks page</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">wrapper</span> <span class="o">=</span> <span class="nf">mount</span><span class="p">(</span>
+<span class="nx">it</span><span class="p">(</span><span class="dl">"</span><span class="s2">Calls tracking and navigates to artworks page</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">wrapper</span> <span class="o">=</span> <span class="nx">mount</span><span class="p">(</span>
     <span class="o">&lt;</span><span class="nx">TestApp</span><span class="o">&gt;</span>
       <span class="o">&lt;</span><span class="nx">MyComponent</span> <span class="p">{...</span><span class="nx">props</span><span class="p">}</span> <span class="sr">/</span><span class="err">&gt;
 </span>    <span class="o">&lt;</span><span class="sr">/TestApp</span><span class="err">&gt;
 </span>  <span class="p">)</span>
 
-  <span class="nx">wrapper</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="dl">"</span><span class="s2">Button</span><span class="dl">"</span><span class="p">).</span><span class="nf">simulate</span><span class="p">(</span><span class="dl">"</span><span class="s2">click</span><span class="dl">"</span><span class="p">)</span>
-  <span class="nf">expect</span><span class="p">(</span><span class="nx">trackEvent</span><span class="p">).</span><span class="nf">toHaveBeenCalledTimes</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-  <span class="nf">expect</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">assign</span><span class="p">).</span><span class="nf">toBeCalledWith</span><span class="p">(</span><span class="dl">"</span><span class="s2">/artworks</span><span class="dl">"</span><span class="p">)</span>
+  <span class="nx">wrapper</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="dl">"</span><span class="s2">Button</span><span class="dl">"</span><span class="p">).</span><span class="nx">simulate</span><span class="p">(</span><span class="dl">"</span><span class="s2">click</span><span class="dl">"</span><span class="p">)</span>
+  <span class="nx">expect</span><span class="p">(</span><span class="nx">trackEvent</span><span class="p">).</span><span class="nx">toHaveBeenCalledTimes</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+  <span class="nx">expect</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">assign</span><span class="p">).</span><span class="nx">toBeCalledWith</span><span class="p">(</span><span class="dl">"</span><span class="s2">/artworks</span><span class="dl">"</span><span class="p">)</span>
 <span class="p">})</span>
 </code></pre></div></div>
 
@@ -485,7 +485,7 @@ you’re still confused, leave a comment!</p>
           <section>
             <h4>Post Meta</h4>
             <p>Apr 15, 2021</p>
-            <p>Tagged: <a class='category' href='/blog/categories/cms/'>cms</a>, <a class='category' href='/blog/categories/enzyme/'>enzyme</a>, <a class='category' href='/blog/categories/react-tracking/'>react-tracking</a>, <a class='category' href='/blog/categories/testing/'>testing</a>, <a class='category' href='/blog/categories/tracking/'>tracking</a>, <a class='category' href='/blog/categories/volt/'>volt</a></p>
+            <p>Tagged: testingtrackingvoltcmsenzymereact-tracking</p>
           </section>
           <br/>
           <section>

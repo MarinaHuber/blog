@@ -144,7 +144,7 @@ layer).</p>
     <span class="nl">excludeIDs</span><span class="p">:</span> <span class="p">{</span> <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[String!]</span><span class="dl">"</span> <span class="p">}</span>
   <span class="p">)</span> <span class="p">{</span>
     <span class="nx">id</span>
-    <span class="nf">artworksConnection</span><span class="p">(</span>
+    <span class="nx">artworksConnection</span><span class="p">(</span>
       <span class="nx">first</span><span class="p">:</span> <span class="nx">$first</span>
       <span class="nx">after</span><span class="p">:</span> <span class="nx">$after</span>
       <span class="nx">includeIDs</span><span class="p">:</span> <span class="nx">$includeIDs</span>
@@ -170,7 +170,7 @@ the list in the UI updates when the user snoozes an item.</p>
 <p>The initial fix was to use a local state variable to keep track of which items were snoozed. We defined the following variable in the parent
 React component that renders the list:</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="p">[</span><span class="nx">localSnoozedItems</span><span class="p">,</span> <span class="nx">setLocalSnoozedItems</span><span class="p">]</span> <span class="o">=</span> <span class="nf">useState</span><span class="p">([])</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="p">[</span><span class="nx">localSnoozedItems</span><span class="p">,</span> <span class="nx">setLocalSnoozedItems</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">([])</span>
 </code></pre></div></div>
 
 <p>We passed <code class="language-plaintext highlighter-rouge">localSnoozedItems </code> and <code class="language-plaintext highlighter-rouge">setLocalSnoozedItems</code> down to each of the children items. When the “snooze”
@@ -197,7 +197,7 @@ the store to modify the records you need.</p>
 
 <p>Here’s an example:</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">commitMutation</span><span class="p">(</span><span class="nx">defaultEnvironment</span><span class="p">,</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">commitMutation</span><span class="p">(</span><span class="nx">defaultEnvironment</span><span class="p">,</span> <span class="p">{</span>
   <span class="na">mutation</span><span class="p">:</span> <span class="nx">graphql</span><span class="s2">`
     mutation SomeMutation {
       ...
@@ -245,16 +245,16 @@ the children from their parent component, which wasn’t as intuitive.)</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">commitLocalUpdate</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">relay-runtime</span><span class="dl">"</span>
 
-<span class="nf">commitLocalUpdate</span><span class="p">(</span><span class="nx">relay</span><span class="p">.</span><span class="nx">environment</span><span class="p">,</span> <span class="p">(</span><span class="nx">store</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">parentRecord</span> <span class="o">=</span> <span class="nx">store</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="nx">parentID</span><span class="p">)</span>
+<span class="nx">commitLocalUpdate</span><span class="p">(</span><span class="nx">relay</span><span class="p">.</span><span class="nx">environment</span><span class="p">,</span> <span class="p">(</span><span class="nx">store</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">parentRecord</span> <span class="o">=</span> <span class="nx">store</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="nx">parentID</span><span class="p">)</span>
 
-  <span class="k">if </span><span class="p">(</span><span class="nx">parentRecord</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">artworksConnection</span> <span class="o">=</span> <span class="nx">ConnectionHandler</span><span class="p">.</span><span class="nf">getConnection</span><span class="p">(</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">parentRecord</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">artworksConnection</span> <span class="o">=</span> <span class="nx">ConnectionHandler</span><span class="p">.</span><span class="nx">getConnection</span><span class="p">(</span>
       <span class="nx">parentRecord</span><span class="p">,</span>
       <span class="dl">"</span><span class="s2">ArtworksMissingMetadata_partner_artworksConnection</span><span class="dl">"</span>
     <span class="p">)</span>
-    <span class="k">if </span><span class="p">(</span><span class="nx">artworksConnection</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">ConnectionHandler</span><span class="p">.</span><span class="nf">deleteNode</span><span class="p">(</span><span class="nx">artworksConnection</span><span class="p">,</span> <span class="nx">id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">artworksConnection</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">ConnectionHandler</span><span class="p">.</span><span class="nx">deleteNode</span><span class="p">(</span><span class="nx">artworksConnection</span><span class="p">,</span> <span class="nx">id</span><span class="p">)</span>
     <span class="p">}</span>
   <span class="p">}</span>
 <span class="p">})</span>
@@ -434,7 +434,7 @@ mutation to update server-side data.</li>
           <section>
             <h4>Post Meta</h4>
             <p>Apr 15, 2021</p>
-            <p>Tagged: <a class='category' href='/blog/categories/graphql/'>graphql</a>, <a class='category' href='/blog/categories/react/'>react</a>, <a class='category' href='/blog/categories/redis/'>redis</a>, <a class='category' href='/blog/categories/relay/'>relay</a>, <a class='category' href='/blog/categories/tooling/'>tooling</a></p>
+            <p>Tagged: relaygraphqlreactredistooling</p>
           </section>
           <br/>
           <section>

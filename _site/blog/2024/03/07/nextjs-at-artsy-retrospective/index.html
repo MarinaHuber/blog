@@ -267,7 +267,7 @@ project:</p>
 <span class="c1">// app/layout.tsx</span>
 <span class="k">import</span> <span class="p">{</span> <span class="nx">HelloClient</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./HelloClient</span><span class="dl">'</span>
 
-<span class="k">export</span> <span class="k">default</span> <span class="nc">Layout</span><span class="p">()</span> <span class="p">{</span>
+<span class="k">export</span> <span class="k">default</span> <span class="nx">Layout</span><span class="p">()</span> <span class="p">{</span>
   <span class="k">return</span> <span class="p">&lt;</span><span class="nc">HelloClient</span> <span class="p">/&gt;</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -371,16 +371,16 @@ step back and recognized that our needs are actually quite minimal:</p>
 following, minus a few underlying router lib details:</p>
 
 <div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="kd">const</span> <span class="nx">Router</span> <span class="o">=</span> <span class="nf">createRouter</span><span class="p">({</span>
+<span class="kd">const</span> <span class="nx">Router</span> <span class="o">=</span> <span class="nx">createRouter</span><span class="p">({</span>
   <span class="na">history</span><span class="p">:</span> <span class="dl">'</span><span class="s1">browser</span><span class="dl">'</span><span class="p">,</span>
   <span class="na">routes</span><span class="p">:</span> <span class="p">[</span>
     <span class="p">{</span>
       <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">/foo</span><span class="dl">'</span><span class="p">,</span>
-      <span class="na">getComponent</span><span class="p">:</span> <span class="nx">React</span><span class="p">.</span><span class="nf">lazy</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="k">import</span><span class="p">(</span><span class="dl">'</span><span class="s1">./Foo</span><span class="dl">'</span><span class="p">));</span>
+      <span class="na">getComponent</span><span class="p">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">lazy</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="k">import</span><span class="p">(</span><span class="dl">'</span><span class="s1">./Foo</span><span class="dl">'</span><span class="p">));</span>
     <span class="p">},</span>
     <span class="p">{</span>
       <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">/bar</span><span class="dl">'</span><span class="p">,</span>
-      <span class="na">getComponent</span><span class="p">:</span> <span class="nx">React</span><span class="p">.</span><span class="nf">lazy</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="k">import</span><span class="p">(</span><span class="dl">'</span><span class="s1">./Bar</span><span class="dl">'</span><span class="p">));</span>
+      <span class="na">getComponent</span><span class="p">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">lazy</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="k">import</span><span class="p">(</span><span class="dl">'</span><span class="s1">./Bar</span><span class="dl">'</span><span class="p">));</span>
     <span class="p">}</span>
   <span class="p">]</span>
 <span class="p">})</span>
@@ -453,7 +453,7 @@ at the bigger picture. Inclusivity should always win.</p>
           <section>
             <h4>Post Meta</h4>
             <p>Mar 7, 2024</p>
-            <p>Tagged: <a class='category' href='/blog/categories/next-js/'>Next.js</a>, <a class='category' href='/blog/categories/react/'>React</a></p>
+            <p>Tagged: Next.jsReact</p>
           </section>
           <br/>
           <section>

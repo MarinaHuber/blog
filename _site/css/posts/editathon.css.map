@@ -1,1 +1,0 @@
-{"version":3,"sourceRoot":"","sources":["editathon.scss"],"names":[],"mappings":"AAAA;EACE;EACA","sourcesContent":["body > div {\n  background: url(/images/editathon/wikidata.svg) no-repeat;\n  background-position: 50% -615px;\n}\n"],"file":"editathon.css"}

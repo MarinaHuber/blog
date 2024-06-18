@@ -13,7 +13,8 @@ disqus_show_comment_count: false
 
 exclude: ["vendor", "LICENSE", "_posts/LICENSE"]
 
-plugins: ["jekyll-redirect-from", "jekyll-paginate"]
+plugins: ["jekyll-redirect-from", "jekyll-paginate", "jekyll-feed", "jekyll-seo-tag", "jekyll-redirect-from", "jekyll-coffeescript", "jekyll-commonmark-ghpages", "jekyll-github-metadata", "jekyll-optional-front-matter", "jekyll-readme-index", "jekyll-default-layout", "jekyll-titles-from-headings"]
+theme: jekyll-theme-primer
 
 markdown: kramdown
 highlighter: rouge
