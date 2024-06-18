@@ -57,7 +57,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-font-smoothing: antialiased;
 
-  background-image: url(/images/gradient.png);
+  background-image: url("{{ '/images/gradient.png' | relative_url }}");
   background-repeat: repeat-x;
   background-position: 0px 0px;
 
@@ -197,7 +197,7 @@ blockquote {
 header#banner {
   width: 100%;
   z-index: 999;
-  background-image: url(/images/gradient.png);
+  background-image: url("{{ '/images/gradient.png' | relative_url }}");
   background-repeat: repeat-x;
   background-position: 0px 0px;
   background-color: $artsy_bg;
