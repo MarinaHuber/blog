@@ -1,8 +1,8 @@
-url: https://marinahuber.com
+url: https://marinahuber.github.io
 title: Blog Engineering
 subtitle: Discover iOS engineering.
 permalink: /blog/:year/:month/:day/:title/
-baseurl: ""
+baseurl: "/blog"
 twitter_username: x
 github_username: MarinaHuber
 
