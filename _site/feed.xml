@@ -5,91 +5,184 @@
     <description></description>
     <link>http://localhost:4000/blog/</link>
     <atom:link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 18 Jun 2024 21:40:18 +0200</pubDate>
-    <lastBuildDate>Tue, 18 Jun 2024 21:40:18 +0200</lastBuildDate>
+    <pubDate>Tue, 18 Jun 2024 23:16:53 +0200</pubDate>
+    <lastBuildDate>Tue, 18 Jun 2024 23:16:53 +0200</lastBuildDate>
     <generator>Jekyll v3.9.5</generator>
     
       <item>
-        <title>Two years of Next.js at Artsy: A Retrospective</title>
+        <title>All things localization</title>
         <description>&lt;p&gt;Where to begin! Where to begin…&lt;/p&gt;
 
-&lt;p&gt;Lets start with a good measure of success, one that I think most engineers could
-agree on: a from-scratch rebuild of a complex, internal tools app. Success with
-rebuilds is often fleeting, as many can attest. There’s risk involved. Extending
-the challenge further, lets assign (most) of the task to a team of platform
-engineers who aren’t too familiar with modern front-end technology – and then
-say that we succeeded.&lt;/p&gt;
-
-&lt;p&gt;Is Artsy crazy? Or is Next.js (along with our team 🙂) just that good? Well,
-it’s a little of both. And it’s a little bittersweet, in a way. Here’s our tale.&lt;/p&gt;
+&lt;p&gt;Localisation is something that occurs in every project I encounter. &lt;br /&gt;
+I found that having a list of useful tips that cover most aspect of localisation is essential, 
+so that is why I created this post and is in progress.
+There is a slight distinction between internationalization and localization:
+Internationalization — the process of making your app able to adapt to different languages, regions, and cultures.
+Localization — the process of translating your app into multiple languages.
+So, in total it depends on context, and namely on the following elements:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;user gender&lt;/li&gt;
+  &lt;li&gt;singular and plural in the text&lt;/li&gt;
+  &lt;li&gt;platforms: Web, Android, iOS&lt;/li&gt;
+  &lt;li&gt;the project for which the translation is being done.&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;!-- more --&gt;
 
-&lt;h3 id=&quot;beginnings&quot;&gt;Beginnings&lt;/h3&gt;
+&lt;h3 id=&quot;the-problem--app-store&quot;&gt;The Problem &amp;amp; App Store:&lt;/h3&gt;
 
-&lt;p&gt;Our first formal use of Next came from a project spun up during Hackathon, two
-years ago. Hackathon’s are great opportunities to push technology forward, and
-Artsy has had a lot of success with them. We’d been talking about Next.js for a
-while, and experimenting here and there, but we were never able to find the
-proper intersection of product and purpose to take things further. With this in
-mind, one of our Engineers (Roop 👋) spun up a Next.js POC that allowed us to
-deduplicate artist records. On the surface, the effort was non-trivial. It
-involved authentication, DB communication, and more. Yet when presented during
-Hackathon, all of this was done and it also looked &lt;em&gt;beautiful&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;In Apple ecosystem if the developer needs to modify any content of the language file, 
+the changes needs to be updated in the project and the app needs re-submission.
+ Also have you been in that situation where you have pushed a spelling mistake 
+ to the App Store? &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;( ◍•ᴗ•◍)&lt;/code&gt;
+🤟🏽 There are at least three ways of translating you app.
+1 . Custom solution with web service that contains JSON file with translation for all platforms needed.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Dynamically translating it with third party services like Crowdin, Azure Translator, Applanga, BartyCrouch list is long.&lt;/li&gt;
+  &lt;li&gt;Importing/exporting .string files into Xcode project manually
+-exporting Localization Catalog .xcloc containing good old XLIFF file&lt;/li&gt;
+&lt;/ol&gt;
 
-&lt;p&gt;How could so much product work get completed in such a short period of time? A
-large part of that is due to Next.js’s framework design, and how it simply gets
-out of the way and allows one to start building product features. The defaults
-made sense; to create a new route, simply create a new folder or file in the
-&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pages&lt;/code&gt; directory, and Next takes care of the rest. And what about compilation,
-TypeScript, linting, and all of the other extraordinarily confusing JavaScript
-toolchain details that folks typically struggle over? (Most) of the setup was
-taken care of at the framework level, and the API side of things was light and
-easy to understand, thanks to great documentation.&lt;/p&gt;
+&lt;p&gt;Solution 1:
+Custom web service with JSON downloaded on the app launch.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Create small service- in the app you can request the language the device needs and listen to any changes that might occur (simple Firebase DB or any custom robust server with .json file there)&lt;/li&gt;
+  &lt;li&gt;During the launch wait until you have received a response from web service before you display anything to the user.&lt;/li&gt;
+  &lt;li&gt;Or, if you do not want to rely on the devices connection, then you can preinstall the dictionary by adding the .json file to the bundles resources and preload on app startup.
+This can be pretty straight forward. An this is example how your .json file can be formatted. https://simplelocalize.io/docs/file-formats/single-language-json/
+Managing the translation into dictionary of strings and reusing it with string extention:
+```public class LocalizationService {&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;There are omitted details of course, and there were things we needed to figure
-out (such as auth, via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;next-auth&lt;/code&gt;, and passing runtime ENV secrets to our
+&lt;p&gt;static var localisation: [String: Any]?&lt;/p&gt;
+
+&lt;p&gt;class func getString(with key: String) -&amp;gt; String {&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  let missingError = UIDevice.isProduction ? &quot;&quot;: String(format: &quot;Missing string for key: %@&quot;, key)
+  guard let localisation = shared.localisation as NSDictionary? else { return missingError }      
+  let localisedString = localisation.value(forKeyPath: key) as? String
+  return localisedString ?? missingError    } }```
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;```public extension String {
+   var localised: String {
+      return LocalizationService.getStringForKey(with: self)
+   }
+   }&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+Note: this is a starting point code reference
+Solution 2:
+Third party solution and their tradeoffs.
+* 		BartyCrouch, Open source project
+brew uninstall bartycrouch
+Using BartyCrouch and running a few commands from the command line what can even be automated, 
+using a build script within your project.
+Pros:
+in order to keep your Storyboards/XIBs Strings files updated over time
+2. make sure your Localizable.strings files stay updated with newly added keys in code 
+using NSLocalizedString and show warnings for duplicate keys or empty values
+3. use the machine translation feature of Microsoft Translator Text API via translate
+4. let BartyCrouch translate it to all supported languages in a single line &amp;amp; 
+without ever leaving the code.
+Important : Localization Workflow via transform- of BartyCrouch formatted localized Strings 
+are not supported by this automatic feature.
+Transform from NSLocalizedString or BartyCrouch.translate doesn’t support the new LocalizedStringKey type yet. 
+Not ready to be used in SwiftUI fully (more in this issue)
+Steps for BartyCrouch translate:
+* 		Set up Azure (the GLOBAL configuration is the option that takes (location) of all near by servers is fastest)
+* 		Run the update script in the Compile Sources -
+Had some issue here as I am getting success in translation but no output. I posted on Github BartyCrouch OSS
+NOTE:❗️Troubleshooting BartyCrouch error: no file found Library not loaded:libSwiftSyntax.dylib
+* 		Translate feature: LiveDemo
+
+2. Crowdin
+I heard a lot of folks in iOS community using this service which is cloud-based localization platform for continuous software localization projects.
+With Crowdin you have the option to work with freelance translators and volunteers but also aspecialized software localization company.
+Up to 60,000 hosted words it is free of charge.
+
+3. Applanga
+Same as Crowdin but much better CI and automation delivery for native platforms.
+Basic sunscription starts from 49$month.
+Solution 3:
+Static localization. No need to use key-based translations:
+NSLocalizedString(“Text”, value: “Hello World”, comment: “Main label”)
+→ From iOS15 there is no need to use key-based translations 💯 💯
+Localisation got better from WWDC 2022
+String(localised: “Text”, defaultValue: “Text”, comment: “This is Text”)
+
+There are omitted details of course, and there were things we needed to figure
+out (such as auth, via `next-auth`, and passing runtime ENV secrets to our
 Dockerized container), but in any case this gave us a lot of confidence to start
 discussing what it might take to seriously consider rebuilding our internal
 tools app. A few meetings later it was decided, and our platform team agreed to
 take it (with loose backup support from a couple other engineers). And a few
-short month’s later much of the core functionality was complete, executed by a
-team working amidst unfamiliar terrain.&lt;/p&gt;
+short month's later much of the core functionality was complete, executed by a
+team working amidst unfamiliar terrain.
 
-&lt;p&gt;That’s the definition of success, and the measure. With our internal tools app
-complete it was natural to start looking around for other opportunities – but
-first, a quick detour.&lt;/p&gt;
+That's the definition of success, and the measure. With our internal tools app
+complete it was natural to start looking around for other opportunities -- but
+first, a quick detour.
 
-&lt;h3 id=&quot;enter-next-13-aka-the-app-router&quot;&gt;Enter: Next 13 (aka, The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app&lt;/code&gt; Router)&lt;/h3&gt;
+### Enter: Workflow (aka, The `app` default)
 
-&lt;p&gt;Many of the limitations of Next 12 are well known, with the most notable ones
-being the inability to (naturally) do page layouts along with quirks around
-&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getServerSideProps&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_app&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_document&lt;/code&gt; request fetching not being as
-flexible as one would like. These issues, however, were not &lt;em&gt;deal-breakers&lt;/em&gt;; and
-in fact, we hardly even noticed them. Our page layouts simply rendered a shared
-&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;Layout&amp;gt;&lt;/code&gt; component that accepted &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;children&lt;/code&gt;; and per-route data fetching
-requested data per-route, with globally shared data going in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_app&lt;/code&gt;. It got the
-job done.&lt;/p&gt;
+U
+sually we will start with english as the base language as default, then slowly adding more language support on top of it. Before using any tools we need to prepare our app for DEFAULT language.
+By default, a base language will be provided by Xcode, i.e, english. This base language will act as a fallback language if any localizable content is not found. In my test project since I am not using localized STORYBOARDS DefaultLocalizable.string file is the default English language that must contain all the text of the app for fallback.
+* 		Create Localizable.string file
+* 		Always wrap user-facing strings with (iOS13&amp;amp;14) NSLocalizedString or (from iOS 15+) String(localized:)
+* 		Create IBDesignables to add storyboards UI to code
+* 		Created swift script called LocalizationScript.swift that takes all Localizable.strings and creates enum from it (this script reads Localizable.sting file and can not distinguish comments from text to translate)
+Few tips from session @Apple Localization Lab:
+Create Localizable.string file
+Always wrap user-facing strings with (iOS13&amp;amp;14) NSLocalizedString or
+From iOS 15+ String(localized:)
+Create IBDesignables to add storyboards UI to code
+Note: Will detect the App language:
+NSLocalizedString() → short for Bundle.main.localizedString()
+Exporting for localization in SwiftUI
+New Xcode project build settings Use Compiler to Extract Swift Strings
+Once active, before exporting strings for localization, Xcode will build all project targets and use the compiler type information to extract LocalizedStringKeys from your SwiftUI code
+In Xcode 13+ .xcloc a.k.a. Xcode Localization Catalogs can be opened directly in Xcode with the new Localization Catalog Editor 🤙🏽
+Needs to be set to YES if project uses SwiftUI for Exporting all targets in Catalog
+This is the file it will expose into: en.xclocc
+You can use comments for easier translation all and more here
+Spanish &amp;amp; English language got a new custom Markdown
+The main purpose of Automatic Grammar Agreement however, to make the translation of plural and gendered texts
+so far better to use stringdict
+All edge cases:
+Localization of dynamic text
+Check the current running application language, if it is Spanish than show the Spanish text, else show the English one.
+In case the strings are coming from the internet server:
+Bundle.main.preferredLocatizations.first
+Plural and Gender Support
+using .stringdict
+String.localizedStringWithFormat(formatString, count)
+If you try to translate English phrases word-for-word into Spanish or German, they will make no sense. For this reason, you may need to create more than one version of each string and write instructions about which variant should be used.
+Gender and personalisation:
+Using date, currencies and number formatters
+More
+Dates
+Unicode.org for TEMPLATES → http://www.unicode.org/reports/tr35/tr35-31/tr35.html
+use templates : more make data user-friendly
+dateFormatter.locale = Locale(identifier: Locale.preferredLanguages.first ?? “en”)
+or use the current locale of the app it is the same result
+dateFormatter.locale = .current
+Dynamic Dates
+coming from translated server
+let allServerLanguages = [”en”, “es”, “de”, “it”]
+let language = Bundle.preferredLocalizations(from: allServerLanguages).first
 
-&lt;p&gt;With these things in mind (and a few things more), many of us were extremely
-excited when Next released its
-&lt;a href=&quot;https://nextjs.org/blog/layouts-rfc&quot;&gt;Layouts RFC&lt;/a&gt;, outlining the &lt;em&gt;next&lt;/em&gt; version
-of Next.js, which would be built on top of another long-anticipated React.js
-feature,
-&lt;a href=&quot;https://legacy.reactjs.org/blog/2020/12/21/data-fetching-with-react-server-components.html&quot;&gt;React Server Components&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;In short, the Layouts RFC outlined what looked to be a beautifully obvious, yet
-performant architecture. Using Next’s preference for file-system based
-configuration, a typical “page” could soon look like this:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- app/
----- layout.tsx
----- page.tsx
-- app/artist
----- layout.tsx
----- page.tsx
----- middleware.tsx
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;app/
+—- layout.tsx
+—- page.tsx&lt;/li&gt;
+  &lt;li&gt;app/artist
+—- layout.tsx
+—- page.tsx
+—- middleware.tsx
+```&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;And so on. “Global” SSR data could be fetched right there in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;layout&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;page&lt;/code&gt;
 and shared with its subtree; and likewise, for sub-sub-tree’s we could do the
@@ -354,10 +447,6 @@ at the bigger picture. Inclusivity should always win.&lt;/p&gt;
         <link>http://localhost:4000/blog/blog/2024/03/07/nextjs-at-artsy-retrospective/</link>
         <guid isPermaLink="true">http://localhost:4000/blog/blog/2024/03/07/nextjs-at-artsy-retrospective/</guid>
         
-        
-        <category>Next.js</category>
-        
-        <category>React</category>
         
       </item>
     
