@@ -1,50 +1,36 @@
 ---
 layout: epic
-title: "The Checklist for Deploying a Scary Change"
+title: "Short Swift design patterns — for Newbies"
 subtitle: "What to expect when you're expecting to break things"
 date: 2023-09-13
-categories: [Ruby on Rails, data migrations, deploy process]
-author: [matt-dole]
-comment_id: 754
+categories: [Swift, SOLID]
+
 ---
 
-Lately, I've been getting involved with some sketchy stuff. You know what I'm
-talking about–data migrations.
-
-I've been rolling out changes that have a significant risk of breaking our
-production environment for mission-critical services. It's been exciting work
-(keep your eyes out for more posts on the exact project, coming soon™️), but
-I've definitely caused a couple incidents along the way.
-
-After accidentally taking down a key service for a couple hours, I decided I
-needed to have a better pre-deploy process for these changes. I did some
-thinking and came up with a short checklist to run through before I press the
-shiny green button.
+OBJECTS VS. PROTOCOLS or functions
+OOP is code that is grouped into object or a class. It is the foundation of lower level Obj-C languages 
+(which still holds more than 80% of Xcode features). Equipped with specific characteristics, 
+objects have the ability to communicate with other objects and can achieve advanced levels of functionality. 
+They can also borrow (e.g. inherit) functionality from other objects/classes 🔡 🔠.
+Protocol-Orientated Programming offers an alternate way to organize code. As the name implies, 
+the model is based on objects conforming to various rules. Rule-based protocols can also be found in other languages 
+\including Java and Objective-C. However, advancements in Swift take Protocols a step further by 
+puting interfaces and composition ahead of inheritance. ect (allowing them to store actions (e.g. methods) for conforming types.)
 
 <!-- more -->
 
-Here's the checklist I came up with:
+- [ ] GENERIC VS. SPECIFIC MODELS
+This is central to Object-oriented programming, model abstract or generic things as opposed to concrete ones. 
+Still this is pure engagement in uncertainty and fear….Multiple objects need abstraction and old friend complexity 😲😱 — 
+DRY and KISS principles. Opposed to Procedural programming like PHP 💤 ideas… for some of these paradigms it is no surprise 
+“Google is said to be considering Swift as a ‘first class’ language for Android”
+Generic type work as reusable templates. With parameters that must be descriptive, upper camel case names. 
+When a type name doesn’t have a meaningful relationship or role, use generic upercase letter such as T, U, or V 🧐.
+`enum ResultType<V> { case success(V) case failure(Error) }`
+- [ ] DELEGATION VS. NOTIFICATIONS in iOS
+Delegation (Cocoa Touch) pattern assumes objects and models have shared-responsibility for actions.Delegates are meant for 1-on-1 relation, meaning that one object has a delegate and sends any messages to that one particular delegate(if the needs of the Delegate are simple consider callbacks). We need be sure we do not create a retain cycle between the delegate and the delegating objects, so we use a [weak self] reference to delegate in asynchronous code.
+Notifications are based on a model of “registration and updates” so its basically meant for 1-to-many relation. Notifications create too much indirection and make your code hard to follow 🧐. When you post a notification you cannot be sure which objects will intercept it, which might lead to unexpected behavior in your app. It is generally used when you want to update values in your view controller from any other viewController using didSet property setter — observer (not always an elegant solution).
+Conclution: Swift contains multiple paradigms in one language and Linux with server-side Swift is here as well. It is so young but fastly adopted language.
 
-- [ ] What is your plan if something goes wrong?
-  - [ ] Run through ramifications of rolling back. If there's a reason you're
-        worried about rolling back, then you're not ready to deploy the change
-        yet!
-  - [ ] Figure out exactly what command(s) you will need to run to roll back. At
-        Artsy, this is usually a
-        [one-liner using Hokusai](https://github.com/artsy/hokusai/blob/main/docs/Command_Reference.md#how-to-do-a-rollback),
-        our command-line Docker/Kubernetes CLI
-- [ ] How will you tell if something is going wrong after you deploy?
-  - [ ] Error rate (DataDog)
-  - [ ] Specific error reporting (Sentry)
-  - [ ] Latency (DataDog)
-  - [ ] Logs (Papertrail)
-  - [ ] Functionality (does it still work? Are people using it successfully?
-        Important for things where errors may not be bubbled up correctly or
-        reported immediately)
-  - [ ] Sidekiq (are there lots of jobs queued to retry that are failing?)
+Here are few references: [link] (https://livebook.manning.com/book/classic-computer-science-problems-in-swift/introduction/)
 
-With this checklist in hand, I'm deploying more confidently and causing fewer
-incidents along the way.
-
-Do you have something similar? Are there things you think this checklist should
-include? Let me know in the comments!

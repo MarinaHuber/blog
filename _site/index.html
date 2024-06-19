@@ -106,7 +106,7 @@
     </div>
     <div class="header-search">
       
-        <h2><a href="/">Mainly Apple Blog  〰➰</a></h2>
+        <h2><a href="/">My Apple Blog  〰➰</a></h2>
       
     </div>
   </div>
@@ -191,21 +191,11 @@ So, in total it depends on context, and namely on the following elements:</p>
           <a href="/blog/2023/09/13/deploying-a-scary-change/">
         
         
-          <h2 class="entry-title">The Checklist for Deploying a Scary Change</h2>
+          <h2 class="entry-title">Short Swift design patterns — for Newbies</h2>
         
         <time datetime=""></time>
           <p class="meta-author">
 
-
-  
-
-  
-    <div class="meta">
-      <span class="byline author vcard"><a href ="/author/matt-dole">Matt Dole<a/></span>
-      
-
-    </div>
-  
 
 </p>
           </a>
@@ -216,18 +206,15 @@ So, in total it depends on context, and namely on the following elements:</p>
   <div class="content-container">
     
     
-        <p>Lately, I’ve been getting involved with some sketchy stuff. You know what I’m
-talking about–data migrations.</p>
-
-<p>I’ve been rolling out changes that have a significant risk of breaking our
-production environment for mission-critical services. It’s been exciting work
-(keep your eyes out for more posts on the exact project, coming soon™️), but
-I’ve definitely caused a couple incidents along the way.</p>
-
-<p>After accidentally taking down a key service for a couple hours, I decided I
-needed to have a better pre-deploy process for these changes. I did some
-thinking and came up with a short checklist to run through before I press the
-shiny green button.</p>
+        <p>OBJECTS VS. PROTOCOLS or functions
+OOP is code that is grouped into object or a class. It is the foundation of lower level Obj-C languages 
+(which still holds more than 80% of Xcode features). Equipped with specific characteristics, 
+objects have the ability to communicate with other objects and can achieve advanced levels of functionality. 
+They can also borrow (e.g. inherit) functionality from other objects/classes 🔡 🔠.
+Protocol-Orientated Programming offers an alternate way to organize code. As the name implies, 
+the model is based on objects conforming to various rules. Rule-based protocols can also be found in other languages 
+\including Java and Objective-C. However, advancements in Swift take Protocols a step further by 
+puting interfaces and composition ahead of inheritance. ect (allowing them to store actions (e.g. methods) for conforming types.)</p>
 
 
         <p><a href="/blog/2023/09/13/deploying-a-scary-change/">Read on →</a></p>
@@ -255,25 +242,11 @@ shiny green button.</p>
           <a href="/blog/2023/03/01/typescript-magic/">
         
         
-          <h2 class="entry-title">TypeScript magic</h2>
+          <h2 class="entry-title">My why. The journey to a free market economy</h2>
         
         <time datetime=""></time>
           <p class="meta-author">
 
-
-  
-
-  
-    <div class="meta">
-      <span class="byline author vcard"><a href ="/author/pvinis">Pavlos Vinieratos<a/></span>
-      
-      <p class="fn">
-        <a href="https://twitter.com/pvinis">@pvinis</a>
-      </p>
-      
-
-    </div>
-  
 
 </p>
           </a>
@@ -284,24 +257,14 @@ shiny green button.</p>
   <div class="content-container">
     
     
-        <p>At Artsy, we love TypeScript. We use it in most of our node/web/mobile repos.
-Today, I want to talk about a specific case we found while trying to make our
-types more strict on <a href="https://github.com/artsy/palette-mobile">palette-mobile</a>,
-which is our Design System for React Native.</p>
+        <p>To start with I would like to stress that English is not my native language and I am by no means a writer, 
+so please bear with me as I share few of my thoughts and experience other people struggle with too.<br />
+I got into this thing back at my Uni, at interactive media class. I studied Design under the Architectural university 
+and I found that rendering shapes and motion graphics intrigued me more than actual major study.
+ With no compiler run time and just generating small websites seemed so much more to learn than actual study at the time. 
+ So after study I moved abroad and got an internship at the Digital Design Studio DeMonsters working on flash and animations for AR.</p>
 
-<p>Check this out:</p>
-
-<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">welp</span><span class="p">:</span> <span class="dl">"</span><span class="s2">hello</span><span class="dl">"</span> <span class="o">|</span> <span class="dl">"</span><span class="s2">world</span><span class="dl">"</span> <span class="o">|</span> <span class="kr">string</span> <span class="c1">// `welp` is of type `string`.</span>
-</code></pre></div></div>
-
-<p>Like the comment says, even though we have two specific strings, the fact that
-we do a union with <code class="language-plaintext highlighter-rouge">string</code>, makes <code class="language-plaintext highlighter-rouge">welp</code> have a type of just <code class="language-plaintext highlighter-rouge">string</code>. This is
-because both <code class="language-plaintext highlighter-rouge">"hello"</code> and <code class="language-plaintext highlighter-rouge">"world"</code> are strings, and the union tends to go to
-the type that includes the most.</p>
-
-<p>Think of set theory and bubbles.</p>
-
-
+<p>
         <p><a href="/blog/2023/03/01/typescript-magic/">Read on →</a></p>
     
 
@@ -327,21 +290,11 @@ the type that includes the most.</p>
           <a href="/blog/2023/02/10/mongo-geospatial-queries/">
         
         
-          <h2 class="entry-title">Are you using the right Mongo geospatial query?</h2>
+          <h2 class="entry-title">SwiftUI vs Auto Layout and frames</h2>
         
         <time datetime=""></time>
           <p class="meta-author">
 
-
-  
-
-  
-    <div class="meta">
-      <span class="byline author vcard"><a href ="/author/roop">Roop<a/></span>
-      
-
-    </div>
-  
 
 </p>
           </a>
@@ -352,19 +305,13 @@ the type that includes the most.</p>
   <div class="content-container">
     
     
-        <p>We recently got a report from one of our galleries in the Los Angeles area that
-they weren’t showing up on our
-<a href="https://www.artsy.net/shows/los-angeles-ca-usa">Los Angeles exhibition listings</a>.</p>
+        <p>A
+good section of this post is about the research + a project “Diagram” and steps I wish somebody told me upfront. Before I dive into Auto Layout, should I remind you also of legacy in frames 😝, masks — you always had to tell buttons and other controls how big they should be, either by setting their frame or bounds properties or by resizing them in Interface Builder. But it turns out that most controls are perfectly capable of determining how much space they need, based on their — content. 🌈🦄🌈
+🕵️‍♀️ 🕵️‍♀️ Note: There is a tool Scherlock — it lets you edit views and layout constraints in real time, simulate running on other devices, and jump straight to the source code, all from your iOS Simulator — zero configuration required only $$ after trial.</p>
 
-<p>I fielded the report and right away confirmed: when we asked our core API for
-<code class="language-plaintext highlighter-rouge">/shows?near=&lt;los angeles coordinates&gt;</code>, sure enough this gallery partner didn’t
-make the cut.</p>
-
-<p>Turns out they are based in Santa Monica, a separate and neighboring
-municipality. They must not be within the 25km radius that we use by default for
-these sorts of queries.</p>
-
-<p><em>Case closed</em>. Or so I thought.</p>
+<p>Things I want to accomplish:⏎
+— Solve errors in layout IB Auto Layout
+— Solve errors in code Auto Layout</p>
 
 
         <p><a href="/blog/2023/02/10/mongo-geospatial-queries/">Read on →</a></p>
@@ -392,21 +339,11 @@ these sorts of queries.</p>
           <a href="/blog/2022/09/07/quick-tips-to-speed-up-ci/">
         
         
-          <h2 class="entry-title">Parallelizing Jest and Cypress.io Tests on CircleCI</h2>
+          <h2 class="entry-title">Short thoughts dumped on JSON parsing in Swift 5</h2>
         
         <time datetime=""></time>
           <p class="meta-author">
 
-
-  
-
-  
-    <div class="meta">
-      <span class="byline author vcard"><a href ="/author/chris">Christopher Pappas<a/></span>
-      
-
-    </div>
-  
 
 </p>
           </a>
@@ -417,20 +354,20 @@ these sorts of queries.</p>
   <div class="content-container">
     
     
-        <p>At Artsy, exploring ways to improve the developer experience is part of our
-makeup. Whether it’s implementing <a href="https://github.com/artsy/express-reloadable">hot-swapping</a> for Express.js or
-integrating the Rust-based <a href="https://github.com/artsy/force/pull/10598">SWC compiler</a> into our front-end build
-pipeline, we’re always trying to reduce the amount of time it takes for a code
-cycle to take place. CI is no exception. When a developer opens a PR, we want to
-ensure they get timely feedback. Do their unit tests pass? Does the app build
-correctly? And how about smoke tests? Each of these jobs are complex processes
-that take time, and the more one can parallelize said tasks the less devs will
-need to wait. Scaled out to a whole engineering org, minor improvements to CI
-can be radical.</p>
+        <p>Networking code can definitely be improved. Thanks Apple! No third parties here!
+👌 So since Swift 4 we got Codable with Decodable and Encodable protocols that 
+provide support for native class (reference type), struct and enum as well (value types) all concrete data types…</p>
 
-<p>In this regard, two things came across our radar recently that we’d like to
-share: sharding via Jest, and a (free) way to parallelize Cypress.io integration
-tests via CircleCI’s <code class="language-plaintext highlighter-rouge">split</code> command.</p>
+<p>First of all Codable is defined as typealias Codable = Decodable &amp; Encodable and we go for two required protocols:</p>
+<ul>
+  <li>Decodable: to parse JSON (get response)</li>
+  <li>By decoding the JSONData we will receive/read the data
+    <ol>
+      <li>Encodable: to generate JSON (post response)</li>
+    </ol>
+  </li>
+  <li>To convert your codable type into Data.</li>
+</ul>
 
 
         <p><a href="/blog/2022/09/07/quick-tips-to-speed-up-ci/">Read on →</a></p>
@@ -458,21 +395,11 @@ tests via CircleCI’s <code class="language-plaintext highlighter-rouge">split<
           <a href="/blog/2022/08/23/getting-around-7-day-cookie/">
         
         
-          <h2 class="entry-title">Hacking Around Safari's 7-day Cookie Limit</h2>
+          <h2 class="entry-title">Breaking the magic of Apple HealthKit API and Watch OS</h2>
         
         <time datetime=""></time>
           <p class="meta-author">
 
-
-  
-
-  
-    <div class="meta">
-      <span class="byline author vcard"><a href ="/author/chris">Christopher Pappas<a/></span>
-      
-
-    </div>
-  
 
 </p>
           </a>
@@ -483,16 +410,13 @@ tests via CircleCI’s <code class="language-plaintext highlighter-rouge">split<
   <div class="content-container">
     
     
-        <p>Amongst the many, many things that organizations have to contend with around
-cookie consent laws is Apple’s very own browser, Safari. Did you know that
-Safari will only retain a client-side cookie for 7 days? This is in support of
-Apple’s <a href="https://clearcode.cc/blog/intelligent-tracking-prevention-faq">Intelligent Tracking Prevention (ITP)</a> feature, designed to
-protect a user’s privacy.</p>
+        <p>Things I want to accomplished: ✅
+Small tips on setup and easier use
+lll
+ppp
+pp</p>
 
-<p>These privacy efforts are great but, in hand with laws like <a href="https://gdpr-info.eu">GDPR</a> and
-<a href="https://oag.ca.gov/privacy/ccpa">CCPA</a>, their rollout often creates a UX nightmare for users without some
-extra care. Here at Artsy, we’ve landed on a way to make things slightly less
-bad and want to share our approach.</p>
+<p>TO DO</p>
 
 
         <p><a href="/blog/2022/08/23/getting-around-7-day-cookie/">Read on →</a></p>
@@ -517,90 +441,10 @@ bad and want to share our approach.</p>
     <div class="meta-container">
       <header>
         
-          <a href="/blog/2022/05/09/deprecating-kaws/">
+          <a href="/blog/2017/03/05/artsy-engineering-culture-2017/">
         
         
-          <h2 class="entry-title">Third Time's the Charm: Deprecating KAWS</h2>
-        
-        <time datetime=""></time>
-          <p class="meta-author">
-
-
-  
-
-  
-    <div class="meta">
-      <span class="byline author vcard"><a href ="/author/matt-dole">Matt Dole<a/></span>
-      
-
-    </div>
-  
-
-  
-
-  
-    <div class="meta">
-      <span class="byline author vcard"><a href ="/author/roop">Roop<a/></span>
-      
-
-    </div>
-  
-
-</p>
-          </a>
-      </header>
-    </div>
-  
-
-  <div class="content-container">
-    
-    
-        <p>How do you tell when it’s time to deprecate a system? If something mostly works OK, is it worth spending time and
-effort replacing its functionality?</p>
-
-<p>At Artsy, we realized several years ago that we needed to be able to group a bunch of artworks together. If we
-wanted to have a page with all of the
-<a href="https://www.artsy.net/collection/lucio-fontana-ceramics">ceramics by Lucio Fontana</a>, or
-<a href="https://www.artsy.net/collection/buy-now-contemporary-prints-in-the-ifpda-fair-spring-2022">contemporary prints from the IFPDA Fair Sprint 2022</a>,
-or a <a href="https://www.artsy.net/collection/antwaun-sargents-wishlist">gift guide curated by Antwaun Sargent</a>, we needed
-to have a way to make that happen.</p>
-
-<p>We decided to call these things “collections,” a reasonable name for a collection of artworks. In order to create
-them, we developed a service called KAWS, named after the artist (whose works we wanted to put in several of these
-collections).</p>
-
-<p>Now, 4 years later, we’ve taken down the service and folded its functionality into Artsy’s main database and API,
-Gravity.</p>
-
-<p>Let’s talk about why and what we learned along the way.</p>
-
-
-        <p><a href="/blog/2022/05/09/deprecating-kaws/">Read on →</a></p>
-    
-
-    
-  </div>
-
-
-  <footer>
-  </footer>
-
-</div>
-
-      </article>
-  
-    
-      <article>
-        <div class="article-container">
-
-  
-    <div class="meta-container">
-      <header>
-        
-          <a href="/blog/2022/04/13/stepping-out-of-the-knowledge-zone/">
-        
-        
-          <h2 class="entry-title">Stepping Out Of The Knowledge Zone</h2>
+          <h2 class="entry-title">Artsy's Culture Stack, 2017</h2>
         
         <time datetime=""></time>
           <p class="meta-author">
@@ -610,151 +454,10 @@ Gravity.</p>
 
   
     <div class="meta">
-      <span class="byline author vcard"><a href ="/author/kaja">Kaja Santro<a/></span>
+      <span class="byline author vcard"><a href ="/author/orta">Orta Therox<a/></span>
       
       <p class="fn">
-        <a href="https://twitter.com/alizenero">@alizenero</a>
-      </p>
-      
-
-    </div>
-  
-
-</p>
-          </a>
-      </header>
-    </div>
-  
-
-  <div class="content-container">
-    
-    
-        <p>As I am writing my first blog post for Artsy, here is a short introduction on who I am: My name is Kaja and I am an
-engineer in our Berlin entity. As a Ruby-born programmer I am calling myself a backend engineer, but that also may
-change and is more about emotional identification and less about what I actually do (as you will see in this blog
-post). My background is not in engineering at all. In university I graduated in philosophy and historical
-linguistics, both the most impractical but most beautifully theoretical subjects I can think of. I really love
-being in the world of ideas and thought experiments that challenge the current status of what <em>is</em>, as opposed to
-what is <em>thinkable</em>.</p>
-
-
-        <p><a href="/blog/2022/04/13/stepping-out-of-the-knowledge-zone/">Read on →</a></p>
-    
-
-    
-  </div>
-
-
-  <footer>
-  </footer>
-
-</div>
-
-      </article>
-  
-    
-      <article>
-        <div class="article-container">
-
-  
-    <div class="meta-container">
-      <header>
-        
-          <a href="/blog/2022/02/01/using-context-to-simplify-a-react-form/">
-        
-        
-          <h2 class="entry-title">Using Context to Simplify a VERY Large React Form</h2>
-        
-        <time datetime=""></time>
-          <p class="meta-author">
-
-
-  
-
-  
-    <div class="meta">
-      <span class="byline author vcard"><a href ="/author/anna">Anna Carey<a/></span>
-      
-      <p class="fn">
-        <a href="https://twitter.com/anna_carey">@anna_carey</a>
-      </p>
-      
-
-    </div>
-  
-
-  
-
-  
-    <div class="meta">
-      <span class="byline author vcard"><a href ="/author/laura">Laura Bhayani<a/></span>
-      
-      <p class="fn">
-        <a href="https://twitter.com/laurabethdotdev">@laurabethdotdev</a>
-      </p>
-      
-
-    </div>
-  
-
-</p>
-          </a>
-      </header>
-    </div>
-  
-
-  <div class="content-container">
-    
-    
-        <p>For those unfamiliar, Artsy is a fine art marketplace. Knowing that, it follows logically to say that the form via
-which our partners list artworks for sale is an integral part of Artsy’s core systems. This form, known only as
-“The Artwork Form,” is whispered about in the halls of Arty’s New York headquarters. It is legendary. It is a
-colossus. It is old enough not only to predate React v16.8 hooks and context APIs, but Artsy’s use of React
-entirely. The first version of the Artwork Form was built in 2014 using ruby and haml, and began its refactoring
-into JS/JQuery/React a full 2 years later, after having expanded considerably from the original implementation.
-That process (at least what we’ve gleaned from our git excavation) was incremental, experimental, and passed
-through many hands before it landed in the lap of the current Partner Experience (PX) team.</p>
-
-
-        <p><a href="/blog/2022/02/01/using-context-to-simplify-a-react-form/">Read on →</a></p>
-    
-
-    
-  </div>
-
-
-  <footer>
-  </footer>
-
-</div>
-
-      </article>
-  
-    
-      <article>
-        <div class="article-container">
-
-  
-    <div class="meta-container">
-      <header>
-        
-          <a href="/blog/2022/01/06/a-year-in-review-2021/">
-        
-        
-          <h2 class="entry-title">A Year in Review: 2021</h2>
-        
-        <time datetime=""></time>
-          <p class="meta-author">
-
-
-  
-
-  
-    <div class="meta">
-      <span class="byline author vcard"><a href ="/author/devon">Devon Blandin<a/></span>
-      
-      <p class="fn">
-        <a href="https://twitter.com/dblandin">@dblandin</a>
+        <a href="https://twitter.com/orta">@orta</a>
       </p>
       
 
@@ -784,14 +487,38 @@ through many hands before it landed in the lap of the current Partner Experience
   <div class="content-container">
     
     
-        <p>Ufff, 2021 was a tough year. It was the second year of the Covid-19 pandemic. We tried our best to support each
-other through these challenging times and in that spirit, we feel like it’s important not to lose sight of our
-accomplishments. As we say goodbye to 2021 and hello to 2022, here are some Artsy Engineering wins from this past year.</p>
+        <!-- This comes out of the tech stack 2017, and isn't up for review yet -->
 
-<p>What did you ship in 2021? We would love to hear about it and celebrate with you!</p>
+<h1 id="people-and-culture">People and Culture</h1>
 
+<h2 id="open-source-by-default">Open Source by Default</h2>
 
-        <p><a href="/blog/2022/01/06/a-year-in-review-2021/">Read on →</a></p>
+<p>By the end of 2016, almost every major front-end application at Artsy was <a href="http://code.dblock.org/2015/02/09/becoming-open-source-by-default.html">Open Source by Default</a>. This means looking for reasons for something to be closed-source as opposed to reasons to be open. Our entire working process is done in the open, from developer PRs to QA. This post was also written collaboratively and in the open as you can see <a href="https://github.com/artsy/artsy.github.io/pull/325">here</a>.</p>
+
+<p>Sometimes it makes sense to keep some details private for competitive reasons. We therefore also create a private GitHub repository for front-end teams that require cross-project issues and team milestones. This is done using <a href="https://www.zenhub.com">ZenHub</a>, and is managed by Engineering leads and Product Managers.</p>
+
+<h2 id="developer-workflow">Developer Workflow</h2>
+
+<p>Most development workflow tries to mimic large open-source project development where most work happens on forks and is pull-requested into an Artsy repository shared by everyone. Typically an engineer will start a project, application or service and is automatically its benevolent dictator. They will add continuous integration and will ask other engineers on the team to code review everything from day one. Others will join and entire teams may take over. Continuous deployment and other operational infrastructure will get setup early.</p>
+
+<p>In some of our newer apps we have switched to PR based deployments via CIs. In this case, on Artsy’s repository, we would have <em>master</em> and <em>release</em> branches where <em>master</em> is the default branch and all the PRs are made to master. Once a PR is reviewed and merged to <em>master</em> it will automatically get deployed on staging. Production deployment is a pull request from <em>master</em> to a <em>release</em> branch, this way we know what commits are going to be deployed in this release. Once merged, CI will automatically deploy the <em>release</em> branch to production.</p>
+
+<h2 id="slack">Slack</h2>
+
+<p>Originally the engineering team used IRC, but in 2015 we switched to Slack and encouraged its use throughout the whole company. We’re now averaging about 16,000 Slack messages a day inside Artsy.</p>
+
+<p>Slack usage started out small, but as the Artsy team grew, so did the number of locations where people worked. Encouraging people to move from disparate private conversations in different messaging clients to using slack channels has really made it easier to keep people in the loop. It’s made it possible to have the serendipitous collaboration you get by overhearing something important nearby physically.</p>
+
+<h2 id="global-engineering">Global Engineering</h2>
+
+<p>While most Engineers live in New York, our Engineering team has contributors in Amsterdam, Berlin, Seattle, Minneapolis, Boston and London. We’ve not shied away from hiring regardless of locations.</p>
+
+<p>To help people know each-other across the company we developed and open-sourced a <a href="https://github.com/artsy/team-navigator">team navigator</a>. We also facilitate weekly meetings between any three people across the company with a tool called <a href="https://github.com/ilyakava/sup">sup</a>.</p>
+
+<blockquote>
+  <p>Maybe worth mentioning that most of the channels shared between developers and other people at artsy(specialists, designers, product people, etc) which encourages collaboration and integration of art+technology as well. Also maybe worth mentioning that we have dedicated help channels per product team and well as company wide help channel.</p>
+</blockquote>
+
     
 
     
@@ -811,10 +538,8 @@ accomplishments. As we say goodbye to 2021 and hello to 2022, here are some Arts
     <a href="/blog/categories">Categories</a>
 
     
-    <span class="page_number ">Page: 1 of 2</span>
+    <span class="page_number ">Page: 1 of 1</span>
 
-    
-      <a href="/blog/2/" class="next">Older</a>
     
   </div>
 </div>

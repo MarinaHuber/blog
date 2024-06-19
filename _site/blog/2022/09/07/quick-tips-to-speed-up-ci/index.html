@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Parallelizing Jest and Cypress.io Tests on CircleCI - iOS Engineering</title>
+  <title>Short thoughts dumped on JSON parsing in Swift 5 - iOS Engineering</title>
   <meta name="author" content="">
 
   <link
@@ -14,9 +14,8 @@
   />
 
   
-  <meta name="description" content="At Artsy, exploring ways to improve the developer experience is part of our
-makeup. Whether it’s implementing hot-swapping for Express.js or
-integr...">
+  <meta name="description" content="Networking code can definitely be improved. Thanks Apple! No third parties here!
+👌 So since Swift 4 we got Codable with Decodable and Encodable pro...">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,143 +85,152 @@ integr...">
 
       <section>
         <header id="page">
-          <h1>Parallelizing Jest and Cypress.io Tests on CircleCI</h1>
+          <h1>Short thoughts dumped on JSON parsing in Swift 5</h1>
           <h3>
           <!-- Yep, single line so the comma lines up right -->
-          By  Christopher Pappas
+          By 
           </h3>
           <time datetime="2022-09-07">Sep 7, 2022</time>
         </header>
 
         <article class='post'>
-          <p>At Artsy, exploring ways to improve the developer experience is part of our
-makeup. Whether it’s implementing <a href="https://github.com/artsy/express-reloadable">hot-swapping</a> for Express.js or
-integrating the Rust-based <a href="https://github.com/artsy/force/pull/10598">SWC compiler</a> into our front-end build
-pipeline, we’re always trying to reduce the amount of time it takes for a code
-cycle to take place. CI is no exception. When a developer opens a PR, we want to
-ensure they get timely feedback. Do their unit tests pass? Does the app build
-correctly? And how about smoke tests? Each of these jobs are complex processes
-that take time, and the more one can parallelize said tasks the less devs will
-need to wait. Scaled out to a whole engineering org, minor improvements to CI
-can be radical.</p>
+          <p>Networking code can definitely be improved. Thanks Apple! No third parties here!
+👌 So since Swift 4 we got Codable with Decodable and Encodable protocols that 
+provide support for native class (reference type), struct and enum as well (value types) all concrete data types…</p>
 
-<p>In this regard, two things came across our radar recently that we’d like to
-share: sharding via Jest, and a (free) way to parallelize Cypress.io integration
-tests via CircleCI’s <code class="language-plaintext highlighter-rouge">split</code> command.</p>
+<p>First of all Codable is defined as typealias Codable = Decodable &amp; Encodable and we go for two required protocols:</p>
+<ul>
+  <li>Decodable: to parse JSON (get response)</li>
+  <li>By decoding the JSONData we will receive/read the data
+    <ol>
+      <li>Encodable: to generate JSON (post response)</li>
+    </ol>
+  </li>
+  <li>To convert your codable type into Data.</li>
+</ul>
 
 <!-- more -->
 
-<h2 id="sharding-in-jest">Sharding in Jest</h2>
+<h2 id="in-practice">In practice</h2>
+<p>It works with primitive types (Int, String and Float etc.), some Foundation types (Data, URL, Date etc.) as well as with arrays, dictionaries and optionals(Enums).</p>
+<ul>
+  <li>NSData</li>
+  <li>NSString</li>
+  <li>NSNumber
+    <ul>
+      <li>UInt</li>
+      <li>Int</li>
+      <li>Float</li>
+      <li>Double</li>
+      <li>Bool</li>
+    </ul>
+  </li>
+  <li>NSDate</li>
+  <li>NSArray</li>
+  <li>NSDictionary
+Why?</li>
+  <li>To simplify dependencies in our Data Manager</li>
+  <li>Converting data structures to JSON data has never been easier(hmmmm..), allowing developers to store JSON data to disk or encode it into a URLRequest’s httpBody.
+You can write an app that uses JSON from an external source or tests from a stub. The start problem here the inconsistencies between the structure of the concepts you’re modeling in your app and concepts modeled by the producer of the JSON. Some examples of changing and using JSON structure in your app:</li>
+  <li>Change name properties with CodingKey
+    <ol>
+      <li>Simplify the complex structure with Encoding and Decoding manually 📝</li>
+      <li>Work with Nested Data (array inside of an array JSON)
+For 1. even tho we do not have to parse every element of JSON representation, we need to create properties with same name as in JSON Data or rename them with CodingKey for direct persistent storage for basic examples. Easy peasy so far! 🤠🤠
+Essential tasks here at the object level:</li>
+      <li>Identify Objects</li>
+      <li>Use nested type for supporting or to hide complexity
+🃏♦️🃏
+struct SurfBoard: Codable {
+ var brand: String
+ var size: Size</li>
+    </ol>
+  </li>
+</ul>
 
-<p>“What is sharding?” Good question! In short, it means “a small part of a whole”.
-The database community has employed sharding techniques for decades, where a
-large database is split up into smaller, more manageable chunks, usually to
-improve performance at scale. The same idea can be applied to any process or
-task involving a lot of data, including tests.</p>
-
-<p>Think about it like this. Imagine an app that has thousands of tests. One can
-open up their terminal and run <code class="language-plaintext highlighter-rouge">yarn test</code> and execute all of the tests at once
-in a single process, or one can open two terminal tabs and run
-<code class="language-plaintext highlighter-rouge">yarn test src/utils</code> and <code class="language-plaintext highlighter-rouge">yarn test src/routes</code>, and have both processes
-allocate a pool of memory to complete each (smaller) subset of tasks. Because
-each process has its own memory pool the performance characteristics are
-generally better, and thus the overall time required to run our tests is reduced
-/ decreased. Running each of these commands scoped to a particular folder is
-easy enough, but in a CI environment this is somewhat cumbersome; we’d need to
-define two new jobs and then the conditions in which they run, increasing the
-scope and complexity of our configuration file.</p>
-
-<p>This is where <a href="https://jestjs.io/blog/2022/04/25/jest-28#sharding-of-test-run">Jest’s new sharding feature</a> comes into play, which
-taps nicely into most modern CI runners. Using a hypothetical app containing 100
-tests, here’s a quick example of how it works:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>yarn jest <span class="nt">--shard</span> 1/5
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>enum CodingKeys: String, CodingKey {
+    case brand = "name"
+    case size
+} }
 </code></pre></div></div>
 
-<p>What this says is: take the total number of tests (100), divide them into five
-buckets (containing 20 tests each), and execute the test runner against the
-first bucket (the first 20 tests). Continuing:</p>
+<p>struct Size: Codable {
+    var width: Double
+    var height: Double
+}
+Note: For JSON properties that declares in NULL element we need to mirror that instance with ❓Optional. This way, data isn’t silently lost as a result of typos or a misunderstanding of the guarantees made by the provider of the JSON.
+For 2. in that case, you can provide your own custom logic 📝 of Encodable and Decodable to define your own encoding and decoding logic. You need to implement encode(to:) and init(from:) methods of Encodable and Decodable protocols explicitly.
+On that note:
+The tool that I find very useful in creating model structs faster is QuickType which is a desktop application that turns JSON into Codable with typealias for collections. I use it with copyright in comments and Equatable and Hashable protocols for making sure that collection is not duplicated…
+Here is when the JSON goes wild and we need to taim it:
+struct SurfBoard {
+    var brand: String
+    var size: Size</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>yarn jest <span class="nt">--shard</span> 2/5
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>enum CodingKeys: String, CodingKey {
+    case brand = "name"
+    case width
+    case height
+} }
 </code></pre></div></div>
 
-<p>Now take the second bucket and execute the next 20 tests – and so on. Simple
-enough.</p>
+<p>extension SurfBoard: Encodable {
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(brand, forKey: .title)
+        try container.encode(size.width, forKey: .width)
+        try container.encode(size.height, forKey: .height)
+    }
+}</p>
 
-<p>Taking this further, we could turn this into a bash loop, including an <code class="language-plaintext highlighter-rouge">&amp;</code>
-symbol to run things in parallel and automating some of the redundancy away:</p>
+<p>extension SurfBoard: Decodable {
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        brand = try values.decode(String.self, forKey: .brand)
+        let width = try values.decode(Double.self, forKey: .width)
+        let height = try values.decode(Double.self, forKey: .height)
+        size = Size(width: width, height: height)
+    }
+}
+You can get nice use scenario here and here ✅.
+For 3. in that case of Nested Data you need to decode and read the JSON. The decodable type serves as an intermediate type that’s safe to decode. It serves as the data source in an initializer for the type that you’ll use in the rest of your app.
+//Swift structural incompatibility with external JSON
+struct SurfBoard {
+    var brand: String
+    var products: [Products]</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">BUCKETS</span><span class="o">=</span>5
-
-<span class="k">for </span>i <span class="k">in</span> <span class="o">{</span>1..<span class="k">${</span><span class="nv">BUCKETS</span><span class="k">}</span><span class="o">}</span>
-<span class="k">do
-   </span>yarn jest <span class="nt">--shard</span> <span class="nv">$i</span>/<span class="nv">$BUCKETS</span> &amp;
-<span class="k">done</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>struct Products: Codable {
+    var name: String
+    var points: Int
+    var description: String?
+} } The JSON returned by the API contains more information than is needed to populate the corresponding Swift type. //Swift structure that we need for the nested Arrays struct SurfBoard: Decodable {
+let brand: String
+let aisles: [Aisle]
+struct Aisle: Decodable {
+    let name: String
+    let shelves: [Shelf]
+    struct Shelf: Decodable {
+       let name: String
+       let product: SurfStore.Product
+    }
+} } The extension adds an initializer that takes a SurfBoardService instance and removes the unnecessary nesting by looping through and discarding the aisles and shelves. To extract the data you need from the outer array, you write a type that mirrors the shape of the source JSON and mark it as Decodable. Then, write an initializer on the type you’ll use in the rest of your app that takes an instance of the type that mirrors the source JSON. extension SurfStore {
+init(from service: SurfBoardService) {
+     brand = service.brand
+     products = []
+     for aisle in service.aisles {
+       for shelf in aisle.shelves {
+         products.append(shelf.product)
+        }
+     }
+ }  } On that note: Extensions can only provide convenience initializers * 		Initializers that are implemented as a result of protocol conformance must be marked as required(on classes). * 		required init can only be implemented within the body of a class. * 		Structs can have initializers in extensions because there is no inheritance. AND FINALLY READ THE NESTED JSON… let decoder = JSONDecoder() let serviceStores = try decoder.decode([SurfBoardService].self,        from: json)
+ let stores = serviceStores.compactMap { SurfBoard(from: $0) } for store in stores {
+ print("\(store.name) is selling:")
+for product in store.products { 
+   print("\t\(product.name) (\(product.points) points)")
+      if let description = product.description {
+      print("\t\t\(description)")
+ }    } } more in documentation: Merge Data from Different Depths Feel free to leave comments if you have any doubts 🙂 Thank you! Reference on: https://hackernoon.com/everything-about-codable-in-swift-4-97d0e18a2999 http://aplus.rs/2017/highly-maintainable-app-architecture/
 </code></pre></div></div>
-
-<p>For many the above snippet should be sufficient to speed up your test suite, but
-who wants to write bash loops? Thankfully, most modern CI task runners contain
-the ability to split jobs into separate processes programatically and so this
-kind of logic is unnecessary.</p>
-
-<p>Here’s how to do this in Circle CI:</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">test</span><span class="pi">:</span>
-  <span class="na">parallelism</span><span class="pi">:</span> <span class="m">5</span>
-  <span class="na">steps</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span> <span class="s">yarn test --shard=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL</span>
-</code></pre></div></div>
-
-<p>Set a <code class="language-plaintext highlighter-rouge">parallelism</code> value, and drop the <code class="language-plaintext highlighter-rouge">jest</code> command into a cool one-liner.
-The variable <code class="language-plaintext highlighter-rouge">CIRCLE_NODE_INDEX</code> refers to which container index the job is
-running on, and <code class="language-plaintext highlighter-rouge">CIRCLE_NODE_TOTAL</code> points to the value of <code class="language-plaintext highlighter-rouge">parallelism</code>.</p>
-
-<p>On Artsy.net, we’ve been able to reduce the average time it takes to run our
-unit tests from around ~10 minutes per PR to just above 2m. A 4-5x performance
-improvement.</p>
-
-<h2 id="parallelizing-cypressio-integration-tests-for-free">Parallelizing Cypress.io Integration Tests (For Free)</h2>
-
-<p>For those who want robust integration test coverage, <a href="https://www.cypress.io">Cypress.io</a> has
-been a game-changer due to its reliability and ease of use. Here at Artsy we use
-it in a number of apps, most notably
-<a href="https://github.com/artsy/integrity">Integrity</a>. One complaint, however, is just
-how <em>slow</em> it is. This is reasonable; Cypress is simulating a user browsing your
-website and sometimes a user needs to do <code class="language-plaintext highlighter-rouge">x</code> and <code class="language-plaintext highlighter-rouge">y</code> (such as logging in) before
-they can do <code class="language-plaintext highlighter-rouge">z</code>. At scale this can really slow things down and lead to
-bottlenecks, especially if deploys are dependent on all of your integration
-tests passing.</p>
-
-<p>The Cypress.io team has recognized this bottleneck and released the
-<a href="https://docs.cypress.io/guides/dashboard/introduction">Cypress Dashboard</a>, a
-paid product which includes the ability to unlock parallelized tests on your CI.
-For those willing to pay for another SAAS product this will get the job done
-well, but for those with leaner budgets there’s another way to accomplish this
-for free, and on CircleCI it’s very easy to setup via the
-<a href="https://circleci.com/docs/parallelism-faster-jobs#using-the-circleci-cli-to-split-tests">CircleCI CLI command <code class="language-plaintext highlighter-rouge">split</code></a>.</p>
-
-<p>You can check out the
-<a href="https://github.com/artsy/force/blob/main/.circleci/config.yml#L219-L235">full example here</a>,
-but in short:</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">integration</span><span class="pi">:</span>
-  <span class="na">parallelism</span><span class="pi">:</span> <span class="m">5</span>
-  <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
-    <span class="s">TESTS=$(circleci tests glob "cypress/integration" | circleci tests split | paste -sd ',')</span>
-    <span class="s">cypress run --spec $TESTS</span>
-</code></pre></div></div>
-
-<p>We use the <code class="language-plaintext highlighter-rouge">circleci tests glob</code> command to gather all of our tests, and then
-pipe that into the <code class="language-plaintext highlighter-rouge">circleci tests split</code> which will divide our tests into
-buckets, similar to how Jest’s <code class="language-plaintext highlighter-rouge">--shard</code> command works up above. We then assign
-that to a <code class="language-plaintext highlighter-rouge">$TESTS</code> variable and pass it into <code class="language-plaintext highlighter-rouge">cypress run --spec $TESTS</code>.
-CircleCI sees the <code class="language-plaintext highlighter-rouge">parallelism</code> prop in the config and automatically divides our
-tests into 5 separate containers, each running a small subset of our integration
-tests in parallel.</p>
-
-<p>On Artsy.net, our smoke tests times have gone from around ~7m on average down to
-~3m. A huge reduction for only a few lines of config!</p>
-
 
         </article>
 
@@ -247,14 +255,14 @@ tests in parallel.</p>
 
           <section>
             <h4>Author</h4>
-            <p> <a href="/author/chris">Christopher Pappas</a></p>
-            <p></a></p>
+            <p></p>
+            <p></p>
           </section>
 
           <section>
             <h4>Post Meta</h4>
             <p>Sep 7, 2022</p>
-            <p>Tagged: CircleCICITestsJestCypress</p>
+            <p>Tagged: NetworkingGenericsSwift</p>
           </section>
           <br/>
           <section>
