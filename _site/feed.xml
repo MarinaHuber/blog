@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/blog/</link>
     <atom:link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 19 Jun 2024 22:17:04 +0200</pubDate>
-    <lastBuildDate>Wed, 19 Jun 2024 22:17:04 +0200</lastBuildDate>
+    <pubDate>Thu, 20 Jun 2024 22:10:20 +0200</pubDate>
+    <lastBuildDate>Thu, 20 Jun 2024 22:10:20 +0200</lastBuildDate>
     <generator>Jekyll v3.9.5</generator>
     
       <item>
@@ -444,8 +444,8 @@ Next, but sometimes that’s just not enough to avoid hitting pause, and looking
 at the bigger picture. Inclusivity should always win.&lt;/p&gt;
 </description>
         <pubDate>Thu, 07 Mar 2024 00:00:00 +0100</pubDate>
-        <link>http://localhost:4000/blog/blog/2024/03/07/nextjs-at-artsy-retrospective/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/blog/2024/03/07/nextjs-at-artsy-retrospective/</guid>
+        <link>http://localhost:4000/blog/blog/2024/03/07/all-things-localization/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/blog/2024/03/07/all-things-localization/</guid>
         
         
       </item>
