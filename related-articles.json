@@ -4318,23 +4318,6 @@
       "certainty": 0.9045259654521942
     }
   ],
-  "2017/11/29/Express-Reloadable-Update": [
-    {
-      "path": "2017/09/05/Modernizing-Force",
-      "title": "Modernizing Force",
-      "certainty": 0.9662754833698273
-    },
-    {
-      "path": "2014/09/05/we-open-sourced-our-isomorphic-javascript-website",
-      "title": "We open sourced our Isomorphic Javascript website",
-      "certainty": 0.937951385974884
-    },
-    {
-      "path": "2018/10/04/artsy-frontend-history",
-      "title": "A History of Artsy's Web Frontend",
-      "certainty": 0.9369118809700012
-    }
-  ],
   "2014/08/08/CocoaPods-Caching": [
     {
       "path": "2015/12/15/Automating-Testflight-Deploys",
