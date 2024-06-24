@@ -11,15 +11,12 @@
     <div id="bodywrapper">
       <header>
         <ul>
-          <li><a href="/">Artsy Engineering Blog</a></li>
-          <li><a href="https://www.artsy.net/jobs">Careers</a></li>
-          <li><a href="https://github.com/artsy">Github</a></li>
+          <li><a href="/">Engineering Blog</a></li>
         </ul>
 
         <ul>
-          <li><a href="https://github.com/orgs/artsy/repositories?language=&q=&sort=&type=source">Our Open Source</a></li>
-          <li><a href="http://twitter.com/artsyopensource">@artsyopensource</a></li>
-          <li><a href="https://www.artsy.net">artsy.net</a></li>
+          <li><a href="https://github.com/orgs/artsy/repositories?language=&q=&sort=&type=source">Open Source</a></li>
+   
         </ul>
       </header>
 
@@ -112,7 +109,7 @@
             {% for post in site.posts %}
               {% if post.series == page.series %}
                 {% if post.id != page.id %}
-                <li><a href='{{ root_url }}{{ post.url }}'>{{post.title}}</a></li>
+                <li><a href='{{ relative_url }}{{ post.url }}'>{{post.title}}</a></li>
                 {% endif %}
               {% endif %}
             {% endfor %}
