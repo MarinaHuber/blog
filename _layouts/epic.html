@@ -1,9 +1,9 @@
 {% include head.html %}
 
-<link href="{{ root_url }}/css/epic.css" media="screen, projection" rel="stylesheet" type="text/css">
+<link href="{{ '/css/epic.css' | relative_url }}" media="screen, projection" rel="stylesheet" type="text/css">
 
 {% if page.css %}
-<link href="{{ root_url }}/css/posts/{{page.css}}.css" media="screen, projection" rel="stylesheet" type="text/css">
+<link href="{{ '/css/posts/{{page.css}}.css' | relative_url }}" media="screen, projection" rel="stylesheet" type="text/css">
 {% endif %}
 
 <body>
@@ -11,7 +11,7 @@
     <div id="bodywrapper">
       <header>
         <ul>
-          <li><a href="/">Engineering Blog</a></li>
+          <li><a href="/blog/">Engineering Blog</a></li>
         </ul>
 
         <ul>
@@ -36,11 +36,6 @@
 
         <article class='post'>
           <p style="padding-bottom: 0; margin-bottom:0;">
-            <a href="https://www.artsy.net/" style="background-image: none;">
-              <svg viewBox="0 0 510 510" width="40" height="40" xmlns="http://www.w3.org/2000/svg">
-                <path transform="scale(1, -1) translate(0, -480)" d="M0 -32h512v512h-512v-512v0zM464 16h-80v80h-48v-80h-288v416h416v-416v0zM194 384h-40l-74 -186h38l20 52h72l19 -52h39l-74 186v0zM149 282l25 66l24 -66h-49v0z"></path>
-              </svg>
-            </a>
           <p/>
         </article>
 
@@ -72,20 +67,19 @@
           <section>
             <h4>Artsy OSS</h4>
             <ul>
-              <li><a href='https://www.artsy.net'>Artsy.net</a></li>
-              <li><a href='https://github.com/artsy'>Github</a></li>
-              <li><a href='https://github.com/orgs/artsy/repositories?language=&q=&sort=&type=source'>Open Source</a></li>
-              <li><a href='https://www.artsy.net/jobs'>Careers</a></li>
+              <li><a href=''>References</a></li>
+              <li><a href=''>Github</a></li>
+              <li><a href=''>Open Source</a></li>
             </ul>
           </section>
 
           <section>
             <h4>Blog</h4>
             <ul>
-              <li><a href='http://artsy.github.io/blog/archives/'>Archives</a></li>
+              <li><a href=''>Archives</a></li>
               <!-- TODO: bring back a different version of site search  -->
               <!-- <li><a href='http://artsy.github.io/search/'>Search</a></li> -->
-              <li><a href='https://github.com/artsy/artsy.github.io'>Code on GitHub</a></li>
+              <li><a href=''>Code on GitHub</a></li>
               <li><a href='https://github.com/artsy/artsy.github.io/edit/source/{{page.path}}'>Fix typos in this post</a></li>
             </ul>
           </section>
@@ -109,7 +103,7 @@
             {% for post in site.posts %}
               {% if post.series == page.series %}
                 {% if post.id != page.id %}
-                <li><a href='{{ relative_url }}{{ post.url }}'>{{post.title}}</a></li>
+                <li><a href='{{ root_url }}{{ post.url }}'>{{post.title}}</a></li>
                 {% endif %}
               {% endif %}
             {% endfor %}

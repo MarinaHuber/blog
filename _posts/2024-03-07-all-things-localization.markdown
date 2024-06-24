@@ -3,8 +3,8 @@ layout: epic
 title: "All things localization"
 subtitle: "(On iOS and Second Thoughts)"
 date: 2024-03-07
-categories: []
-author: []
+categories: [iOS]
+author: [Marina]
 ---
 
 Where to begin! Where to begin...
