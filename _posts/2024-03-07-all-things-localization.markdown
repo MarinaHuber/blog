@@ -1,25 +1,25 @@
 ---
 layout: epic
-title: "Current state of affairs in localization"
-subtitle: "(On iOS and Second Thoughts)"
-date: 2024-03-07
-categories: [iOS]
+title: "Avoid typos when publishing to App Store"
+subtitle: "(On Apple and Second Thoughts)"
+date: 2024-06-19
+categories: [iOS, Localization, Watch OS]
 author: [marina]
 ---
 
 Where to begin! Where to begin...
 
-Localisation is something that occurs in every big project I encounter.   
-I found that having a list of useful tips that cover most aspect of localisation is essential, 
-so that is why I created this post and is in progress.
-There is a slight distinction between internationalization and localization:
-Internationalization — the process of making your app able to adapt to different languages, regions, and cultures.
+Localisation is something that occurs in every project I encounter. 
+I found that having a list of useful tips that cover most aspect of localisation is nice to have, 
+so I created this post as memory of current best and possible new practices.
+There is a slight distinction between internationalization and localization:\
+Internationalization — the process of making your app able to adapt to different languages, regions, and cultures.\
 Localization — the process of translating your app into multiple languages.
-So, in total it depends on context, and namely on the following elements:
-* 		user gender
-* 		singular and plural in the text
-* 		platforms: Web, Android, iOS
-* 		the project for which the translation is being done.
+So, in total it depends on context, and namely on the following established elements:
+* 		User gender
+* 		Singular and plural in the text
+* 		Platforms: Web, Android, iOS
+* 		Project objective for which the translation is being done.
 
 <!-- more -->
 
@@ -29,14 +29,14 @@ In Apple ecosystem if the developer needs to modify any content of the language 
 the changes needs to be updated in the project and the app needs re-submission.
  Also have you been in that situation where you have pushed a spelling mistake 
  to the App Store? `( ◍•ᴗ•◍)`
-There are at least three ways of translating my app that I tried so far. Here are solution and their tradeoffs.
+There are at least three ways of translating an app that I tried so far. Here are few solution and their tradeoffs.
 
 1 . Custom solution with web service that contains JSON file with translation for "all" platforms needed.
 
 2 . Dynamically translating it with third party services like Crowdin, Azure Translator, Applanga, BartyCrouch.
 
 3 . Importing/exporting .string files into Xcode project manually
--exporting Localization Catalog .xcloc containing good old XLIFF file and sending it to a translator.
+-exporting Localization Catalog .xcloc containing good old XLIFF file and sending it to a translator - human.
 
 ### Solution 1:
 Custom web service with JSON downloaded on the app launch.
@@ -69,9 +69,8 @@ public extension String {
    }
 ```
 
-Note: this is a starting point for pseudo code reference. With my internal tool for localization
-complete it was natural to start looking around for other opportunities -- but
-first, a quick detour.
+Note: this is a starting point for pseudo code reference. With my small internal service for localization
+complete it was natural to start looking around for other opportunities -->
 
 #### Solution 2:
 Third party solution and their tradeoffs:
@@ -84,10 +83,10 @@ $ brew install bartycrouch
 Pros: Using BartyCrouch and running a few commands from the command line what can even be automated, 
 using a build script within your project this can be good to keep your Storyboards/XIBs Strings files updated over time.
 
-* make sure your Localizable.strings files stay updated with newly added keys in code 
+* Make sure your Localizable.strings files stay updated with newly added keys in code 
 using NSLocalizedString and show warnings for duplicate keys or empty values
-* use the machine translation feature of Microsoft Translator Text API via translate
-* let BartyCrouch translate it to all supported languages in a single line & 
+* Use the machine translation feature of Microsoft Translator Text API via translate
+* Let BartyCrouch translate it to all supported languages in a single line & 
 without ever leaving the code.
 
 Important : Localization Workflow via `transform-` feature formatted localized Strings 
@@ -111,7 +110,7 @@ With Crowdin you have the option to work with freelance translators and voluntee
 Up to **60,000 hosted words** it is free of charge.
 
 3 . Applanga
-Same as Crowdin but much better CI and automation delivery for native platforms.
+Same as Crowdin but much better CI and automation delivery for native platforms with tests.
 Basic sunscription starts from **49$month**.
 
 ### Solution 3:
@@ -123,7 +122,7 @@ From iOS15+ there is no need to use key-based translations:
 `String(localised: “Text”, defaultValue: “Text”, comment: “This is Text”)`
 
 
-### Enter: Workflow (`app` default)
+### Workflow (`app` default one)
 
 Usually I will start with English as the base language as default, then slowly adding more language support on top of it. Before using any tools we need to prepare our app for DEFAULT language.
 By default, a base language will be provided by Xcode. This base language will act as a fallback language if any localizable content is not found. In my test project since I am not using localized STORYBOARDS DefaultLocalizable.string file is the default English language that must contain all the text of the app for fallback.
@@ -139,26 +138,34 @@ From iOS 15+ String(localized:) / LocalizedStringKey
 Note: Will detect the App language:
 NSLocalizedString() → short for Bundle.main.localizedString()
 Exporting for localization in SwiftUI
-New Xcode project build settings Use Compiler to Extract Swift Strings
-Once active, before exporting strings for localization, Xcode will build all project targets and use the compiler type information to extract LocalizedStringKeys from your SwiftUI code
-In Xcode 13+ .xcloc a.k.a. Xcode Localization Catalogs can be opened directly in Xcode with the new Localization Catalog Editor 🤙🏽
-Needs to be set to YES if project uses SwiftUI for Exporting all targets in Catalog
-This is the file it will expose into: en.xclocc
+🤙🏽 Xcode project build settings **Use Compiler to Extract Swift Strings**
+Once active, before exporting strings for localization, Xcode will build all project targets and use the compiler type information to extract LocalizedStringKeys from your SwiftUI code.
+In Xcode .xcloc a.k.a. `Xcode Localization Catalogs` can be opened directly in Xcode with the new Localization Catalog Editor 🤙🏽
+Needs to be set to **YES** if project uses SwiftUI for Exporting all targets in Catalog\
+This is the file it will expose into: **en.xclocc**
+
+
 You can use comments for easier translation all and more here
 Spanish & English language got a new custom Markdown
 The main purpose of Automatic Grammar Agreement however, to make the translation of plural and gendered texts
 so far better to use stringdict
-All edge cases:
+
+**All edge cases:**
 Localization of dynamic text
+
+In case the strings(translations) are coming from the server:
+`Bundle.main.preferredLocatizations.first`
+
 Check the current running application language, if it is Spanish than show the Spanish text, else show the English one.
-In case the strings are coming from the internet server:
-Bundle.main.preferredLocatizations.first
+
 Plural and Gender Support
 using .stringdict
 String.localizedStringWithFormat(formatString, count)
-If you try to translate English phrases word-for-word into Spanish or German, they will make no sense. For this reason, you may need to create more than one version of each string and write instructions about which variant should be used.
-Gender and personalisation:
-Using date, currencies and number formatters
+
+TIP: If you try to translate English phrases word-for-word into Spanish or German, they will make no sense. For this reason, you may need to create more than one version of each string and write instructions about which variant should be used from .string file.
+
+Gender and personalisation with:
+Using date, currencies and number **formatters**.
 
 Dates
 Unicode.org for [TEMPLATES](http://www.unicode.org/reports/tr35/tr35-31/tr35.html)
@@ -177,4 +184,85 @@ let allServerLanguages = [”en”, “es”, “de”, “it”]
 let language = Bundle.preferredLocalizations(from: allServerLanguages).first
 
 ```
+
+### SwiftUI
+This part is specific for SwiftUI apps for the moment.
+Usually the translation process should happen based on a user action.
+
+Translation/TranslationSession API is making this possible now with multiple translations for iOS18.
+To translate a batch of requests in different languages, do not try to do so in a single batch of requests. 
+This API maked multiple langauge translations natively.
+
+For Previews make sure you output is in localisation to avoid unnecessary work for translators when exported:
+`Text(verbatim: “This is content”)`
+- returns text as it is - hence the verbatim argument name
+
+
+🚫 NEVER give SwiftUI elements FIXED HEIGHT this way the localised Text will be cut off 🚫 (another post on this sizes).
+In iOS16 this is solved with
+Labels/Text need to be flexible in height and width if we use GRID layout or .ViewThatFits — than it is easier.
+```tsx
+.Grid(alignment: .leading) {
+  .GridRow {
+        .Text("This is content")
+    }
+}
+```
+
+NOTE: on WatchOS this is specially important so use - .ViewThatFits
+```tsx
+.ViewThatFits
+```
+Inside that view place for:
+1. expected view layout
+2. one for complex looking translated languages
+
+On WatchOS and Extentions we need to specify a BUNDLE from where we are getting the translation from .framework if it is from Cocoapods or SPM
+if it is inside host app than .main or .module for SPM
+
+ `String(localised: “Text”, bundle: .main, comment: “”)`
+
+Attributedstrings — from iOS15+ the are also localized
+
+`AttributtedStrings(localised: “Text”, comment:””)`
+
+or use Automatic Grammar agreement with mark-down strings (less control tho)
+
+
+
+### UITests
+Saved screenshots form UITests are now localizable for App Store (from Xcode 13+)
+To test all the String that are localizable use Edit Scheme -> Pseudolanguage in SwiftUI
+
+Let AI write automated UI tests to verify the correctness of translations. Use XCTest to ensure that UI elements display the correct localised strings.
+```tsx
+func testLocalization() {
+    let app = XCUIApplication()
+    app.launchArguments = ["-AppleLanguages", "(fr)"]
+    app.launch()
+    
+    // Check a localized string
+    XCTAssertEqual(app.staticTexts["welcomeMessage"].label, "Bienvenue")
+}
+```
+
+Set up your CI/CD pipeline to automatically fetch the latest translations from server before building the app.
+Use scripts in your CI configuration (e.g., GitHub Actions, Jenkins) to integrate this step.
+
 ### Final Thoughts
+In Summary I have chosen **SOLUTION 1** for my dynamic translations but there’s no right answer. It varies from project to project. 
+Maybe some of the researched and tested options above can help you tailor to your next project?
+Some basics: 
+
+*  Extracted LocalizeStringKeys / NSLocalizedString
+*  Turn on Use Compiler to Extract Swift Strings project build setting
+*  Internationalize my code with formatting
+*  Style my localized strings with Markdown
+*  Used Text() to add comments for translation context
+*  Integrated localization tests with CI pipline
+
+By combining these strategies, developers can mitigate the challenges associated with localisation in the Apple ecosystem, without the constant need for app resubmissions.
+I asked ChatGPT to write the conclusion to this post in style of futurist `Ray Kurzweil`. I got pretty lovely analogy.\
+Localisation stands as a pivotal element within ubiquitous computing ecosystem. Just as the neurons in our brain work effortlessly to interpret and respond to our surroundings, localisation ensures that our devices, from mobile phones to cars and even smart refrigerators, communicate with us in our native languages/dialects. This process must be as precise and reliable same as the synaptic transmissions within our neural networks.
+
+Shout me & I will be so happy to try new approaches! ✉️
