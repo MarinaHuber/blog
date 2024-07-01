@@ -321,13 +321,21 @@ header#banner {
       padding-top: 0;
     }
     .header-navigation {
+      text-align: center !important;
       @include transition(opacity 0.2s ease-in-out);
       position: absolute !important;
       margin-top: 92px !important;
-      margin-left: 50% !important;
+      margin-left: 40% !important;
       li {
-        margin-bottom: 30px !important;
+        margin-bottom: 40px !important;
       }
+      ul {
+        float: center !important;
+        display: inline-block !important;
+      }
+    }
+    .header-section-title {
+      visibility: hidden !important;
     }
     .header-search h2 {
       border-bottom: 1px solid;
