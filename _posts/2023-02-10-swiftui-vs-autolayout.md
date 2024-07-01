@@ -3,7 +3,7 @@ layout: epic
 title: "SwiftUI vs Auto Layout and frames"
 date: 2023-02-10
 categories: [UI, UX, Animation]
-author: "Marina Huber"
+author: marina
 ---
 
 A

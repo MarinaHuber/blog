@@ -16,11 +16,20 @@
 
   
   <meta name="description" content="
+  
+  
+    
       
         
+
+  
+    
+      
         
-          All things localization
+          
         
+        
+          Avoid typos when publishing localized app to App Store
 ...">
   
 
@@ -29,14 +38,10 @@
   <meta name="MobileOptimized" content="320">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta property="og:image" content="http://artsy.github.io/images/artsy_oss_image.png" />
-  <meta property="og:image:type" content="image/png" />
 
   
   <link rel="canonical" href="http://localhost:4000/">
-  <link rel="alternate" type="application/rss+xml" title="Engineering Blog" href="/feed">
 
-  <link href="/favicon.ico" rel="icon">
   <link href="/blog/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
 
   <script src="/blog/javascripts/jquery-1.11.3.min.js"> </script>
@@ -49,22 +54,9 @@
 
   
 
-  <link href="" rel="alternate" title="iOS Engineering" type="application/atom+xml">
-  
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-12450662-3']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
-
-
+  <link href="/feed.xml" rel="alternate" title="iOS Engineering" type="application/atom+xml">
 </head>
+
 
 <body>
   <div id="logo-container">
@@ -75,7 +67,7 @@
       <li><a href="/blog/">Home</a></li>
       <li><a href="/blog/">CV</a></li>
       <li><a href="https://www.patreon.com/en-GB" target="_blank">Shop</a></li>
-      <li><a href="/blog/">Cyber-security</a></li>
+      <li><a href="/blog/">Cyber-stuff</a></li>
     </ul>
     <span class="header-section-title">
       
@@ -86,11 +78,11 @@
 
   <div class="header-sticky-container">
     <div class="header-logo">
-      <h2><a href="http://localhost:4000">Marina Huber </a></h2>
+      <h2><a href="/blog/">Marina Huber </a></h2>
     </div>
     <div class="header-search">
       
-        <h2><a href="/">Apple empirical  〰〰</a></h2>
+        <h2>Apple empirical  〰〰</h2>
       
     </div>
   </div>
@@ -115,10 +107,10 @@
     <div class="meta-container">
       <header>
         
-          <a href="/blog/blog/2024/03/07/all-things-localization/">
+          <a href="/blog/blog/2024/06/19/all-things-localization/">
         
         
-          <h2 class="entry-title">All things localization</h2>
+          <h2 class="entry-title">Avoid typos when publishing localized app to App Store</h2>
         
         <time datetime=""></time>
           <p class="meta-author">
@@ -127,8 +119,14 @@
   
 
   
+    <div class="meta">
+      <span class="byline author vcard"><a href ="">Marina Huber<a/></span> <!-- /author/marina.html is missing now -->
+      
 
-</p>
+    </div>
+  
+
+</p> <!-- disable is here mini-author.html -->
           </a>
       </header>
     </div>
@@ -139,22 +137,22 @@
     
         <p>Where to begin! Where to begin…</p>
 
-<p>Localisation is something that occurs in every project I encounter. <br />
-I found that having a list of useful tips that cover most aspect of localisation is essential, 
-so that is why I created this post and is in progress.
-There is a slight distinction between internationalization and localization:
-Internationalization — the process of making your app able to adapt to different languages, regions, and cultures.
+<p>Localisation is something that occurs in every project I encounter. 
+I found that having a list of useful tips that cover most aspect of localisation is nice to have, 
+so I created this post as memory of current best and possible new practices.
+There is a slight distinction between internationalization and localization:<br />
+Internationalization — the process of making your app able to adapt to different languages, regions, and cultures.<br />
 Localization — the process of translating your app into multiple languages.
-So, in total it depends on context, and namely on the following elements:</p>
+So, in total it depends on context, and namely on the following established elements:</p>
 <ul>
-  <li>user gender</li>
-  <li>singular and plural in the text</li>
-  <li>platforms: Web, Android, iOS</li>
-  <li>the project for which the translation is being done.</li>
+  <li>User gender</li>
+  <li>Singular and plural in the text</li>
+  <li>Platforms: Web, Android, iOS</li>
+  <li>Project objective for which the translation is being done.</li>
 </ul>
 
 
-        <p><a href="/blog/blog/2024/03/07/all-things-localization/">Read on →</a></p>
+        <p><a href="/blog/blog/2024/06/19/all-things-localization/">Read on →</a></p>
     
 
     
@@ -185,7 +183,17 @@ So, in total it depends on context, and namely on the following elements:</p>
           <p class="meta-author">
 
 
-</p>
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="">Marina Huber<a/></span> <!-- /author/marina.html is missing now -->
+      
+
+    </div>
+  
+
+</p> <!-- disable is here mini-author.html -->
           </a>
       </header>
     </div>
@@ -194,8 +202,8 @@ So, in total it depends on context, and namely on the following elements:</p>
   <div class="content-container">
     
     
-        <p>A good section of this post is about the research + a project “Diagram” and steps I wish somebody told me upfront. 
-Before I dive into Auto Layout, should I remind you also of legacy in frames 😝, masks — you always had to tell buttons and other controls how big they should be, either by setting their frame or bounds properties or by resizing them in Interface Builder. But it turns out that most controls are perfectly capable of determining how much space they need, based on their — content. 🌈🦄🌈
+        <p>A
+good section of this post is about the research + a project “Diagram” and steps I wish somebody told me upfront. Before I dive into Auto Layout, should I remind you also of legacy in frames 😝, masks — you always had to tell buttons and other controls how big they should be, either by setting their frame or bounds properties or by resizing them in Interface Builder. But it turns out that most controls are perfectly capable of determining how much space they need, based on their — content. 🌈🦄🌈
 🕵️‍♀️ 🕵️‍♀️ Note: There is a tool Scherlock — it lets you edit views and layout constraints in real time, simulate running on other devices, and jump straight to the source code, all from your iOS Simulator — zero configuration required only $$ after trial.</p>
 
 <p>Things I want to accomplish:⏎
@@ -234,7 +242,17 @@ Before I dive into Auto Layout, should I remind you also of legacy in frames �
           <p class="meta-author">
 
 
-</p>
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="">Marina Huber<a/></span> <!-- /author/marina.html is missing now -->
+      
+
+    </div>
+  
+
+</p> <!-- disable is here mini-author.html -->
           </a>
       </header>
     </div>
@@ -290,7 +308,17 @@ provide support for native class (reference type), struct and enum as well (valu
           <p class="meta-author">
 
 
-</p>
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="">Marina Huber<a/></span> <!-- /author/marina.html is missing now -->
+      
+
+    </div>
+  
+
+</p> <!-- disable is here mini-author.html -->
           </a>
       </header>
     </div>
@@ -347,7 +375,7 @@ pp</p>
 
   
 
-</p>
+</p> <!-- disable is here mini-author.html -->
           </a>
       </header>
     </div>

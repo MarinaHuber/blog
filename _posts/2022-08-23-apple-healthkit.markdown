@@ -4,7 +4,7 @@ title: "Breaking the magic of Apple HealthKit API and Watch OS"
 subtitle: What we learned while trying to visualize HK data
 date: 2022-08-23
 categories: [Privacy, Cookies, GDPR, CCPA]
-author: "Marina Huber"
+author: marina
 ---
 
 Things I want to accomplished: ✅

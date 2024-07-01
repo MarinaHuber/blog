@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Avoid typos when publishing localized app to App Store - iOS Engineering</title>
+  <meta name="author" content="">
+
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://webfonts.artsy.net/all-webfonts.css"
+  />
+
+  
+  <meta name="description" content="Where to begin! Where to begin…
+
+Localisation is something that occurs in every project I encounter. 
+I found that having a list of useful tips tha...">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  
+  <link rel="canonical" href="http://localhost:4000/blog/2024/06/19/all-things-localization/">
+
+  <link href="/blog/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+  <script src="/blog/javascripts/jquery-1.11.3.min.js"> </script>
+  <script src="/blog/javascripts/gradient-fade.js"></script>
+  <script src="/blog/javascripts/noframework.waypoints.min.js"></script>
+  <script src="/blog/javascripts/sticky.min.js"></script>
+  <script src="/blog/javascripts/custom-elements.min.js"></script>
+  <script src="/blog/javascripts/g-emoji-element.js"></script>
+  <script src="/blog/javascripts/related-articles.js"></script>
+
+  
+
+  <link href="/feed.xml" rel="alternate" title="iOS Engineering" type="application/atom+xml">
+</head>
+
+
+<link href="/blog/css/epic.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+
+
+<body>
+  <div>
+    <div id="bodywrapper">
+      <header>
+        <ul>
+          <li><a href="/blog/">Back</a></li>
+        </ul>
+
+        <ul>
+          <li><a href="/blog/">Apple empirical</a></li>
+   
+        </ul>
+      </header>
+
+      <section>
+        <header id="page">
+          <h1>Avoid typos when publishing localized app to App Store</h1>
+          <h3>
+          <!-- Yep, single line so the comma lines up right -->
+          By  Marina Huber
+          </h3>
+          <time datetime="2024-06-19">Jun 19, 2024</time>
+        </header>
+
+        <article class='post'>
+          <p>Where to begin! Where to begin…</p>
+
+<p>Localisation is something that occurs in every project I encounter. 
+I found that having a list of useful tips that cover most aspect of localisation is nice to have, 
+so I created this post as memory of current best and possible new practices.
+There is a slight distinction between internationalization and localization:<br />
+Internationalization — the process of making your app able to adapt to different languages, regions, and cultures.<br />
+Localization — the process of translating your app into multiple languages.
+So, in total it depends on context, and namely on the following established elements:</p>
+<ul>
+  <li>User gender</li>
+  <li>Singular and plural in the text</li>
+  <li>Platforms: Web, Android, iOS</li>
+  <li>Project objective for which the translation is being done.</li>
+</ul>
+
+<!-- more -->
+
+<h4 id="the-problem--app-store">The Problem &amp; App Store:</h4>
+
+<p>In Apple ecosystem if the developer needs to modify any content of the language file, 
+the changes needs to be updated in the project and the app needs re-submission.
+ Also have you been in that situation where you have pushed a spelling mistake 
+ to the App Store? <code class="language-plaintext highlighter-rouge">( ◍•ᴗ•◍)</code>
+There are at least three ways of translating an app that I tried so far. Here are few solution and their tradeoffs.</p>
+
+<p>1 . Custom solution with web service that contains JSON file with translation for “all” platforms needed.</p>
+
+<p>2 . Dynamically translating it with third party services like Crowdin, Azure Translator, Applanga, BartyCrouch.</p>
+
+<p>3 . Importing/exporting .string files into Xcode project manually
+-exporting Localization Catalog .xcloc containing good old XLIFF file and sending it to a translator - human.</p>
+
+<h3 id="solution-1">Solution 1:</h3>
+<p>Custom web service with JSON downloaded on the app launch.</p>
+<ul>
+  <li>Create small service - in the app you can request the language the device needs and listen to any changes that might occur (simple Firebase DB or any custom robust server with .json file there)</li>
+  <li>During the launch wait until you have received a response from web service before you display anything to the user.</li>
+  <li>Or, if you do not want to rely on the devices connection, then you can preinstall the dictionary by adding the .json file to the bundles resources and preload on app startup.
+This can be pretty straight forward. An this is example how your .json file can be <a href="https://simplelocalize.io/docs/file-formats/single-language-json/">formatted</a>.</li>
+</ul>
+
+<p>Managing the translation into dictionary of strings and reusing it with string extention:</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="kd">class</span> <span class="nx">LocalizationService</span> <span class="p">{</span>
+   <span class="k">static</span> <span class="kd">var</span> <span class="nx">localisation</span><span class="p">:</span> <span class="p">[</span><span class="nb">String</span><span class="p">:</span> <span class="nx">Any</span><span class="p">]?</span>
+
+   <span class="kd">class</span> <span class="nx">func</span> <span class="nx">getString</span><span class="p">(</span><span class="kd">with</span> <span class="nx">key</span><span class="p">:</span> <span class="nb">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">String</span> <span class="p">{</span>
+      <span class="kd">let</span> <span class="nx">missingError</span> <span class="o">=</span> <span class="nx">UIDevice</span><span class="p">.</span><span class="nx">isProduction</span> <span class="p">?</span> <span class="dl">""</span><span class="p">:</span> <span class="nb">String</span><span class="p">(</span><span class="nx">format</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Missing string for key: %@</span><span class="dl">"</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span>
+      <span class="nx">guard</span> <span class="kd">let</span> <span class="nx">localisation</span> <span class="o">=</span> <span class="nx">shared</span><span class="p">.</span><span class="nx">localisation</span> <span class="k">as</span> <span class="nx">NSDictionary</span><span class="p">?</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">missingError</span> <span class="p">}</span>      
+      <span class="kd">let</span> <span class="nx">localisedString</span> <span class="o">=</span> <span class="nx">localisation</span><span class="p">.</span><span class="nx">value</span><span class="p">(</span><span class="nx">forKeyPath</span><span class="p">:</span> <span class="nx">key</span><span class="p">)</span> <span class="k">as</span><span class="p">?</span> <span class="nb">String</span>
+
+      <span class="k">return</span> <span class="nx">localisedString</span> <span class="o">??</span> <span class="nx">missingError</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="nx">extension</span> <span class="nb">String</span> <span class="p">{</span>
+   <span class="kd">var</span> <span class="nx">localised</span><span class="p">:</span> <span class="nb">String</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">LocalizationService</span><span class="p">.</span><span class="nx">getStringForKey</span><span class="p">(</span><span class="kd">with</span><span class="p">:</span> <span class="nb">self</span><span class="p">)</span>
+     <span class="p">}</span>
+   <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Note: this is a starting point for pseudo code reference. With my small internal service for localization
+complete it was natural to start looking around for other opportunities –&gt;</p>
+
+<h4 id="solution-2">Solution 2:</h4>
+<p>Third party solution and their tradeoffs:</p>
+
+<p>1 . BartyCrouch, Open source project run in Terminal + Homebrew</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>brew <span class="nb">install </span>bartycrouch
+</code></pre></div></div>
+
+<p>Pros: Using BartyCrouch and running a few commands from the command line what can even be automated, 
+using a build script within your project this can be good to keep your Storyboards/XIBs Strings files updated over time.</p>
+
+<ul>
+  <li>Make sure your Localizable.strings files stay updated with newly added keys in code 
+using NSLocalizedString and show warnings for duplicate keys or empty values</li>
+  <li>Use the machine translation feature of Microsoft Translator Text API via translate</li>
+  <li>Let BartyCrouch translate it to all supported languages in a single line &amp; 
+without ever leaving the code.</li>
+</ul>
+
+<p>Important : Localization Workflow via <code class="language-plaintext highlighter-rouge">transform-</code> feature formatted localized Strings 
+are not supported by this automatic feature.
+Transform from NSLocalizedString or BartyCrouch.translate doesn’t support the new <code class="language-plaintext highlighter-rouge">LocalizedStringKey</code> type yet. 
+Not ready to be used in SwiftUI fully (more in this issue)
+Steps for BartyCrouch translate:</p>
+<ul>
+  <li>Set up Azure (the GLOBAL configuration is the option that takes (location) of all near by servers is fastest)</li>
+  <li>Run the update script in the Compile Sources - Xcode</li>
+</ul>
+
+<p>Translate feature: 🏁<a href="https://share.cleanshot.com/oFn4el">LiveDemo on Cleanshot</a></p>
+
+<p>Had some issue here as I am getting success in translation but no output.
+NOTE:❗️Troubleshooting BartyCrouch error: no file found Library not loaded:libSwiftSyntax.dylib</p>
+<ul>
+  <li>I posted on <a href="https://github.com/FlineDev/BartyCrouch/issues/252">Github BartyCrouch OSS</a></li>
+</ul>
+
+<p>2 . Crowdin
+I heard a lot of folks in iOS community using this service which is cloud-based localization platform for continuous software localization projects.
+With Crowdin you have the option to work with freelance translators and volunteers but also aspecialized software localization company.
+Up to <strong>60,000 hosted words</strong> it is free of charge.</p>
+
+<p>3 . Applanga
+Same as Crowdin but much better CI and automation delivery for native platforms with tests.
+Basic sunscription starts from <strong>49$month</strong>.</p>
+
+<h3 id="solution-3">Solution 3:</h3>
+<p>Static localization. No need to use key-based translations:
+<code class="language-plaintext highlighter-rouge">NSLocalizedString(“Text”, value: “Hello World”, comment: “Main label”)</code> →</p>
+
+<p>From iOS15+ there is no need to use key-based translations:</p>
+
+<p><code class="language-plaintext highlighter-rouge">String(localised: “Text”, defaultValue: “Text”, comment: “This is Text”)</code></p>
+
+<h3 id="workflow-app-default-one">Workflow (<code class="language-plaintext highlighter-rouge">app</code> default one)</h3>
+
+<p>Usually I will start with English as the base language as default, then slowly adding more language support on top of it. Before using any tools we need to prepare our app for DEFAULT language.
+By default, a base language will be provided by Xcode. This base language will act as a fallback language if any localizable content is not found. In my test project since I am not using localized STORYBOARDS DefaultLocalizable.string file is the default English language that must contain all the text of the app for fallback.</p>
+<ul>
+  <li>Create Localizable.string file</li>
+  <li>Always wrap user-facing strings with (iOS13&amp;14) NSLocalizedString, (from iOS 15+) String(localized:) or LocalizedStringResource</li>
+  <li>Created swift script that takes all .strings and creates enum from it 
+(NSLocalizedString does not support being hidden behind macros. This does work for String(localized:), LocalizedStringResource, and similar Swift API)</li>
+</ul>
+
+<p>Few tips from session @Apple Localization Lab:</p>
+<ol>
+  <li>Create Localizable.string file</li>
+  <li>Always wrap user-facing strings with (iOS13&amp;14) NSLocalizedString or
+From iOS 15+ String(localized:) / LocalizedStringKey
+Note: Will detect the App language:
+NSLocalizedString() → short for Bundle.main.localizedString()
+Exporting for localization in SwiftUI
+🤙🏽 Xcode project build settings <strong>Use Compiler to Extract Swift Strings</strong>
+Once active, before exporting strings for localization, Xcode will build all project targets and use the compiler type information to extract LocalizedStringKeys from your SwiftUI code.
+In Xcode .xcloc a.k.a. <code class="language-plaintext highlighter-rouge">Xcode Localization Catalogs</code> can be opened directly in Xcode with the new Localization Catalog Editor 🤙🏽
+Needs to be set to <strong>YES</strong> if project uses SwiftUI for Exporting all targets in Catalog<br />
+This is the file it will expose into: <strong>en.xclocc</strong></li>
+</ol>
+
+<p>You can use comments for easier translation all and more here
+Spanish &amp; English language got a new custom Markdown
+The main purpose of Automatic Grammar Agreement however, to make the translation of plural and gendered texts
+so far better to use stringdict</p>
+
+<p><strong>All edge cases:</strong>
+Localization of dynamic text</p>
+
+<p>In case the strings(translations) are coming from the server:
+<code class="language-plaintext highlighter-rouge">Bundle.main.preferredLocatizations.first</code></p>
+
+<p>Check the current running application language, if it is Spanish than show the Spanish text, else show the English one.</p>
+
+<p>Plural and Gender Support
+using .stringdict
+String.localizedStringWithFormat(formatString, count)</p>
+
+<p>TIP: If you try to translate English phrases word-for-word into Spanish or German, they will make no sense. For this reason, you may need to create more than one version of each string and write instructions about which variant should be used from .string file.</p>
+
+<p>Gender and personalisation with:
+Using date, currencies and number <strong>formatters</strong>.</p>
+
+<p>Dates
+Unicode.org for <a href="http://www.unicode.org/reports/tr35/tr35-31/tr35.html">TEMPLATES</a>
+→ use templates : make data user-friendly with preferredLanguages detected from device</p>
+
+<p><code class="language-plaintext highlighter-rouge">dateFormatter.locale = Locale(identifier: Locale.preferredLanguages.first ?? “en”)</code></p>
+
+<p>or use the current locale of the app gives the same result</p>
+
+<p><code class="language-plaintext highlighter-rouge">dateFormatter.locale = .current</code></p>
+
+<p>Dynamic Dates →</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let allServerLanguages = [”en”, “es”, “de”, “it”]
+let language = Bundle.preferredLocalizations(from: allServerLanguages).first
+
+</code></pre></div></div>
+
+<h3 id="swiftui">SwiftUI</h3>
+<p>This part is specific for SwiftUI apps for the moment.
+Usually the translation process should happen based on a user action.</p>
+
+<p>Translation/TranslationSession API is making this possible now with multiple translations for iOS18.
+To translate a batch of requests in different languages, do not try to do so in a single batch of requests. 
+This API maked multiple langauge translations natively.</p>
+
+<p>For Previews make sure you output is in localisation to avoid unnecessary work for translators when exported:
+<code class="language-plaintext highlighter-rouge">Text(verbatim: “This is content”)</code></p>
+<ul>
+  <li>returns text as it is - hence the verbatim argument name</li>
+</ul>
+
+<p>🚫 NEVER give SwiftUI elements FIXED HEIGHT this way the localised Text will be cut off 🚫 (another post on this sizes).
+In iOS16 this is solved with
+Labels/Text need to be flexible in height and width if we use GRID layout or .ViewThatFits — than it is easier.</p>
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">.</span><span class="nx">Grid</span><span class="p">(</span><span class="nx">alignment</span><span class="p">:</span> <span class="p">.</span><span class="nx">leading</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">.</span><span class="nx">GridRow</span> <span class="p">{</span>
+        <span class="p">.</span><span class="nx">Text</span><span class="p">(</span><span class="dl">"</span><span class="s2">This is content</span><span class="dl">"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>NOTE: on WatchOS this is specially important so use - .ViewThatFits</p>
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">.</span><span class="nx">ViewThatFits</span>
+</code></pre></div></div>
+<p>Inside that view place for:</p>
+<ol>
+  <li>expected view layout</li>
+  <li>one for complex looking translated languages</li>
+</ol>
+
+<p>On WatchOS and Extentions we need to specify a BUNDLE from where we are getting the translation from .framework if it is from Cocoapods or SPM
+if it is inside host app than .main or .module for SPM</p>
+
+<p><code class="language-plaintext highlighter-rouge">String(localised: “Text”, bundle: .main, comment: “”)</code></p>
+
+<p>Attributedstrings — from iOS15+ the are also localized</p>
+
+<p><code class="language-plaintext highlighter-rouge">AttributtedStrings(localised: “Text”, comment:””)</code></p>
+
+<p>or use Automatic Grammar agreement with mark-down strings (less control tho)</p>
+
+<h3 id="uitests">UITests</h3>
+<p>Saved screenshots form UITests are now localizable for App Store (from Xcode 13+)
+To test all the String that are localizable use Edit Scheme -&gt; Pseudolanguage in SwiftUI</p>
+
+<p>Let AI write automated UI tests to verify the correctness of translations. Use XCTest to ensure that UI elements display the correct localised strings.</p>
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">func</span> <span class="nx">testLocalization</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">XCUIApplication</span><span class="p">()</span>
+    <span class="nx">app</span><span class="p">.</span><span class="nx">launchArguments</span> <span class="o">=</span> <span class="p">[</span><span class="dl">"</span><span class="s2">-AppleLanguages</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">(fr)</span><span class="dl">"</span><span class="p">]</span>
+    <span class="nx">app</span><span class="p">.</span><span class="nx">launch</span><span class="p">()</span>
+    
+    <span class="c1">// Check a localized string</span>
+    <span class="nx">XCTAssertEqual</span><span class="p">(</span><span class="nx">app</span><span class="p">.</span><span class="nx">staticTexts</span><span class="p">[</span><span class="dl">"</span><span class="s2">welcomeMessage</span><span class="dl">"</span><span class="p">].</span><span class="nx">label</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Bienvenue</span><span class="dl">"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Set up your CI/CD pipeline to automatically fetch the latest translations from server before building the app.
+Use scripts in your CI configuration (e.g., GitHub Actions, Jenkins) to integrate this step.</p>
+
+<h3 id="final-thoughts">Final Thoughts</h3>
+<p>In Summary I have chosen <strong>SOLUTION 1</strong> for my dynamic translations but there’s no right answer. It varies from project to project. 
+Maybe some of the researched and tested options above can help you tailor to your next project?
+Some basics:</p>
+
+<ul>
+  <li>Extracted LocalizeStringKeys / NSLocalizedString</li>
+  <li>Turn on Use Compiler to Extract Swift Strings project build setting</li>
+  <li>Internationalize my code with formatting</li>
+  <li>Style my localized strings with Markdown</li>
+  <li>Used Text() to add comments for translation context</li>
+  <li>Integrated localization tests with CI pipline</li>
+</ul>
+
+<p>By combining these strategies, developers can mitigate the challenges associated with localisation in the Apple ecosystem, without the constant need for app resubmissions.
+I asked ChatGPT to write the conclusion to this post in style of futurist <code class="language-plaintext highlighter-rouge">Ray Kurzweil</code>. I got pretty lovely analogy.<br />
+Localisation stands as a pivotal element within ubiquitous computing ecosystem. Just as the neurons in our brain work effortlessly to interpret and respond to our surroundings, localisation ensures that our devices, from mobile phones to cars and even smart refrigerators, communicate with us in our native languages/dialects. This process must be as precise and reliable same as the synaptic transmissions within our neural networks.</p>
+
+<p>Shout me &amp; I will be so happy to try new approaches! ✉️</p>
+
+        </article>
+
+        <article class='post'>
+          <p style="padding-bottom: 0; margin-bottom:0;">
+          <p/>
+        </article>
+
+        <aside class="related-articles"></aside>
+
+      
+
+      </section>
+
+      <footer>
+        <article>
+
+          <section>
+            <h4>Author</h4>
+            <p> <a href="{"name"=>"Marina Huber"}' | relative_url }}">Marina Huber</a></p>
+            <p></a></p>
+          </section>
+
+          <section>
+            <h4>Post Meta</h4>
+            <p>Jun 19, 2024</p>
+            <p>Tagged: iOSLocalizationWatch OS</p>
+          </section>
+          <br/>
+          <section>
+            <h4>Artsy OSS</h4>
+            <ul>
+              <li><a href=''>References</a></li>
+              <li><a href=''>Github</a></li>
+              <li><a href=''>Open Source</a></li>
+            </ul>
+          </section>
+
+          <section>
+            <h4>Blog</h4>
+            <ul>
+              <li><a href=''>Archives</a></li>
+              <!-- TODO: bring back a different version of site search  -->
+              <!-- <li><a href='http://artsy.github.io/search/'>Search</a></li> -->
+              <li><a href=''>Code on GitHub</a></li>
+              <li><a href='https://github.com/artsy/artsy.github.io/edit/source/_posts/2024-03-07-all-things-localization.markdown'>Fix typos in this post</a></li>
+            </ul>
+          </section>
+
+        </article>
+
+        <article>
+          <section>
+            <h4>Post Series on the Blog</h4>
+            <ul>
+              
+            </ul>
+          </section>
+
+          <section>
+          
+          </section>
+        </article>
+
+      </footer>
+    </div>
+  </div>
+</body>

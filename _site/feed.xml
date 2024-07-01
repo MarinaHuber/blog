@@ -5,522 +5,289 @@
     <description></description>
     <link>http://localhost:4000/blog/</link>
     <atom:link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 22 Jun 2024 21:20:04 +0200</pubDate>
-    <lastBuildDate>Sat, 22 Jun 2024 21:20:04 +0200</lastBuildDate>
+    <pubDate>Mon, 01 Jul 2024 21:26:27 +0200</pubDate>
+    <lastBuildDate>Mon, 01 Jul 2024 21:26:27 +0200</lastBuildDate>
     <generator>Jekyll v3.9.5</generator>
     
       <item>
-        <title>All things localization</title>
+        <title>Avoid typos when publishing localized app to App Store</title>
         <description>&lt;p&gt;Where to begin! Where to begin…&lt;/p&gt;
 
-&lt;p&gt;Localisation is something that occurs in every project I encounter. &lt;br /&gt;
-I found that having a list of useful tips that cover most aspect of localisation is essential, 
-so that is why I created this post and is in progress.
-There is a slight distinction between internationalization and localization:
-Internationalization — the process of making your app able to adapt to different languages, regions, and cultures.
+&lt;p&gt;Localisation is something that occurs in every project I encounter. 
+I found that having a list of useful tips that cover most aspect of localisation is nice to have, 
+so I created this post as memory of current best and possible new practices.
+There is a slight distinction between internationalization and localization:&lt;br /&gt;
+Internationalization — the process of making your app able to adapt to different languages, regions, and cultures.&lt;br /&gt;
 Localization — the process of translating your app into multiple languages.
-So, in total it depends on context, and namely on the following elements:&lt;/p&gt;
+So, in total it depends on context, and namely on the following established elements:&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;user gender&lt;/li&gt;
-  &lt;li&gt;singular and plural in the text&lt;/li&gt;
-  &lt;li&gt;platforms: Web, Android, iOS&lt;/li&gt;
-  &lt;li&gt;the project for which the translation is being done.&lt;/li&gt;
+  &lt;li&gt;User gender&lt;/li&gt;
+  &lt;li&gt;Singular and plural in the text&lt;/li&gt;
+  &lt;li&gt;Platforms: Web, Android, iOS&lt;/li&gt;
+  &lt;li&gt;Project objective for which the translation is being done.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!-- more --&gt;
 
-&lt;h3 id=&quot;the-problem--app-store&quot;&gt;The Problem &amp;amp; App Store:&lt;/h3&gt;
+&lt;h4 id=&quot;the-problem--app-store&quot;&gt;The Problem &amp;amp; App Store:&lt;/h4&gt;
 
 &lt;p&gt;In Apple ecosystem if the developer needs to modify any content of the language file, 
 the changes needs to be updated in the project and the app needs re-submission.
  Also have you been in that situation where you have pushed a spelling mistake 
  to the App Store? &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;( ◍•ᴗ•◍)&lt;/code&gt;
-🤟🏽 There are at least three ways of translating you app.
-1 . Custom solution with web service that contains JSON file with translation for all platforms needed.&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;Dynamically translating it with third party services like Crowdin, Azure Translator, Applanga, BartyCrouch list is long.&lt;/li&gt;
-  &lt;li&gt;Importing/exporting .string files into Xcode project manually
--exporting Localization Catalog .xcloc containing good old XLIFF file&lt;/li&gt;
-&lt;/ol&gt;
+There are at least three ways of translating an app that I tried so far. Here are few solution and their tradeoffs.&lt;/p&gt;
 
-&lt;p&gt;Solution 1:
-Custom web service with JSON downloaded on the app launch.&lt;/p&gt;
+&lt;p&gt;1 . Custom solution with web service that contains JSON file with translation for “all” platforms needed.&lt;/p&gt;
+
+&lt;p&gt;2 . Dynamically translating it with third party services like Crowdin, Azure Translator, Applanga, BartyCrouch.&lt;/p&gt;
+
+&lt;p&gt;3 . Importing/exporting .string files into Xcode project manually
+-exporting Localization Catalog .xcloc containing good old XLIFF file and sending it to a translator - human.&lt;/p&gt;
+
+&lt;h3 id=&quot;solution-1&quot;&gt;Solution 1:&lt;/h3&gt;
+&lt;p&gt;Custom web service with JSON downloaded on the app launch.&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;Create small service- in the app you can request the language the device needs and listen to any changes that might occur (simple Firebase DB or any custom robust server with .json file there)&lt;/li&gt;
+  &lt;li&gt;Create small service - in the app you can request the language the device needs and listen to any changes that might occur (simple Firebase DB or any custom robust server with .json file there)&lt;/li&gt;
   &lt;li&gt;During the launch wait until you have received a response from web service before you display anything to the user.&lt;/li&gt;
   &lt;li&gt;Or, if you do not want to rely on the devices connection, then you can preinstall the dictionary by adding the .json file to the bundles resources and preload on app startup.
-This can be pretty straight forward. An this is example how your .json file can be formatted. https://simplelocalize.io/docs/file-formats/single-language-json/
-Managing the translation into dictionary of strings and reusing it with string extention:
-```public class LocalizationService {&lt;/li&gt;
+This can be pretty straight forward. An this is example how your .json file can be &lt;a href=&quot;https://simplelocalize.io/docs/file-formats/single-language-json/&quot;&gt;formatted&lt;/a&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;static var localisation: [String: Any]?&lt;/p&gt;
+&lt;p&gt;Managing the translation into dictionary of strings and reusing it with string extention:&lt;/p&gt;
 
-&lt;p&gt;class func getString(with key: String) -&amp;gt; String {&lt;/p&gt;
+&lt;div class=&quot;language-tsx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;LocalizationService&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+   &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;localisation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Any&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]?&lt;/span&gt;
 
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  let missingError = UIDevice.isProduction ? &quot;&quot;: String(format: &quot;Missing string for key: %@&quot;, key)
-  guard let localisation = shared.localisation as NSDictionary? else { return missingError }      
-  let localisedString = localisation.value(forKeyPath: key) as? String
-  return localisedString ?? missingError    } }```
+   &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;getString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;missingError&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;UIDevice&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;isProduction&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Missing string for key: %@&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;guard&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;localisation&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;shared&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;localisation&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;NSDictionary&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;missingError&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;      
+      &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;localisedString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;localisation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;forKeyPath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;String&lt;/span&gt;
+
+      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;localisedString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;??&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;missingError&lt;/span&gt;
+   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;```public extension String {
-   var localised: String {
-      return LocalizationService.getStringForKey(with: self)
-   }
-   }&lt;/p&gt;
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-Note: this is a starting point code reference
-Solution 2:
-Third party solution and their tradeoffs.
-* 		BartyCrouch, Open source project
-brew uninstall bartycrouch
-Using BartyCrouch and running a few commands from the command line what can even be automated, 
-using a build script within your project.
-Pros:
-in order to keep your Storyboards/XIBs Strings files updated over time
-2. make sure your Localizable.strings files stay updated with newly added keys in code 
-using NSLocalizedString and show warnings for duplicate keys or empty values
-3. use the machine translation feature of Microsoft Translator Text API via translate
-4. let BartyCrouch translate it to all supported languages in a single line &amp;amp; 
-without ever leaving the code.
-Important : Localization Workflow via transform- of BartyCrouch formatted localized Strings 
-are not supported by this automatic feature.
-Transform from NSLocalizedString or BartyCrouch.translate doesn’t support the new LocalizedStringKey type yet. 
-Not ready to be used in SwiftUI fully (more in this issue)
-Steps for BartyCrouch translate:
-* 		Set up Azure (the GLOBAL configuration is the option that takes (location) of all near by servers is fastest)
-* 		Run the update script in the Compile Sources -
-Had some issue here as I am getting success in translation but no output. I posted on Github BartyCrouch OSS
-NOTE:❗️Troubleshooting BartyCrouch error: no file found Library not loaded:libSwiftSyntax.dylib
-* 		Translate feature: LiveDemo
+&lt;div class=&quot;language-tsx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;extension&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+   &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;localised&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;LocalizationService&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getStringForKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-2. Crowdin
+&lt;p&gt;Note: this is a starting point for pseudo code reference. With my small internal service for localization
+complete it was natural to start looking around for other opportunities –&amp;gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;solution-2&quot;&gt;Solution 2:&lt;/h4&gt;
+&lt;p&gt;Third party solution and their tradeoffs:&lt;/p&gt;
+
+&lt;p&gt;1 . BartyCrouch, Open source project run in Terminal + Homebrew&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;brew &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;bartycrouch
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Pros: Using BartyCrouch and running a few commands from the command line what can even be automated, 
+using a build script within your project this can be good to keep your Storyboards/XIBs Strings files updated over time.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Make sure your Localizable.strings files stay updated with newly added keys in code 
+using NSLocalizedString and show warnings for duplicate keys or empty values&lt;/li&gt;
+  &lt;li&gt;Use the machine translation feature of Microsoft Translator Text API via translate&lt;/li&gt;
+  &lt;li&gt;Let BartyCrouch translate it to all supported languages in a single line &amp;amp; 
+without ever leaving the code.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Important : Localization Workflow via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;transform-&lt;/code&gt; feature formatted localized Strings 
+are not supported by this automatic feature.
+Transform from NSLocalizedString or BartyCrouch.translate doesn’t support the new &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LocalizedStringKey&lt;/code&gt; type yet. 
+Not ready to be used in SwiftUI fully (more in this issue)
+Steps for BartyCrouch translate:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Set up Azure (the GLOBAL configuration is the option that takes (location) of all near by servers is fastest)&lt;/li&gt;
+  &lt;li&gt;Run the update script in the Compile Sources - Xcode&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Translate feature: 🏁&lt;a href=&quot;https://share.cleanshot.com/oFn4el&quot;&gt;LiveDemo on Cleanshot&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Had some issue here as I am getting success in translation but no output.
+NOTE:❗️Troubleshooting BartyCrouch error: no file found Library not loaded:libSwiftSyntax.dylib&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;I posted on &lt;a href=&quot;https://github.com/FlineDev/BartyCrouch/issues/252&quot;&gt;Github BartyCrouch OSS&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;2 . Crowdin
 I heard a lot of folks in iOS community using this service which is cloud-based localization platform for continuous software localization projects.
 With Crowdin you have the option to work with freelance translators and volunteers but also aspecialized software localization company.
-Up to 60,000 hosted words it is free of charge.
+Up to &lt;strong&gt;60,000 hosted words&lt;/strong&gt; it is free of charge.&lt;/p&gt;
 
-3. Applanga
-Same as Crowdin but much better CI and automation delivery for native platforms.
-Basic sunscription starts from 49$month.
-Solution 3:
-Static localization. No need to use key-based translations:
-NSLocalizedString(“Text”, value: “Hello World”, comment: “Main label”)
-→ From iOS15 there is no need to use key-based translations 💯 💯
-Localisation got better from WWDC 2022
-String(localised: “Text”, defaultValue: “Text”, comment: “This is Text”)
+&lt;p&gt;3 . Applanga
+Same as Crowdin but much better CI and automation delivery for native platforms with tests.
+Basic sunscription starts from &lt;strong&gt;49$month&lt;/strong&gt;.&lt;/p&gt;
 
-There are omitted details of course, and there were things we needed to figure
-out (such as auth, via `next-auth`, and passing runtime ENV secrets to our
-Dockerized container), but in any case this gave us a lot of confidence to start
-discussing what it might take to seriously consider rebuilding our internal
-tools app. A few meetings later it was decided, and our platform team agreed to
-take it (with loose backup support from a couple other engineers). And a few
-short month's later much of the core functionality was complete, executed by a
-team working amidst unfamiliar terrain.
+&lt;h3 id=&quot;solution-3&quot;&gt;Solution 3:&lt;/h3&gt;
+&lt;p&gt;Static localization. No need to use key-based translations:
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NSLocalizedString(“Text”, value: “Hello World”, comment: “Main label”)&lt;/code&gt; →&lt;/p&gt;
 
-That's the definition of success, and the measure. With our internal tools app
-complete it was natural to start looking around for other opportunities -- but
-first, a quick detour.
+&lt;p&gt;From iOS15+ there is no need to use key-based translations:&lt;/p&gt;
 
-### Enter: Workflow (aka, The `app` default)
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;String(localised: “Text”, defaultValue: “Text”, comment: “This is Text”)&lt;/code&gt;&lt;/p&gt;
 
-U
-sually we will start with english as the base language as default, then slowly adding more language support on top of it. Before using any tools we need to prepare our app for DEFAULT language.
-By default, a base language will be provided by Xcode, i.e, english. This base language will act as a fallback language if any localizable content is not found. In my test project since I am not using localized STORYBOARDS DefaultLocalizable.string file is the default English language that must contain all the text of the app for fallback.
-* 		Create Localizable.string file
-* 		Always wrap user-facing strings with (iOS13&amp;amp;14) NSLocalizedString or (from iOS 15+) String(localized:)
-* 		Create IBDesignables to add storyboards UI to code
-* 		Created swift script called LocalizationScript.swift that takes all Localizable.strings and creates enum from it (this script reads Localizable.sting file and can not distinguish comments from text to translate)
-Few tips from session @Apple Localization Lab:
-Create Localizable.string file
-Always wrap user-facing strings with (iOS13&amp;amp;14) NSLocalizedString or
-From iOS 15+ String(localized:)
-Create IBDesignables to add storyboards UI to code
+&lt;h3 id=&quot;workflow-app-default-one&quot;&gt;Workflow (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app&lt;/code&gt; default one)&lt;/h3&gt;
+
+&lt;p&gt;Usually I will start with English as the base language as default, then slowly adding more language support on top of it. Before using any tools we need to prepare our app for DEFAULT language.
+By default, a base language will be provided by Xcode. This base language will act as a fallback language if any localizable content is not found. In my test project since I am not using localized STORYBOARDS DefaultLocalizable.string file is the default English language that must contain all the text of the app for fallback.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Create Localizable.string file&lt;/li&gt;
+  &lt;li&gt;Always wrap user-facing strings with (iOS13&amp;amp;14) NSLocalizedString, (from iOS 15+) String(localized:) or LocalizedStringResource&lt;/li&gt;
+  &lt;li&gt;Created swift script that takes all .strings and creates enum from it 
+(NSLocalizedString does not support being hidden behind macros. This does work for String(localized:), LocalizedStringResource, and similar Swift API)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Few tips from session @Apple Localization Lab:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Create Localizable.string file&lt;/li&gt;
+  &lt;li&gt;Always wrap user-facing strings with (iOS13&amp;amp;14) NSLocalizedString or
+From iOS 15+ String(localized:) / LocalizedStringKey
 Note: Will detect the App language:
 NSLocalizedString() → short for Bundle.main.localizedString()
 Exporting for localization in SwiftUI
-New Xcode project build settings Use Compiler to Extract Swift Strings
-Once active, before exporting strings for localization, Xcode will build all project targets and use the compiler type information to extract LocalizedStringKeys from your SwiftUI code
-In Xcode 13+ .xcloc a.k.a. Xcode Localization Catalogs can be opened directly in Xcode with the new Localization Catalog Editor 🤙🏽
-Needs to be set to YES if project uses SwiftUI for Exporting all targets in Catalog
-This is the file it will expose into: en.xclocc
-You can use comments for easier translation all and more here
+🤙🏽 Xcode project build settings &lt;strong&gt;Use Compiler to Extract Swift Strings&lt;/strong&gt;
+Once active, before exporting strings for localization, Xcode will build all project targets and use the compiler type information to extract LocalizedStringKeys from your SwiftUI code.
+In Xcode .xcloc a.k.a. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Xcode Localization Catalogs&lt;/code&gt; can be opened directly in Xcode with the new Localization Catalog Editor 🤙🏽
+Needs to be set to &lt;strong&gt;YES&lt;/strong&gt; if project uses SwiftUI for Exporting all targets in Catalog&lt;br /&gt;
+This is the file it will expose into: &lt;strong&gt;en.xclocc&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;You can use comments for easier translation all and more here
 Spanish &amp;amp; English language got a new custom Markdown
 The main purpose of Automatic Grammar Agreement however, to make the translation of plural and gendered texts
-so far better to use stringdict
-All edge cases:
-Localization of dynamic text
-Check the current running application language, if it is Spanish than show the Spanish text, else show the English one.
-In case the strings are coming from the internet server:
-Bundle.main.preferredLocatizations.first
-Plural and Gender Support
+so far better to use stringdict&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;All edge cases:&lt;/strong&gt;
+Localization of dynamic text&lt;/p&gt;
+
+&lt;p&gt;In case the strings(translations) are coming from the server:
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Bundle.main.preferredLocatizations.first&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Check the current running application language, if it is Spanish than show the Spanish text, else show the English one.&lt;/p&gt;
+
+&lt;p&gt;Plural and Gender Support
 using .stringdict
-String.localizedStringWithFormat(formatString, count)
-If you try to translate English phrases word-for-word into Spanish or German, they will make no sense. For this reason, you may need to create more than one version of each string and write instructions about which variant should be used.
-Gender and personalisation:
-Using date, currencies and number formatters
-More
-Dates
-Unicode.org for TEMPLATES → http://www.unicode.org/reports/tr35/tr35-31/tr35.html
-use templates : more make data user-friendly
-dateFormatter.locale = Locale(identifier: Locale.preferredLanguages.first ?? “en”)
-or use the current locale of the app it is the same result
-dateFormatter.locale = .current
-Dynamic Dates
-coming from translated server
-let allServerLanguages = [”en”, “es”, “de”, “it”]
+String.localizedStringWithFormat(formatString, count)&lt;/p&gt;
+
+&lt;p&gt;TIP: If you try to translate English phrases word-for-word into Spanish or German, they will make no sense. For this reason, you may need to create more than one version of each string and write instructions about which variant should be used from .string file.&lt;/p&gt;
+
+&lt;p&gt;Gender and personalisation with:
+Using date, currencies and number &lt;strong&gt;formatters&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Dates
+Unicode.org for &lt;a href=&quot;http://www.unicode.org/reports/tr35/tr35-31/tr35.html&quot;&gt;TEMPLATES&lt;/a&gt;
+→ use templates : make data user-friendly with preferredLanguages detected from device&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dateFormatter.locale = Locale(identifier: Locale.preferredLanguages.first ?? “en”)&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;or use the current locale of the app gives the same result&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dateFormatter.locale = .current&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Dynamic Dates →&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let allServerLanguages = [”en”, “es”, “de”, “it”]
 let language = Bundle.preferredLocalizations(from: allServerLanguages).first
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;swiftui&quot;&gt;SwiftUI&lt;/h3&gt;
+&lt;p&gt;This part is specific for SwiftUI apps for the moment.
+Usually the translation process should happen based on a user action.&lt;/p&gt;
+
+&lt;p&gt;Translation/TranslationSession API is making this possible now with multiple translations for iOS18.
+To translate a batch of requests in different languages, do not try to do so in a single batch of requests. 
+This API maked multiple langauge translations natively.&lt;/p&gt;
+
+&lt;p&gt;For Previews make sure you output is in localisation to avoid unnecessary work for translators when exported:
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Text(verbatim: “This is content”)&lt;/code&gt;&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;app/
-—- layout.tsx
-—- page.tsx&lt;/li&gt;
-  &lt;li&gt;app/artist
-—- layout.tsx
-—- page.tsx
-—- middleware.tsx
-```&lt;/li&gt;
+  &lt;li&gt;returns text as it is - hence the verbatim argument name&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;And so on. “Global” SSR data could be fetched right there in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;layout&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;page&lt;/code&gt;
-and shared with its subtree; and likewise, for sub-sub-tree’s we could do the
-same in each individual app &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;layout&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;page&lt;/code&gt; component.&lt;/p&gt;
-
-&lt;p&gt;Additionally, with React Server Components, we would no longer need to use many
-Next.js-specific APIs. To fetch data on the server, you simply &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;await&lt;/code&gt; a promise
-and pass it right to your component as props. Next’s already minimal API
-footprint would diminish even further, and it became possible to glean a vision
-of “just vanilla JS” all the way down, and within that vision the possibility of
-true simplicity.&lt;/p&gt;
-
-&lt;p&gt;Little did we know, it wouldn’t take much to turn this beautiful vision into
-something of a dilemma, but that part of the story comes a bit later.&lt;/p&gt;
-
-&lt;h3 id=&quot;expanding-nextjs-at-artsy&quot;&gt;Expanding Next.js at Artsy&lt;/h3&gt;
-
-&lt;p&gt;Coming off of our success with the internal tools app rebuild, we wanted more.
-And we didn’t need to look far: right around the corner was a ~10 year old
-external CMS app that our partners use to manage their inventory.&lt;/p&gt;
-
-&lt;p&gt;We decided the path forward was Next, and like our internal tools app rebuild,
-for the most part it has been a success. We again went with the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pages&lt;/code&gt; router
-(as the new &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app&lt;/code&gt; router wasn’t yet released) and so far there’s been minimal
-confusion from the team. And buisness-wise, its been refreshing to defer
-framework design decisions, lib upgrades and more to Next, versus having to
-maintain &lt;a href=&quot;https://github.com/artsy/force&quot;&gt;all of these things in-house&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;It’s also worth mentioning that there &lt;em&gt;have&lt;/em&gt; been a few significant challenges
-involved (such as setting up performant SSR patterns for using Relay, our
-GraphQL client – thats another blog post), but on the whole Next has served our
-needs well. Team performance was unlocked, and we’ve been able to quickly get to
-building and rebuilding CMS pages in this new application. And our engineers
-have loved working in it.&lt;/p&gt;
-
-&lt;h3 id=&quot;back-to-next-13&quot;&gt;Back to Next 13&lt;/h3&gt;
-
-&lt;p&gt;In the meantime, Next 13 was released. Imagine our excitement! Just as this new
-app is spinning up we receive a little gift from the stars. Carlos and I are the
-first ones to bite; lets see what migrating our work over to the new framework
-might look like, what kind of effort.&lt;/p&gt;
-
-&lt;p&gt;From the start, it was immediately obvious that the Next.js team released an
-alpha-quality (or less) product, marked as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;stable&lt;/code&gt;. Not a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;beta&lt;/code&gt;, not an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RC&lt;/code&gt;
-to peruse and experiment with, but rather an&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;next
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;package that comes with an application scaffold generator that suggests using
-the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app&lt;/code&gt; router over &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pages&lt;/code&gt; – marked as &lt;em&gt;“Recommended”&lt;/em&gt;. In other words,
-highly polished. And what’s the first thing one experiences?
-&lt;a href=&quot;https://www.google.com/search?q=next+13+hot+reloading+broken+site:github.com&amp;amp;sca_esv=b6c25dbec4ffd71b&amp;amp;sa=X&amp;amp;ved=2ahUKEwjlmtTR_eKEAxW4CjQIHTqPAJYQrQIoBHoECBgQBQ&amp;amp;biw=1512&amp;amp;bih=829&amp;amp;dpr=2#ip=1&quot;&gt;Hot Reloading is broken&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;And what’s the next thing? Styles are broken. It turns out that RSC (React
-Server Components) doesn’t fully support pre-existing CSS-in-JS patterns. Or
-rather,
-&lt;a href=&quot;https://nextjs.org/docs/app/building-your-application/styling/css-in-js#styled-components&quot;&gt;they do, kind of&lt;/a&gt;,
-but they can only be used inside &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;use client&lt;/code&gt; components (which, in Next.js,
-actually means a server-side rendered component environment that’s &lt;em&gt;separate
-from&lt;/em&gt; a RSC rendered “server-only” environment – aka the old pages router
-model). And we certainly weren’t about to throw out our Design System component
-library &lt;a href=&quot;https://github.com/artsy/palette&quot;&gt;Palette&lt;/a&gt;, which has been nothing but
-a runaway success (and a
-&lt;a href=&quot;https://github.com/artsy/palette-mobile&quot;&gt;highly portable one&lt;/a&gt; at that).&lt;/p&gt;
-
-&lt;p&gt;With this limitation, our ability to use React Server Components had been
-severely hampered. Excluding the root-most level of our component tree, we were
-now required to prepend &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;use client&lt;/code&gt; on the top of every component, lest we
-receive ambiguous errors about rendering a client component (which used to be
-server-side render safe) on the “RSC server”.&lt;/p&gt;
-
-&lt;p&gt;Things can be taught, however. So lets proceed from the assumption that through
-some kind of tooling / linting layer, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;use client&lt;/code&gt; is added to every new
-component. It &lt;em&gt;should&lt;/em&gt; behave at that point just like the old Next and now we
-get the best of both worlds. Nope: turns out that even with the CSS-in-JS setup
-instructions described in the the next docs above, we still run into issues.
-There are bugs.&lt;/p&gt;
-
-&lt;p&gt;(These are the two main red flags, but there are many others as well.)&lt;/p&gt;
-
-&lt;p&gt;At this point, we wisely back out. It’s only &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;next@13.0.0&lt;/code&gt;, and what they’re
-doing here is to a certain extent revolutionary. It’s a new way of thinking
-about React, yet an old way of thinking about page rendering. It’s like… PHP,
-or so they say. RSC is &lt;em&gt;interesting&lt;/em&gt;, there’s something to it. Lets give them
-the benefit of the doubt and return to things in a few months, after a few
-&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;minor&lt;/code&gt; version bumps; there are, after all, countless eyes on the project.&lt;/p&gt;
-
-&lt;h3 id=&quot;many-months-later&quot;&gt;Many Months Later&lt;/h3&gt;
-
-&lt;p&gt;We run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npx create-next-app@latest&lt;/code&gt; (this is around the time they release
-&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;13.4&lt;/code&gt;) and then add these two components inside the newly-created vanilla
-project:&lt;/p&gt;
-
-&lt;div class=&quot;language-tsx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// app/HelloClient.tsx&lt;/span&gt;
-&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;use client&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;HelloClient&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;div&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;Does this hot reload&lt;span class=&quot;p&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;div&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// app/layout.tsx&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;HelloClient&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;./HelloClient&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Layout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;HelloClient&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;/&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Everything renders. And then&lt;/p&gt;
-
-&lt;div class=&quot;language-tsx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;HelloClient&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;div&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;Does this hot reload... nope :(&lt;span class=&quot;p&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;div&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;In the most basic project setup, the most obvious Next.js selling point –
-Developer Experience – failed to deliver. Vercel is really forcing us to
-question things. But we’re flexible, and we like to investigate at Artsy, so
-even though this definitely-required feature doesn’t quite work, maybe it will
-once we’re done with our migration spike, and maybe we can still take advantage
-of everything else that RSC has to offer.&lt;/p&gt;
-
-&lt;p&gt;So again, we start refactoring the project. Stuff from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pages&lt;/code&gt; directory
-starts getting copied over to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app&lt;/code&gt;. We update configuration. We setup styling
-(it seems to work better). Things are &lt;em&gt;almost&lt;/em&gt; there. But then the obscure
-framework errors start to arrive, and CSS still doesn’t quite work: it turns out
-that refactoring across RSC-&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;use client&lt;/code&gt; boundaries is harder than one thought.
-I.e., if any piece of “client” (remember, ‘use client’ actually means SSR-safe)
-code &lt;em&gt;anywhere in the dependency tree&lt;/em&gt; happens to intersect an RSC boundary, the
-whole thing will fail. And this includes any use of React’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;createContext&lt;/code&gt; –
-because React Contexts aren’t supported. Given an app of any reasonable size,
-you’re likely to rely on a context somewhere, as contexts are so critical within
-the react hooks model of behavior. Said contexts might come from within your
-app, and if not there they’ll certainly come from a 3rd party library.&lt;/p&gt;
-
-&lt;p&gt;One would expect the errors to be helpful in tracking this down – Next.js is
-all about DX – but no. Confusion reigns.&lt;/p&gt;
-
-&lt;p&gt;We’re experts though, and we eventually &lt;em&gt;do&lt;/em&gt; find the source of the violation,
-and we make sure to create a “safety wrapper” around the offender so that it
-doesn’t happen again. But it does happens again – and again, any time any piece
-of any complexity is added in the new RSC-intersected route. It’s rather
-unavoidable. And each time solvable, but at a great cost to the developer.
-Thankfully we know what we’re doing!&lt;/p&gt;
-
-&lt;p&gt;Another trivial yet annoying issue (thankfully fixed with some custom eslint
-config) is accidentally importing the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useRouter&lt;/code&gt; hook from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app&lt;/code&gt; router
-location, or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect&lt;/code&gt;, or any number of other new &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app&lt;/code&gt; router features,
-because all of these things don’t work in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pages&lt;/code&gt;, and will error out. The
-errors here are slightly less opaque, but what if you’re a backend dev who knows
-nothing about any of this? Googling “useRouter next” now yields two sets of
-docs. Figure it out.&lt;/p&gt;
-
-&lt;div style=&quot;text-align: center;&quot;&gt;
-  &lt;img src=&quot;https://miro.medium.com/v2/resize:fit:1400/0*Sce5egkhwWpCeqF0.jpg&quot; width=&quot;600&quot; /&gt;
-&lt;/div&gt;
-
-&lt;p&gt;At this point, we make a judgement call: this simply isn’t going to work at
-Artsy. We’re here to empower folks and unlock productivity. Remember the team of
-DevOps engineers on Platform who rebuilt a CMS in record time? In the new Next
-13 model, that would be unfathomable, impossible even. Paper cuts would kill
-motivation, and dishearten the already skeptical. And the front end already has
-a bad rap, for good reason: historically, everything that seems like it should
-be easy is hard and confusing for those who aren’t experts. And everything is
-always changing. And the tooling is always breaking. And everybody always has a
-bright new idea, one that will finally end this madness for good.&lt;/p&gt;
-
-&lt;p&gt;A certain amount of sadness is appropriate here, because Next’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pages&lt;/code&gt; router
-was very, very close to being the silver bullet for web applications that we’ve
-all been looking for. Even though the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pages&lt;/code&gt; router has its flaws, it showed us
-that it’s possible to get something out the door very quickly with little prior
-knowledge of Front End development. This is no small thing. Next 13’s fatal
-error is that its destiny, being coupled to RSC, now requires experts. And by
-‘expert’ I mean: those with many years of experience dealing with JavaScript’s
-whims, its complex eco-system, its changeover, as well as its problems. In
-short, folks who have become numb to it all. This is no way to work.
-&lt;a href=&quot;https://www.reddit.com/r/nextjs/comments/1abd6wm/hitler_tried_rsc_and_next_14/&quot;&gt;Thankfully the community is finally responding&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;a-quick-note-on-performance&quot;&gt;A Quick Note on Performance&lt;/h3&gt;
-
-&lt;p&gt;It’s worth remembering that Next 12 was industry-leading in terms of performance
-and pioneered many innovative solutions. Let me say it again: Next’s pages
-router IS fast. Next 13 combined with RSC &lt;em&gt;is&lt;/em&gt; faster, but at what point does an
-obsession with performance start negating other crucial factors? What’s good for
-the 90%? And what’s required for the other 10%? Most companies just need
-something that’s fast enough – and easy enough – to &lt;em&gt;move&lt;/em&gt; fast. And not much
-more.&lt;/p&gt;
-
-&lt;h3 id=&quot;back-at-artsy&quot;&gt;Back At Artsy…&lt;/h3&gt;
-
-&lt;p&gt;With all of this in mind, and with the uncertainty around long-term support for
-Next.js &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pages&lt;/code&gt; (amongst other things), we recently decided to hit pause on
-future development in our new external CMS app rebuild. Weighing a few different
-factors (many entirely unrelated to Next), including a team reorg that allowed
-us to look more closely (and fix) the DX in our old external CMS app, we took a
-step back and recognized that our needs are actually quite minimal:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Instant hot reloading&lt;/li&gt;
-  &lt;li&gt;Fast, SPA-like UX performance&lt;/li&gt;
-  &lt;li&gt;Simple, convention-based file organization&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;With these things covered, the “web framework” layer looks something like the
-following, minus a few underlying router lib details:&lt;/p&gt;
-
-&lt;div class=&quot;language-tsx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Router&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;createRouter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;history&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;browser&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;routes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;/foo&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;getComponent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;React&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;lazy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;import&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;./Foo&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;/bar&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;getComponent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;React&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;lazy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;import&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;./Bar&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+&lt;p&gt;🚫 NEVER give SwiftUI elements FIXED HEIGHT this way the localised Text will be cut off 🚫 (another post on this sizes).
+In iOS16 this is solved with
+Labels/Text need to be flexible in height and width if we use GRID layout or .ViewThatFits — than it is easier.&lt;/p&gt;
+&lt;div class=&quot;language-tsx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Grid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;alignment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;leading&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;GridRow&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;This is content&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;We’re now required to manage our compiler config, but
-&lt;a href=&quot;https://github.com/shakacode/shakapacker&quot;&gt;that layer&lt;/a&gt; isn’t too complicated
-once its setup, and it works great. (If you’re using something like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Vite&lt;/code&gt;, it
-could be even simpler.)&lt;/p&gt;
+&lt;p&gt;NOTE: on WatchOS this is specially important so use - .ViewThatFits&lt;/p&gt;
+&lt;div class=&quot;language-tsx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ViewThatFits&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Inside that view place for:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;expected view layout&lt;/li&gt;
+  &lt;li&gt;one for complex looking translated languages&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;On WatchOS and Extentions we need to specify a BUNDLE from where we are getting the translation from .framework if it is from Cocoapods or SPM
+if it is inside host app than .main or .module for SPM&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;String(localised: “Text”, bundle: .main, comment: “”)&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Attributedstrings — from iOS15+ the are also localized&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AttributtedStrings(localised: “Text”, comment:””)&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;or use Automatic Grammar agreement with mark-down strings (less control tho)&lt;/p&gt;
+
+&lt;h3 id=&quot;uitests&quot;&gt;UITests&lt;/h3&gt;
+&lt;p&gt;Saved screenshots form UITests are now localizable for App Store (from Xcode 13+)
+To test all the String that are localizable use Edit Scheme -&amp;gt; Pseudolanguage in SwiftUI&lt;/p&gt;
+
+&lt;p&gt;Let AI write automated UI tests to verify the correctness of translations. Use XCTest to ensure that UI elements display the correct localised strings.&lt;/p&gt;
+&lt;div class=&quot;language-tsx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testLocalization&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;XCUIApplication&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;launchArguments&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;-AppleLanguages&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;(fr)&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;launch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    
+    &lt;span class=&quot;c1&quot;&gt;// Check a localized string&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;XCTAssertEqual&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;staticTexts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;welcomeMessage&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Bienvenue&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Set up your CI/CD pipeline to automatically fetch the latest translations from server before building the app.
+Use scripts in your CI configuration (e.g., GitHub Actions, Jenkins) to integrate this step.&lt;/p&gt;
 
 &lt;h3 id=&quot;final-thoughts&quot;&gt;Final Thoughts&lt;/h3&gt;
+&lt;p&gt;In Summary I have chosen &lt;strong&gt;SOLUTION 1&lt;/strong&gt; for my dynamic translations but there’s no right answer. It varies from project to project. 
+Maybe some of the researched and tested options above can help you tailor to your next project?
+Some basics:&lt;/p&gt;
 
-&lt;p&gt;Next 13 and React Server Components are very intriguing; it’s a new model of
-thinking that folks are still trying to work out. Like other revolutionary
-technologies released by Meta, sometimes it takes a few years to catch on, and
-maybe RSC is firmly in that bucket. Vercel, however, would do well to remember
-Next’s original fundamental insight – that all good things follow from
-developer experience. Improvements there tend to improve things everywhere.&lt;/p&gt;
-
-&lt;p&gt;In addition to fixing some of the obvious rough edges in the new &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app&lt;/code&gt; router,
-it would be helpful if Next could provide an official response to
-&lt;a href=&quot;https://github.com/vercel/next.js/discussions/56655&quot;&gt;the question of long-term Pages support&lt;/a&gt;.
-There’s been quite a backlash in the community against Next 13, and that should
-give all developers pause. It’d also be great to get word on whether there will
-be any further development on the pages router – perhaps some of the features
-from the new &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app&lt;/code&gt; router can be migrated to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pages&lt;/code&gt; as well? – or if the pages
-router is officially deprecated and locked. All of this is currently ambiguous.&lt;/p&gt;
-
-&lt;p&gt;Another area where Next could improve is their willingness to ship buggy
-features, and to rely on patched versions of React in order to achieve certain
-ends. Even though Vercel employs many members of the React Core team, by
-releasing Next versions that rely on patched and augmented &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;canary&lt;/code&gt; builds of
-React, Vercel is effectively compromising some of React’s integrity, and forcing
-their hand. Once a neo-React feature is added to Next, it makes it hard to say
-no; Next has captured too much of the market-share.&lt;/p&gt;
-
-&lt;p&gt;All of this calls for sobriety and hesitation on the part of developers working
-with – and building companies on top of – Vercel’s products. Next is Open
-Source, yes, but it’s also a wildcard. Artsy has had some real success with
-Next, but sometimes that’s just not enough to avoid hitting pause, and looking
-at the bigger picture. Inclusivity should always win.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 07 Mar 2024 00:00:00 +0100</pubDate>
-        <link>http://localhost:4000/blog/blog/2024/03/07/all-things-localization/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/blog/2024/03/07/all-things-localization/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Short Swift design patterns — for Newbies</title>
-        <description>&lt;p&gt;OBJECTS VS. PROTOCOLS or functions
-OOP is code that is grouped into object or a class. It is the foundation of lower level Obj-C languages 
-(which still holds more than 80% of Xcode features). Equipped with specific characteristics, 
-objects have the ability to communicate with other objects and can achieve advanced levels of functionality. 
-They can also borrow (e.g. inherit) functionality from other objects/classes 🔡 🔠.
-Protocol-Orientated Programming offers an alternate way to organize code. As the name implies, 
-the model is based on objects conforming to various rules. Rule-based protocols can also be found in other languages 
-\including Java and Objective-C. However, advancements in Swift take Protocols a step further by 
-puting interfaces and composition ahead of inheritance. ect (allowing them to store actions (e.g. methods) for conforming types.)&lt;/p&gt;
-
-&lt;!-- more --&gt;
-
-&lt;ul class=&quot;task-list&quot;&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;GENERIC VS. SPECIFIC MODELS
-This is central to Object-oriented programming, model abstract or generic things as opposed to concrete ones. 
-Still this is pure engagement in uncertainty and fear….Multiple objects need abstraction and old friend complexity 😲😱 — 
-DRY and KISS principles. Opposed to Procedural programming like PHP 💤 ideas… for some of these paradigms it is no surprise 
-“Google is said to be considering Swift as a ‘first class’ language for Android”
-Generic type work as reusable templates. With parameters that must be descriptive, upper camel case names. 
-When a type name doesn’t have a meaningful relationship or role, use generic upercase letter such as T, U, or V 🧐.
-&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;enum ResultType&amp;lt;V&amp;gt; { case success(V) case failure(Error) }&lt;/code&gt;&lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;DELEGATION VS. NOTIFICATIONS in iOS
-Delegation (Cocoa Touch) pattern assumes objects and models have shared-responsibility for actions.Delegates are meant for 1-on-1 relation, meaning that one object has a delegate and sends any messages to that one particular delegate(if the needs of the Delegate are simple consider callbacks). We need be sure we do not create a retain cycle between the delegate and the delegating objects, so we use a [weak self] reference to delegate in asynchronous code.
-Notifications are based on a model of “registration and updates” so its basically meant for 1-to-many relation. Notifications create too much indirection and make your code hard to follow 🧐. When you post a notification you cannot be sure which objects will intercept it, which might lead to unexpected behavior in your app. It is generally used when you want to update values in your view controller from any other viewController using didSet property setter — observer (not always an elegant solution).
-Conclution: Swift contains multiple paradigms in one language and Linux with server-side Swift is here as well. It is so young but fastly adopted language.&lt;/li&gt;
+&lt;ul&gt;
+  &lt;li&gt;Extracted LocalizeStringKeys / NSLocalizedString&lt;/li&gt;
+  &lt;li&gt;Turn on Use Compiler to Extract Swift Strings project build setting&lt;/li&gt;
+  &lt;li&gt;Internationalize my code with formatting&lt;/li&gt;
+  &lt;li&gt;Style my localized strings with Markdown&lt;/li&gt;
+  &lt;li&gt;Used Text() to add comments for translation context&lt;/li&gt;
+  &lt;li&gt;Integrated localization tests with CI pipline&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Here are few references: [link] (https://livebook.manning.com/book/classic-computer-science-problems-in-swift/introduction/)&lt;/p&gt;
+&lt;p&gt;By combining these strategies, developers can mitigate the challenges associated with localisation in the Apple ecosystem, without the constant need for app resubmissions.
+I asked ChatGPT to write the conclusion to this post in style of futurist &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Ray Kurzweil&lt;/code&gt;. I got pretty lovely analogy.&lt;br /&gt;
+Localisation stands as a pivotal element within ubiquitous computing ecosystem. Just as the neurons in our brain work effortlessly to interpret and respond to our surroundings, localisation ensures that our devices, from mobile phones to cars and even smart refrigerators, communicate with us in our native languages/dialects. This process must be as precise and reliable same as the synaptic transmissions within our neural networks.&lt;/p&gt;
 
+&lt;p&gt;Shout me &amp;amp; I will be so happy to try new approaches! ✉️&lt;/p&gt;
 </description>
-        <pubDate>Wed, 13 Sep 2023 00:00:00 +0200</pubDate>
-        <link>http://localhost:4000/blog/blog/2023/09/13/deploying-a-scary-change/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/blog/2023/09/13/deploying-a-scary-change/</guid>
+        <pubDate>Wed, 19 Jun 2024 00:00:00 +0200</pubDate>
+        <link>http://localhost:4000/blog/blog/2024/06/19/all-things-localization/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/blog/2024/06/19/all-things-localization/</guid>
         
-        
-        <category>Swift</category>
-        
-        <category>SOLID</category>
-        
-      </item>
-    
-      <item>
-        <title>My why. The journey to a free market economy</title>
-        <description>&lt;p&gt;To start with I would like to stress that English is not my native language and I am by no means a writer, 
-so please bear with me as I share few of my thoughts and experience other people struggle with too.&lt;br /&gt;
-I got into this thing back at my Uni, at interactive media class. I studied Design under the Architectural university 
-and I found that rendering shapes and motion graphics intrigued me more than actual major study.
- With no compiler run time and just generating small websites seemed so much more to learn than actual study at the time. 
- So after study I moved abroad and got an internship at the Digital Design Studio DeMonsters working on flash and animations for AR.&lt;/p&gt;
-
-&lt;p&gt;&lt;!-- more --&gt;&lt;/p&gt;
-
-&lt;p&gt;IMAGE HERE&lt;/p&gt;
-
-&lt;p&gt;Apart from my digital obsessions I also did all kinds of odd jobs living in Amsterdam … The most important decision I made in this period is to learn iOS development inside a BootCamp environment in 3 months period i created accountability and commitment to ObjactiveC and Swift. Here is where i got to meet the world of persistent storage, recursive functions, predicate algorithms and nib files. Fist two years where real hard, and if you are not ready to ASK many, many unanswered questions, prepare for the looong ride 😰. This makes me think of how this discipline has several carefully crafted abstractions (legacy shit), one on top of the other. And slowly, we keep peeling apart the layers(onions 🌽) and learning more and more about how our iOS software actually ticks.&lt;/p&gt;
-
-</description>
-        <pubDate>Wed, 01 Mar 2023 00:00:00 +0100</pubDate>
-        <link>http://localhost:4000/blog/blog/2023/03/01/typescript-magic/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/blog/2023/03/01/typescript-magic/</guid>
-        
-        
-        <category>Swift</category>
         
         <category>iOS</category>
         
-        <category>Tools</category>
+        <category>Localization</category>
         
-        <category>Mobila</category>
+        <category>Watch OS</category>
         
       </item>
     
@@ -579,8 +346,8 @@ Auto layout is a great tool, it helps keep our sanity as developer, and it preve
 &lt;/ul&gt;
 </description>
         <pubDate>Fri, 10 Feb 2023 00:00:00 +0100</pubDate>
-        <link>http://localhost:4000/blog/blog/2023/02/10/mongo-geospatial-queries/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/blog/2023/02/10/mongo-geospatial-queries/</guid>
+        <link>http://localhost:4000/blog/blog/2023/02/10/swiftui-vs-autolayout/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/blog/2023/02/10/swiftui-vs-autolayout/</guid>
         
         
         <category>UI</category>
@@ -732,8 +499,8 @@ for product in store.products {
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
         <pubDate>Wed, 07 Sep 2022 00:00:00 +0200</pubDate>
-        <link>http://localhost:4000/blog/blog/2022/09/07/quick-tips-to-speed-up-ci/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/blog/2022/09/07/quick-tips-to-speed-up-ci/</guid>
+        <link>http://localhost:4000/blog/blog/2022/09/07/json-parsing/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/blog/2022/09/07/json-parsing/</guid>
         
         
         <category>Networking</category>
@@ -758,8 +525,8 @@ pp&lt;/p&gt;
 
 </description>
         <pubDate>Tue, 23 Aug 2022 00:00:00 +0200</pubDate>
-        <link>http://localhost:4000/blog/blog/2022/08/23/getting-around-7-day-cookie/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/blog/2022/08/23/getting-around-7-day-cookie/</guid>
+        <link>http://localhost:4000/blog/blog/2022/08/23/apple-healthkit/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/blog/2022/08/23/apple-healthkit/</guid>
         
         
         <category>Privacy</category>

@@ -1,10 +1,10 @@
 ---
 layout: epic
-title: "Avoid typos when publishing to App Store"
+title: "Avoid typos when publishing localized app to App Store"
 subtitle: "(On Apple and Second Thoughts)"
 date: 2024-06-19
 categories: [iOS, Localization, Watch OS]
-author: [marina]
+author: marina
 ---
 
 Where to begin! Where to begin...
