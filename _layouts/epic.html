@@ -3,7 +3,7 @@
 <link href="{{ '/css/epic.css' | relative_url }}" media="screen, projection" rel="stylesheet" type="text/css">
 
 {% if page.css %}
-<link href="{{ '/css/posts/{{page.css}}.css' | relative_url }}" media="screen, projection" rel="stylesheet" type="text/css">
+<link href="{{ '/css/posts/{{ page.css }}.css' | relative_url }}" media="screen, projection" rel="stylesheet" type="text/css">
 {% endif %}
 
 <body>
@@ -15,7 +15,7 @@
         </ul>
 
         <ul>
-          <li><a href="/blog//">Apple empirical</a></li>
+          <li><a href="/blog/">Apple empirical</a></li>
    
         </ul>
       </header>
@@ -54,7 +54,7 @@
 
           <section>
             <h4>Author</h4>
-            <p>{% for key in page.author %}{% assign author = site.authors[key] %}{% if forloop.index > 1 %},{% endif %} <a href="/author/{{key}}">{{ author.name }}</a>{% endfor %}</p>
+            <p>{% for key in page.author %}{% assign author = site.authors[key] %}{% if forloop.index > 1 %},{% endif %} <a href="{{ '/author/{{ key }}' | relative_url }}">{{ author.name }}</a>{% endfor %}</p>
             <p>{% for key in page.author %}{% assign author = site.authors[key] %}{{ author.byline }}</a>{% endfor %}</p>
           </section>
 

@@ -22,8 +22,6 @@
   <meta name="MobileOptimized" content="320">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta property="og:image" content="http://artsy.github.io/images/artsy_oss_image.png" />
-  <meta property="og:image:type" content="image/png" />
 
   {% capture canonical %}{% if page.canonical %}{{ page.canonical }}{% else %}{{ site.url }}{% if site.permalink contains '.html' %}{{ page.url }}{% else %}{{ page.url | remove:'index.html' | strip_slash }}{% endif %}{% endif %}{% endcapture %}
   <link rel="canonical" href="{{ canonical }}">
@@ -46,5 +44,4 @@
   {% endif %}
 
   <link href="{{ root_url }}{{ site.subscribe_rss }}" rel="alternate" title="{{site.title}}" type="application/atom+xml">
-  {% include google_analytics.html %}
 </head>
