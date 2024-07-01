@@ -4,6 +4,7 @@ title: "Short thoughts dumped on JSON parsing in Swift 5"
 subtitle: 
 date: 2022-09-07
 categories: [Networking, Generics, Swift]
+author: "Marina Huber"
 ---
 
 Networking code can definitely be improved. Thanks Apple! No third parties here!
