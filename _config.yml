@@ -29,3 +29,7 @@ excerpt_link: "Read More"
 titlecase: true
 category_dir: blog/categories
 
+authors:
+  marina:
+    name: "Marina Huber"
+
