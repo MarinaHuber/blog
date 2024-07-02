@@ -3,7 +3,7 @@ layout: epic
 title: "Avoid typos when publishing localized app to App Store"
 subtitle: "(On Apple and Second Thoughts)"
 date: 2024-06-19
-categories: [iOS, Localization, Watch OS]
+categories: [iOS, Localization, Apple]
 author: marina
 ---
 
@@ -11,13 +11,13 @@ Where to begin! Where to begin...
 
 Localisation is something that occurs in every project I encounter. 
 I found that having a list of useful tips that cover most aspect of localisation is nice to have, 
-so I created this post as memory of current best and possible new practices.
+so I created this post as memory of current state of best practices.
 There is a slight distinction between internationalization and localization:\
 Internationalization — the process of making your app able to adapt to different languages, regions, and cultures.\
 Localization — the process of translating your app into multiple languages.
-So, in total it depends on context, and namely on the following established elements:
-* 		User gender
+So, in total it depends on context, and namely on this elements:
 * 		Singular and plural in the text
+* 		User gender (or consensus decalaration)
 * 		Platforms: Web, Android, iOS
 * 		Project objective for which the translation is being done.
 
@@ -30,17 +30,18 @@ the changes needs to be updated in the project and the app needs re-submission.
  Also have you been in that situation where you have pushed a spelling mistake 
  to the App Store? `( ◍•ᴗ•◍)`
 There are at least three ways of translating an app that I tried so far. Here are few solution and their tradeoffs.
+The main tradeoff being develpoment of feature needs to be flexible and easily **removable** anytime down the prudoct line.
 
-1 . Custom solution with web service that contains JSON file with translation for "all" platforms needed.
+1 . Custom solution on the fly with web service that contains JSON file with translation for "all" platforms needed.
 
-2 . Dynamically translating it with third party services like Crowdin, Azure Translator, Applanga, BartyCrouch.
+2 . Dynamical translations (on the fly) with third party services like Crowdin, Azure Translator, Applanga, BartyCrouch.
 
 3 . Importing/exporting .string files into Xcode project manually
--exporting Localization Catalog .xcloc containing good old XLIFF file and sending it to a translator - human.
+-exporting Localization Catalog .xcloc containing good old XLIFF* file and sending it to a external translator.
 
 ### Solution 1:
 Custom web service with JSON downloaded on the app launch.
-* 		Create small service - in the app you can request the language the device needs and listen to any changes that might occur (simple Firebase DB or any custom robust server with .json file there)
+* 		Create small service - in the app you can request the language the device needs and listen to any changes that might occur (simple Firebase DB* or any custom robust server with .json file there)
 * 		During the launch wait until you have received a response from web service before you display anything to the user.
 * 		Or, if you do not want to rely on the devices connection, then you can preinstall the dictionary by adding the .json file to the bundles resources and preload on app startup.
 This can be pretty straight forward. An this is example how your .json file can be [formatted](https://simplelocalize.io/docs/file-formats/single-language-json/).
@@ -75,17 +76,17 @@ complete it was natural to start looking around for other opportunities -->
 #### Solution 2:
 Third party solution and their tradeoffs:
 
-1 . BartyCrouch, Open source project run in Terminal + Homebrew
+1 . BartyCrouch, Open source project run in Terminal + Homebrew*
 ```bash
 $ brew install bartycrouch
 ```
 
-Pros: Using BartyCrouch and running a few commands from the command line what can even be automated, 
-using a build script within your project this can be good to keep your Storyboards/XIBs Strings files updated over time.
+Using BartyCrouch and running a few commands can be nice start.
+Also using a build script within your project is good to keep your Storyboards/XIBs Strings files updated over time.
 
 * Make sure your Localizable.strings files stay updated with newly added keys in code 
 using NSLocalizedString and show warnings for duplicate keys or empty values
-* Use the machine translation feature of Microsoft Translator Text API via translate
+* Use the machine translation feature of Microsoft Translator Text API* via translate
 * Let BartyCrouch translate it to all supported languages in a single line & 
 without ever leaving the code.
 
@@ -94,23 +95,24 @@ are not supported by this automatic feature.
 Transform from NSLocalizedString or BartyCrouch.translate doesn’t support the new `LocalizedStringKey` type yet. 
 Not ready to be used in SwiftUI fully (more in this issue)
 Steps for BartyCrouch translate:
-* 		Set up Azure (the GLOBAL configuration is the option that takes (location) of all near by servers is fastest)
-* 		Run the update script in the Compile Sources - Xcode
+* 		Set up Azure (the GLOBAL configuration was the best option)
+* 		Run the script in the Compile Sources - Xcode
 
-Translate feature: 🏁[LiveDemo on Cleanshot](https://share.cleanshot.com/oFn4el)
+Translate example: 🏁[LiveDemo on Cleanshot](https://share.cleanshot.com/oFn4el)
 
 Had some issue here as I am getting success in translation but no output.
-NOTE:❗️Troubleshooting BartyCrouch error: no file found Library not loaded:libSwiftSyntax.dylib
-- I posted on [Github BartyCrouch OSS](https://github.com/FlineDev/BartyCrouch/issues/252)
+NOTE:❗️Troubleshooting BartyCrouch `error: no file found Library not loaded:libSwiftSyntax.dylib.` I posted on [Github BartyCrouch OSS](https://github.com/FlineDev/BartyCrouch/issues/252)
+
+BC is free and open source it was fun to try out and play with it, but the learning curve was steap and Azure setup cumbersome.
 
 
-2 . Crowdin
-I heard a lot of folks in iOS community using this service which is cloud-based localization platform for continuous software localization projects.
+2 . Crowdin \
+I heard a lot of folks in iOS community using this service which is cloud-based localization platform with continuous software localization projects.
 With Crowdin you have the option to work with freelance translators and volunteers but also aspecialized software localization company.
 Up to **60,000 hosted words** it is free of charge.
 
-3 . Applanga
-Same as Crowdin but much better CI and automation delivery for native platforms with tests.
+3 . Applanga \
+Same as Crowdin but somewhat better CI* and automation delivery for native platforms with tests.
 Basic sunscription starts from **49$month**.
 
 ### Solution 3:
@@ -146,9 +148,10 @@ This is the file it will expose into: **en.xclocc**
 
 
 You can use comments for easier translation all and more here
-Spanish & English language got a new custom Markdown
+Spanish & English language got a new custom Markdown.
 The main purpose of Automatic Grammar Agreement however, to make the translation of plural and gendered texts
-so far better to use stringdict
+but in my experience was so far better to use `.stringdict` format.
+
 
 **All edge cases:**
 Localization of dynamic text
@@ -165,29 +168,27 @@ String.localizedStringWithFormat(formatString, count)
 TIP: If you try to translate English phrases word-for-word into Spanish or German, they will make no sense. For this reason, you may need to create more than one version of each string and write instructions about which variant should be used from .string file.
 
 Gender and personalisation with:
-Using date, currencies and number **formatters**.
+Using Date, Currencies and Number **formatters** API.
 
 Dates
 Unicode.org for [TEMPLATES](http://www.unicode.org/reports/tr35/tr35-31/tr35.html)
-→ use templates : make data user-friendly with preferredLanguages detected from device
+→ use templates : make app text user-friendly with **preferredLanguages** and it detected from device.
 
 `dateFormatter.locale = Locale(identifier: Locale.preferredLanguages.first ?? “en”)`
 
 or use the current locale of the app gives the same result
-
-`dateFormatter.locale = .current`
-
-Dynamic Dates →  
-
-```
+```tsx
 let allServerLanguages = [”en”, “es”, “de”, “it”]
 let language = Bundle.preferredLocalizations(from: allServerLanguages).first
 
 ```
 
+Dynamic Dates →  
+`dateFormatter.locale = .current`
+
+
 ### SwiftUI
-This part is specific for SwiftUI apps for the moment.
-Usually the translation process should happen based on a user action.
+This part is specific for SwiftUI approach, where usually the translation process happens based on a user action.
 
 Translation/TranslationSession API is making this possible now with multiple translations for iOS18.
 To translate a batch of requests in different languages, do not try to do so in a single batch of requests. 
@@ -226,13 +227,21 @@ Attributedstrings — from iOS15+ the are also localized
 
 `AttributtedStrings(localised: “Text”, comment:””)`
 
-or use Automatic Grammar agreement with mark-down strings (less control tho)
+or use Automatic Grammar agreement with Marksown strings (less control tho, exmpl below)
+
+<figure class="illustration">
+  <img
+    src="/blog/images/2024-06-19-all-things-localization/markdownSwiftui.png"
+    alt="Image showing Markdown in SwiftUI"
+  />
+  <figcaption>SwiftUI with Markdown  (image by Learn And Code With Enid)</figcaption>
+</figure>
 
 
 
 ### UITests
-Saved screenshots form UITests are now localizable for App Store (from Xcode 13+)
-To test all the String that are localizable use Edit Scheme -> Pseudolanguage in SwiftUI
+Saved screenshots form UITests are now localizable for App Store.
+To test all the `strings` that are localizable use Edit Scheme -> Pseudolanguage in SwiftUI
 
 Let AI write automated UI tests to verify the correctness of translations. Use XCTest to ensure that UI elements display the correct localised strings.
 ```tsx
@@ -250,9 +259,9 @@ Set up your CI/CD pipeline to automatically fetch the latest translations from s
 Use scripts in your CI configuration (e.g., GitHub Actions, Jenkins) to integrate this step.
 
 ### Final Thoughts
-In Summary I have chosen **SOLUTION 1** for my dynamic translations but there’s no right answer. It varies from project to project. 
-Maybe some of the researched and tested options above can help you tailor to your next project?
-Some basics: 
+In summary I have chosen **SOLUTION 1** for my translation strategy but there’s no right answer. It varies from project to project. 
+
+Basic recap: 
 
 *  Extracted LocalizeStringKeys / NSLocalizedString
 *  Turn on Use Compiler to Extract Swift Strings project build setting
@@ -262,7 +271,17 @@ Some basics:
 *  Integrated localization tests with CI pipline
 
 By combining these strategies, developers can mitigate the challenges associated with localisation in the Apple ecosystem, without the constant need for app resubmissions.
-I asked ChatGPT to write the conclusion to this post in style of futurist `Ray Kurzweil`. I got pretty lovely analogy.\
+I asked ChatGPT to write the conclusion to this post in style of futurist **`Ray Kurzweil`**. I got pretty fancy analogy.\
 Localisation stands as a pivotal element within ubiquitous computing ecosystem. Just as the neurons in our brain work effortlessly to interpret and respond to our surroundings, localisation ensures that our devices, from mobile phones to cars and even smart refrigerators, communicate with us in our native languages/dialects. This process must be as precise and reliable same as the synaptic transmissions within our neural networks.
 
-Shout me & I will be so happy to try new approaches! ✉️
+<figure class="illustration">
+  <img
+    src="/blog/images/2024-06-19-all-things-localization/supermeme_localization.png"
+    alt="Image showing Markdown in SwiftUI"
+  />
+  <figcaption>Translating offline without Apple privacy manifest file 🛃</figcaption>
+</figure>
+
+*If you have been wondering about some of the tech acronymes here is a [usefull list](https://roundsquared.notion.site/Appronym-Glossary-757d24a3000d463b8d5c7664d111a593) by a fellow dev.
+
+I am happy to try new approaches in localization! <a href="mailto:huber.marinae@gmail.com">✉️</a>
