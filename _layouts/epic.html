@@ -54,7 +54,7 @@
 
           <section>
             <h4>Author</h4>
-            <p>{% for key in page.author %}{% assign author = site.authors[key] %}{% if forloop.index > 1 %},{% endif %} <a href="{{ '/author/{{ key }}' | relative_url }}">{{ author.name }}</a>{% endfor %}</p>
+            <p>{% for key in page.author %}{% assign author = site.authors[key] %}{% if forloop.index > 1 %},{% endif %} <a href="">{{ author.name }}</a>{% endfor %}</p>
             <p>{% for key in page.author %}{% assign author = site.authors[key] %}{{ author.byline }}</a>{% endfor %}</p>
           </section>
 
@@ -65,10 +65,10 @@
           </section>
           <br/>
           <section>
-            <h4>Artsy OSS</h4>
+            <h4> OSS</h4>
             <ul>
               <li><a href=''>References</a></li>
-              <li><a href=''>Github</a></li>
+              <li><a href='https://github.com/MarinaHuber'>Github</a></li>
               <li><a href=''>Open Source</a></li>
             </ul>
           </section>
@@ -80,21 +80,14 @@
               <!-- TODO: bring back a different version of site search  -->
               <!-- <li><a href='http://artsy.github.io/search/'>Search</a></li> -->
               <li><a href=''>Code on GitHub</a></li>
-              <li><a href='https://github.com/artsy/artsy.github.io/edit/source/{{page.path}}'>Fix typos in this post</a></li>
+              <li><a href="mailto:huber.marinae@gmail.com">Fix typos in this post</a></li>
             </ul>
           </section>
 
         </article>
 
         <article>
-          <section>
-            <h4>Post Series on the Blog</h4>
-            <ul>
-              {% for series in site.series %}
-              <li><a href='/{{ series.url }}'>{{series.title}}</a></li>
-              {% endfor %}
-            </ul>
-          </section>
+
 
           <section>
           {% if page.series %}

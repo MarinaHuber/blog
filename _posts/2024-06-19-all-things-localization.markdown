@@ -6,7 +6,6 @@ date: 2024-06-19
 categories: [iOS, Localization, Apple]
 author: marina
 ---
-
 Where to begin! Where to begin...
 
 Localisation is something that occurs in every project I encounter. 
@@ -30,7 +29,7 @@ the changes needs to be updated in the project and the app needs re-submission.
  Also have you been in that situation where you have pushed a spelling mistake 
  to the App Store? `( ◍•ᴗ•◍)`
 There are at least three ways of translating an app that I tried so far. Here are few solution and their tradeoffs.
-The main tradeoff being develpoment of feature needs to be flexible and easily **removable** anytime down the prudoct line.
+The main tradeoff being develpoment of feature needs to be flexible and easily **removable** anytime down the pruduct timeline.
 
 1 . Custom solution on the fly with web service that contains JSON file with translation for "all" platforms needed.
 
