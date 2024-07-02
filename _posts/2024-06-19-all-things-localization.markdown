@@ -132,17 +132,15 @@ Prior static localization, means no need to use key-based translations with:
 Usually I will start with English as the base language as default, then slowly adding more language support on top of it. Before using any tools we need to prepare our app for DEFAULT language.
 By default, a base language will be provided by Xcode. This base language will act as a fallback language if any localizable content is not found. 
 One of the advantages of "new" String Catalog is that when you build the project, strings are automatically listed. In demo test project since I am not using localized xibs, DefaultLocalizable.string file is the default file for English language that must contain all the text of the app for fallback.
-* 		Create Localizable.string file 
-* 		Always wrap user-facing strings with (iOS13&14) NSLocalizedString, (from iOS 15+) String(localized:) or LocalizedStringResource
-* 		Created swift script that takes all .strings and creates enum from it 
-(NSLocalizedString does not support being hidden behind macros. This does work for String(localized:), LocalizedStringResource, and similar Swift API)
+Few tips from session @Apple Localization Lab:\
+* Create String Catalogs in New File menu -> **Localizable.xcstrings** is created legacy to Localizable.string file creation manually
+* Always wrap user-facing strings with legacy code NSLocalizedString or
+* Created swift script that takes all .strings and creates enum from it 
+(NSLocalizedString does not support being hidden behind macros). This does work for String(localized:) and LocalizedStringResource.
 
-Few tips from session @Apple Localization Lab:
-1. Create String Catalogs in New File menu -> **Localizable.xcstrings** is created legacy to Localizable.string file creation manually
-2. Always wrap user-facing strings with legacy code NSLocalizedString or
-From iOS 15+ String(localized:) / LocalizedStringKey in SwiftUI
-Note: Will detect the App language:
-NSLocalizedString() → short for Bundle.main.localizedString()
+From iOS 15+ String(localized:) & LocalizedStringKey in SwiftUI \
+will detect the App language:
+`NSLocalizedString()` → short for `Bundle.main.localizedString()`\
 Exporting for localization in SwiftUI
 🤙🏽 Xcode project build settings **Use Compiler to Extract Swift Strings**
 Once active, before exporting strings for localization, Xcode will build all project targets and use the compiler type information to extract LocalizedStringKeys from your SwiftUI code.
@@ -186,8 +184,8 @@ NOTE: on WatchOS this is specially important so use - .ViewThatFits
 .ViewThatFits
 ```
 Inside that view place for:
-1. expected view layout
-2. one for complex looking translated languages
+* expected view layout
+* is for complex looking translated languages
 
 On **WatchOS** and **Extensions** we need to specify a BUNDLE from where we are getting the translation from .framework if it is from Cocoapods or SPM
 if it is inside host app than .main or .module for SPM
@@ -264,7 +262,7 @@ Use scripts in your CI configuration (e.g., GitHub Actions, Jenkins) to integrat
 
 ### Final Thoughts
 In summary I have chosen **SOLUTION 1** for my translation strategy but there’s no right answer. It varies from project to project. 
-As well a lot of changes have been made from iOS15 and Xcode15 that will break your app if not updated regularly.
+As well a lot of changes have been made from iOS15 and Xcode15 that can cause confusion if not updated.
 
 Basic recap (some are optional❓): \
 *  Extracted LocalizeStringKeys / NSLocalizedString
