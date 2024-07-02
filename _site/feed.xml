@@ -5,13 +5,13 @@
     <description></description>
     <link>http://localhost:4000/blog/</link>
     <atom:link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 02 Jul 2024 15:54:07 +0200</pubDate>
-    <lastBuildDate>Tue, 02 Jul 2024 15:54:07 +0200</lastBuildDate>
+    <pubDate>Tue, 02 Jul 2024 16:20:13 +0200</pubDate>
+    <lastBuildDate>Tue, 02 Jul 2024 16:20:13 +0200</lastBuildDate>
     <generator>Jekyll v3.9.5</generator>
     
       <item>
         <title>Avoid typos when publishing localized app to App Store</title>
-        <description>&lt;p&gt;Where to begin! Where to begin for Dummies…&lt;/p&gt;
+        <description>&lt;p&gt;Where to begin! Where to begin…&lt;/p&gt;
 
 &lt;p&gt;Localization is something that occurs in every project I encounter. Implementing localization can be a bit bothersome for developers, 
 but it can make users feel respected and cared for.
@@ -101,17 +101,16 @@ without ever leaving the code.&lt;/li&gt;
 &lt;p&gt;Important : Localization Workflow via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;transform-&lt;/code&gt; feature formatted localized Strings 
 are not supported by this automatic feature.
 Transform from NSLocalizedString or BartyCrouch.translate doesn’t support the new &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LocalizedStringKey&lt;/code&gt; type yet. 
-Not ready to be used in SwiftUI fully (more in this issue)
+Not ready to be used in SwiftUI fully (more in this issue)&lt;br /&gt;
 Steps for BartyCrouch translate:&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;Set up Azure (the GLOBAL configuration was the best option)&lt;/li&gt;
   &lt;li&gt;Run the script in the Compile Sources - Xcode&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Translate example: 🏁&lt;a href=&quot;https://share.cleanshot.com/oFn4el&quot;&gt;LiveDemo on Cleanshot&lt;/a&gt;&lt;/p&gt;
-
 &lt;p&gt;Had some issue here as I am getting success in translation but no output.
-NOTE:❗️Troubleshooting BartyCrouch &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;error: no file found Library not loaded:libSwiftSyntax.dylib.&lt;/code&gt; I posted on &lt;a href=&quot;https://github.com/FlineDev/BartyCrouch/issues/252&quot;&gt;Github BartyCrouch OSS&lt;/a&gt;&lt;/p&gt;
+NOTE:❗️Troubleshooting BartyCrouch &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;error: no file found Library not loaded:libSwiftSyntax.dylib.&lt;/code&gt; I posted on &lt;a href=&quot;https://github.com/FlineDev/BartyCrouch/issues/252&quot;&gt;Github BartyCrouch OSS&lt;/a&gt; &lt;br /&gt;
+Translate example: 🏁&lt;a href=&quot;https://share.cleanshot.com/oFn4el&quot;&gt;LiveDemo on Cleanshot&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;BC is free and open source it was fun to try out and play with it, but the learning curve was steep and Azure setup cumbersome.&lt;/p&gt;
 
@@ -140,7 +139,7 @@ As well from iOS15+ there is no need to use key-based translations with:
 &lt;p&gt;Usually I will start with English as the base language as default, then slowly adding more language support on top of it. Before using any tools we need to prepare our app for DEFAULT language.
 By default, a base language will be provided by Xcode. This base language will act as a fallback language if any localizable content is not found. 
 One of the advantages of “new” String Catalog is that when you build the project, strings are automatically listed. In demo test project since I am not using localized xibs, DefaultLocalizable.string file is the default file for English language that must contain all the text of the app for fallback.
-Few tips from session @Apple Localization Lab:\&lt;/p&gt;
+Few tips from session @Apple Localization Lab:&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;Create String Catalogs in New File menu -&amp;gt; &lt;strong&gt;Localizable.xcstrings&lt;/strong&gt; is created legacy to Localizable.string file creation manually&lt;/li&gt;
   &lt;li&gt;Always wrap user-facing strings with legacy code NSLocalizedString or&lt;/li&gt;
@@ -150,13 +149,7 @@ Few tips from session @Apple Localization Lab:\&lt;/p&gt;
 
 &lt;p&gt;From iOS 15+ String(localized:) &amp;amp; LocalizedStringKey in SwiftUI &lt;br /&gt;
 will detect the App language:
-&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NSLocalizedString()&lt;/code&gt; → short for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Bundle.main.localizedString()&lt;/code&gt;&lt;br /&gt;
-Exporting for localization in SwiftUI
-🤙🏽 Xcode project build settings &lt;strong&gt;Use Compiler to Extract Swift Strings&lt;/strong&gt;
-Once active, before exporting strings for localization, Xcode will build all project targets and use the compiler type information to extract LocalizedStringKeys from your SwiftUI code.
-In Xcode .xcloc a.k.a. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Xcode Localization Catalogs&lt;/code&gt; can be opened directly in Xcode with the new Localization Catalog Editor 🤙🏽
-Needs to be set to &lt;strong&gt;YES&lt;/strong&gt; if project uses SwiftUI for Exporting all targets in Catalog&lt;br /&gt;
-This is the file it will expose into: &lt;strong&gt;en.xclocc&lt;/strong&gt;&lt;/p&gt;
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NSLocalizedString()&lt;/code&gt; → short for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Bundle.main.localizedString()&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;You can use comments for easier translation all and more here
 Spanish &amp;amp; English language got a new custom Markdown.
@@ -164,7 +157,13 @@ The main purpose of Automatic Grammar Agreement however, to make the translation
 but in my experience was so far better to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.stringdict&lt;/code&gt; format.&lt;/p&gt;
 
 &lt;h3 id=&quot;swiftui&quot;&gt;SwiftUI&lt;/h3&gt;
-&lt;p&gt;This part is specific for SwiftUI approach, where usually the translation process happens based on a user action.&lt;/p&gt;
+&lt;p&gt;This part is specific for SwiftUI approach, where usually the translation process happens based on a user action.&lt;br /&gt;
+Exporting for localization in SwiftUI &lt;br /&gt;
+🤙🏽 Xcode project build settings &lt;strong&gt;Use Compiler to Extract Swift Strings&lt;/strong&gt;
+Once active, before exporting strings for localization, Xcode will build all project targets and use the compiler type information to extract LocalizedStringKeys from your SwiftUI code.
+In Xcode .xcloc - &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Xcode Localization Catalogs&lt;/code&gt; can be opened directly in Xcode with the new Localization Catalog Editor. &lt;br /&gt;
+Needs to be set to &lt;strong&gt;YES&lt;/strong&gt; if project uses SwiftUI for Exporting all targets in Catalog&lt;br /&gt;
+This is the file it will expose into: &lt;strong&gt;en.xclocc&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;Translation/TranslationSession API is making this possible now with multiple translations for iOS18.
 To translate a batch of requests in different languages, do not try to do so in a single batch of requests. 
@@ -265,7 +264,7 @@ Use scripts in your CI configuration (e.g., GitHub Actions, Jenkins) to integrat
 &lt;p&gt;In summary I have chosen &lt;strong&gt;SOLUTION 1&lt;/strong&gt; for my translation strategy but there’s no right answer. It varies from project to project. 
 As well a lot of changes have been made from iOS15 and Xcode15 that can cause confusion if not updated.&lt;/p&gt;
 
-&lt;p&gt;Basic recap (some are optional❓): \&lt;/p&gt;
+&lt;p&gt;Basic recap (some are optional❓):&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;Extracted LocalizeStringKeys / NSLocalizedString&lt;/li&gt;
   &lt;li&gt;Turn on Use Compiler to Extract Swift Strings project build setting&lt;/li&gt;
