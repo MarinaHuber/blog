@@ -93,15 +93,14 @@ without ever leaving the code.
 Important : Localization Workflow via `transform-` feature formatted localized Strings 
 are not supported by this automatic feature.
 Transform from NSLocalizedString or BartyCrouch.translate doesn’t support the new `LocalizedStringKey` type yet. 
-Not ready to be used in SwiftUI fully (more in this issue)
+Not ready to be used in SwiftUI fully (more in this issue)\
 Steps for BartyCrouch translate:
 * 		Set up Azure (the GLOBAL configuration was the best option)
 * 		Run the script in the Compile Sources - Xcode
 
-Translate example: 🏁[LiveDemo on Cleanshot](https://share.cleanshot.com/oFn4el)
-
 Had some issue here as I am getting success in translation but no output.
-NOTE:❗️Troubleshooting BartyCrouch `error: no file found Library not loaded:libSwiftSyntax.dylib.` I posted on [Github BartyCrouch OSS](https://github.com/FlineDev/BartyCrouch/issues/252)
+NOTE:❗️Troubleshooting BartyCrouch `error: no file found Library not loaded:libSwiftSyntax.dylib.` I posted on [Github BartyCrouch OSS](https://github.com/FlineDev/BartyCrouch/issues/252) \
+Translate example: 🏁[LiveDemo on Cleanshot](https://share.cleanshot.com/oFn4el) 
 
 BC is free and open source it was fun to try out and play with it, but the learning curve was steep and Azure setup cumbersome.
 
@@ -132,7 +131,7 @@ Prior static localization, means no need to use key-based translations with:
 Usually I will start with English as the base language as default, then slowly adding more language support on top of it. Before using any tools we need to prepare our app for DEFAULT language.
 By default, a base language will be provided by Xcode. This base language will act as a fallback language if any localizable content is not found. 
 One of the advantages of "new" String Catalog is that when you build the project, strings are automatically listed. In demo test project since I am not using localized xibs, DefaultLocalizable.string file is the default file for English language that must contain all the text of the app for fallback.
-Few tips from session @Apple Localization Lab:\
+Few tips from session @Apple Localization Lab:
 * Create String Catalogs in New File menu -> **Localizable.xcstrings** is created legacy to Localizable.string file creation manually
 * Always wrap user-facing strings with legacy code NSLocalizedString or
 * Created swift script that takes all .strings and creates enum from it 
@@ -141,13 +140,6 @@ Few tips from session @Apple Localization Lab:\
 From iOS 15+ String(localized:) & LocalizedStringKey in SwiftUI \
 will detect the App language:
 `NSLocalizedString()` → short for `Bundle.main.localizedString()`\
-Exporting for localization in SwiftUI
-🤙🏽 Xcode project build settings **Use Compiler to Extract Swift Strings**
-Once active, before exporting strings for localization, Xcode will build all project targets and use the compiler type information to extract LocalizedStringKeys from your SwiftUI code.
-In Xcode .xcloc a.k.a. `Xcode Localization Catalogs` can be opened directly in Xcode with the new Localization Catalog Editor 🤙🏽
-Needs to be set to **YES** if project uses SwiftUI for Exporting all targets in Catalog\
-This is the file it will expose into: **en.xclocc**
-
 
 You can use comments for easier translation all and more here
 Spanish & English language got a new custom Markdown.
@@ -157,7 +149,13 @@ but in my experience was so far better to use `.stringdict` format.
 
 
 ### SwiftUI
-This part is specific for SwiftUI approach, where usually the translation process happens based on a user action.
+This part is specific for SwiftUI approach, where usually the translation process happens based on a user action.\
+Exporting for localization in SwiftUI \
+🤙🏽 Xcode project build settings **Use Compiler to Extract Swift Strings**
+Once active, before exporting strings for localization, Xcode will build all project targets and use the compiler type information to extract LocalizedStringKeys from your SwiftUI code.
+In Xcode .xcloc - `Xcode Localization Catalogs` can be opened directly in Xcode with the new Localization Catalog Editor. \
+Needs to be set to **YES** if project uses SwiftUI for Exporting all targets in Catalog\
+This is the file it will expose into: **en.xclocc**
 
 Translation/TranslationSession API is making this possible now with multiple translations for iOS18.
 To translate a batch of requests in different languages, do not try to do so in a single batch of requests. 
