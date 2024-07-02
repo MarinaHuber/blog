@@ -5,13 +5,8 @@
     <description></description>
     <link>http://localhost:4000/blog/</link>
     <atom:link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/rss+xml"/>
-<<<<<<< HEAD
-    <pubDate>Tue, 02 Jul 2024 16:20:13 +0200</pubDate>
-    <lastBuildDate>Tue, 02 Jul 2024 16:20:13 +0200</lastBuildDate>
-=======
-    <pubDate>Tue, 02 Jul 2024 16:12:32 +0200</pubDate>
-    <lastBuildDate>Tue, 02 Jul 2024 16:12:32 +0200</lastBuildDate>
->>>>>>> 805eaeeb2f8b701014bb86237157d08cc803c620
+    <pubDate>Tue, 02 Jul 2024 16:37:35 +0200</pubDate>
+    <lastBuildDate>Tue, 02 Jul 2024 16:37:35 +0200</lastBuildDate>
     <generator>Jekyll v3.9.5</generator>
     
       <item>
@@ -208,7 +203,7 @@ if it is inside host app than .main or .module for SPM&lt;/p&gt;
 
 &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AttributtedStrings(localised: “Text”, comment:””)&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;or use Automatic Grammar agreement with Marksown strings (less control tho, exmpl. below)&lt;/p&gt;
+&lt;p&gt;or use Automatic Grammar Agreement with Markdown strings (less control tho).&lt;/p&gt;
 
 &lt;figure class=&quot;illustration&quot;&gt;
   &lt;img src=&quot;/blog/images/2024-06-19-all-things-localization/markdownSwiftui.png&quot; alt=&quot;Image showing Markdown in SwiftUI&quot; /&gt;
@@ -281,7 +276,7 @@ As well a lot of changes have been made from iOS15 and Xcode15 that can cause co
 
 &lt;p&gt;By combining these strategies, developers can mitigate the challenges associated with localization in the Apple ecosystem, without the constant need for app resubmissions.
 I asked ChatGPT to write the conclusion to this post in style of futurist &lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Ray Kurzweil&lt;/code&gt;&lt;/strong&gt;. I got pretty fancy analogy.&lt;br /&gt;
-Localization stands as a pivotal element within ubiquitous computing ecosystem. Just as the neurons in our brain work effortlessly to interpret and respond to our surroundings, localization ensures that our devices, from mobile phones to cars and even smart refrigerators, communicate with us in our native languages/dialects. This process must be as precise and reliable same as the synaptic transmissions within our neural networks.&lt;/p&gt;
+Localization stands as a pivotal element within ubiquitous computing ecosystem and it can work prefectly if not using &lt;strong&gt;SwiftGen&lt;/strong&gt; *. Just as the neurons in our brain work effortlessly to interpret and respond to our surroundings, localization ensures that our devices, from mobile phones to cars and even smart refrigerators, communicate with us in our native languages/dialects. This process must be as precise and reliable same as the synaptic transmissions within our neural networks.&lt;/p&gt;
 
 &lt;figure class=&quot;illustration&quot;&gt;
   &lt;img src=&quot;/blog/images/2024-06-19-all-things-localization/supermeme_localization.png&quot; alt=&quot;Image showing Markdown in SwiftUI&quot; /&gt;
@@ -290,7 +285,7 @@ Localization stands as a pivotal element within ubiquitous computing ecosystem. 
 
 &lt;p&gt;*If you have been wondering about some of the tech acronyms here is a &lt;a href=&quot;https://roundsquared.notion.site/Appronym-Glossary-757d24a3000d463b8d5c7664d111a593&quot;&gt;useful list&lt;/a&gt; by a fellow dev.&lt;/p&gt;
 
-&lt;p&gt;I am happy to try new approaches in localization! &lt;a href=&quot;mailto:huber.marinae@gmail.com&quot;&gt;✉️&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;I am happy to try new approaches in localization! Don’t be shy &lt;a href=&quot;mailto:huber.marinae@gmail.com&quot;&gt;✉️&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Wed, 19 Jun 2024 00:00:00 +0200</pubDate>
         <link>http://localhost:4000/blog/blog/2024/06/19/all-things-localization/</link>

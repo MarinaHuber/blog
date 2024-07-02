@@ -194,7 +194,7 @@ AttributedStrings — from iOS15+ the are also localized
 
 `AttributtedStrings(localised: “Text”, comment:””)`
 
-or use Automatic Grammar agreement with Marksown strings (less control tho, exmpl. below)
+or use Automatic Grammar Agreement with Markdown strings (less control tho).
 
 <figure class="illustration">
   <img
@@ -272,7 +272,7 @@ Basic recap (some are optional❓):
 
 By combining these strategies, developers can mitigate the challenges associated with localization in the Apple ecosystem, without the constant need for app resubmissions.
 I asked ChatGPT to write the conclusion to this post in style of futurist **`Ray Kurzweil`**. I got pretty fancy analogy.\
-Localization stands as a pivotal element within ubiquitous computing ecosystem. Just as the neurons in our brain work effortlessly to interpret and respond to our surroundings, localization ensures that our devices, from mobile phones to cars and even smart refrigerators, communicate with us in our native languages/dialects. This process must be as precise and reliable same as the synaptic transmissions within our neural networks.
+Localization stands as a pivotal element within ubiquitous computing ecosystem and it can work prefectly if not using **SwiftGen** *. Just as the neurons in our brain work effortlessly to interpret and respond to our surroundings, localization ensures that our devices, from mobile phones to cars and even smart refrigerators, communicate with us in our native languages/dialects. This process must be as precise and reliable same as the synaptic transmissions within our neural networks.
 
 <figure class="illustration">
   <img
@@ -284,4 +284,4 @@ Localization stands as a pivotal element within ubiquitous computing ecosystem. 
 
 *If you have been wondering about some of the tech acronyms here is a [useful list](https://roundsquared.notion.site/Appronym-Glossary-757d24a3000d463b8d5c7664d111a593) by a fellow dev.
 
-I am happy to try new approaches in localization! <a href="mailto:huber.marinae@gmail.com">✉️</a>
+I am happy to try new approaches in localization! Don't be shy <a href="mailto:huber.marinae@gmail.com">✉️</a>
