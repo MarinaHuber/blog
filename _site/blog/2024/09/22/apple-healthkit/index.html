@@ -16,9 +16,9 @@
   
   <meta name="description" content="Things I want to accomplish: ✅
 
-  Show HealthKit workout route on the map
-  Visualize Heart rate and Speed/Pace
-  Interoperate with UIKit and Swift...">
+‎1. Get data from XML file into HealthKit
+‎2. Show HealthKit workout route on the map
+‎3. Visualize Heart rate and ...">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,11 +77,10 @@
 
         <article class='post'>
           <p>Things I want to accomplish: ✅</p>
-<ol>
-  <li>Show HealthKit workout route on the map</li>
-  <li>Visualize Heart rate and Speed/Pace</li>
-  <li>Interoperate with UIKit and SwiftUI</li>
-</ol>
+
+<p>‎1. Get data from XML file into HealthKit<br />
+‎2. Show HealthKit workout route on the map<br />
+‎3. Visualize Heart rate and Speed/Pace</p>
 
 <p>One of the most exciting breakthroughs in modern tech medicine is getting your physical data, biometric data into the EMR (electronic medical record) and into your doctors hands. It first arrived on the mobile market with HealthKit.
 HealthKit was introduced by Apple in iOS 8 (mid 2014), a framework that enables developers to interact with health and fitness data on iOS devices. It acts as a centralized repository, collecting data from various sources such as the iPhone’s built-in sensors, third-party devices, and user input. This wealth of information includes but is not limited to steps taken, heart rate, sleep patterns, nutrition, and more. The user has granular access control and it’s all opt-in. Data storage of it doesn’t need to be HIPAA compliant and it is the consumer’s responsibility to keep their data secure.</p>
@@ -95,11 +94,14 @@ HealthKit was introduced by Apple in iOS 8 (mid 2014), a framework that enables 
 
 <h3 id="configure-healthkit-to-opt-in">Configure HealthKit to opt-in</h3>
 
-<p>To use HealthKit, you must enable the HealthKit capabilities for your app. In Xcode, select the project and add the HealthKit capability. Only select the Clinical Health Records checkbox if your app needs to access the user’s clinical records. App Review may reject apps that enable the Clinical Health Records capability if the app doesn’t actually use the health record data.
+<p>To use HealthKit, you must enable the HealthKit capabilities for your app. In Xcode, select the project and add the HealthKit capability (see 🔎 <strong>Wourkout Detail</strong> demo). Only select the Clinical Health Records checkbox if your app needs to access the user’s clinical records. App Review may reject apps that enable the <code class="language-plaintext highlighter-rouge">Clinical Health Records</code> capability if the app doesn’t actually use the health record data.
 To make your code maintainable and clean, let’s create a <code class="language-plaintext highlighter-rouge">HealthKit Manager</code> class. This simple class is responsible for retrieving and updating data to the HealthKit.
-The HealthKit Manager will interact using HKHealthStore feature to interact with the HealthKit. After that we create a function to request User’s authorization to use their Health data for our application. In this step you prepare a set of datatype you read and write(in basic demo only read is needed). This data type is in .gpx format which is an XML file format for storing coordinate data and health records (like heart rate and speed).</p>
+The HealthKit manager will use HKHealthStore entity to interact with the HealthKit. After this I create a function to request User’s authorization to use the Health data in my application. In this step I prepare a set of datatype to read and write (in demo only read data is needed). This data type is in <code class="language-plaintext highlighter-rouge">.gpx</code> file which is an XML file format for storing coordinate data and health records (like heart rate and speed). Since we are dealing with prerecorded workout file .gpx we don’t need the Health data when application is in background mode.</p>
 
-<p>For more information, see full configuration list 🔎<a href="https://developer.apple.com/documentation/healthkit/setting_up_healthkit">Apple docs</a></p>
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">Raw</span> <span class="nx">data</span> <span class="p">.</span><span class="nx">gpx</span> <span class="o">--&gt;</span> <span class="nx">HealthKit</span> <span class="o">--&gt;</span> <span class="p">(</span><span class="nx">opt</span><span class="o">-</span><span class="k">in</span><span class="p">)</span> <span class="nx">UI</span>
+</code></pre></div></div>
+
+<p>Note: see full configuration list - <a href="https://developer.apple.com/documentation/healthkit/setting_up_healthkit">Apple documentation</a></p>
 
 <figure class="illustration">
   <img src="/blog/images/2024-08-24-apple-healthkit/HKConfigure.png" alt="Image showing effects of overwhelming data visualisation" />
@@ -107,15 +109,67 @@ The HealthKit Manager will interact using HKHealthStore feature to interact with
 </figure>
 
 <h3 id="getting-into-workout-route">Getting into workout route</h3>
+<p>To accomplish visualization of workout route this steps were needed:<br />
+‎ 1. Add the samples (.gpx) to HRWorkout instance and then route locations<br />
+‎ 2. Get stored data from HK with query<br />
+‎ 3. Draw route on centered map with MKPolyline</p>
+
+<p>We are going to use the <code class="language-plaintext highlighter-rouge">HKAnchoredObjectQuery</code> to register for changes, because as Apple said:</p>
+<blockquote>
+  <p>Anchored object queries provide an easy way to search for new data in the HealthKit store.
+Below function will receive the types that you want to register for changes and will register each one.</p>
+</blockquote>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nx">func</span> <span class="nx">getRouteValuesFromHealthKit</span><span class="p">(</span><span class="nx">completion</span><span class="p">:</span> <span class="p">@</span><span class="nd">escaping</span> <span class="p">(([</span><span class="nx">CLLocation</span><span class="p">],</span> <span class="nb">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="nx">Void</span><span class="p">))</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">totalWorkouts</span><span class="p">:</span> <span class="p">[</span><span class="nx">CLLocation</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="kd">let</span> <span class="nx">query</span> <span class="o">=</span> <span class="nx">HKAnchoredObjectQuery</span><span class="p">(</span><span class="kd">type</span><span class="p">:</span> <span class="nx">HKSeriesType</span><span class="p">.</span><span class="nx">workoutRoute</span><span class="p">(),</span> <span class="nx">predicate</span><span class="p">:</span> <span class="nx">nil</span><span class="p">,</span> <span class="nx">anchor</span><span class="p">:</span> <span class="nx">nil</span><span class="p">,</span> <span class="nx">limit</span><span class="p">:</span> <span class="nx">HKObjectQueryNoLimit</span><span class="p">)</span> <span class="p">{</span> <span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="nx">samples</span><span class="p">,</span> <span class="nx">deletedObjectsOrNil</span><span class="p">,</span> <span class="nx">newAnchor</span><span class="p">,</span> <span class="nx">errorOrNil</span><span class="p">)</span> <span class="k">in</span>
+            <span class="nx">guard</span> <span class="kd">let</span> <span class="nx">samples</span> <span class="o">=</span> <span class="nx">samples</span><span class="p">,</span> <span class="kd">let</span> <span class="nx">_</span> <span class="o">=</span> <span class="nx">deletedObjectsOrNil</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="err">#</span><span class="nx">warning</span><span class="p">(</span><span class="dl">"</span><span class="s2">Add alert for when notauthorized</span><span class="dl">"</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="p">}</span>
+            <span class="nx">guard</span> <span class="nx">samples</span><span class="p">.</span><span class="nx">count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">os_log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Error samples are 0</span><span class="dl">"</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="p">}</span>
+            <span class="kd">let</span> <span class="nx">route</span> <span class="o">=</span> <span class="nx">samples</span><span class="p">.</span><span class="nx">first</span> <span class="k">as</span><span class="o">!</span> <span class="nx">HKWorkoutRoute</span>
+            
+            <span class="kd">let</span> <span class="nx">routeQuery</span> <span class="o">=</span> <span class="nx">HKWorkoutRouteQuery</span><span class="p">(</span><span class="nx">route</span><span class="p">:</span> <span class="nx">route</span><span class="p">)</span> <span class="p">{</span>
+                <span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="nx">locationsOrNil</span><span class="p">,</span> <span class="nx">done</span><span class="p">,</span> <span class="nx">errorOrNil</span><span class="p">)</span> <span class="k">in</span>
+                <span class="k">if</span> <span class="kd">let</span> <span class="nx">error</span> <span class="o">=</span> <span class="nx">errorOrNil</span> <span class="p">{</span>
+                    <span class="nx">os_log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Error </span><span class="se">\</span><span class="s2">(error as NSObject)</span><span class="dl">"</span><span class="p">)</span>
+                    <span class="k">return</span>
+                <span class="p">}</span>
+                
+                <span class="nx">guard</span> <span class="kd">let</span> <span class="nx">locations</span> <span class="o">=</span> <span class="nx">locationsOrNil</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="err">#</span><span class="nx">warning</span><span class="p">(</span><span class="dl">"</span><span class="s2">Handle in UI if no locations found</span><span class="dl">"</span><span class="p">)</span>
+                    <span class="nx">fatalError</span><span class="p">(</span><span class="dl">"</span><span class="s2">*** NIL found in locations ***</span><span class="dl">"</span><span class="p">)</span>
+                <span class="p">}</span>
+                
+                <span class="nx">locations</span><span class="p">.</span><span class="nx">forEach</span> <span class="p">{</span>
+                    <span class="nx">totalWorkouts</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">$0</span><span class="p">)</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="nx">done</span> <span class="p">{</span>
+                    <span class="nx">DispatchQueue</span><span class="p">.</span><span class="nx">main</span><span class="p">.</span><span class="k">async</span> <span class="p">{</span>
+                        <span class="nx">completion</span><span class="p">(</span><span class="nx">totalWorkouts</span><span class="p">,</span> <span class="nx">nil</span><span class="p">)</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            
+            <span class="nb">self</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="nx">routeQuery</span><span class="p">)</span>
+        <span class="p">}</span>
+        
+        <span class="nb">self</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="nx">query</span><span class="p">)</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+<p>In our implementation, we simply batch up all locations until we’re done, then store them using the newest locations.
+The locations are represented as CoreLocation types, which makes them easy to ingrate with other parts of the Apple developer ecosystem, such as MapKit. You could display the route on a map or use Geocoding to convert the coordinates into more human-friendly descriptors.</p>
 
 <h3 id="getting-into-health-data">Getting into health data</h3>
 
-<p>To accomplish visualization of our workout speed, pace and heart rate values we can use native CareKit or external AAInfographics framework.
-In demo case, for the first iteration we import AAInfographics_Pro and use appropriate UI diagram chart <code class="language-plaintext highlighter-rouge">.chartType(.areaspline)</code> to generate diagram views. 
-So what do I need to have to visualize my workout route?<br />
-Firstly parse the values from <code class="language-plaintext highlighter-rouge">import.gpx</code> file in this case heart rate and speed values and save to HealthKit. Pace is calculated according to duration and distance <strong>Pace (sec/km)</strong> = time (sec) / distance (km) from HealthKit store.</p>
-<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">Raw</span> <span class="nx">data</span> <span class="p">.</span><span class="nx">gpx</span> <span class="o">--&gt;</span> <span class="nx">HealthKit</span> <span class="o">--&gt;</span> <span class="nx">UI</span>
-</code></pre></div></div>
+<p>To accomplish visualization of our workout speed, pace and heart rate values we can use native CareKit (CareKit only provides the bar charts, however, we can integrate other chart libraries in SwiftUI) or external AAInfographics framework for UIKit.
+So what do I need to have to visualize my workout data?<br />
+Firstly parse the values from <code class="language-plaintext highlighter-rouge">import.gpx</code> file in this case heart rate or speed values and save to HealthKit. Pace is calculated according to duration and distance <strong>Pace (sec/km)</strong> = time (sec) / distance (km) from HealthKit store directly.</p>
 
 <div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">// MARK: - Heart rate</span>
     <span class="nx">func</span> <span class="nx">setHRValueToHealthKit</span><span class="p">(</span><span class="nx">_</span> <span class="kd">type</span><span class="p">:</span> <span class="nx">HealthValueType</span><span class="p">,</span> <span class="k">for</span> <span class="nx">model</span><span class="p">:</span> <span class="p">[</span><span class="nx">GPXLocation</span><span class="p">])</span> <span class="p">{</span>
@@ -145,6 +199,9 @@ Firstly parse the values from <code class="language-plaintext highlighter-rouge"
         <span class="p">}</span>
     <span class="p">}</span>
 </code></pre></div></div>
+<p>In demo case we import AAInfographics_Pro and use appropriate UI diagram chart <code class="language-plaintext highlighter-rouge">.chartType(.areaspline)</code> to generate diagram views.</p>
+
+<p>Note: If you notice I am using <code class="language-plaintext highlighter-rouge">os_log</code> OSLog is a replacement for print, and NSLog and Apple’s recommended way of logging easily visible in Xcode console.</p>
 
 <figure class="illustration">
   <img src="/blog/images/2024-08-24-apple-healthkit/meneHealth.png" alt="Image showing effects of overwhelming data visualisation" />
@@ -153,11 +210,12 @@ Firstly parse the values from <code class="language-plaintext highlighter-rouge"
 
 <h3 id="conclusion">Conclusion</h3>
 
-<p>TBC</p>
+<p>That’s all I’ve found in the last days studying the HealthKit and charts framework. I’ve covered all situations that my context required, which were: save objects and sync them between my app and Health app and show them on the graph and map. Hope you guys enjoy it, and any inconsistencies in the content above please let me know.</p>
 
-<p>Full demo <a href="https://github.com/MarinaHuber/HealthKitDemo">Github</a></p>
+<p><strong>Full demo <a href="https://github.com/MarinaHuber/HealthKitDemo">Github</a></strong></p>
 
-<p>Helpful link for HealthKit code-gen with <a href="https://chatgpt.com/g/g-o1UC7Hh1s-apple-healthkit-complete-guide">ChatGPT</a>
+<p>To follow the newest updates on Apple watch and HealthKit <a href="https://developer.apple.com/documentation/updates/healthkit">here</a><br />
+Helpful link for HealthKit code-gen with <a href="https://chatgpt.com/g/g-o1UC7Hh1s-apple-healthkit-complete-guide">ChatGPT</a>
 <!-- more --></p>
 
 

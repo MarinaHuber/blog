@@ -5,18 +5,17 @@
     <description></description>
     <link>http://localhost:4000/blog/</link>
     <atom:link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 22 Sep 2024 18:45:46 +0200</pubDate>
-    <lastBuildDate>Sun, 22 Sep 2024 18:45:46 +0200</lastBuildDate>
+    <pubDate>Sun, 22 Sep 2024 22:13:46 +0200</pubDate>
+    <lastBuildDate>Sun, 22 Sep 2024 22:13:46 +0200</lastBuildDate>
     <generator>Jekyll v3.9.5</generator>
     
       <item>
         <title>Breaking the magic of Apple HealthKit API</title>
         <description>&lt;p&gt;Things I want to accomplish: ✅&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;Show HealthKit workout route on the map&lt;/li&gt;
-  &lt;li&gt;Visualize Heart rate and Speed/Pace&lt;/li&gt;
-  &lt;li&gt;Interoperate with UIKit and SwiftUI&lt;/li&gt;
-&lt;/ol&gt;
+
+&lt;p&gt;‎1. Get data from XML file into HealthKit&lt;br /&gt;
+‎2. Show HealthKit workout route on the map&lt;br /&gt;
+‎3. Visualize Heart rate and Speed/Pace&lt;/p&gt;
 
 &lt;p&gt;One of the most exciting breakthroughs in modern tech medicine is getting your physical data, biometric data into the EMR (electronic medical record) and into your doctors hands. It first arrived on the mobile market with HealthKit.
 HealthKit was introduced by Apple in iOS 8 (mid 2014), a framework that enables developers to interact with health and fitness data on iOS devices. It acts as a centralized repository, collecting data from various sources such as the iPhone’s built-in sensors, third-party devices, and user input. This wealth of information includes but is not limited to steps taken, heart rate, sleep patterns, nutrition, and more. The user has granular access control and it’s all opt-in. Data storage of it doesn’t need to be HIPAA compliant and it is the consumer’s responsibility to keep their data secure.&lt;/p&gt;
@@ -30,11 +29,14 @@ HealthKit was introduced by Apple in iOS 8 (mid 2014), a framework that enables 
 
 &lt;h3 id=&quot;configure-healthkit-to-opt-in&quot;&gt;Configure HealthKit to opt-in&lt;/h3&gt;
 
-&lt;p&gt;To use HealthKit, you must enable the HealthKit capabilities for your app. In Xcode, select the project and add the HealthKit capability. Only select the Clinical Health Records checkbox if your app needs to access the user’s clinical records. App Review may reject apps that enable the Clinical Health Records capability if the app doesn’t actually use the health record data.
+&lt;p&gt;To use HealthKit, you must enable the HealthKit capabilities for your app. In Xcode, select the project and add the HealthKit capability (see 🔎 &lt;strong&gt;Wourkout Detail&lt;/strong&gt; demo). Only select the Clinical Health Records checkbox if your app needs to access the user’s clinical records. App Review may reject apps that enable the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Clinical Health Records&lt;/code&gt; capability if the app doesn’t actually use the health record data.
 To make your code maintainable and clean, let’s create a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HealthKit Manager&lt;/code&gt; class. This simple class is responsible for retrieving and updating data to the HealthKit.
-The HealthKit Manager will interact using HKHealthStore feature to interact with the HealthKit. After that we create a function to request User’s authorization to use their Health data for our application. In this step you prepare a set of datatype you read and write(in basic demo only read is needed). This data type is in .gpx format which is an XML file format for storing coordinate data and health records (like heart rate and speed).&lt;/p&gt;
+The HealthKit manager will use HKHealthStore entity to interact with the HealthKit. After this I create a function to request User’s authorization to use the Health data in my application. In this step I prepare a set of datatype to read and write (in demo only read data is needed). This data type is in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.gpx&lt;/code&gt; file which is an XML file format for storing coordinate data and health records (like heart rate and speed). Since we are dealing with prerecorded workout file .gpx we don’t need the Health data when application is in background mode.&lt;/p&gt;
 
-&lt;p&gt;For more information, see full configuration list 🔎&lt;a href=&quot;https://developer.apple.com/documentation/healthkit/setting_up_healthkit&quot;&gt;Apple docs&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;language-tsx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;nx&quot;&gt;Raw&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;gpx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;HealthKit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;opt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;UI&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Note: see full configuration list - &lt;a href=&quot;https://developer.apple.com/documentation/healthkit/setting_up_healthkit&quot;&gt;Apple documentation&lt;/a&gt;&lt;/p&gt;
 
 &lt;figure class=&quot;illustration&quot;&gt;
   &lt;img src=&quot;/blog/images/2024-08-24-apple-healthkit/HKConfigure.png&quot; alt=&quot;Image showing effects of overwhelming data visualisation&quot; /&gt;
@@ -42,15 +44,67 @@ The HealthKit Manager will interact using HKHealthStore feature to interact with
 &lt;/figure&gt;
 
 &lt;h3 id=&quot;getting-into-workout-route&quot;&gt;Getting into workout route&lt;/h3&gt;
+&lt;p&gt;To accomplish visualization of workout route this steps were needed:&lt;br /&gt;
+‎ 1. Add the samples (.gpx) to HRWorkout instance and then route locations&lt;br /&gt;
+‎ 2. Get stored data from HK with query&lt;br /&gt;
+‎ 3. Draw route on centered map with MKPolyline&lt;/p&gt;
+
+&lt;p&gt;We are going to use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HKAnchoredObjectQuery&lt;/code&gt; to register for changes, because as Apple said:&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Anchored object queries provide an easy way to search for new data in the HealthKit store.
+Below function will receive the types that you want to register for changes and will register each one.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-tsx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;nx&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;getRouteValuesFromHealthKit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;completion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;escaping&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(([&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;CLLocation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;totalWorkouts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;CLLocation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
+        
+        &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;query&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;HKAnchoredObjectQuery&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;HKSeriesType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;workoutRoute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;predicate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;anchor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;limit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;HKObjectQueryNoLimit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;samples&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;deletedObjectsOrNil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;newAnchor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;errorOrNil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;guard&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;samples&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;samples&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;deletedObjectsOrNil&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;warning&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Add alert for when notauthorized&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;guard&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;samples&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;os_log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Error samples are 0&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;route&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;samples&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;first&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;HKWorkoutRoute&lt;/span&gt;
+            
+            &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;routeQuery&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;HKWorkoutRouteQuery&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;route&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;route&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;locationsOrNil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;errorOrNil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;errorOrNil&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;nx&quot;&gt;os_log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Error &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;(error as NSObject)&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+                
+                &lt;span class=&quot;nx&quot;&gt;guard&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;locations&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;locationsOrNil&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;warning&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Handle in UI if no locations found&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                    &lt;span class=&quot;nx&quot;&gt;fatalError&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;*** NIL found in locations ***&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+                
+                &lt;span class=&quot;nx&quot;&gt;locations&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;forEach&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;nx&quot;&gt;totalWorkouts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;done&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;nx&quot;&gt;DispatchQueue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                        &lt;span class=&quot;nx&quot;&gt;completion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;totalWorkouts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+            
+            &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;store&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;execute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;routeQuery&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        
+        &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;store&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;execute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;In our implementation, we simply batch up all locations until we’re done, then store them using the newest locations.
+The locations are represented as CoreLocation types, which makes them easy to ingrate with other parts of the Apple developer ecosystem, such as MapKit. You could display the route on a map or use Geocoding to convert the coordinates into more human-friendly descriptors.&lt;/p&gt;
 
 &lt;h3 id=&quot;getting-into-health-data&quot;&gt;Getting into health data&lt;/h3&gt;
 
-&lt;p&gt;To accomplish visualization of our workout speed, pace and heart rate values we can use native CareKit or external AAInfographics framework.
-In demo case, for the first iteration we import AAInfographics_Pro and use appropriate UI diagram chart &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.chartType(.areaspline)&lt;/code&gt; to generate diagram views. 
-So what do I need to have to visualize my workout route?&lt;br /&gt;
-Firstly parse the values from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;import.gpx&lt;/code&gt; file in this case heart rate and speed values and save to HealthKit. Pace is calculated according to duration and distance &lt;strong&gt;Pace (sec/km)&lt;/strong&gt; = time (sec) / distance (km) from HealthKit store.&lt;/p&gt;
-&lt;div class=&quot;language-tsx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;nx&quot;&gt;Raw&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;gpx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;HealthKit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;UI&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;To accomplish visualization of our workout speed, pace and heart rate values we can use native CareKit (CareKit only provides the bar charts, however, we can integrate other chart libraries in SwiftUI) or external AAInfographics framework for UIKit.
+So what do I need to have to visualize my workout data?&lt;br /&gt;
+Firstly parse the values from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;import.gpx&lt;/code&gt; file in this case heart rate or speed values and save to HealthKit. Pace is calculated according to duration and distance &lt;strong&gt;Pace (sec/km)&lt;/strong&gt; = time (sec) / distance (km) from HealthKit store directly.&lt;/p&gt;
 
 &lt;div class=&quot;language-tsx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;c1&quot;&gt;// MARK: - Heart rate&lt;/span&gt;
     &lt;span class=&quot;nx&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;setHRValueToHealthKit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;HealthValueType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;GPXLocation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -80,6 +134,9 @@ Firstly parse the values from &lt;code class=&quot;language-plaintext highlighte
         &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;In demo case we import AAInfographics_Pro and use appropriate UI diagram chart &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.chartType(.areaspline)&lt;/code&gt; to generate diagram views.&lt;/p&gt;
+
+&lt;p&gt;Note: If you notice I am using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;os_log&lt;/code&gt; OSLog is a replacement for print, and NSLog and Apple’s recommended way of logging easily visible in Xcode console.&lt;/p&gt;
 
 &lt;figure class=&quot;illustration&quot;&gt;
   &lt;img src=&quot;/blog/images/2024-08-24-apple-healthkit/meneHealth.png&quot; alt=&quot;Image showing effects of overwhelming data visualisation&quot; /&gt;
@@ -88,11 +145,12 @@ Firstly parse the values from &lt;code class=&quot;language-plaintext highlighte
 
 &lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
 
-&lt;p&gt;TBC&lt;/p&gt;
+&lt;p&gt;That’s all I’ve found in the last days studying the HealthKit and charts framework. I’ve covered all situations that my context required, which were: save objects and sync them between my app and Health app and show them on the graph and map. Hope you guys enjoy it, and any inconsistencies in the content above please let me know.&lt;/p&gt;
 
-&lt;p&gt;Full demo &lt;a href=&quot;https://github.com/MarinaHuber/HealthKitDemo&quot;&gt;Github&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Full demo &lt;a href=&quot;https://github.com/MarinaHuber/HealthKitDemo&quot;&gt;Github&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;Helpful link for HealthKit code-gen with &lt;a href=&quot;https://chatgpt.com/g/g-o1UC7Hh1s-apple-healthkit-complete-guide&quot;&gt;ChatGPT&lt;/a&gt;
+&lt;p&gt;To follow the newest updates on Apple watch and HealthKit &lt;a href=&quot;https://developer.apple.com/documentation/updates/healthkit&quot;&gt;here&lt;/a&gt;&lt;br /&gt;
+Helpful link for HealthKit code-gen with &lt;a href=&quot;https://chatgpt.com/g/g-o1UC7Hh1s-apple-healthkit-complete-guide&quot;&gt;ChatGPT&lt;/a&gt;
 &lt;!-- more --&gt;&lt;/p&gt;
 
 </description>
