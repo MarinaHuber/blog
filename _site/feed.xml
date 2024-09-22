@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/blog/</link>
     <atom:link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 22 Sep 2024 23:15:01 +0200</pubDate>
-    <lastBuildDate>Sun, 22 Sep 2024 23:15:01 +0200</lastBuildDate>
+    <pubDate>Sun, 22 Sep 2024 23:19:10 +0200</pubDate>
+    <lastBuildDate>Sun, 22 Sep 2024 23:19:10 +0200</lastBuildDate>
     <generator>Jekyll v3.9.5</generator>
     
       <item>
@@ -24,12 +24,12 @@ HealthKit was introduced by Apple in iOS 8 (mid 2014), a framework that enables 
 
 &lt;figure class=&quot;illustration&quot;&gt;
   &lt;img src=&quot;/blog/images/2024-09-22-apple-healthkit/HKdemoRecording.gif&quot; alt=&quot;Image showing effects of overwhelming data visualisation&quot; /&gt;
-  &lt;figcaption&gt;Data visualization (image by Canvas meme generator)&lt;/figcaption&gt;
+  &lt;figcaption&gt;Expected results in app demo&lt;/figcaption&gt;
 &lt;/figure&gt;
 
 &lt;h3 id=&quot;configure-healthkit-to-opt-in&quot;&gt;Configure HealthKit to opt-in&lt;/h3&gt;
 
-&lt;p&gt;To use HealthKit, you must enable the HealthKit capabilities for your app. In Xcode, select the project and add the HealthKit capability (see 🔎 &lt;strong&gt;Wourkout Detail&lt;/strong&gt; demo). Only select the Clinical Health Records checkbox if your app needs to access the user’s clinical records. App Review may reject apps that enable the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Clinical Health Records&lt;/code&gt; capability if the app doesn’t actually use the health record data.
+&lt;p&gt;To use HealthKit, you must enable the HealthKit capabilities for your app. In Xcode, select the project and add the HealthKit capability (see 🔎 &lt;strong&gt;Wourkout Detail&lt;/strong&gt; demo). Only select the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Clinical Health Records&lt;/code&gt; checkbox if your app needs to access the user’s clinical records. App Review may reject apps that enable the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Clinical Health Records&lt;/code&gt; capability if the app doesn’t actually use the health record data.
 To make your code maintainable and clean, let’s create a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HealthKit Manager&lt;/code&gt; class. This simple class is responsible for retrieving and updating data to the HealthKit.
 The HealthKit manager will use HKHealthStore entity to interact with the HealthKit. After this I create a function to request User’s authorization to use the Health data in my application. In this step I prepare a set of datatype to read and write (in demo only read data is needed). This data type is in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.gpx&lt;/code&gt; file which is an XML file format for storing coordinate data and health records (like heart rate and speed). Since we are dealing with prerecorded workout file .gpx we don’t need the Health data when application is in background mode.&lt;/p&gt;
 
@@ -132,11 +132,6 @@ Firstly parse the values from &lt;code class=&quot;language-plaintext highlighte
 &lt;p&gt;In demo case we import AAInfographics_Pro and use appropriate UI diagram chart &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.chartType(.areaspline)&lt;/code&gt; to generate diagram views.&lt;/p&gt;
 
 &lt;p&gt;Note: If you notice I am using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;os_log&lt;/code&gt; OSLog is a replacement for print, and NSLog and Apple’s recommended way of logging easily visible in Xcode console.&lt;/p&gt;
-
-&lt;figure class=&quot;illustration&quot;&gt;
-  &lt;img src=&quot;/blog/images/2024-08-24-apple-healthkit/meneHealth.png&quot; alt=&quot;Image showing effects of overwhelming data visualisation&quot; /&gt;
-  &lt;figcaption&gt;Data visualization (image by Canvas meme generator)&lt;/figcaption&gt;
-&lt;/figure&gt;
 
 &lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
 

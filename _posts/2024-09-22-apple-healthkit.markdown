@@ -23,12 +23,12 @@ HealthKit was introduced by Apple in iOS 8 (mid 2014), a framework that enables 
     src="/blog/images/2024-09-22-apple-healthkit/HKdemoRecording.gif"
     alt="Image showing effects of overwhelming data visualisation"
   />
-  <figcaption>Data visualization (image by Canvas meme generator)</figcaption>
+  <figcaption>Expected results in app demo</figcaption>
 </figure>
 
 ### Configure HealthKit to opt-in
 
-To use HealthKit, you must enable the HealthKit capabilities for your app. In Xcode, select the project and add the HealthKit capability (see 🔎 **Wourkout Detail** demo). Only select the Clinical Health Records checkbox if your app needs to access the user’s clinical records. App Review may reject apps that enable the `Clinical Health Records` capability if the app doesn’t actually use the health record data.
+To use HealthKit, you must enable the HealthKit capabilities for your app. In Xcode, select the project and add the HealthKit capability (see 🔎 **Wourkout Detail** demo). Only select the `Clinical Health Records` checkbox if your app needs to access the user’s clinical records. App Review may reject apps that enable the `Clinical Health Records` capability if the app doesn’t actually use the health record data.
 To make your code maintainable and clean, let’s create a `HealthKit Manager` class. This simple class is responsible for retrieving and updating data to the HealthKit.
 The HealthKit manager will use HKHealthStore entity to interact with the HealthKit. After this I create a function to request User’s authorization to use the Health data in my application. In this step I prepare a set of datatype to read and write (in demo only read data is needed). This data type is in `.gpx` file which is an XML file format for storing coordinate data and health records (like heart rate and speed). Since we are dealing with prerecorded workout file .gpx we don't need the Health data when application is in background mode.
 
@@ -133,15 +133,6 @@ Firstly parse the values from `import.gpx` file in this case heart rate or speed
 In demo case we import AAInfographics_Pro and use appropriate UI diagram chart `.chartType(.areaspline)` to generate diagram views.
 
 Note: If you notice I am using `os_log` OSLog is a replacement for print, and NSLog and Apple’s recommended way of logging easily visible in Xcode console.
-
-
-<figure class="illustration">
-  <img
-    src="/blog/images/2024-08-24-apple-healthkit/meneHealth.png"
-    alt="Image showing effects of overwhelming data visualisation"
-  />
-  <figcaption>Data visualization (image by Canvas meme generator)</figcaption>
-</figure>
 
 ### Conclusion
 
