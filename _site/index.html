@@ -29,8 +29,9 @@
           
         
         
-          Avoid typos when publishing localized app to App Store
-...">
+          Breaking the magic of Apple HealthKit API
+        
+    ...">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -99,6 +100,67 @@
 
       <div class="blog-index">
   
+  
+    
+      <article>
+        <div class="article-container">
+
+  
+    <div class="meta-container">
+      <header>
+        
+          <a href="/blog/blog/2024/09/22/apple-healthkit/">
+        
+        
+          <h2 class="entry-title">Breaking the magic of Apple HealthKit API</h2>
+        
+        <time datetime=""></time>
+          <p class="meta-author">
+
+
+  
+
+  
+    <div class="meta">
+      <span class="byline author vcard"><a href ="">Marina Huber<a/></span> <!-- /author/marina.html is missing now -->
+      
+
+    </div>
+  
+
+</p> <!-- disable is here mini-author.html -->
+          </a>
+      </header>
+    </div>
+  
+
+  <div class="content-container">
+    
+    
+        <p>Things I want to accomplish: ✅</p>
+<ol>
+  <li>Show HealthKit workout route on the map</li>
+  <li>Visualize Heart rate and Speed/Pace</li>
+  <li>Interoperate with UIKit and SwiftUI</li>
+</ol>
+
+<p>One of the most exciting breakthroughs in modern tech medicine is getting your physical data, biometric data into the EMR (electronic medical record) and into your doctors hands. It first arrived on the mobile market with HealthKit.
+HealthKit was introduced by Apple in iOS 8 (mid 2014), a framework that enables developers to interact with health and fitness data on iOS devices. It acts as a centralized repository, collecting data from various sources such as the iPhone’s built-in sensors, third-party devices, and user input. This wealth of information includes but is not limited to steps taken, heart rate, sleep patterns, nutrition, and more. The user has granular access control and it’s all opt-in. Data storage of it doesn’t need to be HIPAA compliant and it is the consumer’s responsibility to keep their data secure.</p>
+
+
+        <p><a href="/blog/blog/2024/09/22/apple-healthkit/">Read on →</a></p>
+    
+
+    
+  </div>
+
+
+  <footer>
+  </footer>
+
+</div>
+
+      </article>
   
     
       <article>
@@ -281,144 +343,6 @@ provide support for native class (reference type), struct and enum as well (valu
 
 
         <p><a href="/blog/blog/2022/09/07/json-parsing/">Read on →</a></p>
-    
-
-    
-  </div>
-
-
-  <footer>
-  </footer>
-
-</div>
-
-      </article>
-  
-    
-      <article>
-        <div class="article-container">
-
-  
-    <div class="meta-container">
-      <header>
-        
-          <a href="/blog/blog/2022/08/23/apple-healthkit/">
-        
-        
-          <h2 class="entry-title">Breaking the magic of Apple HealthKit API and Watch OS</h2>
-        
-        <time datetime=""></time>
-          <p class="meta-author">
-
-
-  
-
-  
-    <div class="meta">
-      <span class="byline author vcard"><a href ="">Marina Huber<a/></span> <!-- /author/marina.html is missing now -->
-      
-
-    </div>
-  
-
-</p> <!-- disable is here mini-author.html -->
-          </a>
-      </header>
-    </div>
-  
-
-  <div class="content-container">
-    
-    
-        <p>Things I want to accomplished: ✅
-Small tips on setup and easier use
-lll
-ppp
-pp</p>
-
-<p>TO DO</p>
-
-
-        <p><a href="/blog/blog/2022/08/23/apple-healthkit/">Read on →</a></p>
-    
-
-    
-  </div>
-
-
-  <footer>
-  </footer>
-
-</div>
-
-      </article>
-  
-    
-      <article>
-        <div class="article-container">
-
-  
-    <div class="meta-container">
-      <header>
-        
-          <a href="/blog/blog/2017/03/05/artsy-engineering-culture-2017/">
-        
-        
-          <h2 class="entry-title">Artsy's Culture Stack, 2017</h2>
-        
-        <time datetime=""></time>
-          <p class="meta-author">
-
-
-  
-
-  
-
-  
-
-  
-
-</p> <!-- disable is here mini-author.html -->
-          </a>
-      </header>
-    </div>
-  
-
-  <div class="content-container">
-    
-    
-        <!-- This comes out of the tech stack 2017, and isn't up for review yet -->
-
-<h1 id="people-and-culture">People and Culture</h1>
-
-<h2 id="open-source-by-default">Open Source by Default</h2>
-
-<p>By the end of 2016, almost every major front-end application at Artsy was <a href="http://code.dblock.org/2015/02/09/becoming-open-source-by-default.html">Open Source by Default</a>. This means looking for reasons for something to be closed-source as opposed to reasons to be open. Our entire working process is done in the open, from developer PRs to QA. This post was also written collaboratively and in the open as you can see <a href="https://github.com/artsy/artsy.github.io/pull/325">here</a>.</p>
-
-<p>Sometimes it makes sense to keep some details private for competitive reasons. We therefore also create a private GitHub repository for front-end teams that require cross-project issues and team milestones. This is done using <a href="https://www.zenhub.com">ZenHub</a>, and is managed by Engineering leads and Product Managers.</p>
-
-<h2 id="developer-workflow">Developer Workflow</h2>
-
-<p>Most development workflow tries to mimic large open-source project development where most work happens on forks and is pull-requested into an Artsy repository shared by everyone. Typically an engineer will start a project, application or service and is automatically its benevolent dictator. They will add continuous integration and will ask other engineers on the team to code review everything from day one. Others will join and entire teams may take over. Continuous deployment and other operational infrastructure will get setup early.</p>
-
-<p>In some of our newer apps we have switched to PR based deployments via CIs. In this case, on Artsy’s repository, we would have <em>master</em> and <em>release</em> branches where <em>master</em> is the default branch and all the PRs are made to master. Once a PR is reviewed and merged to <em>master</em> it will automatically get deployed on staging. Production deployment is a pull request from <em>master</em> to a <em>release</em> branch, this way we know what commits are going to be deployed in this release. Once merged, CI will automatically deploy the <em>release</em> branch to production.</p>
-
-<h2 id="slack">Slack</h2>
-
-<p>Originally the engineering team used IRC, but in 2015 we switched to Slack and encouraged its use throughout the whole company. We’re now averaging about 16,000 Slack messages a day inside Artsy.</p>
-
-<p>Slack usage started out small, but as the Artsy team grew, so did the number of locations where people worked. Encouraging people to move from disparate private conversations in different messaging clients to using slack channels has really made it easier to keep people in the loop. It’s made it possible to have the serendipitous collaboration you get by overhearing something important nearby physically.</p>
-
-<h2 id="global-engineering">Global Engineering</h2>
-
-<p>While most Engineers live in New York, our Engineering team has contributors in Amsterdam, Berlin, Seattle, Minneapolis, Boston and London. We’ve not shied away from hiring regardless of locations.</p>
-
-<p>To help people know each-other across the company we developed and open-sourced a <a href="https://github.com/artsy/team-navigator">team navigator</a>. We also facilitate weekly meetings between any three people across the company with a tool called <a href="https://github.com/ilyakava/sup">sup</a>.</p>
-
-<blockquote>
-  <p>Maybe worth mentioning that most of the channels shared between developers and other people at artsy(specialists, designers, product people, etc) which encourages collaboration and integration of art+technology as well. Also maybe worth mentioning that we have dedicated help channels per product team and well as company wide help channel.</p>
-</blockquote>
-
     
 
     

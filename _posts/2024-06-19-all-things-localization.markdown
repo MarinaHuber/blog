@@ -222,7 +222,7 @@ Gender and personalization with:
 Using Date, Currencies and Number **formatters** API.
 
 Dates
-Unicode.org for [TEMPLATES](http://www.unicode.org/reports/tr35/tr35-31/tr35.html)
+Unicode.org for [TEMPLATES](https://www.unicode.org/reports/tr35/tr35-31/tr35.html)
 → you can use templates : make app text user-friendly with **preferredLanguages** as it detected language from a device.
 
 `dateFormatter.locale = Locale(identifier: Locale.preferredLanguages.first ?? “en”)`

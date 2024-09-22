@@ -2,7 +2,7 @@
 layout: epic
 title: "Breaking the magic of Apple HealthKit API"
 subtitle: What we learned while trying to visualize HK data
-date: 2024-09-23
+date: 2024-09-22
 categories: [iOS17, HealthKit, Swift]
 author: marina
 ---
@@ -10,10 +10,12 @@ author: marina
 Things I want to accomplish: ✅
 1. Show HealthKit workout route on the map
 2. Visualize Heart rate and Speed/Pace
-3. All this to interoperate with UIKit and SwiftUI
+3. Interoperate with UIKit and SwiftUI
 
 One of the most exciting breakthroughs in modern tech medicine is getting your physical data, biometric data into the EMR (electronic medical record) and into your doctors hands. It first arrived on the mobile market with HealthKit.
 HealthKit was introduced by Apple in iOS 8 (mid 2014), a framework that enables developers to interact with health and fitness data on iOS devices. It acts as a centralized repository, collecting data from various sources such as the iPhone’s built-in sensors, third-party devices, and user input. This wealth of information includes but is not limited to steps taken, heart rate, sleep patterns, nutrition, and more. The user has granular access control and it’s all opt-in. Data storage of it doesn't need to be HIPAA compliant and it is the consumer's responsibility to keep their data secure.
+
+<!-- more -->
 
 <figure class="illustration">
   <img
@@ -45,32 +47,41 @@ For more information, see full configuration list 🔎[Apple docs](https://devel
 ### Getting into health data
 
 To accomplish visualization of our workout speed, pace and heart rate values we can use native CareKit or external AAInfographics framework.
-In demo case, for the first iteration we imported AAInfographics. 
-So what do I need to have to visualize my workout route?
-I need to parse the values from `import.gpx` file in this case heart rate and speed, for pace I will calculate according to duration and distance **Pace (sec/km)** = time (sec) / distance (km).
+In demo case, for the first iteration we import AAInfographics_Pro and use appropriate UI diagram chart `.chartType(.areaspline)` to generate diagram views. 
+So what do I need to have to visualize my workout route?\
+Firstly parse the values from `import.gpx` file in this case heart rate and speed values and save to HealthKit. Pace is calculated according to duration and distance **Pace (sec/km)** = time (sec) / distance (km) from HealthKit store.
+```tsx
+  Raw data .gpx --> HealthKit --> UI
+```
 
 ```tsx
-extension HealthManager {
-    
-    private func getIdentifierForType(_ type: HealthValueType) -> HKQuantityTypeIdentifier {
-        switch type {
-        case .heartRate:
-            return .heartRate
-        case .speed:
-            return .walkingSpeed
+    // MARK: - Heart rate
+    func setHRValueToHealthKit(_ type: HealthValueType, for model: [GPXLocation]) {
+        var heartRate: Double = 0.0
+        let unit = self.getUnitForType(type)
+        guard let sampleType = HKObjectType.quantityType(forIdentifier: getIdentifierForType(type)) else {
+            return
+        }
+        
+        model.forEach {
+            heartRate = $0.heartRate
+            
+            let quantity = HKQuantity(unit: unit, doubleValue: heartRate)
+            
+            let heartRateSample = HKQuantitySample(type: sampleType, quantity: quantity, start: self.workoutList.first!.startTime, end: self.workoutList.last!.startTime)
+            
+            self.samples.append(heartRateSample)
+            
+            DispatchQueue.main.async {
+                self.store.save(heartRateSample) { (finished, error) in
+                    if !finished {
+                        os_log("Error occured saving the HR sample \(heartRateSample).The error was: \(error! as NSObject).")
+                    }
+                    os_log("Saving the HR sample \(heartRateSample).")
+                }
+            }
         }
     }
-    
-    private func getUnitForType(_ type: HealthValueType) -> HKUnit {
-        switch type {
-        case .heartRate:
-            return HKUnit(from: "count/min")
-        case .speed:
-            return HKUnit.meter().unitDivided(by: HKUnit.second())
-        }
-    }
-    
-}
 ```
 
 <figure class="illustration">
@@ -85,7 +96,8 @@ extension HealthManager {
 
 TBC
 
-Full demo: [Github](https://github.com/MarinaHuber/HealthKitDemo)
-Helpful link for code-gen with [ChatGPT](https://chatgpt.com/g/g-o1UC7Hh1s-apple-healthkit-complete-guide)
+Full demo [Github](https://github.com/MarinaHuber/HealthKitDemo)
+
+Helpful link for HealthKit code-gen with [ChatGPT](https://chatgpt.com/g/g-o1UC7Hh1s-apple-healthkit-complete-guide)
 <!-- more -->
 

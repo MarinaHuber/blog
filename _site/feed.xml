@@ -5,9 +5,109 @@
     <description></description>
     <link>http://localhost:4000/blog/</link>
     <atom:link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 10 Jul 2024 13:26:47 +0200</pubDate>
-    <lastBuildDate>Wed, 10 Jul 2024 13:26:47 +0200</lastBuildDate>
+    <pubDate>Sun, 22 Sep 2024 18:45:46 +0200</pubDate>
+    <lastBuildDate>Sun, 22 Sep 2024 18:45:46 +0200</lastBuildDate>
     <generator>Jekyll v3.9.5</generator>
+    
+      <item>
+        <title>Breaking the magic of Apple HealthKit API</title>
+        <description>&lt;p&gt;Things I want to accomplish: ✅&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Show HealthKit workout route on the map&lt;/li&gt;
+  &lt;li&gt;Visualize Heart rate and Speed/Pace&lt;/li&gt;
+  &lt;li&gt;Interoperate with UIKit and SwiftUI&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;One of the most exciting breakthroughs in modern tech medicine is getting your physical data, biometric data into the EMR (electronic medical record) and into your doctors hands. It first arrived on the mobile market with HealthKit.
+HealthKit was introduced by Apple in iOS 8 (mid 2014), a framework that enables developers to interact with health and fitness data on iOS devices. It acts as a centralized repository, collecting data from various sources such as the iPhone’s built-in sensors, third-party devices, and user input. This wealth of information includes but is not limited to steps taken, heart rate, sleep patterns, nutrition, and more. The user has granular access control and it’s all opt-in. Data storage of it doesn’t need to be HIPAA compliant and it is the consumer’s responsibility to keep their data secure.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;figure class=&quot;illustration&quot;&gt;
+  &lt;img src=&quot;/blog/images/2024-08-24-apple-healthkit/demo.png&quot; alt=&quot;Image showing effects of overwhelming data visualisation&quot; /&gt;
+  &lt;figcaption&gt;Data visualization (image by Canvas meme generator)&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h3 id=&quot;configure-healthkit-to-opt-in&quot;&gt;Configure HealthKit to opt-in&lt;/h3&gt;
+
+&lt;p&gt;To use HealthKit, you must enable the HealthKit capabilities for your app. In Xcode, select the project and add the HealthKit capability. Only select the Clinical Health Records checkbox if your app needs to access the user’s clinical records. App Review may reject apps that enable the Clinical Health Records capability if the app doesn’t actually use the health record data.
+To make your code maintainable and clean, let’s create a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HealthKit Manager&lt;/code&gt; class. This simple class is responsible for retrieving and updating data to the HealthKit.
+The HealthKit Manager will interact using HKHealthStore feature to interact with the HealthKit. After that we create a function to request User’s authorization to use their Health data for our application. In this step you prepare a set of datatype you read and write(in basic demo only read is needed). This data type is in .gpx format which is an XML file format for storing coordinate data and health records (like heart rate and speed).&lt;/p&gt;
+
+&lt;p&gt;For more information, see full configuration list 🔎&lt;a href=&quot;https://developer.apple.com/documentation/healthkit/setting_up_healthkit&quot;&gt;Apple docs&lt;/a&gt;&lt;/p&gt;
+
+&lt;figure class=&quot;illustration&quot;&gt;
+  &lt;img src=&quot;/blog/images/2024-08-24-apple-healthkit/HKConfigure.png&quot; alt=&quot;Image showing effects of overwhelming data visualisation&quot; /&gt;
+  &lt;figcaption&gt;UIKit HealthKitManager setup (image by Canvas meme generator)&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h3 id=&quot;getting-into-workout-route&quot;&gt;Getting into workout route&lt;/h3&gt;
+
+&lt;h3 id=&quot;getting-into-health-data&quot;&gt;Getting into health data&lt;/h3&gt;
+
+&lt;p&gt;To accomplish visualization of our workout speed, pace and heart rate values we can use native CareKit or external AAInfographics framework.
+In demo case, for the first iteration we import AAInfographics_Pro and use appropriate UI diagram chart &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.chartType(.areaspline)&lt;/code&gt; to generate diagram views. 
+So what do I need to have to visualize my workout route?&lt;br /&gt;
+Firstly parse the values from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;import.gpx&lt;/code&gt; file in this case heart rate and speed values and save to HealthKit. Pace is calculated according to duration and distance &lt;strong&gt;Pace (sec/km)&lt;/strong&gt; = time (sec) / distance (km) from HealthKit store.&lt;/p&gt;
+&lt;div class=&quot;language-tsx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;nx&quot;&gt;Raw&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;gpx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;HealthKit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;UI&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-tsx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;c1&quot;&gt;// MARK: - Heart rate&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;setHRValueToHealthKit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;HealthValueType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;GPXLocation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;heartRate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Double&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.0&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getUnitForType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;guard&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;sampleType&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;HKObjectType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;quantityType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;forIdentifier&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;getIdentifierForType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        
+        &lt;span class=&quot;nx&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;forEach&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;heartRate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;$0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;heartRate&lt;/span&gt;
+            
+            &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;quantity&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;HKQuantity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;unit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;doubleValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;heartRate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            
+            &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;heartRateSample&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;HKQuantitySample&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;sampleType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;quantity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;quantity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;workoutList&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;first&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;startTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;workoutList&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;last&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;startTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            
+            &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;samples&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;heartRateSample&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            
+            &lt;span class=&quot;nx&quot;&gt;DispatchQueue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;store&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;save&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;heartRateSample&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;finished&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;
+                    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;finished&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                        &lt;span class=&quot;nx&quot;&gt;os_log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Error occured saving the HR sample &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;(heartRateSample).The error was: &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;(error! as NSObject).&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+                    &lt;span class=&quot;nx&quot;&gt;os_log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Saving the HR sample &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;(heartRateSample).&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;figure class=&quot;illustration&quot;&gt;
+  &lt;img src=&quot;/blog/images/2024-08-24-apple-healthkit/meneHealth.png&quot; alt=&quot;Image showing effects of overwhelming data visualisation&quot; /&gt;
+  &lt;figcaption&gt;Data visualization (image by Canvas meme generator)&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
+
+&lt;p&gt;TBC&lt;/p&gt;
+
+&lt;p&gt;Full demo &lt;a href=&quot;https://github.com/MarinaHuber/HealthKitDemo&quot;&gt;Github&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Helpful link for HealthKit code-gen with &lt;a href=&quot;https://chatgpt.com/g/g-o1UC7Hh1s-apple-healthkit-complete-guide&quot;&gt;ChatGPT&lt;/a&gt;
+&lt;!-- more --&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 22 Sep 2024 00:00:00 +0200</pubDate>
+        <link>http://localhost:4000/blog/blog/2024/09/22/apple-healthkit/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/blog/2024/09/22/apple-healthkit/</guid>
+        
+        
+        <category>iOS17</category>
+        
+        <category>HealthKit</category>
+        
+        <category>Swift</category>
+        
+      </item>
     
       <item>
         <title>Avoid typos when publishing localized app to App Store</title>
@@ -228,7 +328,7 @@ String.localizedStringWithFormat(formatString, count)&lt;/p&gt;
 Using Date, Currencies and Number &lt;strong&gt;formatters&lt;/strong&gt; API.&lt;/p&gt;
 
 &lt;p&gt;Dates
-Unicode.org for &lt;a href=&quot;http://www.unicode.org/reports/tr35/tr35-31/tr35.html&quot;&gt;TEMPLATES&lt;/a&gt;
+Unicode.org for &lt;a href=&quot;https://www.unicode.org/reports/tr35/tr35-31/tr35.html&quot;&gt;TEMPLATES&lt;/a&gt;
 → you can use templates : make app text user-friendly with &lt;strong&gt;preferredLanguages&lt;/strong&gt; as it detected language from a device.&lt;/p&gt;
 
 &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dateFormatter.locale = Locale(identifier: Locale.preferredLanguages.first ?? “en”)&lt;/code&gt;&lt;/p&gt;
@@ -517,83 +617,6 @@ for product in store.products {
         <category>Generics</category>
         
         <category>Swift</category>
-        
-      </item>
-    
-      <item>
-        <title>Breaking the magic of Apple HealthKit API and Watch OS</title>
-        <description>&lt;p&gt;Things I want to accomplished: ✅
-Small tips on setup and easier use
-lll
-ppp
-pp&lt;/p&gt;
-
-&lt;p&gt;TO DO&lt;/p&gt;
-
-&lt;!-- more --&gt;
-
-</description>
-        <pubDate>Tue, 23 Aug 2022 00:00:00 +0200</pubDate>
-        <link>http://localhost:4000/blog/blog/2022/08/23/apple-healthkit/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/blog/2022/08/23/apple-healthkit/</guid>
-        
-        
-        <category>Privacy</category>
-        
-        <category>Cookies</category>
-        
-        <category>GDPR</category>
-        
-        <category>CCPA</category>
-        
-      </item>
-    
-      <item>
-        <title>Artsy's Culture Stack, 2017</title>
-        <description>&lt;!-- This comes out of the tech stack 2017, and isn't up for review yet --&gt;
-
-&lt;h1 id=&quot;people-and-culture&quot;&gt;People and Culture&lt;/h1&gt;
-
-&lt;h2 id=&quot;open-source-by-default&quot;&gt;Open Source by Default&lt;/h2&gt;
-
-&lt;p&gt;By the end of 2016, almost every major front-end application at Artsy was &lt;a href=&quot;http://code.dblock.org/2015/02/09/becoming-open-source-by-default.html&quot;&gt;Open Source by Default&lt;/a&gt;. This means looking for reasons for something to be closed-source as opposed to reasons to be open. Our entire working process is done in the open, from developer PRs to QA. This post was also written collaboratively and in the open as you can see &lt;a href=&quot;https://github.com/artsy/artsy.github.io/pull/325&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Sometimes it makes sense to keep some details private for competitive reasons. We therefore also create a private GitHub repository for front-end teams that require cross-project issues and team milestones. This is done using &lt;a href=&quot;https://www.zenhub.com&quot;&gt;ZenHub&lt;/a&gt;, and is managed by Engineering leads and Product Managers.&lt;/p&gt;
-
-&lt;h2 id=&quot;developer-workflow&quot;&gt;Developer Workflow&lt;/h2&gt;
-
-&lt;p&gt;Most development workflow tries to mimic large open-source project development where most work happens on forks and is pull-requested into an Artsy repository shared by everyone. Typically an engineer will start a project, application or service and is automatically its benevolent dictator. They will add continuous integration and will ask other engineers on the team to code review everything from day one. Others will join and entire teams may take over. Continuous deployment and other operational infrastructure will get setup early.&lt;/p&gt;
-
-&lt;p&gt;In some of our newer apps we have switched to PR based deployments via CIs. In this case, on Artsy’s repository, we would have &lt;em&gt;master&lt;/em&gt; and &lt;em&gt;release&lt;/em&gt; branches where &lt;em&gt;master&lt;/em&gt; is the default branch and all the PRs are made to master. Once a PR is reviewed and merged to &lt;em&gt;master&lt;/em&gt; it will automatically get deployed on staging. Production deployment is a pull request from &lt;em&gt;master&lt;/em&gt; to a &lt;em&gt;release&lt;/em&gt; branch, this way we know what commits are going to be deployed in this release. Once merged, CI will automatically deploy the &lt;em&gt;release&lt;/em&gt; branch to production.&lt;/p&gt;
-
-&lt;h2 id=&quot;slack&quot;&gt;Slack&lt;/h2&gt;
-
-&lt;p&gt;Originally the engineering team used IRC, but in 2015 we switched to Slack and encouraged its use throughout the whole company. We’re now averaging about 16,000 Slack messages a day inside Artsy.&lt;/p&gt;
-
-&lt;p&gt;Slack usage started out small, but as the Artsy team grew, so did the number of locations where people worked. Encouraging people to move from disparate private conversations in different messaging clients to using slack channels has really made it easier to keep people in the loop. It’s made it possible to have the serendipitous collaboration you get by overhearing something important nearby physically.&lt;/p&gt;
-
-&lt;h2 id=&quot;global-engineering&quot;&gt;Global Engineering&lt;/h2&gt;
-
-&lt;p&gt;While most Engineers live in New York, our Engineering team has contributors in Amsterdam, Berlin, Seattle, Minneapolis, Boston and London. We’ve not shied away from hiring regardless of locations.&lt;/p&gt;
-
-&lt;p&gt;To help people know each-other across the company we developed and open-sourced a &lt;a href=&quot;https://github.com/artsy/team-navigator&quot;&gt;team navigator&lt;/a&gt;. We also facilitate weekly meetings between any three people across the company with a tool called &lt;a href=&quot;https://github.com/ilyakava/sup&quot;&gt;sup&lt;/a&gt;.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Maybe worth mentioning that most of the channels shared between developers and other people at artsy(specialists, designers, product people, etc) which encourages collaboration and integration of art+technology as well. Also maybe worth mentioning that we have dedicated help channels per product team and well as company wide help channel.&lt;/p&gt;
-&lt;/blockquote&gt;
-</description>
-        <pubDate>Sun, 05 Mar 2017 00:00:00 +0100</pubDate>
-        <link>http://localhost:4000/blog/blog/2017/03/05/artsy-engineering-culture-2017/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/blog/2017/03/05/artsy-engineering-culture-2017/</guid>
-        
-        
-        <category>Technology</category>
-        
-        <category>eigen</category>
-        
-        <category>force</category>
-        
-        <category>gravity</category>
         
       </item>
     
