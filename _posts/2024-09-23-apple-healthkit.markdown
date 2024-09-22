@@ -2,7 +2,7 @@
 layout: epic
 title: "Breaking the magic of Apple HealthKit API"
 subtitle: What we learned while trying to visualize HK data
-date: 2024-09-23
+date: 2024-09-22
 categories: [iOS17, HealthKit, Swift]
 author: marina
 ---
