@@ -71,6 +71,7 @@ extension HealthManager {
     }
     
 }
+```
 
 <figure class="illustration">
   <img
@@ -84,7 +85,7 @@ extension HealthManager {
 
 TBC
 
-Full demo: https://github.com/MarinaHuber/HealthKitDemo
-Helpful link for code-gen with ChatGPT: https://chatgpt.com/g/g-o1UC7Hh1s-apple-healthkit-complete-guide
+Full demo: [Github](https://github.com/MarinaHuber/HealthKitDemo)
+Helpful link for code-gen with [ChatGPT](https://chatgpt.com/g/g-o1UC7Hh1s-apple-healthkit-complete-guide)
 <!-- more -->
 
