@@ -20,7 +20,7 @@ HealthKit was introduced by Apple in iOS 8 (mid 2014), a framework that enables 
 
 <figure class="illustration">
   <img
-    src="/blog/images/2024-08-24-apple-healthkit/demo.png"
+    src="/blog/images/2024-09-22-apple-healthkit/HKdemoRecording.gif"
     alt="Image showing effects of overwhelming data visualisation"
   />
   <figcaption>Data visualization (image by Canvas meme generator)</figcaption>
@@ -38,13 +38,6 @@ The HealthKit manager will use HKHealthStore entity to interact with the HealthK
 
 Note: see full configuration list - [Apple documentation](https://developer.apple.com/documentation/healthkit/setting_up_healthkit) 
 
-<figure class="illustration">
-  <img
-    src="/blog/images/2024-08-24-apple-healthkit/HKConfigure.png"
-    alt="Image showing effects of overwhelming data visualisation"
-  />
-  <figcaption>UIKit HealthKitManager setup (image by Canvas meme generator)</figcaption>
-</figure>
 
 ### Getting into workout route
 To accomplish visualization of workout route this steps were needed:\
